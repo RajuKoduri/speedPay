@@ -1,0 +1,186 @@
+<div>
+    <h2>Promotional Codes Usages </h2>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodStart</label> 
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" step="1" formControlName="startTime"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            (change)="timechnage($event)" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodEnd</label> 
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs"  step="1" formControlName="endTime" 
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Promotional code</label>
+                        <input type="text" formControlName="Promotionalcode" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Status</label>
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownsettingStatus" [data]="PromoCodeStatusList"
+                                [(ngModel)]="convertedStatus" (onSelect)="onItemSelectStatus($event)"
+                                (onDeSelect)="OnItemDeSelectStatus($event)" (onSelectAll)="onSelectAllStatus($event)"
+                                (onDeSelectAll)="onDeSelectAllStatus($event)"
+                                formControlName="Status"></ng-multiselect-dropdown>
+                        </div>
+
+                    </div>
+                   
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer">
+                        <label>Player</label>
+                        <input type="text" formControlName="Player" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Reffered To</label>
+                        <input type="text" formControlName="RefferedTo" />
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer">
+                        <label>Face</label>
+                        <input type="text" formControlName="Face" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Usage Method</label> 
+                        <!-- <select class="seclectopt" formControlName="UsageMethod">
+                            <option [ngValue]="Usage.guid" *ngFor="let Usage of PromoCodeUsageTypeList">{{Usage.value}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="DropdownSettingsPromo" [data]="PromoCodeUsageTypeList"
+                              [(ngModel)]="selectpromocode" (onSelect)="onItemSelectPromo($event)"
+                              (onDeSelect)="OnItemDeSelectPromo($event)" (onSelectAll)="onSelectAllPromo($event)"
+                              (onDeSelectAll)="onDeSelectAllPromo($event)" formControlName="UsageMethod">
+                            </ng-multiselect-dropdown>
+                          </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Deposit</label>
+                        <input type="text" formControlName="Deposit" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df">
+        <div style="margin-right:20px;" *ngIf="PromotionalData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+
+</div>
+
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Usage Date </th>
+                <th>Promotional Code</th>
+                <th>Face </th>
+                <th>Player Login</th>
+                <th>Usage Method </th>
+                <th>Flat Cash Reward </th>
+                <th>Flat Bonus Reward </th>
+                <th>Percent Cash Reward </th>
+                <th>Percent Bonus Reward </th>
+                <th>CP Level Upgraded To </th>
+                <th>Reffered To </th>
+                <th>Refferer Type </th>
+                <th>Refferer's Compaign </th>
+                <th>Deposit </th>
+                <th>Code Settings </th>
+                <th>Status </th>
+                <th>Comment </th>
+            </tr>
+        </thead>
+        <tbody *ngIf="PromotionalData">
+            <tr *ngFor="let list of PromotionalData; let i=index">
+                <td>{{i+1}}</td>
+                <td>{{transformDate(list.usageDate)}}</td>
+                <td>{{list.code.name}}</td>
+                <td>{{list.face}}</td>
+                <!-- <td class="hyperLink" (click)="PlayerExplore(list.user.login, list.user.guid, list)">{{list?.user?.login}}</td> -->
+                <td [ngClass]="{hyperLink:list.comment !== 'Registration failed'}" (click)="list.comment !== 'Registration failed' ? PlayerExplore(list.user.login, list.user.guid, list) : null">{{list?.user?.login}}</td>
+                <td class="text-nowrap">{{list.usageTypeName}}</td>
+                <td class="text-end">{{list?.flatCashReward?.value |numberFormat}}</td>
+                <td class="text-end">{{list?.flatBonusReward?.value |numberFormat}}</td>
+                <td></td>
+                <td></td>
+                <td>{{list?.cpLevel?.name}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{hexaValue(list.deposit)}}</td>
+                <!-- <td>{{list.codeSettings}}</td> -->
+                <!-- <td class="text-nowrap" [title]="list?.codeSettings">{{splittransform(list?.codeSettings)}}</td> -->
+                <!-- <td class="text-nowrap" [title]="list?.codeSettings">{{splittransform(list?.codeSettings)}}</td> -->
+                <td class="text-nowrap" [title]="list?.codeSettings">
+                    {{ list?.codeSettings ? (list.codeSettings.split('\n\n')[0] || '') : '' }}
+                  </td>
+                <td>{{list.status}}</td>
+                <td class="text-nowrap">{{list.comment}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="fd" *ngIf="PromotionalData && PromotionalData.length>0">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || PromotionalData==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||PromotionalData==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="PromotionalData">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="PromotionalData==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PromotionalData==null || pagecontrolbtn" (click)="fastforward()"><i
+                class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>

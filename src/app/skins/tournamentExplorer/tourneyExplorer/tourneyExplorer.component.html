@@ -1,0 +1,134 @@
+<div class="fd">
+  <div class="fd d_flex ">
+    <div class="mainside_cover" id="blackcovermobile" (click)="closeMenuNames()" *ngIf="closeMenuCoverDiv == true"></div>
+      <div class="sideMenu sideMenu12" id="sideMenu" [ngClass]="{ openMenu: isMenuOpen }">
+        
+          <div class="df">
+            <div class=" p_5">
+                <h6> {{PlayerName.explorer}}</h6>
+            </div>
+            <button (click)="openSideP()" class="text-end register-button" [disabled]="checkRegisterPlayerAction()">
+                <!-- <i class="fa fa-ellipsis-v" style="font-size:24px"></i> -->
+                <img title="Register Player" src="../../../../assets/Logos/right-click.png" class="right_image">
+            </button>
+        </div>
+
+
+
+
+          <li class="list_tag">
+
+              <!-- <div class="  "> -->
+                  <!-- <div routerLinkActive="active_link_1" routerLink="/tournamentexplorer/tableInfo" -->
+                      <!-- class="main_liTag"> -->
+
+                      <div routerLinkActive="active_link_1" routerLink="/tournamentexplorer/tableInfo" class="p_10 fd icon_i" (click)="showPopu('Pexplore')">{{PlayerName.name}}<span *ngIf="!playermenu"><i
+                        class="fa fa-angle-right font_ss"></i> </span> <span *ngIf="playermenu"><i
+                        class="fa fa-angle-down font_ss"></i></span>
+                  <!-- </div> -->
+                      <!-- <span  (click)="showPopu('Pexplore')">
+                          <span *ngIf="!playermenu">+</span> <span *ngIf="playermenu">-</span>
+                      </span>  {{PlayerName.name}} -->
+                  </div>
+              <!-- </div> -->
+          </li>
+          <div class="fd">
+              <ul *ngIf="playermenu" class="main_li" (click)="sidebarclose()">
+                 
+                  <li class="sidebtns MT_JCE" routerLinkActive="active_link_1" routerLink="/tournamentexplorer/TPlayers">Players</li>
+                  <li class="sidebtns MT_JCE" routerLinkActive="active_link_1" routerLink="/tournamentexplorer/TournamentTables">{{PlayerName.explorer=='Tournament Explorer'?'Tournament Tables':"Sit'n'go Tables"}}</li>
+                  <li class="sidebtns MT_JCE" routerLinkActive="active_link_1" routerLink="/tournamentexplorer/pokertablespokerhandshistory">Poker Hands History</li>
+                 
+              </ul>
+          </div>
+      </div>
+      <div class="rightBody" id="rightBody" [ngClass]="{ closeMenu: !isMenuOpen }">
+          <div class="fd">
+              <div class="bg_27 shadow_2 dashTop z_1 p_15 d_flex spc_bwtn">
+                  <div class="d_flex">
+                      <div (click)="toggelMenu()" class="clr_ff menuIcn">
+                          <!-- <img class="menuIcon" src="assets/icons/menu.svg" /> -->
+                          <!-- <i class="fa fa-regular fa-xmark-large"></i> -->
+                          <!-- <i class="fa fa-times" aria-hidden="true"></i> -->
+                          <i [ngClass]="isMenuOpen ? 'fa fa-bars' : 'fa fa-solid fa-bars' "></i>
+                          <!-- <i [ngClass]="isMenuOpen ? 'fa fa-times' : 'fa fa-solid fa-bars' "></i> -->
+                      </div>
+                      <!-- <img class="logoTop" src="assets/logo.png" /> -->
+                      <img class="logoTop" src="assets/Back-Office.jpg" />
+                      <!-- <img class="logoTop" src="assets/Logos/latpokerlogo.png" /> -->
+                      <!-- <img class="logoTop" src="assets/Logos/logo_dark.png" /> -->
+                  </div>
+                  <!-- <div style="float:right; width: 100px;">
+                 <button class="btn" (click)="logout()">Logout</button>
+                 </div> -->
+              </div>
+              <div class="fd p_15 m_t_60 rightBodyScrol">
+                  <!-- <img src="assets/Logos/LatamBackImg.png" alt=""> -->
+                  <!-- <img src="../src/assets/Logos/LatamBackImg.png" alt=""> -->
+                  <router-outlet></router-outlet>
+                  <!-- <div> {{currentDateTime| date:'yyyy-MM-dd'}} </div> -->
+              </div>
+          </div>
+      </div>
+  </div>
+
+</div>
+
+<!-- **************************** Register Player ********************************** -->
+
+<div class="black_cover" *ngIf="RegisterPlayerAction">
+    <div class="popup_1" *ngIf="RegisterPlayerAction">
+        <div class="PopupHead">
+            <h5 class="text-center">Register Player </h5>
+            <span class="closetop" (click)="registerPlayerclosepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="p_5">
+                <app-registerPlayer [registerPlayerData]="pokerPlayerData"
+                    (registerPlayerButton)="updateRegisterPlayerButton()"
+                    (registerclosepopUp)="registrationApiStatus($event)"
+                    ></app-registerPlayer>
+            </div>
+        </div>
+
+        <div class="spinnerTrue" *ngIf="registerLoader">
+            <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+        </div>
+
+
+        <div class="bottomFix">
+           
+            <button class='btn_grade_1' [disabled]="registerDisabledButton" (click)="registerPlayerepopup()">
+                Register </button>
+            <button class="btn_grade_2" (click)="registerPlayerclosepopup()"> close </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- **************************** Register Player ********************************** -->
+
+
+<!-- **************************** Register Success and Error popup ********************************** -->
+
+<div class="black_cover" *ngIf="registerSuccessFailurePopup">
+    <div class="popup_1 pop_sm" *ngIf="registerSuccessFailurePopup">
+        <div class="PopupHead">
+            <h5 class="text-center" *ngIf="registerSuccessFailurePopup">Alert</h5>
+            <span class="closetop" (click)="registerSuccessFailurePopupClose()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15 text-center">
+            <div class="p_5" *ngIf="registerSuccessFailurePopup">
+               <h4>{{registerSuccessFailurePopup}}</h4>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_2" (click)="registerSuccessFailurePopupClose()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- **************************** Register Success and Error popup ********************************** -->

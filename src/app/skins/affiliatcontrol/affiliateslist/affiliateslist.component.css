@@ -1,0 +1,52 @@
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+input {
+  padding: 5px;
+  /* width: 200px; */
+  margin: 2px;
+}
+label {
+  padding-right: 20px;
+  width: 130px;
+}
+
+.df {
+  display: flex;
+
+}
+.reglabel{
+  display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.text-centers {
+  display: flex;
+  /* justify-content: space-around; */
+  margin: 5px;
+}
+tfoot{
+  position: sticky;
+  bottom: -1px;
+}
+
+.tablCode thead th {
+  position: sticky;
+  top: -1px;
+  white-space: nowrap;
+  padding: 4px 33px;
+}
+.tablCode thead th {
+  position: sticky;
+  top: -1px;
+  white-space: nowrap;
+  padding: 3px 33px;
+}
+
+
+
+

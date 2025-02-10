@@ -1,0 +1,27 @@
+<!-- <p>admin-permissions-tree-component works!</p> -->
+<div *ngFor="let parentPermissionType of organizedPermissions | keyvalue">
+    <div class="container">
+        <div class="flex_cls">
+            <label class="parenDiv" [for]="parentPermissionType.key" style="color: #cb7529;">
+                {{transformMethod(parentPermissionType.key)}}
+            </label>
+            <!-- <b  class="col-sm-6 h6">
+        {{ transformMethod(parentPermissionType.key)}} -->
+            <!-- {{ parentPermissionType.key  }} -->
+            <!-- <input type="checkbox" [checked]="selectionMap[parentPermissionType.key]"  -->
+            <!-- </b> -->
+            <span class="  d_flex ">
+                <input type="checkbox" [(ngModel)]="selectionMap[parentPermissionType.key]"
+                    [id]="parentPermissionType.key" (change)="toggleSelectAll(parentPermissionType.key, $event)" style="width: 16px;
+                        accent-color: #d18542;
+                        height: 16px;">
+            </span>
+        </div>
+        <div *ngFor="let permission of parentPermissionType.value" class="flex_cls m_l_10">
+            <label [for]="permission.permissionDescription" class=" ">{{ permission.permissionDescription}}</label>
+            <input type="checkbox" class=" " [(ngModel)]="permission.permissionStatustype"
+                (change)="updateParentSelection(parentPermissionType.key)">
+        </div>
+    </div>
+
+</div>

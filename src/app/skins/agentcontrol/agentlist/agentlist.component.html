@@ -1,0 +1,427 @@
+<div>
+    <h1>Agents list</h1>
+</div>
+<div>
+    <button class="fillterbtn font_16" (click)="fillermenu()">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export CSV</button>
+
+</div>
+<div class="fd">
+    <div class="fd filterDiv" *ngIf="FillterMenu">
+        <form [formGroup]="filterForm" (ngSubmit)="onFormSubmit()">
+            <div class="p_25">
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>currency</label>
+                            <!-- <option value="" disabled> Real Money </option> -->
+                            <!-- <select class="seclectopt" formControlName="wallet">
+                                <option> User Preferred</option>
+                                <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlists">
+                                    {{CURRENCY.value}}
+                                </option>
+                            </select> -->
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencyList"
+                                    [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                    (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                    (onSelectAll)="onSelectAllcurrency($event)"
+                                    (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currencywallet">
+                                </ng-multiselect-dropdown>
+                            </div>
+
+                        </div>
+                        <!-- <div class="col-12 col-sm-4 col-md-4 col-lg-4"> -->
+                            <div class="div_flex p_5_10">
+                                <label>Reporting Period Start</label>
+                                <!-- <input class="Birthdayinputs" format="yyyy-MM-dd" step="1" type="date"
+                                    formControlName="reportingPeriodFrom"> -->
+                                <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                                    [ngModel]="startDate" (ngModelChange)="startDate = $event"
+                                    (change)="showDate($event)" />
+                                <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1" formControlName="startTime"
+                                    [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                                    (change)="timechnage($event)" />
+                            </div>
+                            <!-- </div>
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-4"> -->
+                            <div class="div_flex p_5_10">
+                                <label>Reporting Period End</label>
+                                <!-- <input class="Birthdayinputs" format="yyyy-MM-dd" step="1" type="date"     
+                                    formControlName="reportingPeriodTo"> -->
+                                <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                                    [ngModel]="endDate" (ngModelChange)="endDate = $event"
+                                    (change)="showDate($event)" />
+                                <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1" formControlName="endTime"
+                                    [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                                    [ngModelOptions]="{standalone: true}" />
+                            </div>
+                        <!-- </div> -->
+                        <div class="div_flex p_5_10">
+                            <label>Agent Login</label>
+                            <input type="text" formControlName="Agentlogin">
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Email</label>
+                            <input type="text" formControlName="Email">
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Status</label>
+                            <!-- <select class="seclectopt" formControlName="Status">
+                                <option [ngValue]="Status.guid" *ngFor="let  Status of Agentstatus">
+                                    {{Status.value}}
+                                </option>
+                            </select> -->
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="dropdownSettingsStatus" [data]="Agentstatus"
+                                    [(ngModel)]="selectAgentstatus" (onSelect)="onItemSelectsTATus($event)"
+                                    (onDeSelect)="OnItemDeSelectsTATus($event)"
+                                    (onSelectAll)="onSelectAllsTATus($event)"
+                                    (onDeSelectAll)="onDeSelectAllsTATus($event)" formControlName="Status">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                      
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>First Name</label>
+                            <input type="text" formControlName="FirstName">
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Last Name</label>
+                            <input type="text" formControlName="lastName">
+                        </div>
+
+                        <div class="div_flex p_5_10">
+                            <label>Balance</label>
+                            <input class="Birthdayinputs" type="text" formControlName="BalanceStart">
+                            <input class="Birthdayinputs" format="24-hour" type="text" formControlName="BalanceEnd">
+                        </div>
+
+                        <div class="div_flex p_5_10">
+                            <label>Referred Players</label>
+                            <input class="Birthdayinputs" type="text" formControlName="ReferredPlayersfrom">
+                            <input class="Birthdayinputs" format="24-hour" type="text"
+                                formControlName="ReferredPlayersto">
+                        </div>
+
+                        <div class="div_flex p_5_10">
+                            <label>Referred Agents</label>
+                            <input class="Birthdayinputs" type="text" formControlName="ReferredAgentsfrom">
+                            <input class="Birthdayinputs" format="24-hour" type="text"
+                                formControlName="ReferredAgentsto">
+                        </div>
+
+                        <div class="div_flex p_5_10">
+                            <label>Revenue From Players</label>
+                            <input class="Birthdayinputs" type="text" formControlName="RevenueFromPlayersfrom">
+                            <input class="Birthdayinputs" format="24-hour" type="text"
+                                formControlName="RevenueFromPlayersto">
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>Revenue From Agents</label>
+                            <input class="Birthdayinputs" type="text" formControlName="RevenueFromAgentsform">
+                            <input class="Birthdayinputs" format="24-hour" type="text"
+                                formControlName="RevenueFromAgentsto">
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Ip Address</label>
+                            <input type="text" formControlName="IpAddress">
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Face</label>
+                            <!-- <select class="seclectopt" formControlName="Face">
+                                <option [ngValue]="Status.name" *ngFor="let  Status of faceParameterslist">
+                                    {{Status.name}}
+                                </option>
+                            </select> -->
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList12"
+                                    [(ngModel)]="selectedItems12" (onSelect)="onItemSelectnew($event)"
+                                    (onDeSelect)="OnItemDeSelectnew($event)" (onSelectAll)="onSelectAllnew($event)"
+                                    (onDeSelectAll)="onDeSelectAllnew($event)" formControlName="Face">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Permission Groups </label>
+                            <input type="text" formControlName="PermissionGroups">
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>First Record</label>
+                            <input type="text" formControlName="firstRecord">
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Page Size</label>
+                            <input type="text" formControlName="maxCountRecord">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df">
+        <div style="margin-right:20px;" *ngIf="Agentslist">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+
+</div>
+
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode table_2" id="excel_table">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Agent Login</th>
+                <th>Email</th>
+                <th>Full Name </th>
+                <th>Status</th>
+                <th>Action</th>
+                <th>Referred players</th>
+                <th>Referred Agents</th>
+                <th>Balance</th>
+                <th>Revenue Form Players</th>
+                <th>Revenue Form Agents</th>
+                <th>Revenue Adjustments</th>
+                <th>Net Revenue</th>
+                <th>Registration Date</th>
+                <th>last Ip</th>
+                <th>Referred By Agent</th>
+                <th>Face</th>
+                <th>Group</th>
+                <th>Settings</th>
+                <th>Network</th>
+                <!-- <th>Super Agent</th> -->
+                <th>Commission Cycle Updated On</th>
+                <th>Commission Cycle</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="Agentslist">
+            <tr *ngFor="let List of Agentslist; let i=index" (dblclick)="onClick(i)">
+                <td>{{i+1}}</td>
+                <td (click)="AgentExplore(List.agent.login,List.agent.guid, List)" id="AgentExplore">
+                    <a>{{List.agent.login}}</a>
+                </td>
+                <!-- <td>{{List.agent.login}}</td> -->
+                <td>{{List.agent.email}}</td>
+                <td>{{List.agent.firstName}} {{List.agent.lastName}}</td>
+                <td>{{List.agent.status}}</td>
+
+                <td>
+                    <button *ngIf="List.agent.status=='Active'" class="btn btn-sm btn-danger m_l_5 "
+                        (click)="lockUnlock(i,'lock')" [disabled]="List.agent.status=='Locked'">
+                        <i class="fa fa-lock fa-1x m_3" aria-hidden="true"></i>Lock</button>
+
+                    <button *ngIf="List.agent.status=='Locked'" class="btn btn-sm  btn-success  m_l_5 "
+                        (click)="lockUnlock(i,'UnLock')" [disabled]="List.agent.status=='Active'">
+                        <i class="fa fa-unlock-alt fa-1x m_3" aria-hidden="true"></i>UnLock</button>
+                </td>
+
+                <td>{{List.referredPlayers}}</td>
+                <td>{{List.referredAgents}}</td>
+                <td class="text-end">{{List.balance.value |numberFormat}}</td>
+                <td class="text-end">{{List.revenueFromPlayers.value |numberFormat}}</td>
+                <td class="text-end">{{List.revenueFromAgents.value |numberFormat}}</td>
+                <td class="text-end">{{List.revenueAdjustments.value |numberFormat}}</td>
+                <!-- <td>{{List.referredAgents}}</td> -->
+                <td class="text-end">{{List.netRevenue.value |numberFormat}}</td>
+                <!-- <td>{{signupDate | date}}</td> -->
+                <td>{{changeSelect(List.signupDate)}}</td>
+                <!-- <td>{{List.signupDate | date:'medium':'IST +9:30 / +10:30' }}</td> -->
+                <td>{{List.lastIp}}</td>
+                <td>{{List.referrerAgentLogin}}</td>
+                <td>{{List.agent.network}}</td>
+                <td class="text-nowrap">{{List.permissionsGroupName}}</td>
+                <td>
+                    <div class="fd">
+                        <div class="trigger">
+                            <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,List.guid)"></i>
+                            </a>
+
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                    <!-- <div class="fd"> -->
+                                    <div class="popup1 btnGrp">
+                                        <!-- <button [disabled]="List.linkStatus=='Disabled'||List.linkStatus=='Moved'"(click)="setPlayerActions('DeactiveLink',i)">Deactive Link</button>
+                                        <button [disabled]="List.linkStatus=='Enabled'||List.linkStatus=='Moved'" (click)="setPlayerActions('ActiveLink',i)">Active Link</button> -->
+                                        <button (click)="setPlayerActions('ChangePermissionGroup',i)">Change Permission
+                                            Group</button>
+                                        <!-- <button 
+                                            (click)="setPlayerActions('DeactiveLink',i)">Deactive Link</button>
+                                        <button [disabled]="List.linkStatus=='Moved' "
+                                            (click)="setPlayerActions('Transfer',i)">Transfer</button> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <!-- <td>{{List.agent.network}}</td> -->
+                <td>{{List.agent?.subNetwork}}</td>
+                <!-- <td>{{List.agent.superAgent}}</td> -->
+                <td>{{changeSelect(List.agent.commissionCycleUpdatedOn)}}</td>
+                <td>{{List.agent.commissionCycle}}</td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="Agentslist && Agentslist.length>0">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total:{{balance |numberFormat}}</td>
+                <td>Total:{{revenueFromPlayers |numberFormat}}</td>
+                <td>Total:{{revenueFromAgents |numberFormat}}</td>
+                <td>Total:{{revenueAdjustments |numberFormat}}</td>
+                <td>Total:{{netRevenue |numberFormat}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- *********************************POP-UP***************************************** -->
+    <div class="black_cover" *ngIf="Agentdetailspopup">
+        <div class="popup_1 pop_sm" *ngIf="Agentdetailspopup">
+            <div class="PopupHead">
+                <h5 class="text-center">Agent: {{Agentsfulldetails.agent.alias}}</h5>
+                <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+            </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="fd p_5">
+                    <table class="fd ">
+                        <tr>
+                            <th>Agent Login </th>
+                            <td>{{Agentsfulldetails.agent.alias}}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{Agentsfulldetails.agent.email}}</td>
+                        </tr>
+                        <tr>
+                            <th>Full Name</th>
+                            <td>{{Agentsfulldetails.agent.firstName}} {{Agentsfulldetails.agent.lastName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>{{Agentsfulldetails.agent.status}}</td>
+                        </tr>
+                        <tr>
+                            <th>Preferred Players </th>
+                            <td>{{Agentsfulldetails.referredPlayers}}</td>
+                        </tr>
+                        <tr>
+                            <th>Preferred Agents </th>
+                            <td>{{Agentsfulldetails.referredAgents}}</td>
+                        </tr>
+                        <tr>
+                            <th>Balance</th>
+                            <td>{{Agentsfulldetails.balance.value}}</td>
+                        </tr>
+                        <tr>
+                            <th>Revenue From Players </th>
+                            <td>{{Agentsfulldetails.revenueFromPlayers.value}}</td>
+                        </tr>
+                        <tr>
+                            <th>Revenue form Agents </th>
+                            <td>{{Agentsfulldetails.revenueFromAgents.value}}</td>
+                        </tr>
+                        <tr>
+                            <th>Revenue Adjustments </th>
+                            <td>{{Agentsfulldetails.revenueAdjustments.value}}</td>
+                        </tr>
+                        <tr>
+                            <th>Net Revenue </th>
+                            <td>{{Agentsfulldetails.netRevenue.value}}</td>
+                        </tr>
+                        <tr>
+                            <th>Registation Date </th>
+                            <td>{{Agentsfulldetails.signupDate }}</td>
+                        </tr>
+                        <tr>
+                            <th>Last IP </th>
+                            <td>{{Agentsfulldetails.lastIp}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Referred By Agent </th>
+                            <td>{{Agentsfulldetails.referrerAgentLogin}}</td>
+                        </tr>
+                        <tr>
+                            <th>Face </th>
+                            <td>{{Agentsfulldetails.agent.network}}</td>
+                        </tr>
+                        <tr>
+                            <th>Group </th>
+                            <td>{{Agentsfulldetails.permissionsGroupName}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="bottomFix">
+                <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+                <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+            </div>
+        </div>
+    </div>
+    <!-- ***************************POPUP-END*********************************************** -->
+
+    <!-- *********************************POP-UP***************************************** -->
+    <div class="black_cover" *ngIf="ChangePermissionspopup">
+        <div class="popup_1 pop_sm" *ngIf="ChangePermissionspopup">
+            <div class="PopupHead">
+                <h5 class="text-center">Change Permission Group</h5>
+                <span class="closetop" (click)="Permissionspopupclose('no')"> <img src="assets/icons/closePop.svg">
+                </span>
+            </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="fd p_15 text-center">
+                    <select class="text-center seclectopt" [(ngModel)]="SeletedPermissionGroup">
+                        <option [ngValue]="list.guid" *ngFor="let list of AgentPermissionGroupList">
+                            {{list.name}}
+                        </option>
+                    </select>
+                </div>
+                <div>
+                    <label><input [(ngModel)]="subAgentCheckbox" (change)="inputCheckchange($event)"
+                            type="checkbox" /></label>
+                    <span>Also Change Group for all sub-agents</span>
+                </div>
+            </div>
+            <div class="bottomFix">
+                <button class="btn_grade_1" (click)="Permissionspopupclose('yes')"> Save </button>
+                <button class="btn_grade_2" (click)="Permissionspopupclose('no')"> Cancel </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="black_cover">
+    <div class="popup_1 pop_sm text-black">
+        <div class="PopupHead">
+            <h5 class="text-center">Report Activity</h5>
+            <span class="closetop" (click)="activityPopup()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+
+        <div class="soon font_13 fd p_lr_15">
+            <div class="row fd p-2 d-flex mt-2">
+                <div class="col-4">Remote System:</div>
+                <div class="col-8">
+                    <select class="form-select" [(ngModel)]="selectedsystem" (ngModelChange)="onSystemChange($event)">
+                        <option [ngValue]="list.system.guid" *ngFor="let list of remoteSystemActivitiesList">
+                            {{list.system.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row fd p-2 pb-0 d-flex">
+                <div class="col-4"> Player Login:</div>
+                <div class="col-8" *ngIf="userType == 'Player'">
+                    <input class="form-control" type="text" [(ngModel)]="userInfo.player.account" disabled="true">
+                </div>
+                <div class="col-8 " *ngIf="userType == 'rightClick'">
+                    <div class="input-group">
+                        <input class="form-control" [(ngModel)]="playerLogin" type="text">
+                        <button class="input-group-text" (click)="onPlayerFind()" [disabled]="!playerLogin">Find</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row fd p-1 mt-2 d-flex">
+                <div class="col-4"> </div>
+                <div *ngIf="userType == 'Player'" class="col-8"><b>{{userInfo?.player?.fullName}}</b></div>
+                <div *ngIf="userType == 'rightClick'" class="col-8"><b>{{playerFindData?.user?.fullName}}</b></div>
+            </div>
+            <div class="row fd p-2 d-flex ">
+                <div class="col-4"> Activity:</div>
+                <div class="col-8">
+                    <select class="form-select" [(ngModel)]="selectedActivity" (change)="activityChange()">
+                        <option *ngFor="let activity of activities" [ngValue]="activity.guid">
+                            {{ activity.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row fd p-2 d-flex ">
+                <div class="col-4"> Player's Wallet:</div>
+                <div class="col-8">
+                    <select class="form-select" [(ngModel)]="selectedWallet" (change)="onWalletChange()">
+                        <option [ngValue]="list.guid" *ngFor="let list of walletTypeList">
+                            {{list.description}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row fd p-2 d-flex">
+                <div class="col-4"> Amount:</div>
+                <div class="col-8 d-flex align-items-center">
+                    <span class="text-danger" *ngIf="isValidSelectedAmount && isSubmitted"><b
+                            class="bi bi-x-circle-fill p-1" title="Amount can not be empty"></b></span>
+                    <input class="w-75 form-control me-2" type="text" (input)="onInputAmountChange($event)" [(ngModel)]="selectdAmount"
+                        appMaxLengthValidation [maxNumber]="11" required>
+                    {{currencyCode}}
+                </div>
+            </div>
+            <div class="row fd p-2 d-flex">
+                <div class="col-4">Comment:</div>
+                <div class="col-8">
+                    <textarea class="form-control" [(ngModel)]="comment"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onSubmit()"> Save </button>
+            <button class="btn_grade_2" (click)="activityPopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- <span
+*ngIf="(addpromotionalcodeForm.controls['flatAmountNumber']?.dirty || addpromotionalcodeForm.controls['flatAmountNumber']?.touched)">
+<span
+    *ngIf=" addpromotionalcodeForm.controls['flatAmountNumber']?.value == 0 || addpromotionalcodeForm.controls['flatAmountNumber']?.errors "
+    class="text-danger">
+    
+</span>
+</span> -->

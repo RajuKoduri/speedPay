@@ -1,0 +1,45 @@
+<div>
+    <button class="mainbtn" >Customize</button>
+</div>
+<div>
+    <button class="ctrlbtn"> Fraud Control Settings 
+        <span class="sbtn" (click)="controlMenu()" *ngIf="!controlList"> + </span>
+        <span class="sbtn" (click)="controlMenu()" *ngIf="controlList"> - </span>
+    </button>
+</div>
+<div class="form_1" *ngIf="controlList">
+    <form class="ff">
+        <div>
+            <div>
+                <label>First deposit checking period, days: <span class="num">5</span> </label>
+                
+            </div>
+            <div>
+                <label>Prevent using of Credit cards registered to other user:</label>
+                <input type="checkbox">
+            </div>
+            <div>
+                <label>Prevent using of Bank Accounts registered to other user:</label>
+                <input type="checkbox">
+            </div>
+            <div>
+                <label>Prevent using of NETeller registered to other user:</label>
+                <input type="checkbox">
+            </div>
+            <div>
+                <label>check for Black label:</label>
+                <input type="checkbox">
+            </div>
+            <div>
+                <label>Suspicious payouts/bets threshold (for player's lifetime): <span class="num">50</span></label>
+            </div>
+            <div>
+                <label>Active Bank Account limit: <span class="num">10</span></label>
+            </div>
+            <div>
+                <label>Check user presence in the Casino Black List: </label>
+                <input type="checkbox">
+            </div>
+        </div>
+    </form>
+</div>

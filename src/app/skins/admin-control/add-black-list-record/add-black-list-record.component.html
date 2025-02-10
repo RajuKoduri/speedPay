@@ -1,0 +1,46 @@
+<div class="black_cover" >
+    <div class="popup_1 pop_sm text-black" >
+        <div class="PopupHead">
+            <h5 class="text-center">New Black List Entry</h5>
+            <span class="closetop" (click)="blackListPopup()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <form [formGroup]="addBlackListForm">
+            <div class="soon font_13 fd p_lr_15">
+                <div class="row fd p-2 d-flex ">
+                    <div class="col-4">Date</div>
+                    <div class="col-8">
+                        {{date.toLocaleDateString()}}  {{date.toLocaleTimeString()}}
+                    </div>
+                </div>
+                <div class="row fd p-2 d-flex ">
+                    <div class="col-4">Type</div>
+                    <div class="col-8 ">
+                        <select class=""  formControlName="type">
+                            <option [ngValue]="list.guid" *ngFor="let list of BlacklistTypesList; let i = index">
+                                {{list.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row fd p-2 d-flex ">
+                    <div class="col-4">value</div>
+                    <div class="col-8">
+                        <span *ngIf="f['value'].touched && f['value'].invalid">
+                            <span *ngIf="f['value'].errors && f['value'].errors['required']"
+                                class="text-danger">
+                                <b class="bi bi-x-circle-fill p-1"
+                                    title="value can not be empty"></b>
+                            </span>
+                        </span>
+                        <input class="" type="text" placeholder="(none)" formControlName="value">
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="bottomFix">
+            <button class="btn_grade_1" [disabled]="f['value'].invalid" (click)="onSubmit()"> Save </button>
+            <button class="btn_grade_2" (click)="blackListPopup()"> Cancel </button>
+        </div>
+    </div>
+</div>

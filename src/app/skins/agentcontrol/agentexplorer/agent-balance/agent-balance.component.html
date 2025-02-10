@@ -1,0 +1,154 @@
+<div>
+    <h4>Agent Balance</h4>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="AgentBalanceForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <select class="seclectopt" formControlName="Currency" [ngModel]="selectedCurrency">
+                            <option [ngValue]="list.guid" *ngFor="let list of currencys">{{list.description}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label class="datelabel">Reporting startPeriod</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view " type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label class="datelabel">Reporting EndPeriod</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <div style="margin-right:20px;" *ngIf="AgentBalanceData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div *ngIf="ResultCount">Result Count: {{ResultCount}}</div>
+        <!-- <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div> -->
+    </div>
+</div>
+
+<div class="fd table_2">
+    <table class=" tablCode" id="excel_table">
+        <thead>
+            <tr>
+                <th>Agent</th>
+                <th>operation Type</th>
+                <th>Opening Balance </th>
+                <th>Period Revenue</th>
+                <th>Period Expense</th>
+                <th>Total turnover</th>
+                <th>Closing Balance</th>
+            </tr>
+        </thead>
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <tbody *ngIf="AgentBalanceData">
+            <tr *ngFor="let List of AgentBalanceData,let i =index" (dblclick)="onDblclick(List)">
+                <td>{{List.agent.login}}</td>
+                <td>{{List.title}}</td>
+                <td class="text-end">{{List.openingBalance.walletsymbol}} {{List.openingBalance.value |numberFormat}}
+                </td>
+                <td class="text-end">{{List.periodRevenue.walletsymbol}} {{List.periodRevenue.value |numberFormat}}</td>
+                <td class="text-end">{{List.periodExpense.walletsymbol}} {{List.periodExpense.value |numberFormat}}</td>
+                <td class="text-end">{{List.totalTurnover.walletsymbol}} {{List.totalTurnover.value |numberFormat}}</td>
+                <td class="text-end">{{List.closingBalance.walletsymbol}} {{List.closingBalance.value |numberFormat}}
+                </td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="AgentBalanceData && AgentBalanceData.length > 0">
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="text-end">SUM = <span *ngFor="let key of keys(totalOpeningRevenue)">{{totalOpeningRevenue[key]}}</span></td>
+                <td class="text-end">SUM = <span *ngFor="let key of keys(totalIncomings)">{{totalIncomings[key]}}</span></td>
+                <td class="text-end">SUM = <span *ngFor="let key of keys(totalOutgoings)">{{totalOutgoings[key]}}</span></td>
+                <td class="text-end">SUM = <span *ngFor="let key of keys(totalTurnover)">{{totalTurnover[key]}}</span></td>
+                <td class="text-end">SUM = <span *ngFor="let key of keys(totalClosingRevenue)">{{totalClosingRevenue[key]}}</span></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+
+
+<div class="black_cover" *ngIf="isPopup"></div>
+<div class="popup_1 pop_sm text-black" *ngIf="isPopup">
+    <div class="PopupHead">
+        <h5 class="text-center">Summary</h5>
+        <span class="closetop" (click)="close_popup()"> <img src="assets/icons/closePop.svg">
+        </span>
+    </div>
+    <div class="p-3">
+        <div class="df mb-2">
+            <label class="col-sm-6">Agent</label>
+            <label>{{selectedRowData.agent.login}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Operation Type</label>
+            <label>{{selectedRowData.title}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Opening Balance</label>
+            <label>{{selectedRowData.openingBalance.walletsymbol}} {{selectedRowData.openingBalance.value |numberFormat}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Period Revenue</label>
+            <label>{{selectedRowData.periodRevenue.walletsymbol}} {{selectedRowData.periodRevenue.value |numberFormat}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Period Expense</label>
+            <label>{{selectedRowData.periodExpense.walletsymbol}} {{selectedRowData.periodExpense.value |numberFormat}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Total Turnover</label>
+            <label>{{selectedRowData.totalTurnover.walletsymbol}} {{selectedRowData.totalTurnover.value |numberFormat}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Closing Balance</label>
+            <label>{{selectedRowData.closingBalance.walletsymbol}} {{selectedRowData.closingBalance.value |numberFormat}}</label>
+        </div>
+    </div>
+
+    <div class="bottomFix">
+        <!-- <button class="btn_grade_1" [disabled]="" (click)="onSubmit()"> Save </button> -->
+        <button class="btn_grade_2" (click)="close_popup()"> OK </button>
+    </div>
+</div>

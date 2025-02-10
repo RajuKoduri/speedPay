@@ -1,0 +1,121 @@
+<div class="abuse">
+  <table class=" abuseTable fd " (dblclick)="openFreemoneyPop()">
+    <thead>
+      <tr>
+        <th colspan="2">Free Money Games
+          <div class="arrow" (click)="Tooglearrow()">
+            <i *ngIf="isOpen" class="fa fa-chevron-up"></i>
+            <i *ngIf="!isOpen" class="fa fa-chevron-down"></i>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody *ngIf="isOpen">
+      <tr class="tablCoderow">
+        <th>Free Game Rounds Limit</th>
+        <td>{{freemoneyList?.gamesNumber}}</td>
+      </tr>
+      <tr class="tablCoderow">
+        <th>Free Game Time Limit</th>
+        <td>{{timeLimit}}</td>
+      </tr>
+      <tr class="tablCoderow">
+        <th>Time to Allow Free Mode</th>
+        <td>{{allowTime}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& PopUp &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& -->
+
+<div class="black_cover" *ngIf="freemoneypopup" (click)="openFreemoneyPop()"></div>
+<div class="popup_1 pop_sm" *ngIf="freemoneypopup">
+  <div class="PopupHead">
+    <h5 class="text-center">Free Money Games</h5>
+    <span class="closetop" (click)="openFreemoneyPop()"> <img src="assets/icons/closePop.svg"> </span>
+  </div>
+  <div class="soon font_13">
+    <div class="fd p_5 ">
+      <div class="df m_3">
+        <div class="col-sm-6">
+          <label> Free Game Rounds Limit </label>
+        </div>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" [(ngModel)]="gameNumber">
+        </div>
+      </div>
+      <div class="df m_3">
+        <div class="col-sm-6">
+          <label> Free Game Time Limit </label>
+        </div>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <input class="form-control" [disabled]="true" type="text" [(ngModel)]="timeFormatForLimit"
+              (click)="timeLimitPopup()">
+            <span *ngIf="!isMiniPopup" (click)="timeLimitPopup()" class="input-group-text bi bi-caret-down-fill"></span>
+            <span *ngIf="isMiniPopup" (click)="timeLimitPopup()" class="input-group-text bi bi-caret-up-fill"></span>
+          </div>
+          <div class="my-1" *ngIf="isMiniPopup">
+            <div class="df mb-1">
+              <label class="col-sm-4">Days:</label>
+              <input [(ngModel)]="timeLimitdays" (change)="onChange($event,'limitDays')" type="number"
+                appMaxLengthValidation [maxNumber]=3 class="w-50">
+            </div>
+            <div class="df mb-1">
+              <label class="col-sm-4">Hours:</label>
+              <input [(ngModel)]="timeLimithours" (change)="onChange($event,'limitHours')" type="number" class="w-50"
+                appMaxLengthValidation [maxNumber]=2>
+            </div>
+            <div class="df">
+              <label class="col-sm-4">Minutes:</label>
+              <input [(ngModel)]="timeLimitminutes" (change)="onChange($event,'limitMinutes')" type="number"
+                class="w-50" appMaxLengthValidation [maxNumber]=2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="df m_3">
+        <div class="col-sm-6">
+          <label> Time To Allow Free Mode </label>
+        </div>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <input class="form-control" [disabled]="true" type="text" [(ngModel)]="timeFormatForAllowTime"
+              (click)="allowTimePopup()">
+            <span *ngIf="!isAllowTime" (click)="allowTimePopup()" class="input-group-text bi bi-caret-down-fill"></span>
+            <span *ngIf="isAllowTime" (click)="allowTimePopup()" class="input-group-text bi bi-caret-up-fill"></span>
+          </div>
+          <div class="my-1" *ngIf="isAllowTime">
+            <div class="df mb-1">
+              <label class="col-sm-4">Days:</label>
+              <input [(ngModel)]="allowTimeDays" type="number" (change)="onChange($event,'allowDays')" class="w-50"
+                appMaxLengthValidation [maxNumber]=3>
+            </div>
+            <div class="df mb-1">
+              <label class="col-sm-4">Hours:</label>
+              <input [(ngModel)]="allowTimeHours" type="number" (change)="onChange($event,'allowHours')" class="w-50"
+                appMaxLengthValidation [maxNumber]=2>
+            </div>
+            <div class="df">
+              <label class="col-sm-4">Minutes:</label>
+              <input [(ngModel)]="allowTimeMinutes" type="number" (change)="onChange($event,'allowMinutes')"
+                class="w-50" appMaxLengthValidation [maxNumber]=2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="bottomFix">
+    <button class="btn_grade_1" (click)="onSubmit()"> Save </button>
+    <button class="btn_grade_2" (click)="openFreemoneyPop()"> Cancel </button>
+  </div>
+</div>
+
+
+<div class="black_cover" *ngIf="Spinner"></div>
+<div class="spinnerTrue" *ngIf="Spinner">
+  <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>

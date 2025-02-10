@@ -1,0 +1,160 @@
+<div>
+    <h3>Players Summary</h3>
+</div>
+<div class="popup_4 pop_sm fd" *ngIf="PlayersSummaryData">
+
+    <div class="PopupHead">
+        <h5 class="text-center"> Player : {{PlayersSummaryData[0].player.account}}</h5>
+        <!-- <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span> -->
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+        <div class="fd p_5 ">
+            <div class="df m_3">
+                <label class="col-sm-6">Player Login</label>
+                <span>{{PlayersSummaryData[0].player.account}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Nick Name</label>
+                <span>{{PlayersSummaryData[0].player.nickName}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Short ID</label>
+                <span>{{PlayersSummaryData[0].player.shortId}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Alias</label>
+                <span>{{PlayersSummaryData[0].player.alias}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Email</label>
+                <span>{{PlayersSummaryData[0].player.email}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Full Name</label>
+                <span>{{PlayersSummaryData[0].player.fullName}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Face</label>
+                <span>{{PlayersSummaryData[0].player.network}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Status</label>
+                <span>{{PlayersSummaryData[0].player.status}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Decline Deposits</label>
+                <!-- <span>{{PlayersSummaryData[0].declineDeposits}}</span> -->
+                <input *ngIf="PlayersSummaryData[0].declineDeposits==true" type="checkbox" class="checkclick" checked />
+                <input *ngIf="PlayersSummaryData[0].declineDeposits==false" type="checkbox" class="checkclick" />
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Trusted </label>
+                <!-- <span>{{PlayersSummaryData[0].trust}}</span> -->
+                <input *ngIf="PlayersSummaryData[0].trust==true" type="checkbox" class="checkclick" checked />
+                <input *ngIf="PlayersSummaryData[0].trust==false" type="checkbox" class="checkclick" />
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Suspicious</label>
+                <!-- <span>{{PlayersSummaryData[0].suspicious}}</span> -->
+                <input *ngIf="PlayersSummaryData[0].suspicious==true" type="checkbox" class="checkclick" checked />
+                <input *ngIf="PlayersSummaryData[0].suspicious==false" type="checkbox" class="checkclick" />
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Black List</label>
+                <span></span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Allow Chat</label>
+                <!-- <span>{{PlayersSummaryData[0].chatAllowed}}</span> -->
+                <input *ngIf="PlayersSummaryData[0].chatAllowed==true" type="checkbox" class="checkclick" checked />
+                <input *ngIf="PlayersSummaryData[0].chatAllowed==false" type="checkbox" class="checkclick" />
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Docs</label>
+                <!-- <span>{{PlayersSummaryData[0].storedDoc}}</span> -->
+                <input *ngIf="PlayersSummaryData[0].storedDoc==true" type="checkbox" class="checkclick" checked />
+                <input *ngIf="PlayersSummaryData[0].storedDoc==false" type="checkbox" class="checkclick" />
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Registration Date</label>
+                <span>{{changeSelect(PlayersSummaryData[0].regDate)}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Matches</label>
+                <span>{{PlayersSummaryData[0].gameCount}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Balance</label>
+                <span>{{PlayersSummaryData[0].balance.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">-Cash(In Play)</label>
+                <span>{{PlayersSummaryData[0].cash.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">-Bonus(In Play)</label>
+                <span>{{PlayersSummaryData[0].bonus.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">TM</label>
+                <span>{{PlayersSummaryData[0].tournamentMoney.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Tickets</label>
+                <span>{{PlayersSummaryData[0].tournamentMoney.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Comp Points</label>
+                <span>{{PlayersSummaryData[0].compPoints.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Cp Level</label>
+                <span>{{PlayersSummaryData[0].levelInfo.compPointsLevelName}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Deposits</label>
+                <span>{{PlayersSummaryData[0].deposits.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Withdrawals</label>
+                <span>{{PlayersSummaryData[0].withdrawals.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Transfers From Agent</label>
+                <span>{{PlayersSummaryData[0].transfersFromAgents.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Transfers To Agent</label>
+                <span>{{PlayersSummaryData[0].transfersToAgents.value |numberFormat}}</span>
+            </div>
+            <div>
+                <label class="col-sm-6">Registration IP</label>
+                <span>{{PlayersSummaryData[0]?.ipAddress}}</span>
+            </div>
+            <div>
+                <label class="col-sm-6">Reffered By</label>
+               
+            </div>
+            <div>
+                <label class="col-sm-6"> Affiliate</label>
+                <span>{{PlayersSummaryData[0]?.affiliate?.login}}</span>
+            </div>
+            <div>
+                <label class="col-sm-6"> Group</label>
+                <span>{{PlayersSummaryData[0].permissionsGroupName}}</span>
+            </div>
+            <div>
+                <label class="col-sm-6"> DP Left</label>
+                <span>{{PlayersSummaryData[0].disconnectionProtectionSetting.protectionsLeft}}</span>
+            </div>
+            <div>
+                <label class="col-sm-6"> DP Resets Left</label>
+                <span>{{PlayersSummaryData[0].disconnectionProtectionSetting.resetsLeft}}</span>
+            </div>
+            <div>
+                <label class="col-sm-6"> DP Period Ends</label>
+                <span>{{changeSelect(PlayersSummaryData[0].disconnectionProtectionSetting.periodEnd)}}</span>
+            </div>
+        </div>
+    </div>
+</div>

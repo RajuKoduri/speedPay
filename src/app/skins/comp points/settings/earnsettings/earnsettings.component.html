@@ -1,0 +1,393 @@
+<div class="fd">
+    <div>
+        <h3> Earn Settings</h3>
+    </div>
+
+    <div class="d-flex justify-content-end align-items-center ">
+        <h6 class="">Filters:</h6>
+        <select (change)="gamefilterchange($event)" class="form-control game_fil ms-2">
+            <option disabled>Select</option>
+            <option value="Ungroup">Ungroup</option>
+            <option value="Group">Group</option>
+        </select>
+    </div>
+
+    <div class="fd table_2" *ngIf="tabletypegroup">
+        <table class="earn tablCode">
+            <thead>
+                <th>Name</th>
+                <th>Type</th>
+            </thead>
+            <tbody style="background-color: rgb(218, 206, 191);" *ngFor="let allgames of Groupgames;let i=index">
+                <tr class="earn_tr" *ngFor="let casino of allgames;let j=index" (click)="viewpop(allgames,casino,i,j)">
+                    <td>
+                        {{casino.name}}
+                    </td>
+                    <td>
+                        {{allgames.gamename}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <table class="earn " *ngIf="!tabletypegroup">
+        <tr class="earn_tr" *ngFor="let allgames of Groupgames; let i = index">
+            <th (click)="toggleCasino(i)" class="mathsLIst PopupHead">
+                <p *ngIf="isCasinoOpen[i]" class="mathsicon"><i class="bi bi-caret-up-fill"></i></p>
+                <p *ngIf="!isCasinoOpen[i]" class="mathsicon"><i class="bi bi-caret-down-fill"></i></p>
+                {{allgames.gamename}}
+                <br>
+            </th>
+            <div  *ngIf="isCasinoOpen[i]">
+                <div  *ngFor="let casino of allgames; let j = index" (click)="viewpop(allgames,casino,i,j)">
+                    <td class="fd" *ngIf="remotecasino">{{casino.name}}</td>
+                </div>
+            </div>
+        </tr>
+    </table>    
+
+
+    <!-- 
+    <table class="earn">
+        <tr style="background-color: rgb(218, 206, 191);">
+            <th (click)="RemoteCasino ()" class="mathsLIst">
+                <p *ngIf=" remotecasino" class="mathsicon">-</p>
+                <p *ngIf="!remotecasino" class="mathsicon">+</p>
+                Remote Casino Games
+            </th>
+        </tr>
+        <tr *ngFor="let casino of RemoteCasinoGames">
+            <td *ngIf="remotecasino">{{casino.name}}</td>
+        </tr>
+    </table>
+    <table class="earn">
+        <tr style="background-color: whitesmoke;">
+            <th (click)="RemoteClub()" class="mathsLIst">
+                <p *ngIf="showclub" class="mathsicon">-</p>
+                <p *ngIf="!showclub" class="mathsicon">+</p>
+                Remote Club Games
+            </th>
+        </tr>
+        <tr *ngFor="let club of RemoteClubGames">
+            <td *ngIf="showclub">{{club.name}}</td>
+        </tr>
+    </table>
+    <table class="earn" *ngFor="let list of earncasino">
+        <tr>
+            <th (click)="casinoGame()" class="mathsLIst">
+                <p *ngIf="shoecasino" class="mathsicon">-</p>
+                <p *ngIf="!shoecasino" class="mathsicon">+</p>
+                {{list.gameGroupType}}
+            </th>
+        </tr>
+        <tr>
+            <td *ngIf="shoecasino">{{list.name}}</td>
+        </tr>
+    </table>
+    <table class="earn">
+        <tr style="background-color: rgb(218, 206, 191);">
+            <th (click)="pokerGame()" class="mathsLIst">
+                <p *ngIf="shoepoker" class="mathsicon">-</p>
+                <p *ngIf="!shoepoker" class="mathsicon">+</p>
+                Poker Games
+            </th>
+        </tr>
+        <tr *ngFor="let poker of earnpoker">
+            <td *ngIf="shoepoker">{{poker.name}}</td>
+        </tr>
+    </table>
+    <table class="earn">
+        <tr>
+            <th (click)="Tournaments()" class="mathsLIst">
+                <p *ngIf="shoetour" class="mathsicon">-</p>
+                <p *ngIf="!shoetour" class="mathsicon">+</p>
+                Poker Tournaments
+            </th>
+        </tr>
+        <tr *ngFor="let tourna of earnpokertournament">
+            <td *ngIf="shoetour">{{tourna.name}}</td>
+        </tr>
+    </table>
+    <table class="earn">
+        <tr style="background-color: rgb(218, 206, 191);">
+            <th (click)="sitandgopoker()" class="mathsLIst">
+                <p *ngIf="showstandgo" class="mathsicon">-</p>
+                <p *ngIf="!showstandgo" class="mathsicon">+</p>
+                Poker Sit and Go
+            </th>
+        </tr>
+        <tr *ngFor="let sitandgo of pokersitandgo">
+            <td *ngIf="showstandgo">{{sitandgo.name}}</td>
+        </tr>
+    </table> -->
+
+</div>
+
+<!-- ???????????????????????????????????????????????????????? -->
+<div class="black_cover" *ngIf="PointsstructureList"></div>
+<div class="popup_1 pop_sm" *ngIf="PointsstructureList">
+    <form [formGroup]="filterForm">
+        <div class="PopupHead">
+            <h4 class="text-center">Point Structure List Poker Tournament</h4>
+            <span class="closetop" (click)="closepointpop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="container game_rows">
+            <div class="row">
+                <div class="point_st col-3">
+                    <div class="Point_list">
+                        <p class="para">Point Structure List</p>
+                        <div class="break_line mb-2">
+                        </div>
+                    </div>
+                    <div *ngFor="let name of POintStucutures,let i=index" class="para_b m-1" [id]="name.name + i"
+                        (click)="typechange(name,i)">
+                        {{name.name}}
+                    </div>
+                    <!-- <div class="" *ngFor="let name of POintStucutures,let i=index">
+                        <p class="para_b" (click)="typechange(name,i)" [id]="name.name + i">{{name.name}}</p>
+                    </div> -->
+                    <div class="vertical_p">
+                        <button class="button_s btn_up" (click)="positionchange('up')"
+                            [disabled]="movebtnup">Up</button>
+                        <button class="button_s btn_up" (click)="positionchange('Down')"
+                            [disabled]="movebtndown">Down</button>
+                        <br>
+                        <button class="button_s btn_up" (click)="newpointList()">New</button>
+                        <button class="button_s btn_up" (click)="deletepointList()"
+                            [disabled]="Deletebtn">Delete</button>
+                    </div>
+                </div>
+                <div class="value_div col-9">
+                    <div id="divSection">
+                        <div class="point_name mt-2">
+                            <span class="para_font">Point Structure Name:</span>
+                            <input type="text" class=" para_font w-50" formControlName="pointstuctureName">
+                        </div>
+                        <div>
+                            <p class="para fil_para">Filter List</p>
+                        </div>
+                        <div class="df" *ngIf="SeatsLimitsGames">
+                            <div class="min_box">
+                                <p class="min_para">Seats</p>
+                                <table>
+                                    <tr *ngFor="let seats of PokerTableSeats,let i=index">
+                                        <td (change)="pokertablevalue()" class="check_box">
+                                            <input type="checkbox" [id]="seats.value" [formControlName]="seats.value">
+                                        </td>
+                                        <td> <label [for]="seats.value">{{seats.value}}</label></td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                            <div class="min_box">
+                                <p class="min_para">Limit</p>
+                                <table>
+                                    <tr class="" *ngFor="let limts of pokerGameTypes;let i=index">
+                                        <td (change)="pokertablevalue()"> <input type="checkbox" [id]="limts.value"
+                                                [formControlName]="limts.value"> </td>
+                                        <td> <label [for]="limts.value">{{limts.value}}</label> </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                            <div class="min_box over_flow">
+                                <p class="min_para">Game</p>
+                                <table>
+                                    <tr class="" *ngFor="let games of POkerGameTypesList;let i = index">
+                                        <td (change)="pokertablevalue()"> <input type="checkbox" [id]="games.name"
+                                                [(ngModel)]="games.ischecked" [ngModelOptions]="{standalone: true}">
+                                        </td>
+                                        <!-- <td > <input type="checkbox" [id]="games.name" [checked]="games.ischecked" (click)="gamespokertype($event,i,games.value)"> </td>  -->
+                                        <td> <label [for]="games.name">{{games.name}}</label> </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="min_box">
+                                <p class="min_para">Big Blind</p>
+                                <div class="mt-2">
+                                    <span>Min :</span>
+                                    <input type="checkbox" class="m-2" checked (click)="minbigblind($event)">
+                                    <input type="number" class="w-50" formControlName="minblind"
+                                        (change)="pokertablevalue()">
+                                    <!-- <span id="minBlind12">
+                                </span> -->
+                                </div>
+                                <div class="mt-2">
+                                    <span>Max:</span>
+                                    <input type="checkbox" class="m-2" checked (click)="maxbigblind($event)">
+                                    <input type="number" class="w-50" formControlName="maxblind"
+                                        (change)="pokertablevalue()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="min_box over_flow" *ngIf="!SeatsLimitsGames">
+                            <p class="min_para">Games</p>
+                            <table *ngIf="remoteCasinoClub">
+                                <tr class="">
+                                    <td>No Data</td>
+                                </tr>
+                            </table>
+                            <table *ngIf="!remoteCasinoClub">
+                                <tr class="" *ngFor="let provider of GamesAllProvider;let i = index">
+                                    <td (change)="remotecheckgmes(i,provider)"> <input type="checkbox"
+                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="provider.ischecked"
+                                            id="checkboxId{{i}}">
+                                    </td>
+                                    <td> <label for="checkboxId{{i}}">{{provider.name}}</label> </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="point_name mt-2">
+                        <span class="para_font">Table Name:</span>
+                        <input type="text" class="mar_left w-50">
+                    </div>
+                    <div class="break_line">
+                    </div>
+                    <div class="mar_bottom">
+                        <p class="para m-3">POint Structure</p>
+                        <div class="container">
+                            <div class="row Pad_6">
+                                <div class="col-8 fd table_2 back_gd">
+                                    <table class="earn tablCode">
+                                        <thead>
+                                            <th>Total Rake</th>
+                                            <th> Rake for 1 Comp Points</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let i=index;let range of ar_lables1">
+                                                <td>
+                                                    <!-- <p>{{range.from_value}} <span *ngIf="i == (ar_lables1?.length-1)"> and
+                                                                more</span><span *ngIf="i != (ar_lables?.length-1)"> -
+                                                                {{range.to_value}}</span></p> -->
+                                                    <p>[{{range.from_value}} <span>-</span>
+                                                        <span>{{range.to_value}}</span>]
+                                                        <!-- <span *ngIf="i  ==(ar_lables1?.length-1)"> and more</span> -->
+                                                        <!-- <span *ngIf="i < (ar_lables1?.length-1)"> - {{range.to_value}}</span> -->
+                                                    </p>
+                                                </td>
+
+
+                                                <td><input type="number" class="form-control"
+                                                        [ngModelOptions]="{standalone: true}"
+                                                        [(ngModel)]="range.comp_point" (change)="RakeRangePOints()">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-4">
+                                    <button class="button_s w-100 mb-3" (click)="EditRakeStructure()">Edit Rake Ranges
+                                    </button>
+                                    <p>** Rake is Measured in Argrntime Peso. All other currencies will be converted in
+                                        Argentine Pse to Calculate Comp Points.</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <div class="text-end save_div">
+        <button class="btn btn-primary" (click)="Submit()">Save</button>
+        <button class="btn btn-primary  m-2" (click)="closepointpop()">Cancel</button>
+    </div>
+</div>
+
+<!-- *(******************************************************************************************************************************************************************************************) -->
+
+<div class="black_cover" style="z-index: 1000;" *ngIf="ParticipantsPopup">
+    <div class="Blindpopup " *ngIf="ParticipantsPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Edit Participants Ranges12 </h5>
+            <span class="closetop" (click)="ParticipantsPopClose()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="wh">
+                    <div class="overflow col-sm-6 border border-secondary p_2">
+                        <div *ngIf="ar_lables?.length">
+                            <div class="fd ParticipantRangeArea" (click)="row_select(i)"
+                                *ngFor="let i = index;let range of ar_lables">
+                                <p [class]="{'highlightedrow':i==selectedRowIndex}">{{range.from_value}}
+                                    <!-- <span *ngIf="i == (ar_lables?.length-1)"> and more</span> -->
+                                    <!-- <span *ngIf="i != (ar_lables?.length-1)"> - {{range.to_value}}</span></p> -->
+                                    <span> - {{range.to_value}}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 overflow m_3">
+                        <h6>Seleted Range</h6>
+                        <div class="SeletedRangeArea">
+                            <div>
+                                <label>From</label>
+                                <input type="number" disabled [(ngModel)]="from" />
+                            </div>
+                            <div>
+                                <label>To</label>
+                                <span *ngIf="selectedRowIndex==0 && ar_lables.length ==1">
+                                    <input #toValue type="number" disabled value="1" />
+                                </span>
+
+                                <span *ngIf="selectedRowIndex==0 && ar_lables.length >1">
+                                    <input #toValue type="number" [(ngModel)]="to" value="1"
+                                        appMaximimNumbersLengthValidation [digitCount]=6 />
+                                </span>
+
+                                <span *ngIf="selectedRowIndex>0&&selectedRowIndex<=ar_lables.length-2">
+                                    <input #toValue type="number" [(ngModel)]="to" appMaximimNumbersLengthValidation
+                                        [digitCount]=6 />
+                                </span>
+                                <span *ngIf="selectedRowIndex>=1&&selectedRowIndex==ar_lables.length-1">
+                                    <input #toValue type="number" disabled value="1" />
+                                </span>
+
+                                <button class="AddNewRangebtn" (click)="save(to,from)">Save</button>
+                            </div>
+
+                        </div>
+                        <div class="fd">
+                            <button class="AddNewRangebtn" (click)="newRangesAdd()">Add New Range</button>
+                            <button class="AddNewRangebtn"
+                                [disabled]="ar_lables.length ==1 || selectedRowIndex == ar_lables.length-1"
+                                (click)="deleteRanges(to)">Delete selected Range</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="ParticipantsRangesPopClose()"> Ok </button>
+            <button class="btn_grade_2" (click)="ParticipantsPopClose()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- *(******************************************************************************************************************************************************************************************) -->
+
+
+<!-- ************************ErrorPopUp*********************************** -->
+<div class="black_cover" style="z-index: 1001;" *ngIf="ErrorPopup">
+    <div class="popup_1 pop_sm" *ngIf="ErrorPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <!-- <i class="p_5 text-danger">Technical Error... </i> -->
+                <i class="p_5 text-danger">{{errorMessageText}} </i>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="TechnicalError()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************ErrorPopUpClose*********************************** -->

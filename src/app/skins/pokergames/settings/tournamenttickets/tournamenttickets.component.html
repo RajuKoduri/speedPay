@@ -1,0 +1,268 @@
+<div>
+    <h2> Tournament Tickets</h2>
+</div>
+
+<div>
+    <button class="fillterbtn font_16" (click)="fillermenu()">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6  col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="Currency">
+                            <option [ngValue]="Wallet.currency" *ngFor="let  Wallet of walletlists">
+                                {{Wallet.description}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList"
+                                [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                                (onDeSelectAll)="onDeSelectAll($event)" formControlName="Currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+
+                    <div class="div_flex p_5_10" *ngIf="!playerExporer">
+                        <label>Creation StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!playerExporer">
+                        <label> Creation EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+
+
+                    <div class="div_flex p_5_10" *ngIf="!playerExporer">
+                        <label>Utilization /Deletion StartDate </label>
+                        <input class="inp_agent_time" type="date" [max]="creationendDate"
+                            formControlName="creationstartDate" [ngModel]="creationstartDate"
+                            (ngModelChange)="creationstartDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="creationTime" step="1"
+                            [ngModel]="creationTime" (ngModelChange)="creationTime = $event"
+                            (change)="timechange($event)" [max]="craetionendTime" />
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!playerExporer">
+                        <label>Utilization /Deletion EndDate </label>
+                        <input class="inp_agent_time" type="date" [max]="todaycreationdate"
+                            formControlName="creationendDate" [ngModel]="creationendDate"
+                            (ngModelChange)="creationendDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="craetionendTime" step="1"
+                            [ngModel]="craetionendTime" (ngModelChange)="craetionendTime = $event"
+                            (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="setcreationdate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="creationtimeerror">
+                        Start time should be below or equal to end time
+                    </div>
+
+                    <div class="div_flex p_5_10" *ngIf="playerExporer">
+                        <label>Source Tournament Name</label>
+                        <input type="text" formControlName="SourceTournamentName" />
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <!-- <div class="col-12 col-sm-6 col-lg-4"  *ngIf="!playerExporer"> -->
+
+                    <div class="div_flex p_5_10">
+                        <label>Status</label>
+                        <ng-multiselect-dropdown style="width: 98%" [settings]="dropdownSettings2"
+                            [data]="TicketStatusList" [(ngModel)]="TicketStatusselectedItems"
+                            (onSelect)="ticketonItemSelect($event)" (onDeSelect)="ticketOnItemDeSelect($event)"
+                            (onSelectAll)="ticketonSelectAll($event)" (onDeSelectAll)="ticketonDeSelectAll($event)"
+                            formControlName="TicketStatus">
+                        </ng-multiselect-dropdown>
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <!-- <div class="div_flex p_5_10" *ngIf="playerExporer"> -->
+                        <label>Target Tournament Name</label>
+                        <input type="text" formConrtrolName="TargetTournamentName" />
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4" *ngIf="!playerExporer">
+                    <div class="div_flex p_5_10">
+                        <label>Player Login </label>
+                        <input type="text" formControlName="PlayerLogin" />
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>Player Nick Name</label>
+                        <input type="text" formControlName="PlayerNickName" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Source Tournament Name</label>
+                        <input type="text" formControlName="SourceTournamentName" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Target Tournament Name</label>
+                        <input type="text" formConrtrolName="TargetTournamentName" />
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+
+                    <div class="div_flex p_5_10">
+                        <label>First Record </label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()"
+        [disabled]="steddate || timeerror || setcreationdate || creationtimeerror">Submit</button>
+    <div class="df">
+        <b>
+        <div style="margin-right:20px;" *ngIf="tournamentticketsGroupList">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+            </b>
+    </div>
+</div>
+
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel-table">
+        <thead>
+            <tr>
+                <th>Creator</th>
+                <th>Source Tournament Type</th>
+                <th>Source Tournament Name</th>
+                <th>Creation Date</th>
+                <th>Player Login</th>
+                <th>Playre Nickname</th>
+                <th>Cost</th>
+                <th>Target Tournament Type</th>
+                <th>Target Tournament Settings</th>
+                <th>Target Tournament Name</th>
+                <th>Status</th>
+                <th>Utilization/Deletion Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="tournamentticketsGroupList">
+            <tr *ngFor="let pokerGroup of tournamentticketsGroupList,let i=index">
+                <td>{{pokerGroup.creatorLogin}}</td>
+                <td>{{pokerGroup?.sourceTournamentType}}</td>
+                <td>{{pokerGroup.sourceTournamentName}}</td>
+                <td>{{changeSelect(pokerGroup.creationDate)}}</td>
+                <td>{{pokerGroup.player.login}}</td>
+                <td>{{pokerGroup.player.nickname}}</td>
+                <td>{{pokerGroup.cost.value}}</td>
+                <td>{{pokerGroup.targetTournamentSettingsType}}</td>
+                <td>{{pokerGroup.targetTournamentSettingsName}}</td>
+                <td>{{pokerGroup.targetTournamentName}}</td>
+                <td>{{pokerGroup.status}}</td>
+                <td>{{changeSelect(pokerGroup.utilizationDate)}}</td>
+                <td>
+                    <div class="fd">
+                        <div class="trigger">
+                            <i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i)"></i>
+
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                    <button [disabled]="pokerGroup.utilizationDate"
+                                        (click)="ticketActions('Change')">Change Ticket</button>
+                                    <button [disabled]="pokerGroup.utilizationDate"
+                                        (click)="ticketActions('Delete')">Delete Ticket</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- <div class="fd" *ngIf="pokerGamesLoader"> Loading... </div> -->
+</div>
+
+<div class="fd" *ngIf="tournamentticketsGroupList">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || tournamentticketsGroupList==null"
+            (click)="fastbackforward()"><i class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||tournamentticketsGroupList==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="tournamentticketsGroupList">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="tournamentticketsGroupList==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="tournamentticketsGroupList==null || pagecontrolbtn"
+            (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+
+<!-- ***************************************************** -->
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+<!-- *****************************ChangeTicket********************************** -->
+<div class="black_cover" *ngIf="ChangeTicketsPopUp">
+    <div class="popup_1 pop_sm" *ngIf="ChangeTicketsPopUp">
+        <div class="PopupHead">
+            <h5 class="text-center">Change Tickets </h5>
+            <span class="closetop" (click)="ChangeTicket('Cancel')"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df  p_10 text-center">
+                    <b>Convert Tournament Tickets to
+                        <select [(ngModel)]="convertTournyTicketType">
+                            <option *ngFor="let type of CurrencyExchangPocketTypeList">{{type.value}}</option>
+                        </select>
+                    </b>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="ChangeTicket('Change')"> Change </button>
+            <button class="btn_grade_2" (click)="ChangeTicket('Cancel')"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->

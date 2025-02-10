@@ -1,0 +1,8 @@
+table input{
+    width: 100px;
+    outline: none;
+    border: 1px solid #ddd;
+}
+.tablCode thead th {
+    z-index: 0;
+  }

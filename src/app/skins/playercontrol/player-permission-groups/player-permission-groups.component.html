@@ -1,0 +1,104 @@
+
+<button class=" fillterbtn Addbutton" style="margin-right:2px; float: right; width:145px" routerLink="/NewPlayerPremissions" title="Add Premissions">
+    <!-- <img class="Addicon" src="assets/icons/Pluse.png" /> -->
+    Add player Group
+</button>
+<button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    <button class="fillterbtn m_l_5" style="margin-right:0px; float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+
+<div>
+    <!-- <button class="fillterbtn Addbutton"  style="margin-right:2px; float: right;" routerLink="/CreatePokerRakeStructure" title="Add RakeStructure">
+        <img class="Addicon" src="../../../../assets/icons/Pluse.png"/> -->
+       <!--  Add Rake
+    </button> -->
+
+
+    <h3>Player Permission Group</h3>
+</div>
+<div class="fd table_2">
+    <table class="fd tablCode " id="excel_table">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Group Name</th>
+                <th>Players</th>
+                <th>Default</th>
+                <th>Last Change Date</th>
+                <th>Actions</th>
+                <th>Last Change Admin</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="PlayerPermissionsData">
+            <tr  *ngFor="let list of PlayerPermissionsData, let i=index">
+                <td>{{i+1}}</td>
+                <td>{{list.name}}</td>
+                <!-- <td>{{list.usersNumber}}</td> -->
+                <td *ngIf="list.usersNumber <= 0 ;else withNavigate" class="with-out-navigate">{{list.usersNumber}}</td>
+                <ng-template #withNavigate>
+                    <td class="with-navigate" (click)="navigatePlayersListComponent(list)">{{list.usersNumber}}</td>
+                    </ng-template>
+                <!-- <td>{{list.defaultGroup}}</td> -->
+                <td>
+                    <input *ngIf="list.defaultGroup==true" type="checkbox" class="checkclick" checked />
+                    <input *ngIf="list.defaultGroup==false" type="checkbox" class="checkclick" />
+                </td>
+                <td>{{changeSelect(list.changeDate)}}</td>
+                <td>
+                    <div class="fd">
+                        <div class="trigger">
+                            <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmenu(list,i)"></i>
+                            </a>
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="selectinmdex == i" class="popup1 btnGrp">
+                                    <button (click)="makedefault(list)">Make A Default</button>
+                                    <button (click)="deleteset(list)">Delete</button>
+                                    <button (click)="permissionchange(i,list)">Edit</button>                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{list.changerLogin}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- *************************laoder*********************************** -->
+<div *ngIf="loader" class="black_cover"></div>
+<div class="loader_spin" *ngIf="loader">
+    <div class="fa fa-spinner fa-spin" ></div>
+</div>
+<!-- *************************loaderEnd*********************************** -->
+<!-- *************************PopUp*********************************** -->
+
+<div class="black_cover" *ngIf="playerPermissionStructurePopup" (click)="closepopup()"></div>
+<div class="popup_1 pop_sm" *ngIf="playerPermissionStructurePopup">
+    <div class="PopupHead">
+        <h5 class="text-center">Player Permissions Group</h5>
+        <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+
+   <app-new-player-premissions-group (notifyParent)="playerPermissionStructurePopup=$event" [PlayerPermissionDataChange]="PlayerPermissionDataChange"></app-new-player-premissions-group>
+    <!-- <div class="soon font_13">
+        <div class="fd p_5 ">
+            <div class="df m_3">
+                <label class="col-sm-4"> Group Name </label>
+                <span class="col-sm-6">
+                    <input class="col-sm-6" type="text" value="{{PlayerPermissionsPopUpData.name}}" />
+                </span>
+            </div>
+            <div class="m_3">Permissions</div>
+            <div class="m_3 df fd" *ngFor="let list of playerPermissionStructureList.children ">
+                <span class="col-sm-4 "> {{list.name}}12</span>
+                <select class="col-sm-6">
+                    <option *ngFor="let listLevels of list.levels">{{listLevels.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div> -->
+</div>

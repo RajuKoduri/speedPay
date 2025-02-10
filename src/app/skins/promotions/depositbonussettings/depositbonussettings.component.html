@@ -1,0 +1,323 @@
+<div>
+  <button class="fillterbtn m_l_5" style="float: right;" (click)="getDepositBonusLimits()">Requery</button>
+  <h3>Deposit Bonus Settings</h3>
+</div>
+<div (contextmenu)="onRightClick($event)">
+  <div style="overflow-x:auto;" id="tablerecords" class="table_2">
+    <div clas='fd' *ngIf="loader">
+      <div class="loaderWraper">
+        <div class="loader"></div>
+      </div>
+    </div>
+    <table class="tablCode" id="excel-table">
+      <thead>
+        <tr class="tablCoderow">
+          <th>Payment System</th>
+          <th> Currency</th>
+          <th>First Deposit: Min Amount</th>
+          <th>First Deposit:Bonus%</th>
+          <th>First Deposit:Flat Bonus</th>
+          <th>First Deposit:Max Bonus Amout,Cash</th>
+          <th>Second Deposit: Min Amount</th>
+          <th>Second Deposit:Bonus%</th>
+          <th>Second Deposit:Flat Bonus</th>
+          <th>Second Deposit:Max Bonus Amout,Cash</th>
+          <th>Third Deposit: Min Amount</th>
+          <th>Third Deposit:Bonus%</th>
+          <th>Third Deposit:Flat Bonus</th>
+          <th>Third Deposit:Max Bonus Amout,Cash</th>
+          <th>Next Deposit:min Deposit Amount</th>
+          <th>Next Deposit Bonus%</th>
+          <th>Next Deposit:Flat Bonus</th>
+          <th>Next Deposit:Max Bonus Amout,Cash</th>
+        </tr>
+      </thead>
+      <tbody (click)="bonusesetting()" *ngIf="resdata">
+        <tr *ngFor="let list of resdata | paginate: {itemsPerPage:selectnum, currentPage:p};">
+          <td>{{list.paymentSystemName}}</td>
+          <td>{{list.currencyName}}</td>
+          <td class="text-end"> {{currencySymbol(list.wallet)}} {{list.firstMinDeposit.value |numberFormat}}</td>
+          <td class="text-end">{{list.firstPercent}}</td>
+          <td class="text-end">{{currencySymbol(list.wallet)}} {{list.firstFixedBonus.value |numberFormat}}</td>
+          <td class="text-end">{{currencySymbol(list.wallet)}} {{list.firstMaxBonus.value |numberFormat}}</td>
+          <td class="text-end"> {{currencySymbol(list.wallet)}}{{list?.secondMinDeposit?.value |numberFormat}}</td>
+          <td class="text-end">{{list?.secondPercent}}</td>
+          <td class="text-end">{{currencySymbol(list.wallet)}} {{list?.secondFixedBonus?.value |numberFormat}}</td>
+          <td class="text-end">{{currencySymbol(list.wallet)}} {{list?.secondMaxBonus?.value |numberFormat}}</td>
+          <td class="text-end">{{currencySymbol(list.wallet)}} {{list?.thirdMinDeposit?.value |numberFormat}}</td>
+          <td class="text-end">{{list?.thirdPercent}}</td>
+          <td class="text-end">{{currencySymbol(list.wallet)}} {{list?.thirdFixedBonus?.value |numberFormat}}</td>
+          <td class="text-end">{{currencySymbol(list.wallet)}} {{list?.thirdMaxBonus?.value |numberFormat}}</td>
+          <td class="text-end">{{currencySymbol(list.wallet)}} {{list.nextMinDeposit?.value |numberFormat}}</td>
+          <td class="text-end">{{list.nextPercent}}</td>
+          <td class="text-end">{{currencySymbol(list.wallet)}} {{list.nextFixedBonus.value |numberFormat}}</td>
+          <td class="text-end">{{currencySymbol(list.wallet)}} {{list.nextMaxBonus.value |numberFormat}}</td>
+        </tr>
+      </tbody>
+      <tfoot *ngIf="resdata && resdata.length>0">
+        <tr>
+          <td></td>
+          <td></td>
+          <td class="text-end text-nowrap">SUM = <span
+              *ngFor="let key of keys(firstMinDepositSum)">{{firstMinDepositSum[key]}}</span></td>
+          <td class="text-end text-nowrap">AVG = {{firstPercentAvg}}</td>
+          <td class="text-end text-nowrap">SUM = <span
+              *ngFor="let key of keys(firstFixedBonusSum)">{{firstFixedBonusSum[key]}}</span></td>
+          <td class="text-end text-nowrap">SUM = <span
+              *ngFor="let key of keys(firstMaxBonusSum)">{{firstMaxBonusSum[key]}}</span></td>
+          <td class="text-end text-nowrap">SUM = <span
+              *ngFor="let key of keys(secondMinDepositSum)">{{secondMinDepositSum[key]}}</span></td>
+          <td class="text-end text-nowrap">AVG = {{secondPercentAvg}}</td>
+          <td class="text-end text-nowrap">SUM = <span
+              *ngFor="let key of keys(secondFixedBonusSum)">{{secondFixedBonusSum[key]}}</span></td>
+          <td class="text-end text-nowrap">SUM = <span
+              *ngFor="let key of keys(secondMaxBonusSum)">{{secondMaxBonusSum[key]}}</span></td>
+          <td class="text-end text-nowrap">SUM = <span
+              *ngFor="let key of keys(thirdMinDepositSum)">{{thirdMinDepositSum[key]}}</span></td>
+          <td class="text-end text-nowrap">AVG = {{thirdPercentAvg}}</td>
+          <td class="text-end text-nowrap">SUM = <span
+              *ngFor="let key of keys(thirdFixedBonusSum)">{{thirdFixedBonusSum[key]}}</span></td>
+          <td class="text-end text-nowrap">SUM = <span
+              *ngFor="let key of keys(thirdMaxBonusSum)">{{thirdMaxBonusSum[key]}}</span></td>
+          <td class="text-end text-nowrap">SUM = <span
+              *ngFor="let key of keys(nextMinDepositSum)">{{nextMinDepositSum[key]}}</span></td>
+          <td class="text-end text-nowrap">AVG = {{nextPercentAvg}}</td>
+          <td class="text-end text-nowrap">SUM = <span
+              *ngFor="let key of keys(nextFixedBonusSum)">{{nextFixedBonusSum[key]}}</span></td>
+          <td class="text-end text-nowrap">SUM = <span
+              *ngFor="let key of keys(nextMaxBonusSum)">{{nextMaxBonusSum[key]}}</span></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+<!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+    class="pt-2 page-item float-right">
+  </pagination-controls> -->
+<div class="fd">
+  <div class="text-centers df m_3">
+    <div style="margin-right:20px;" *ngIf="resdata">Rows On the Page: {{rowsOnthePage}}</div>
+    <div *ngIf="resdata"> Result Count: {{ResultCount}} </div>
+  </div>
+</div>
+
+<!-- <div class="all_button fd" *ngIf="resdata">
+  <button class="rightclick m_l_5" (click)="exportexcel()"><i class="fa fa-file-excel-o "
+      style="font-size:20px;color:#fff"></i>
+    current page Excel sheet</button><br> <br />
+  <button class="rightclick m_l_5" (click)="exportexcelFull()"><i class="fa fa-file-excel-o "
+      style="font-size:20px;color:#fff"></i>
+    All Pages Excel Sheet</button><br><br>
+
+  <button class="rightclickprint m_l_5" (click)="printData()"><i class="fa fa-print iconprint"
+      style="font-size:20px;color:#fff"></i>Print</button><br> <br>
+    </div> -->
+
+<!-- <button  class="rightclickprint m_l_5"  (click)="printData()"><i class="fa fa-print iconprint" style="font-size:20px;color:#fff"></i>Print All</button><br>  -->
+
+
+<!-- <div class="popupCover" *ngIf="depositebonusesetting" (click)="rakestrupopupsub()"></div>
+<div class="popup_1" *ngIf="depositebonusesetting">
+  <p class="depositbon ">Blind Structure </p>
+  <div class="popup_1">
+    <div class="fd">
+      <table class="tablCode Blindtable margtp">
+        <tr class="tablCoderow">
+          <th>Payment System</th>
+          <th> Currency</th>
+          <th>First Deposit:Bonus%</th>
+          <th>First Deposit:Flat Bonus</th>
+          <th>First Deposit:Max Bonus Amout,Cash</th>
+          <th>Next Deposit:min Deposit Amount</th>
+          <th>Next Deposit Bonus%</th>
+          <th>Next Deposit:Flat Bonus</th>
+          <th>Next Deposit:Max Bonus Amout,Cash</th>
+        </tr>
+        <tbody>
+          <tr *ngFor="let list of resdata">
+            <td>{{list.paymentSystem}}</td>
+            <td>{{list.currency}}</td>
+            <td>{{list.firstPercent}}.0</td>
+            <td>{{list.firstFixedBonus.value}}.00</td>
+            <td>{{list.firstMaxBonus.value}}.00</td>
+            <td>{{list.nextMinDeposit.value}}.00</td>
+            <td>{{list.nextPercent}}.0</td>
+            <td>{{list.nextFixedBonus.value}}.00</td>
+            <td>{{list.nextMaxBonus.value}}.00</td>
+
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="closeevnte">
+        <button class="closeBTN" (click)="rakestrupopupsub()">close</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+<div class="black_cover" *ngIf="depositebonusesetting">
+  <div class="popup_1" *ngIf="depositebonusesetting">
+    <div class="PopupHead">
+      <h5 class="text-center">Change Deposit Bonus Settings:</h5>
+      <span class="closetop" (click)="setDepositBonusLimit('no')"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="p_2 font_13 fd">
+      <table class="tablCode table_2">
+        <thead>
+          <tr>
+            <th>Payment System</th>
+            <th> Currency</th>
+            <th>First Deposit: Min Amount</th>
+            <th>First Deposit:Bonus%</th>
+            <th>First Deposit:Flat Bonus</th>
+            <th>First Deposit:Max Bonus Amout,Cash</th>
+            <th>Second Deposit: Min Amount</th>
+            <th>Second Deposit:Bonus%</th>
+            <th>Second Deposit:Flat Bonus</th>
+            <th>Second Deposit:Max Bonus Amout,Cash</th>
+            <th>Third Deposit: Min Amount</th>
+            <th>Third Deposit:Bonus%</th>
+            <th>Third Deposit:Flat Bonus</th>
+            <th>Third Deposit:Max Bonus Amout,Cash</th>
+            <th>Next Deposit:min Deposit Amount</th>
+            <th>Next Deposit Bonus%</th>
+            <th>Next Deposit:Flat Bonus</th>
+            <th>Next Deposit:Max Bonus Amout,Cash</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let list of responseDataForEdit,let i = index">
+            <td>{{list.paymentSystemName}}</td>
+            <td>{{list.currencyName}}</td>
+            <td>
+              <div class="input-group">
+                <input class="text-end form-control" (change)="changevalue($event,i,'firstMinDeposit')"
+                  [(ngModel)]="list.firstMinDeposit.value" type="text" appMaxLengthValidation [maxNumber]=11>
+                <span class="input-group-text">{{currencySymbol(list.wallet)}}</span>
+              </div>
+            </td>
+            <td>
+              <div>
+                <input class="text-end form-control" (change)="changevalue($event,i,'firstPercent')"
+                  [(ngModel)]="list.firstPercent" type="text" appMaxLengthValidation [maxNumber]=6>
+              </div>
+            </td>
+            <td>
+              <div class="input-group">
+                <input class="text-end form-control" (change)="changevalue($event,i,'firstFixedBonus')"
+                  [(ngModel)]="list.firstFixedBonus.value" type="text" appMaxLengthValidation [maxNumber]=11>
+                <span class="input-group-text">{{currencySymbol(list.wallet)}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-group">
+                <input class="text-end form-control" (change)="changevalue($event,i,'firstMaxBonus')"
+                  [(ngModel)]="list.firstMaxBonus.value" type="text" appMaxLengthValidation [maxNumber]=11>
+                <span class="input-group-text">{{currencySymbol(list.wallet)}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-group">
+                <input class="text-end form-control" (change)="changevalue($event,i,'secondMinDeposit')"
+                  [(ngModel)]="list.secondMinDeposit && list.secondMinDeposit.value" type="text" appMaxLengthValidation [maxNumber]=11>
+                <span class="input-group-text">{{currencySymbol(list.wallet)}}</span>
+              </div>
+            </td>
+            <td>
+              <div>
+                <input class="text-end form-control" (change)="changevalue($event,i,'secondPercent')"
+                  [(ngModel)]="list.secondPercent && list.secondPercent" type="text" appMaxLengthValidation [maxNumber]=6>
+              </div>
+            </td>
+            <td>
+              <div class="input-group">
+                <input class="text-end form-control" (change)="changevalue($event,i,'secondFixedBonus')"
+                  [(ngModel)]="list.secondFixedBonus && list.secondFixedBonus.value" type="text" appMaxLengthValidation [maxNumber]=11>
+                <span class="input-group-text">{{currencySymbol(list.wallet)}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-group">
+                <input class="text-end form-control" (change)="changevalue($event,i,'secondMaxBonus')"
+                  [(ngModel)]="list.secondMaxBonus && list.secondMaxBonus.value" type="text" appMaxLengthValidation [maxNumber]=11>
+                <span class="input-group-text">{{currencySymbol(list.wallet)}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-group">
+                <input class="text-end form-control" (change)="changevalue($event,i,'thirdMinDeposit')"
+                  [(ngModel)]="list.thirdMinDeposit && list.thirdMinDeposit.value" type="text" appMaxLengthValidation [maxNumber]=11>
+                <span class="input-group-text">{{currencySymbol(list.wallet)}}</span>
+              </div>
+            </td>
+            <td>
+              <div>
+                <input class="text-end form-control" (change)="changevalue($event,i,'thirdPercent')"
+                  [(ngModel)]="list.thirdPercent && list.thirdPercent" type="text" appMaxLengthValidation [maxNumber]=6>
+              </div>
+
+            </td>
+            <td class="input-group">
+              <div class="input-group">
+                <input class="text-end form-control" (change)="changevalue($event,i,'thirdFixedBonus')"
+                  [(ngModel)]="list.thirdFixedBonus && list.thirdFixedBonus.value" type="text" appMaxLengthValidation [maxNumber]=11>
+                <span class="input-group-text">{{currencySymbol(list.wallet)}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-group">
+                <input class="text-end form-control" (change)="changevalue($event,i,'thirdMaxBonus')"
+                  [(ngModel)]="list.thirdMaxBonus && list.thirdMaxBonus.value" type="text" appMaxLengthValidation [maxNumber]=11>
+                <span class="input-group-text">{{currencySymbol(list.wallet)}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-group">
+                <input class="text-end form-control" (change)="changevalue($event,i,'nextMinDeposit')"
+                  [(ngModel)]="list.nextMinDeposit && list.nextMinDeposit.value" type="text" appMaxLengthValidation [maxNumber]=11>
+                <span class="input-group-text">{{currencySymbol(list.wallet)}}</span>
+              </div>
+            </td>
+            <td>
+              <div>
+                <input class="text-end form-control" (change)="changevalue($event,i,'nextPercent')"
+                  [(ngModel)]="list.nextPercent && list.nextPercent" type="text" appMaxLengthValidation [maxNumber]=6>
+              </div>
+            </td>
+            <td>
+              <div class="input-group">
+                <input class="text-end form-control" (change)="changevalue($event,i,'nextFixedBonus')"
+                  [(ngModel)]="list.nextFixedBonus && list.nextFixedBonus.value" type="text" appMaxLengthValidation [maxNumber]=11>
+                <span class="input-group-text">{{currencySymbol(list.wallet)}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-group">
+                <input class="text-end form-control" (change)="changevalue($event,i,'nextMaxBonus')"
+                  [(ngModel)]="list.nextMaxBonus && list.nextMaxBonus.value" type="text" appMaxLengthValidation [maxNumber]=11>
+                <span class="input-group-text">{{currencySymbol(list.wallet)}}</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="position-sticky bottom-0 p-3">
+        <input class="me-1" type="checkbox" [(ngModel)]="applyForAllUsers" id="apply">
+        <label for="apply">Apply to all registered users</label>
+      </div>
+
+    </div>
+    <div class="bottomFix">
+      <button class="btn_grade_1" (click)="setDepositBonusLimit('yes')"> Save </button>
+      <button class="btn_grade_2" (click)="setDepositBonusLimit('no')"> Cancel </button>
+    </div>
+  </div>
+</div>
+
+
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+  <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>

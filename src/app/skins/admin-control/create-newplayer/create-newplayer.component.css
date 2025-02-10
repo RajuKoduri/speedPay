@@ -1,0 +1,40 @@
+.popup_4{
+    background: #fff;
+    max-width: 800px;
+    margin: auto;
+    /* top: 80px; */
+    /* position: fixed; */
+    /* z-index: 1000; */
+    /* left: 15px; */
+    /* right: 15px; */
+    border-radius: 5px;
+    overflow: auto;
+    max-height: 85vh;
+    box-shadow: 7px 11px 39px 5px rgb(0 0 0 / 20%);
+}
+.popup_4 input:focus,
+.popup_4 select:focus {
+  outline: none;
+}
+
+.popup_4 input,
+.popup_4 select {
+  border: solid 1px #ddd;
+  padding: 2px;
+  margin: 2px;
+}
+
+.soon .col-sm-6 label {
+  padding: 2px;
+  margin: 2px;
+}
+
+.soon .col-sm-6 select,
+.soon .col-sm-6 input {
+  margin: 2px;
+}
+.stakes-error-message{
+  color: red;
+  left: 50%;
+  /* text-align: right; */
+}

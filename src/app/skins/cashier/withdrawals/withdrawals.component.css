@@ -1,0 +1,22 @@
+ .table_2 thead th {
+    position: sticky;
+    top: 0;
+  }
+ 
+  tfoot{
+    position: sticky;
+    bottom: -1px;
+  }
+
+
+.popup_1.pop_sm {
+  max-width: 550px;
+  overflow: auto;
+  max-height: 80vh;
+}
+ 
+  
+.text-orange{
+  color: rgb(232, 153, 8) !important;
+  font-weight:500
+}

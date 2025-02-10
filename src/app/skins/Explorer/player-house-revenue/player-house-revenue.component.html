@@ -1,0 +1,208 @@
+<div>
+    <h3>House Revenue</h3>
+</div>
+<div class="dropdown fd fil_export">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <div>
+        <!-- <button class="fillterbtn m_l_5" style=" float: right;" (click)="getPlayerHouseRevenue()">Requery</button> -->
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportExcel()"> Export Excel</button>
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    </div>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <select class="seclectopt" formControlName="Currency">
+                            <option [ngValue]="wallet.guid" *ngFor="let wallet of dropdownList">{{wallet.description}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="fd">
+    <div class="text-centers div_sub">
+        <div class="fd df m_3">
+            <div style="margin-right:20px;" *ngIf="HouseRevenue">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+            <div> Result Count: <b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the
+                    filters</b></div>
+        </div>
+        <button class="fillterbtn btn_sub12" (click)="onFormSubmit()" [disabled]="steddate || timeerror">Submit</button>
+    </div>
+</div>
+<div class="fd">
+    <div class="table_2">
+        <div *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <table class="tablCode" id="excel_table">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Operation Type</th>
+                    <th>Opening Revenue </th>
+                    <th>Incomings </th>
+                    <th>Outgoings</th>  
+                    <th>Total Tournover</th>
+                    <th>Closing Revenue </th>
+                </tr>
+            </thead>
+            <tbody *ngIf="HouseRevenue">
+                <tr *ngFor="let list of HouseRevenue" (dblclick)="onDblClick(list)">
+                    <td>{{list.player.account}}</td>
+                    <td>{{list.title}}</td>
+                    <td class="text-end">{{getWalletSymbol(list.openingBalance.wallet)}} {{list.openingBalance.value | numberFormat}}</td>
+                    <td class="text-end">{{getWalletSymbol(list.revenue.wallet)}} {{list.revenue.value | numberFormat}}</td>
+                    <td class="text-end">{{getWalletSymbol(list.expense.wallet)}} {{list.expense.value | numberFormat}}</td>
+                    <td class="text-end">{{getWalletSymbol(list.totalTurnover.wallet)}} {{list.totalTurnover.value | numberFormat}}</td>
+                    <td class="text-end">{{getWalletSymbol(list.closingBalance.wallet)}} {{list.closingBalance.value | numberFormat}}</td>
+                </tr>
+            </tbody>
+            <tfoot *ngIf="HouseRevenue && HouseRevenue.length > 0">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="text-end">SUM = <span *ngFor="let key of keys(totalOpeningRevenue)">{{totalOpeningRevenue[key]}}</span></td>
+                    <td class="text-end">SUM = <span *ngFor="let key of keys(totalIncomings)">{{totalIncomings[key]}}</span></td>
+                    <td class="text-end">SUM = <span *ngFor="let key of keys(totalOutgoings)">{{totalOutgoings[key]}}</span></td>
+                    <td class="text-end">SUM = <span *ngFor="let key of keys(totalTurnover)">{{totalTurnover[key]}}</span> </td>
+                    <td class="text-end">SUM =  <span *ngFor="let key of keys(totalClosingRevenue)">{{totalClosingRevenue[key]}}</span></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="fd" *ngIf="HouseRevenue">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || HouseRevenue==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||HouseRevenue==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="HouseRevenue">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="HouseRevenue==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="HouseRevenue==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+
+<!-- ####################################### Double click popup ####################################  -->
+
+<div class="black_cover" *ngIf='isDoubleClick'>
+    <div class="popup_1 pop_sm text-black" *ngIf='isDoubleClick'>
+        <div class="PopupHead">
+            <h5 class="text-center">House Revenue</h5>
+            <span class="closetop" (click)="closeClicPopUp()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="row fd my-3">
+                <div class="col-6">
+                    <label>Player</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.player.account}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Operation Type</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.title}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Opening Revenue</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.openingBalance.value | numberFormat}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Incomings</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.revenue.value | numberFormat}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Outgoings</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.expense.value | numberFormat}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Total turnover</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.totalTurnover.value | numberFormat}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Closing Revenue</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.closingBalance.value | numberFormat}}
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_3" (click)="closeClicPopUp()"> OK </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,165 @@
+<div>
+    <h3>Periodical Promotion List</h3>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Active On</label>
+                        <!-- <input class="Birthdayinputs" format="yyyy-MM-dd HH:mm:ss" type="datetime-local" step="1"
+                            formControlName="ActiveOnFrom"> -->
+                        <!-- <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                            formControlName="ActiveOnTo"> -->
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [(ngModel)]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Promotion Name</label>
+                        <input type="text" formControlName="PromotionalName" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Promotion Type</label>
+                        <!-- <select class="seclectopt" formControlName="PromotionalType">
+                            <option [ngValue]="list.guid" *ngFor="let list of LeaderBoardTypeList">{{list.value}}</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="typeDropdownSettings" [data]="LeaderBoardTypeList"
+                                [(ngModel)]="selectedLeaderBoardType" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                                (onDeSelectAll)="onDeSelectAll($event)" formControlName="PromotionalType">
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Promotion Schedule</label>
+                        <!-- <select class="seclectopt" formControlName="Schedule">
+                            <option [ngValue]="list.guid" *ngFor="let list of LeaderBoardSettingPeriodList">
+                                {{list.value}}</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="scheduleDropdownSettings"
+                                [data]="LeaderBoardSettingPeriodList" [(ngModel)]="selectedScheduleValue"
+                                (onSelect)="onScheduleItemSelect($event)" (onDeSelect)="OnScheduleItemDeSelect($event)"
+                                (onSelectAll)="onSelectAllSchedule($event)"
+                                (onDeSelectAll)="onDeSelectAllSchedule($event)" formControlName="Schedule">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Player Login</label>
+                        <input type="text" formControlName="PlayerLogin" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Player State</label>
+                        <!-- <select class="seclectopt" formControlName="PlayerState">
+                            <option [ngValue]="list.guid" *ngFor="let list of LeaderBoardPayoutStateList">{{list.value}}
+                            </option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="PlayerStateDropdownSettings"
+                                [data]="LeaderBoardPayoutStateList" [(ngModel)]="selectedPlayerStateValue"
+                                (onSelect)="onPlayerStateItemSelect($event)"
+                                (onDeSelect)="OnPlayerStateItemDeSelect($event)"
+                                (onSelectAll)="onSelectAllPlayerState($event)"
+                                (onDeSelectAll)="onDeSelectAllPlayerState($event)" formControlName="PlayerState">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Status</label>
+                        <!-- <select class="seclectopt" formControlName="Status">
+                            <option [ngValue]="list.guid" *ngFor="let list of LeaderBoardStatusList">{{list.value}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="statusDropdownSettings" [data]="LeaderBoardStatusList"
+                                [(ngModel)]="selectedLeaderBoardStatusValue" (onSelect)="onStatusItemSelect($event)"
+                                (onDeSelect)="OnStatusItemDeSelect($event)" (onSelectAll)="onSelectAllStatus($event)"
+                                (onDeSelectAll)="onDeSelectAllStatus($event)" formControlName="Status">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Frist Record </label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size </label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <!-- <div class="text-centers"> -->
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers">
+        <!-- <button class="fillterbtn m_l_5" style="float:right;margin-left: 1px;" (click)="onFormSubmit()">Submit</button> -->
+        <div style="margin-right:20px;" *ngIf="periodcalPromotionList">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div>
+</div>
+<div class="fd">
+    <div>
+        <div *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <table class="tablCode table_2 fd" id="excel-table">
+            <thead>
+                <tr class="tablCoderow">
+                    <th>Promotional Nmae</th>
+                    <th>Promotional Type</th>
+                    <th>Schedule</th>
+                    <th>Status</th>
+                    <th>Participants</th>
+                    <th>Schedule Start Date</th>
+                    <th>Schedule Finish Date</th>
+                    <th>Payout State</th>
+                    <th>Total Paid</th>
+                    <th>Paid by</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="periodcalPromotionList">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

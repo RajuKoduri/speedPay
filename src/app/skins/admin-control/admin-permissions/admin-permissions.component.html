@@ -1,0 +1,44 @@
+<!-- <div *ngFor="let parentPermissionType of permissionsList01" >
+    <div class="container">
+        <div class="flex_cls">
+            <label class="parenDiv" [for]="parentPermissionType.description" style="color: #cb7529;">
+                {{parentPermissionType.description}}
+            </label>
+            <span class="d_flex ">
+                <input type="checkbox" 
+                    [id]="parentPermissionType.description"  style="width: 16px;
+                        accent-color: #d18542;
+                        height: 16px;">
+            </span>
+        </div>
+        <div *ngFor="let permission of parentPermissionType.children" class="flex_cls m_l_10">
+            <label [for]="permission.description" class=" ">{{ permission.description}}</label>
+            <input type="checkbox" class=" " [(ngModel)]="permission.permissionStatus" >
+            <input type="checkbox" class=" " [(ngModel)]="permission.permissionStatusValue" >
+        </div>
+    </div>
+</div> -->
+
+
+
+
+<div *ngFor="let parentPermissionType of permissionsList01">
+    <div class="container">
+        <div class="flex_cls">
+            <label class="parenDiv" [for]="parentPermissionType.description" style="color: #cb7529;">
+                {{transformMethod(parentPermissionType.description)}}
+            </label>
+            <span class="d_flex ">
+                <input type="checkbox" [id]="parentPermissionType.description"
+                    [checked]="isParentChecked(parentPermissionType)"
+                    (change)="onParentChange(parentPermissionType, $event)"
+                    style="width: 16px; accent-color: #d18542; height: 16px;">
+            </span>
+        </div>
+        <div *ngFor="let permission of parentPermissionType.children" class="flex_cls m_l_10">
+            <label [for]="permission.description" class=" ">{{ permission.description}}</label>
+            <input type="checkbox" class=" " [(ngModel)]="permission.permissionStatusValue"
+                (change)="onChildChange(parentPermissionType)">
+        </div>
+    </div>
+</div>

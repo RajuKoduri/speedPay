@@ -1,0 +1,120 @@
+<div>
+    <h4>Players ChargeBacks</h4>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="playerchargbackForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="df">
+                        <label>Reporting Period</label>
+                        <input class="Birthdayinputs" format="yyyy-MM-dd HH:mm:ss" type="datetime-local" step="1"
+                            formControlName="repotingstart">
+                        <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                            formControlName="repotingend">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style=" float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <div style="margin-right:20px;" *ngIf="PlayerChargebackData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div *ngIf="ResultCount">Result Count: {{ResultCount}}</div>
+        <!-- <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div> -->
+    </div>
+</div>
+
+<div class="fd table_2">
+    <table class=" tablCode" id="excel-table">
+        <thead>
+            <tr>
+                <th>Agent Login</th>
+                <th>ChargeBack Amount</th>
+                <th>ChargeBack Date</th>
+                <th>Player </th>
+            </tr>
+        </thead>
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <tbody *ngIf="PlayerChargebackData">
+            <tr *ngFor="let List of PlayerChargebackData, let i =index" (dblclick)="onDblClick(List)">
+                <td class="hyperLink" (click)="AgentExplore(List.agent.login,List.agent.guid,List)">{{List.agent.login}}</td>
+                <td class="text-end">{{getWalletSymbol(List.amount.wallet)}} {{List.amount.value | numberFormat}}</td>
+                <td> {{ changeSelect(List.date) }}</td>
+                <td class="hyperLink" (click)="PlayerExplore(List.player.account,List.player.guid,List)">{{List.player.account}}</td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="PlayerChargebackData && PlayerChargebackData.length > 0">
+            <tr>
+                <td></td>
+                <td class="text-end">SUM = <span *ngFor="let key of keys(totalChargebackSum)">{{totalChargebackSum[key]}}</span></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+
+
+<div class="black_cover" *ngIf='isDoubleClick'>
+    <div class="popup_1 pop_sm text-black" *ngIf='isDoubleClick'>
+        <div class="PopupHead">
+            <h5 class="text-center">Player Chargebacks</h5>
+            <span class="closetop" (click)="closeClicPopUp()"> <img src="assets/icons/closePop.svg"></span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="row fd my-3">
+                <div class="col-6">
+                    <label>Agent Login</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.agent.login}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Chargeback Amount</label>
+                </div>
+                <div class="col-6">
+                    {{getWalletSymbol(selectedRowData.amount.wallet)}} {{selectedRowData.amount.value}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Chargeback Date</label>
+                </div>
+                <div class="col-6">
+                    {{ changeSelect(selectedRowData.date) }}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Player</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.player.account}}
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_3" (click)="closeClicPopUp()"> OK </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,314 @@
+<div class="black_cover">
+	<div class="popup_1 text-black">
+		<div class="PopupHead">
+			<h5 class="text-center">Create Periodical Promotion</h5>
+			<span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg">
+			</span>
+		</div>
+		<div>
+			<form [formGroup]="createPeriodicalProForm">
+				<div class="PopupHead">
+					<h5>Periodical Promotion Details</h5>
+				</div>
+
+				<div class="soon font_13 fd p_lr_15 df">
+					<div class="row fd p-2 d-flex mt-3 align-items-center">
+						<div class="col-3">
+							<label>Promotion Name:</label>
+						</div>
+						<div class="col-9 df align-items-center">
+							<span *ngIf="f['name'].invalid && submitted">
+								<span *ngIf="f['name'].errors && f['name'].errors['required']" class="text-danger">
+									<b class="bi bi-x-circle-fill p-1" title="value can not be empty"></b>
+								</span>
+							</span>
+							<input type="text" class="form-control" formControlName="name">
+						</div>
+					</div>
+				</div>
+
+				<div class="soon font_13 fd p_lr_15 df">
+					<div class="row fd p-2 d-flex">
+						<div class="col-3">
+							<label>description:</label>
+						</div>
+						<div class="col-9">
+							<div class="NgxEditor__Wrapper">
+								<div class="custom-toolbar df justify-content-end">
+									<button type="button" class="btn btn-sm mx-1" (click)="toggleEditorMode('html')"
+										[ngClass]="{'btn-outline-secondary': !isHtmlView, 'activeEditor': isHtmlView}">
+										HTML Editor
+									</button>
+									<button type="button" class="btn btn-sm " (click)="toggleEditorMode('simple')"
+										[ngClass]="{'btn-outline-secondary': isHtmlView, 'activeEditor': !isHtmlView}">
+										Simple Editor
+									</button>
+								</div>
+
+								<ngx-editor-menu *ngIf="!isHtmlView" [editor]="editor"
+									[toolbar]="toolbar"></ngx-editor-menu>
+
+								<textarea *ngIf="isHtmlView" [(ngModel)]="EditorMessage" class=" form-control" rows="5"
+									placeholder="Type here..."></textarea>
+
+								<ngx-editor *ngIf="!isHtmlView" [editor]="editor" [(ngModel)]="EditorMessage"
+									placeholder="Type here..." [ngModelOptions]="{standalone: true}"></ngx-editor>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="soon font_13 fd p_lr_15 df">
+					<div class="w-50 fd p-2 me-2">
+						<div class="row mb-3">
+							<div class="col-4">
+								<label>Promotion Type:</label>
+							</div>
+							<div class="col-8 df align-items-center">
+								<select formControlName="leaderboardType" class="form-select">
+									<option [ngValue]="list.guid" *ngFor="let list of LeaderBoardTypeList">
+										{{list.value}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<div class="col-4">
+								<label>Schedule:</label>
+							</div>
+							<div class="col-8">
+								<select class="form-select" formControlName="scheduleType"
+									(change)="onScheduleChange($event)">
+									<option [ngValue]="list.value" *ngFor="let list of LeaderBoardSettingPeriodList">
+										{{list.value}}</option>
+								</select>
+							</div>
+						</div>
+						<div *ngIf="f['scheduleType'].value == 'Daily'">
+							<div class="row df align-items-center my-3">
+								<div class="col-4">
+									<label>Activity Period:</label>
+								</div>
+								<div class="col-2">
+									<label>from</label>
+								</div>
+								<div class="col-4">
+									<input type="time" formControlName="activityPeriodFrom" class="form-control">
+								</div>
+								<div class="col-2">
+									<label>GMT</label>
+								</div>
+							</div>
+							<div class="row df align-items-center mb-3">
+								<div class="col-4">
+
+								</div>
+								<div class="col-2">
+									<label>to</label>
+								</div>
+								<div class="col-4">
+									<input type="time" class="form-control" formControlName="activityPeriodTo">
+								</div>
+								<div class="col-2">
+									<label>GMT</label>
+								</div>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<div class="col-4">
+								<label>Start on</label>
+							</div>
+							<div class="col-8 df">
+								<input class="me-2" type="radio" id="currDay" name="startOnNextPeriod"
+									value="currentDay" formControlName="startOnNextPeriod">
+								<label *ngIf="f['scheduleType'].value == 'Daily' " for="currDay">Current Day</label>
+								<label *ngIf="f['scheduleType'].value == 'Weekly' " for="currDay">Current Week</label>
+								<label *ngIf="f['scheduleType'].value == 'Monthly' " for="currDay">Current Month</label>
+								<label *ngIf="f['scheduleType'].value == 'Yearly' " for="currDay">Current Year</label>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<div class="col-4">
+
+							</div>
+							<div class="col-8 df">
+								<input class="me-2" type="radio" id="nextDay" name="startOnNextPeriod" value="nextDay"
+									formControlName="startOnNextPeriod">
+								<label *ngIf="f['scheduleType'].value == 'Daily' " for="nextDay">Next Day</label>
+								<label *ngIf="f['scheduleType'].value == 'Weekly' " for="nextDay">Next Week</label>
+								<label *ngIf="f['scheduleType'].value == 'Monthly' " for="nextDay">Next Month</label>
+								<label *ngIf="f['scheduleType'].value == 'Yearly' " for="nextDay">Next Year</label>
+							</div>
+
+						</div>
+					</div>
+					<div class="w-50 fd p-2 ms-1">
+						<div class="row mb-3 df align-items-center">
+							<div class="col-4">
+								<label>Min Points:</label>
+							</div>
+							<div class="col-8 df align-items-center">
+								<input type="text" class="form-control" formControlName="minReq">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<div class="col-4">
+								<label>Minimum Active Players:</label>
+							</div>
+							<div class="col-8">
+								<input type="number" class="form-control">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<div class="col-4">
+								<label>Min Combination:</label>
+							</div>
+							<div class="col-8">
+								<select class="form-control">
+									<option value=""></option>
+								</select>
+							</div>
+						</div>
+						<div class="row mb-3 df align-items-center">
+							<div class="col-4">
+								<label>Min Rake:</label>
+							</div>
+							<div class="col-7">
+								<input type="number" class="form-control">
+							</div>
+							<div class="col-1 df align-items-center justify-content-center ps-0">
+								<h4 class="bi bi-info-circle-fill text-info"
+									title="This is non-dimensional value For Example, if min rake = 2, it means that for USD tables min rake will be 2 USD and for EUR tables min rake will be 2 EUR">
+								</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="soon font_13 fd p_lr_15 df">
+					<div class="row mb-3 df align-items-center">
+						<div class="col-4">
+							<label>Automatic Prize Payment:</label>
+						</div>
+						<div class="col-5 df align-items-center">
+							<select formControlName="leaderboardType" class="form-select">
+								<option [ngValue]="list.guid" *ngFor="let list of LeaderBoardTypeList">
+									{{list.value}}</option>
+							</select>
+						</div>
+						<div class="col-3 df">
+							<button class="btn">Edit</button>
+							<button class="btn" (click)="editPaytableClose()">Add</button>
+							<button class="btn">Delete</button>
+						</div>
+					</div>
+				</div>
+				<div class="soon font_13 fd p_lr_15 my-3">
+					<div class="shadow rounded p-2 mb-3 fd">
+						<h6>Games Filter</h6>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<select class="form-select">
+								<option value=""></option>
+							</select>
+						</div>
+						<div class="col-3">
+							<!-- <ng-multiselect-dropdown [settings]="TournamentGamesDropdownSettings"
+								formControlName="tournamentGames" [data]="faceParametersList"
+								[(ngModel)]="selectedTournamentGames">
+							</ng-multiselect-dropdown> -->
+						</div>
+						<div class="col-3">
+
+						</div>
+						<div class="col-3">
+
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="bottomFix">
+			<button class="btn_grade_1" (click)="onSubmit()"> Save </button>
+			<button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+		</div>
+	</div>
+</div>
+
+
+<!-- ########################################### edit payout table template #################################### -->
+
+<div class="black_cover" *ngIf="isEditPaytablePopup">
+    <div class="popup_1 pop_sm text-black" *ngIf="isEditPaytablePopup">
+        <div class="PopupHead">
+            <h5 class="text-center"> Edit Paytable Template</h5>
+            <span class="closetop" (click)="editPaytableClose()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+			<div class="shadow rounded p-2 mt-3">
+				<h6>Template Details</h6>
+			</div>
+            <div class="fd p_5 mt-3 ">
+                <div class="df mb-3">
+                    <div class="col-sm-3">
+                        <label>PayTable Template Name: </label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" />
+                    </div>
+                </div>
+                
+            </div>
+            <div class="fd p_5 mt-3 ">
+                <div class="df mb-3">
+                    <div class="col-sm-3">
+                        <label>Add New Prize for </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <select class="form-select">
+							<option value=""></option>
+						</select>
+                    </div>
+					<div class="col-sm-5 df">
+                        <label class="mx-1">from </label>
+						<input type="text" class="form-control">
+                    </div>
+					
+                </div>
+                <div class="df mb-3">
+					<div class="col-sm-3"></div>
+					<div class="col-sm-4 df">
+                        <label class="mx-1">to </label>
+						<input type="text" class="form-control">
+                    </div>
+                    <div class="col-sm-5 df">
+                        <label class="mx-1">pay prize</label>
+						<select class="form-select">
+							<option value=""></option>
+						</select>
+                    </div>
+                </div>
+                <div class="df mb-3">
+					<div class="col-sm-3"></div>
+					<div class="col-sm-4 df">
+                        <label class="mx-1">Prize </label>
+						<input type="text" class="form-control">
+                    </div>
+                    <div class="col-sm-5 df">
+                        <label class="mx-1">TM </label>
+						<select class="form-select">
+							<option value=""></option>
+						</select>
+                    </div>
+                </div>
+            </div>
+			<div class="fd df justify-content-end mb-3">
+				<button class="btn1">Add</button>
+			</div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onEditPaytableSubmit()"> Save </button>
+            <button class="btn_grade_2" (click)="editPaytableClose()"> Cancel </button>
+        </div>
+    </div>
+</div>

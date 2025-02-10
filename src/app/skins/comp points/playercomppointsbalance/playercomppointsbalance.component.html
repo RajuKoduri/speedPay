@@ -1,0 +1,189 @@
+<div>
+    <h3> Comp Points Balance</h3>
+</div>
+<div class="dropdown fd">
+    <button (click)="balancefil()" class="fillterbtn font_14">Filters
+        <i *ngIf="!showbalance" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="showbalance" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    <!-- <button class="fillterbtn m_l_5" style="margin-right:85px; float: right;" (click)="next()">
+        next</button> -->
+</div>
+<form [formGroup]="filterForm">
+    <div class="container fd filterDiv " *ngIf="showbalance">
+        <div class="row">
+            <div class="col-12 col-sm-8">
+                <div class="div_flex p_5_10">
+                    <label>StartDate</label>
+                    <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                        [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                    <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                        [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                        [max]="endTime" />
+                </div>
+                <div class="div_flex p_5_10">
+                    <label>EndDate</label>
+                    <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                        [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                    <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                        [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                </div>
+                <div class="red_col" *ngIf="steddate">
+                    Start date should be below or equal to end date
+                </div>
+                <div class="red_col" *ngIf="timeerror">
+                    Start time should be below or equal to end time
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df m-1">
+        <div style="margin-right:20px;" *ngIf="CompPointBalance">Rows On the Page: {{rowsOnthePage}} </div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd">
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="fd table_2">
+        <table class="tablCode" id="excel-table">
+            <thead>
+                <tr>
+                    <th *ngIf="playerExplorer">Player</th>
+                    <th>Outgoings/Incomings</th>
+                    <th>Opening Balance</th>
+                    <th>Incomings</th>
+                    <th>Outgoings</th>
+                    <th>Total Turnover</th>
+                    <th>Closing Balance</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="CompPointBalance">
+                <tr *ngFor="let points of CompPointBalance ,let i = index" (dblclick)="compPointbalancedata(points)">
+                    <td *ngIf="playerExplorer" class="hyperLink"
+                        (click)="PlayerExplore(points.player.account, points.player.guid, points.player)">
+                        {{points.player.nickName}}</td>
+                    <td>{{points.expenseOrRevenue?points.expenseOrRevenue:points.title}}</td>
+                    <td class="text-end">{{points.openingBalance?.value |numberFormat}}</td>
+                    <td class="text-end"> {{ (points?.periodRevenue ? points?.periodRevenue?.value :
+                        points?.revenue?.value) | numberFormat }}</td>
+                    <td class="text-end">{{(points.periodExpense? points.periodExpense?.value
+                        :points.expense.value)|numberFormat}}</td>
+                    <td class="text-end">{{points.totalTurnover?.value |numberFormat}}</td>
+                    <td class="text-end">{{points.closingBalance?.value |numberFormat}}</td>
+                </tr>
+            </tbody>
+            <tfoot *ngIf="CompPointBalance && CompPointBalance.length>0">
+                <tr>
+                    <td *ngIf="playerExplorer"></td>
+                    <td></td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(OpeningBalance)">
+                            {{OpeningBalance[key]}} ; </span> </td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(IncomingsBalance)">
+                            {{IncomingsBalance[key]}} ; </span> </td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(outgoingBalance)">
+                            {{outgoingBalance[key]}} ; </span> </td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(totalTurnover)">
+                            {{totalTurnover[key]}} ; </span> </td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(closingBalance)">
+                            {{closingBalance[key]}} ; </span> </td>
+
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="fd" *ngIf="CompPointBalance && CompPointBalance.length>0">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || CompPointBalance==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||CompPointBalance==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="CompPointBalance">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="CompPointBalance==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="CompPointBalance==null || pagecontrolbtn" (click)="fastforward()"><i
+                class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- /\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\\//\/\/ -->
+<!-- <div class="black_cover">
+        <div class="">
+            <div>
+                <h1>Comp Point Balance</h1>
+            </div>
+        </div>
+    </div> -->
+
+<div class="black_cover" *ngIf="CompPointspopup">
+    <div class="popup_1 pop_sm " *ngIf="CompPointspopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Comp Points Level</h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+
+            <h6 class="common_head">Common</h6>
+            <div class="break_line"></div>
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td>Outgoings/Incomings</td>
+                        <td>{{CompPoints?.expenseOrRevenue}}</td>
+                    </tr>
+                    <tr>
+                        <td>Opening Balance</td>
+                        <td>{{CompPoints?.openingBalance?.value |numberFormat}}</td>
+                    </tr>
+                    <tr>
+                        <td>Incomings</td>
+                        <td>{{(CompPoints?.periodRevenue ? CompPoints?.periodRevenue?.value :
+                            CompPoints?.revenue?.value)| numberFormat}} </td>
+                    </tr>
+                    <tr>
+                        <td>Outgoings</td>
+                        <td>{{(CompPoints.periodExpense? CompPoints.periodExpense?.value
+                            :CompPoints.expense.value)|numberFormat}}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Turnover</td>
+                        <td>{{CompPoints?.totalTurnover?.value |numberFormat}}</td>
+                    </tr>
+                    <tr>
+                        <td>Closing Balance</td>
+                        <td>{{CompPoints?.closingBalance?.value |numberFormat}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- <div>
+            <button class="btn btn-primary" (click)="closepopup()">Cencel</button>
+        </div> -->
+        <div class="bottomFix">
+            <!-- <button class="btn_grade_1" (click)="closepopup()"> Save </button> -->
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+
+    </div>
+</div>
+<!-- /\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\\//\/\/ -->

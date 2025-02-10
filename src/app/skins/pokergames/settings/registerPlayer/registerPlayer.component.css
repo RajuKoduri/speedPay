@@ -1,0 +1,72 @@
+
+.register-container{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.search-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* .label-heading{
+margin-right: 10px;
+} */
+
+input[type=text]{
+    width: 40%;
+    margin: 0px 10px;
+    outline: none;
+    border-radius: 10px;
+    height: 30px;
+    padding: 6px;
+}
+
+.bal-buy-container{
+    width: 48%;
+    margin: 5px;
+    box-shadow: 2px 2px 2px 2px rgba(119, 113, 113, 0.24);
+    height: 200px;
+    padding: 5px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.para-element{
+    background: #cde0e5a6;
+    padding: 0px 3px;
+}
+
+.btn_grade_1-disabled {
+    border: solid 1px #ddd;
+    color: #000;
+    cursor: no-drop;
+    background-color: #d0cccc !important;
+}
+
+.player-search-error{
+    color: red;
+}
+.player-search-success{
+    color: green;
+}
+
+p{
+   
+    margin-bottom: 5px;
+}
+
+.popup_1.pop_sm{
+    max-width: 550px !important;
+}
+
+label input{
+    margin-bottom: 10px;
+}
+
+
+
+

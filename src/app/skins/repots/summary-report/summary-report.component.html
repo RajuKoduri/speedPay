@@ -1,0 +1,147 @@
+<div>
+    <h3>Summary </h3>
+</div>
+<div class="dropdown fd fil_export">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <div>
+        <button class="fillterbtn m_l_5 btn_sub12" (click)="exportCsv()"> Export Csv</button>
+        <button class="fillterbtn m_l_5 btn_sub12" (click)="exportexcel()"> Export Excel</button>
+    </div>
+
+</div>
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <!-- <div>
+                        <label>Reporting Period</label>
+                        <input type="text" formControlName="repotingstart">
+                    </div> -->
+
+                    <!-- <div class="df">
+                        <label>Start Date</label>
+                        <input class="Birthdayinputs" type="date" formControlName="StartDate" [max]="todaydate"
+                            [ngModel]="startDate | date:'yyyy-MM-dd'" (ngModelChange)="startDate = $event">
+                    </div>
+                    <div>
+                        <label>End Date</label>
+                        <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                            [ngModel]="endDate | date:'yyyy-MM-dd'" (ngModelChange)="endDate = $event">
+                    </div> -->
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Skins</label>
+                        <select class="seclectopt" formControlName="Skins">
+                            <option>all</option>
+                        </select>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>wallet</label>
+                        <select class="seclectopt" formControlName="wallet">
+                            <option>USD</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Login Name</label>
+                        <input type="text" formControlName="LoginName">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <div style="margin-right:20px;" *ngIf="SummaryReportdata">Rows On the Page: {{rowsOnthePage}}</div>
+    <!-- <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div> -->
+    <div class="df justify-content-end">
+        <button class="fillterbtn m_l_5 btn_sub12 " (click)="onFormSubmit()"
+            [disabled]="steddate || timeerror">Submit</button>
+    </div>
+</div>
+
+<div class="fd table_2">
+    <table class="tablCode" id="excel-table">
+        <thead>
+            <tr>
+                <th>Rake</th>
+                <th>caballo profit</th>
+                <th>jackpot </th>
+                <th>loginName </th>
+                <th>maintainance Fee</th>
+                <th>no of players</th>
+                <th>tournament fee</th>
+                <th>vivo profit</th>
+                <th>Face</th>
+            </tr>
+        </thead>
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <tbody *ngIf="SummaryReportdata">
+            <tr *ngFor="let List of SummaryReportdata,let i =index">
+                <td>{{List.rake}}</td>
+                <td>{{List.caballoRevenue}}</td>
+                <td>{{List.jackotFee}}</td>
+                <td>{{List.loginName}}</td>
+                <td>{{List.maintainanceFee}}</td>
+                <td>{{List.noOfPlayers}}</td>
+                <td>{{List.tournamentFee}}</td>
+                <td>{{List.casinoRevenue}}</td>
+                <td>{{List.network}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="fd" *ngIf="SummaryReportdata">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || SummaryReportdata==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||SummaryReportdata==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="SummaryReportdata">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="SummaryReportdata == null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="SummaryReportdata==null || pagecontrolbtn" (click)="fastforward()"><i
+                class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>

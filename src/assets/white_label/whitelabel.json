@@ -1,0 +1,688 @@
+{
+    "menu": [
+        {
+            "name": "Player Control",
+            "url": "#",
+            "title": "Player Control",
+            "expanded": false,
+            "children": [
+                {
+                    "name": "Players List",
+                    "url": "/playerslist",
+                    "Id": "PLAYER_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Online Players",
+                    "url": "/onlineplayers",
+                    "Id": "PLAYER_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Locked Bonuses",
+                    "url": "/lockedbonuses",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Visit Statistics",
+                    "url": "/visitstatistics",
+                    "Id": "PLAYER_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Suspicious Players",
+                    "url": "/suspiciousplayers",
+                    "Id": "SETTINGS_FRAUDCONTROL_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Black List",
+                    "url": "/blacklist",
+                    "Id": "SETTINGS_FRAUDCONTROL_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Fraud Players",
+                    "url": "/fraudplayers",
+                    "Id": "SETTINGS_FRAUDCONTROL_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Winner List",
+                    "url": "/winnerslist",
+                    "Id": "PLAYER_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Losers List",
+                    "url": "/loserlist",
+                    "Id": "PLAYER_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Players Avatars",
+                    "url": "/playeravatars",
+                    "Id": "PLAYER_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Player Access Rules",
+                    "url": "/playersaccessrules",
+                    "Id": "GAMES_SETTINGS_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Disconnection Protection Settings",
+                    "url": "/disconnectionprotectionsettings",
+                    "Id": "GAMES_SETTINGS_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Create New Players",
+                    "url": "/CreateNewplayer",
+                    "Id": "",
+                    "status": false                   
+                },
+                {
+                    "name": "Player Permission Groups",
+                    "url": "/playerpermissiongroups",
+                    "Id": "PLAYER_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Player Registration Settings",
+                    "url": "/playerregistrationsettings",
+                    "Id": "PLAYER_MANAGE",
+                    "status": false                   
+                }
+            ]
+        },
+        {
+            "name": "Casino Games",
+            "url": "#",
+            "title": "Casino Games",
+            "expanded": false,
+            "children": [
+                {
+                    "name": "Casino Game Sessions",
+                    "url": "/Casinogamesessoins",
+                    "Id": "GAMES_INFO_VIEW",
+                    "status": false,
+                    "subchildren": [
+                        {
+                            "name": "Games Rounded List",
+                            "url": "/Gameroundlist",
+                            "Id": "GAMES_INFO_VIEW",
+                            "status": false                           
+                        }
+                    ]
+                },
+                {
+                    "name": "Games List",
+                    "url": "/Gameslist",
+                    "Id": "GAMES_INFO_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Free Money Games",
+                    "url": "/freemoneygames",
+                    "Id": "GAMES_INFO_VIEW",
+                    "status": false                   
+                }
+            ]
+        },
+        {
+            "name": "Remote System",
+            "url": "#",
+            "title": "remotesystem",
+            "children": [
+                {
+                    "name": "Remote Systems",
+                    "url": "/remotesystems",
+                    "Id": "",
+                    "status": false                   
+                },
+                {
+                    "name": "Remote games",
+                    "url": "/remotesystemsgames",
+                    "Id": "",
+                    "status": false                   
+                },
+                {
+                    "name": "Remote Games Session",
+                    "url": "/remotegamesessions",
+                    "Id": "",
+                    "status": false                   
+                },
+                {
+                    "name": "Transfer Activities & Summary",
+                    "url": "/transfersummary",
+                    "Id": "",
+                    "status": false                   
+                },
+                {
+                    "name": "Transfers & Activities History",
+                    "url": "/transferhistory",
+                    "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+                    "status": false                   
+                }
+            ]
+        },
+        {
+            "name": "Promotions",
+            "url": " #",
+            "title": "Promotions",
+            "expanded": false,
+            "children": [
+                {
+                    "name": "Promotional Codes",
+                    "url": "/promotinalcodes",
+                    "Id": "CASHIER_BONUSCODES_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Deposit Bonus Settings",
+                    "url": "/depositbonussettings",
+                    "Id": "PLAYER_PERSONAL_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Bonus Abuse",
+                    "url": "/bonusabuse",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Periodical Promotions List",
+                    "url": "/periodicalpromotionsettings",
+                    "Id": "GAMES_INFO_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Promotion Participants Ranks",
+                    "url": "/promotionsparticipantsranks",
+                    "Id": "GAMES_INFO_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Periodical Promotion Settings",
+                    "url": "/periodicalpromotionsettings",
+                    "Id": "GAMES_SETTINGS_VIEW",
+                    "status": false                   
+                }
+            ]
+        },
+        {
+            "name": "Comp points",
+            "url": "#",
+            "title": "Comp points",
+            "children": [
+                {
+                    "name": "Comp Point Settings",
+                    "url": "/comppointssettings",
+                    "Id": "COMP_POINTS_SETTINGS_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Earn Settings",
+                    "url": "/earnsettings",
+                    "Id": "COMP_POINTS_SETTINGS_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Exchange Rates",
+                    "url": "/exchangerates",
+                    "Id": "COMP_POINTS_SETTINGS_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Comp Points Levels",
+                    "url": "/comppointslevels",
+                    "Id": "COMP_POINTS_SETTINGS_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Levels Changes History",
+                    "url": "/levelchangeshistory",
+                    "Id": "COMP_POINTS_INFO_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Player Comp Points Adjustments",
+                    "url": "/playercomppointsadjustments",
+                    "Id": "COMP_POINTS_INFO_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Player Comp Points Balance",
+                    "url": "/playercomppointsbalance",
+                    "Id": "COMP_POINTS_INFO_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Player Comp Points Exchange",
+                    "url": "/playercomppointsexchange",
+                    "Id": "COMP_POINTS_INFO_VIEW_GLOBAL",
+                    "status": false                   
+                }
+            ]
+        },
+        {
+            "name": "Accounting",
+            "url": " #",
+            "title": "Accounting",
+            "children": [
+                {
+                    "name": "summary",
+                    "url": "/accountingsummary",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "House Balance",
+                    "url": "/housebalance",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Players Balance",
+                    "url": "/acplayerbalance",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Casino Games Balance",
+                    "url": "/accasinogamesbalance",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Club Games Balance",
+                    "url": "/acclubgamesbalance",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Affiliate Balance",
+                    "url": "/acaffiliatebalance",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Affiliate Expenses",
+                    "url": "/acaffiliateexpenses",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Agents Balance",
+                    "url": "/acagentsbalance",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Agent's Nested Balance",
+                    "url": "/acagentsnestedbalance",
+                    "Id": "AFFILIATES_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Agents Expenses",
+                    "url": "/acagentexpenses",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Simulator Strategies Expenses",
+                    "url": "/simulatorstrategiesexpenses",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                }
+            ]
+        },
+        {
+            "name": "Cashier",
+            "url": " #",
+            "title": "Cashier",
+            "children": [
+                {
+                    "name": "Fraud Control",
+                    "url": "/fraudcontrol",
+                    "Id": "SETTINGS_FRAUDCONTROL_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Merchant Settings",
+                    "url": "/merchantsettings",
+                    "Id": "CASHIER_CURRENCIES_MANAGE",
+                    "status": false                   
+                },
+                {
+                    "name": "Currencies List",
+                    "url": "/currencieslist",
+                    "Id": "CASHIER_CURRENCIES_MANAGE",
+                    "status": false                   
+                },
+                {
+                    "name": "Currency Exchange Rates",
+                    "url": "/currencyexchangerates",
+                    "Id": "CASHIER_CURRENCIES_MANAGE",
+                    "status": false                   
+                },
+                {
+                    "name": "Wallet Exchanges Settings",
+                    "url": "/walletexchangesettings",
+                    "Id": "PLAYER_FINANCE_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Deposit Limits Settings",
+                    "url": "/depositlimitssettings",
+                    "Id": "PLAYER_FINANCE_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Cashouts",
+                    "url": "/cashout",
+                    "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Deposits",
+                    "url": "/cashdeposits",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Withdrawals",
+                    "url": "/withdrawals",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Charge Backs",
+                    "url": "/chargebacks",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Player Cash Adjustments",
+                    "url": "/playercashadjustments",
+                    "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Player Bonus Adjustments",
+                    "url": "/playerbonusadjustments",
+                    "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Transfers to Players",
+                    "url": "/transfertoplayers",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "TM Adjustments",
+                    "url": "/tmadjustments",
+                    "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Transfers to Agents",
+                    "url": "/transfertoagents",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Agent Cash Adjustments",
+                    "url": "/agentcashadjustments",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Agent Revenue Payments",
+                    "url": "/agentrevenuepayments",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Simulator Strategy Adjustments",
+                    "url": "/simulatorstrategyadjustmets",
+                    "Id": "GAMES_CONTROL",
+                    "status": false                   
+                },
+                {
+                    "name": "agentrevenueadjustments",
+                    "url": "/agentrevenueadjustments",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Affiliate Payments",
+                    "url": "/affiliatepayments",
+                    "Id": "AFFILIATES_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Affiliate Revenue Adjustments",
+                    "url": "/affiliaterevenueadjustments",
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": "Promotional Codes Usages",
+                    "url": "/promotinolcodeusages",
+                    "Id": "CASHIER_BONUSCODES_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Transactions",
+                    "url": "/transactions",
+                    "Id": "CASHIER_TRANSACTION_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Fraud Transactions",
+                    "url": "/fraudtransactions",    
+                    "Id": "ACCOUNTING",
+                    "status": false                   
+                },
+                {
+                    "name": " Currency Exchanges",
+                    "url": "/currencyexchanges",
+                    "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Promotion Prize Payments",
+                    "url": "/promotiomprizepayments",
+                    "Id": "GAMES_INFO_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Cashouts To The Bank",
+                    "url": "/cashoutstothebank",
+                    "Id": "CASHIER_TRANSACTION_VIEW",
+                    "status": false                   
+                }
+            ]
+        },
+        {
+            "name": "Agent Control",
+            "url": " #",
+            "title": "Agent Control",
+            "children": [
+                {
+                    "name": "Agent List",
+                    "url": "/agentlist",
+                    "Id": "AFFILIATES_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Agents Statistics",
+                    "url": "/agentstatistics",
+                    "Id": "AFFILIATES_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Agent Permission Groups",
+                    "url": "/agentpermissiongroups",
+                    "Id": "GAMES_CONTROL",
+                    "status": false                   
+                },
+                {
+                    "name": "Create New Agent",
+                    "url": "/CreateNewAgent",
+                    "Id": "GAMES_CONTROL",
+                    "status": false                   
+                },
+                {
+                    "name": "Add Agent Permissions Group",
+                    "url": "/addAgentPemissiongroup",
+                    "Id": "",
+                    "status": false                   
+                },
+                {
+                    "name": "Agent Registration Settings",
+                    "url": "/agentregistrationsettings",
+                    "Id": "PLAYER_MANAGE",
+                    "status": false                   
+                },
+                {
+                    "name": "Agent Access Rules",
+                    "url": "/agentaccessrules",
+                    "Id": "PLAYER_MANAGE",
+                    "status": false                   
+                }
+            ]
+        },
+        {
+            "name": "Affiliate Control",
+            "url": "affiliateControl",
+            "title": "Affiliate Control",
+            "children": [
+                {
+                    "name": "Affiliates List",
+                    "url": "/affiliateslist",
+                    "Id": "AFFILIATES_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Affiliate Access Rules",
+                    "url": "/affiliateaccessrules",
+                    "Id": "PLAYER_MANAGE",
+                    "status": false                   
+                },
+                {
+                    "name": "Affiliate Registration Settings",
+                    "url": "/affiliatesregistationsettings",
+                    "Id": "PLAYER_MANAGE",
+                    "status": false                   
+                },
+                {
+                    "name": "Default Percents",
+                    "url": "/defaultpercents",
+                    "Id": "AFFILIATES_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Affiliates Statistics",
+                    "url": "/affiliatestatistics",
+                    "Id": "AFFILIATES_VIEW",
+                    "status": false                   
+                },
+                {
+                    "name": "Affiliates Access Rules",
+                    "url": "/affiliateaccessrules",
+                    "Id": "AFFILIATES_VIEW",
+                    "status": false                   
+                }
+            ]
+        },
+        {
+            "name": "Tools",
+            "url": "#",
+            "title": "Tools",
+            "children": [
+                {
+                    "name": "Emailing",
+                    "url": "/affiliatemailinglist",
+                    "Id": "TOOLS_EMAIL_NOTIFI",
+                    "status": false ,                 
+                    "subchildren": [
+                        {
+                            "name": "Message Templates",
+                            "url": "/messagetemplates",
+                            "Id": "TOOLS_EMAIL_NOTIFI",
+                            "status": false                           
+                        },
+                        {
+                            "name": "Settings",
+                            "url": "/toolsettings",
+                            "Id": "TOOLS_EMAIL_NOTIFI",
+                            "status": false                           
+                        },
+                        {
+                            "name": "Mass Bonus List",
+                            "url": "/massbonuslist",
+                            "Id": "PLAYER_FINANCE_CONTROL",
+                            "status": false                           
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Reports",
+            "url": " #",
+            "title": "Reports",
+            "children": [
+                {
+                    "name": "Requested Reports List,",
+                    "url": "/requestedreportslist",
+                    "Id": "PLAYER_VIEW_GLOBAL",
+                    "status": false                   
+                },
+                {
+                    "name": "Skin's Money Report",
+                    "url": "/Skins",
+                    "Id": "",
+                    "status": false                   
+                },
+                {
+                    "name": "Skin's Money Report By Sessions",
+                    "url": "/SkinsReportBySessions",
+                    "Id": "",
+                    "status": false                   
+                },
+                {
+                    "name": "Summary Report",
+                    "url": "/Summary",
+                    "Id": "",
+                    "status": false                   
+                },
+                {
+                    "name": "Rake Race Report",
+                    "url": "/RakeRace",
+                    "Id": "",
+                    "status": false                   
+                },
+                {
+                    "name": "Player's Activities",
+                    "url": "/PlayerActivity",
+                    "Id": "",
+                    "status": false                   
+                },
+                {
+                    "name": "LeaderBoard",
+                    "url": "/Leaderboard",
+                    "Id": "",
+                    "status": false                   
+                }
+            ]
+        }
+    ]
+}

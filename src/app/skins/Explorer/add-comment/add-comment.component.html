@@ -1,0 +1,44 @@
+<div class="black_cover">
+    <div class="popup_1">
+        <div class="PopupHead">
+            <h5 class="text-center">Add Comment</h5>
+            <span class="closetop" (click)="closepopUP()">
+                <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <!-- <div class="text">
+            server:
+        </div> -->
+        <div class="main-container">
+            <div>
+                <div class="df m_3">
+                    <b class="col-sm-4"> player Name</b>
+                    <div class="col-sm-8">{{showplayername}}</div>
+                </div>
+                <div class="df m_3">
+                    <b class="col-sm-4">Admin</b>
+                    <div class="col-sm-8"> {{UserName()}}</div>
+                </div>
+                <div class="df m_3">
+                    <b class="col-sm-4">Date</b>
+                    <div class="col-sm-8"> {{transformDate}} </div>
+
+                </div>
+                <div class="df align-items-center m_3">
+                    <b class="col-sm-4">comment</b>
+                    <textarea _ngcontent-oka-c3="" class=" ng-pristine ng-invalid ng-touched" cols="100"
+                        formcontrolname="userQuestion" id="Message" rows="4" sid="login-input-userQuestion"
+                        [(ngModel)]="comment" placeholder=""></textarea>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="bottomFix">
+            <div>
+                <button class="btn_grade_2" (click)="onFormSubmit()"
+                    [disabled]="!comment || comment.trim().length === 0">Save </button>
+                <button class="btn_grade_2" (click)="closepopUP()"> close </button>
+            </div>
+        </div>
+    </div>
+</div>

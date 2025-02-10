@@ -1,0 +1,57 @@
+
+<div class="black_cover" *ngIf="revenueAdjustmentPopup" (click)="closepopup()"></div>
+<div class="popup_1 pop_sm" *ngIf="revenueAdjustmentPopup">
+  <div class="PopupHead">
+    <h5 class="text-center">Revenue Adjustment</h5>
+    <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+  </div>
+  <form [formGroup]="revenueAdjustmentForm">
+    <div class="soon font_13 fd p_lr_15">
+      <div class="fd p_10  ">
+        <div class="row">
+          <div class="col-5">
+            <p>Agent Login:</p>
+          </div>
+          <div class="col-6">
+            <p>{{agentinfo.agent.login}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5">
+            <p>Unpaid Revenue:</p>
+          </div>
+          <div class="col-6">{{agentinfo.netRevenue.value |numberFormat}}</div>
+        </div>
+        <div class="row">
+          <div class="col-5">
+            <p>Adjustment Amount:</p>
+          </div>
+          <div class="col-6">
+            <span *ngIf="f['revenueAdjAmount'].touched && f['revenueAdjAmount'].invalid">
+              <span *ngIf="f['revenueAdjAmount'].errors && f['revenueAdjAmount'].errors['required']"
+                class="text-danger">
+                <b class="bi bi-x-circle-fill p-1" title="value can not be empty"></b>
+              </span>
+            </span>
+            <input class="me-2" [(ngModel)]="adjustmentAmount " type="number" formControlName="revenueAdjAmount">
+            {{currencyCode}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-5">
+            <p>Comment</p>
+          </div>
+          <div class="col-6">
+            <textarea class="fd"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottomFix">
+      <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+      <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+    </div>
+  </form>
+</div>
+

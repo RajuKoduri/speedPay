@@ -1,0 +1,73 @@
+<div>
+    <h3>Manual Deposit</h3>
+</div>
+<div class="popup_4 pop_sm fd">
+
+    <div class=" PopupHead1">
+        <h5 class="text-center"> Manual Deposit :</h5>
+        <!-- <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span> -->
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+        <div class="fd p_5 " [formGroup]="ManualDepositForm">
+            <div class="df m_3">
+                <label class="col-sm-6">Agent </label>
+                <span>{{AgentName}}</span>
+            </div>
+
+            <div class="df m_3">
+                <label class="col-sm-6">Payment Systems </label>
+                <span class="col-sm-6">
+                    <select class="seclectopt " [(ngModel)]="selectedPaymentSystem"
+                        [ngModelOptions]="{standalone: true}">
+                        <option [ngValue]="list.guid" *ngFor="let list of paymentSystemTypesList">{{list.value}}
+                        </option>
+                    </select>
+                </span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Order Amount </label>
+                <span class="col-sm-6">
+                    <input type="number" min="0" oninput="this.value = Math.abs(this.value)"
+                        formControlName="OrderAmount" style="width: 105px;" class="col-sm-3"
+                        [(ngModel)]="OrderAmountinput" (change)="OrderAmount01()" />
+                    <select class="seclectopt col-sm-3" formControlName="OrderAmountwallet" (change)="SeletedWallet()"
+                        [(ngModel)]="SelectedOrderAmountwallet">
+                        <option [ngValue]="list.currency" *ngFor="let list of WalletcurrencyCodeList">
+                            {{list.currencyCode}}
+                        </option>
+                    </select>
+                </span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Top-up Wallet </label>
+                <span class="col-sm-6">
+                    <select class="seclectopt" (change)="SeletedWallet()" [(ngModel)]="selectedCurrency"
+                        [ngModelOptions]="{standalone: true}">
+                        <option [ngValue]="list.guid" *ngFor="let list of WalletList">{{list.description}}</option>
+                    </select>
+                </span>
+            </div>
+            <div class="df m_3">
+                <span class="col-sm-6"></span>
+                <span class="col-sm-6">{{OrderAmountSum}}</span>
+
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Reference Number </label>
+                <span class="col-sm-6">
+                    <input type="text" formControlName="ReferenceNumber" />
+                </span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Note </label>
+                <span class="col-sm-6">
+                    <textarea formControlName="Note"></textarea>
+                </span>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onFormSubmit()"
+                [disabled]="OrderAmountinput==0||OrderAmountinput==undefined"> Save </button>
+        </div>
+    </div>
+</div>

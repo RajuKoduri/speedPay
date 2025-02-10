@@ -1,0 +1,184 @@
+<div class="black_cover" *ngIf="user== 'player'">
+    <div class="popup_1 pop_sm" *ngIf="user== 'player'">
+        <div class="PopupHead">
+            <h5 class="text-center">Refer player to Agent</h5>
+            <span class="closetop" (click)="closeClick()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10  ">
+                <!-- <b class="p_5 text-success text-center" *ngIf="AlertMessage">{{AlertMessage}} -->
+                <!-- </b> -->
+                <div>
+                    <div class="my-1">
+                        <label class="col-sm-4 p_3">Refferrer</label>
+                        <span>{{AgentName}} ({{fullname}}) </span>
+                    </div>
+                    <div class="d_flex my-1">
+                        <label class="col-sm-4 p_3">Compaigan</label>
+                        <span>
+                            <select class="seclectopt" [(ngModel)]="PlayerCompaiganId">
+                                <option [ngValue]="list.guid" *ngFor="let list of playerCampaigns">{{list.name}}
+                                </option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="d_flex my-1 align-items-center">
+                        <label class="col-sm-4 p_3">User Login</label>
+                        <span>
+                            <input class="seclectopt " type="text" [(ngModel)]="UserLogin" />
+                        </span>
+                        <button class="btn_grade_1 btn-sm" [disabled]="!UserLogin"
+                            (click)="findUser('Player')">Find</button>
+                    </div>
+                    <div>
+                        <label class="col-sm-4 p_3">Refferal</label>
+                        <span class="col-sm-9">
+                            <span id="errorInfo">
+                                <!-- {{findUserData.length==1? getUserInfo():'No User Found'}} -->
+                                <!-- {{ UserError()}} -->
+                                {{Error_Txt}}
+                            </span>
+                        </span>
+                        <!-- <span
+                              *ngIf="findUserData.length==1;else sample">{{findUserData[0].user.login}}{{findUserData[0].user.fullName}}
+                              registered {{findUserData[0].user.regDate}}
+                          </span>
+                          <ng-template #sample>
+                              <span class="text-danger">
+                                  No User Found
+                              </span>
+                          </ng-template >
+                          
+                      </span> -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <!-- <button id="refBtn" class="btn_grade_1" [disabled]="findUserData.length==1?false :true" (click)="refer('Player')"> -->
+            <button id="refBtn" class="btn_grade_1" [disabled]="enableRefer_Btn" (click)="refer('Player')">
+                Refer
+            </button>
+            <button class="btn_grade_2" (click)="closeClick()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& refer Agent start &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& -->
+
+<div class="black_cover" *ngIf="user=='agent'">
+    <div class="popup_1" *ngIf="user == 'agent'">
+        <div class="PopupHead">
+            <h5 class="text-center">Refer Agent to Agent</h5>
+            <span class="closetop" (click)="closeClick()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10  ">
+                <!-- <b class="p_5 text-success text-center" *ngIf="AlertMessage">{{AlertMessage}} -->
+                <!-- </b> -->
+                <div>
+                    <div class="d_flex">
+                        <label class="col-sm-4 p_3">Compaigan</label>
+                        <span class="col-sm-8">
+                            <select class="seclectopt" [(ngModel)]="AgentCompaiganId">
+                                <option [ngValue]="list.guid" *ngFor="let list of agentCampaigns">{{list.name}}
+                                </option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="d_flex align-items-center">
+                        <label class="col-sm-4 p_3">User Login</label>
+                        <span class="col-sm-6">
+                            <input class="seclectopt " type="text" [(ngModel)]="UserLogin" />
+                        </span>
+                        <button class="btn_grade_1" [disabled]="!UserLogin" (click)="findUser('Agent')">Find</button>
+                    </div>
+                    <div class="d_flex my-1">
+                        <label class="col-sm-4 p_3">Refferrer</label>
+                        <span>{{AgentName}} ({{fullname}}) </span>
+                    </div>
+                    <div class="">
+                        <label class="col-sm-4 p_3">Refferal</label>
+                        <span class="col-sm-9">
+                            <span id="errorInfo">
+                                <!-- {{findUserData.length==1? getUserInfo():'No User Found'}} -->
+                                <!-- {{ UserError()}} -->
+                                {{Error_Txt}}
+
+                            </span>
+                        </span>
+                        <div>
+                            <h6 class="m_3">Revenue percents</h6>
+                            <div class="col-sm-12">
+                                <div class="df m_3 table_2">
+                                    <table class="tablCode " id="excel-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Revenue Form</th>
+                                                <th>Parameter</th>
+                                                <th>Value</th>
+                                                <th>Last Change</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="agentReventPerc">
+                                            <tr *ngFor="let list of agentReventPerc">
+                                                <td>{{list.programName}}</td>
+                                                <td>{{list.parameter}}</td>
+                                                <td>{{list.percent}}</td>
+                                                <!-- <td [ngClass]="list.Newpercent>list.percent?'text-danger':''">{{list.Newpercent}}</td> -->
+                                                <td [ngClass]="{ 'text-danger': list.percent<list.Newpercent }">
+                                                    {{list?.Newpercent}}</td>
+                                                <!-- <td><input type="number" value="{{list.percent}}" [(ngModel)]="list.percent"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    oninput="this.value = Math.abs(this.value)" type="number" min="0" />
+                                            </td>
+                                            <td><input type="number" value="{{list.Newpercent}}" [(ngModel)]="list.Newpercent"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    oninput="this.value = Math.abs(this.value)" type="number" min="0" />
+                                            </td> -->
+
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix ">
+            <button id="refBtn" class="btn_grade_1" [disabled]="enableRefer_Btn" (click)="refer('Agent')">
+                Refer
+            </button>
+            <button class="btn_grade_2" (click)="closeClick()"> Cancel </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& refer Agent end &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& -->
+
+
+<!-- ***********************************MovetoAgentPopup******************************************** -->
+<div class="black_cover" *ngIf="MovetoAgentPopup">
+    <div class="popup_1 pop_sm" *ngIf="MovetoAgentPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="MoveconformPopup('no')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10  ">
+                <p>{{MoveconformText}}</p>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="MoveconformPopup('yes')"> yes </button>
+            <button class="btn_grade_2" (click)="MoveconformPopup('no')"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- ***********************************MovetoAgentPopupEnd******************************************** -->

@@ -1,0 +1,289 @@
+.backbutton {
+  display: inline-block;
+  padding: 6px 18px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-decoration: none;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  border: solid #272833;
+  margin: 0px 5px 5px 0px;
+  background: #272833;
+}
+
+.active{
+  background-color:  #89da94;
+  margin: 10px;
+  position: sticky;
+  padding: 4px;
+  top: 45px;
+  color: #000;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+
+input:focus::placeholder {
+  color: transparent;
+}
+
+::placeholder {
+  color: #212529
+}
+
+body {
+  overflow-y: scroll;
+}
+
+.display {
+  display: flex;
+}
+input :focus {
+  outline: none;
+}
+
+.table_2 thead th {
+  position: sticky;
+  top: 0;
+}
+
+table tfoot {
+  inset-block-end: 0;
+  /* "bottom" */
+
+}
+
+tfoot {
+  position: sticky;
+  bottom: -1px;
+}
+
+table tfoot tr td {
+  /* border-radius: 2em; */
+  background-color: #a6bfc5;
+  color: #000000;
+}
+
+.page_count {
+  display: flex;
+  /* justify-content: space-around; */
+  margin: 20px;
+}
+
+.filterDiv input:focus,
+.filterDiv select:focus {
+  outline: none;
+}
+
+
+.text-center {
+  display: flex;
+  justify-content: space-around;
+}
+
+.df {
+  display: flex;
+
+}
+
+.df label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center
+}
+
+.dataLoader {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: 5px solid #212529;
+  border-top: 5px solid #4b4e50;
+  animation: spin 1s linear infinite;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.multiselect {
+  width: 200px;
+}
+
+/* select all */
+.fd.custSelect {
+  width: 100%;
+  border: solid 1px;
+  height: 30px;
+}
+
+.custSelectOptionPop {
+  position: absolute;
+  top: 28px;
+  background: #fff;
+  border: solid 1px#ddd;
+  box-shadow: 1px 7px 5px rgb(0 0 0/10%);
+}
+
+span.closeCust {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  background: #e9e9e9;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: initial;
+  z-index: 99;
+}
+
+.mw-auto {
+  min-width: inherit;
+}
+
+.expand-row {
+  width: 100%;
+  border: solid 1px #596269;
+  display: inline-block;
+  border-radius: 3px;
+  width: 16px;
+  height: 16px;
+  vertical-align: top;
+  background: #596269;
+  color: #ffffff !important;
+  display: flex;
+  border-radius: 50px;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.expand-row img {
+  vertical-align: top;
+  position: relative;
+  top: 2px;
+}
+
+.sub-table th {
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.sub-table td {
+  background: #efefef;
+}
+
+.no-bg td {
+  background: inherit;
+}
+
+.mw-100 {
+  max-width: 100%;
+}
+.filterDiv-game-filter {
+  background:#fff;
+  max-width: 30%;
+  margin: auto;
+  top: 100px;
+  position: fixed;
+  z-index: 1000;
+  left: 15px;
+  right: 15px;
+  border-radius: 5px;
+  overflow: auto;
+  max-height: 80vh;
+  
+} 
+.filterDiv-game-filter-child{
+  background:#fff;
+  max-width: 80%;
+  margin: auto;
+  top: 100px;
+  position: fixed;
+  z-index: 1000;
+  left: 15px;
+  right: 15px;
+  border-radius: 5px;
+  overflow: auto;
+  max-height: 80vh;
+  
+} 
+.all-games {
+  background-color:#b3d2ec;
+  margin: 10px;
+  position: sticky;
+  padding: 4px;
+  top: 45px;
+  color: #000;
+  font-size: 15px;
+  cursor: pointer;
+}
+.poker-caption-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 11px;
+  margin-left: 9%;
+} 
+.caption-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 250px;
+  padding-top: 5px;
+}
+
+.fillterbtn-games {
+  width: 10%;
+  margin: 0px;
+  height: 37px;
+  border: 1px solid #b8975b;
+  border-left: none;
+  border-radius: 0px 5px 5px 0px;
+  background-color:#ffffff;
+  
+}
+
+
+.text-overflow-clip {
+  border-radius: 5px 0px 0px 5px;
+
+  margin: 0px;
+  width: 90%;
+  white-space: nowrap;   /* Prevent text from wrapping to the next line */
+  overflow: hidden;      /* Hide the overflowing content */
+  text-overflow: ellipsis;
+  border-right: none;
+  font-size: 15px;
+}
+
+.game-select{
+  /* display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important; */
+  overflow: hidden;
+  height: 32px;
+  
+}
+
+.games-list-container{
+  border: 1px solid #b8975b;
+  background-color: #ffffff;
+  border-radius: 5px;
+  height:40px;
+  width: 75%;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.all{
+ background-color: #89da94;
+}

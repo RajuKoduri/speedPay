@@ -1,0 +1,160 @@
+<div>
+    <h1>Fraud Players</h1>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="Currency">
+                            <option [ngValue]="list.guid" *ngFor="let  list of walletlist">{{list.value}}
+                        </select>  -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencyList"
+                                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="Currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label class="datelabel">StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view " type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label class="datelabel">EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="fd">
+
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers">
+        <div style="margin-right:20px;" *ngIf="FraudPlayerslist">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd table_2">
+    <div>
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <table class="tablCode" id="excel_table">
+            <thead>
+                <tr>
+                    <th>S.no</th>
+                    <th>Player</th>
+                    <th>Opening Debt (Cash Part)</th>
+                    <th>Opening Debt (Bonus Part)</th>
+                    <th>Casino Losses for the Period (Cash Part)</th>
+                    <th>Casino Losses for the Period (Bonus Part)</th>
+                    <th>Compensations for the Period (Cash Part)</th>
+                    <th>Compensations for the Period (Bonus Part)</th>
+                    <th>Closing Debt (Cash Part)</th>
+                    <th>Closing Debt (Bonus Part)</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="FraudPlayerslist">
+                <tr (click)="onClick(i)" *ngFor="let list of FraudPlayerslist, let i =index">
+                    <td>{{i +1}}</td>
+                    <td>{{list.player.account}}</td> 
+                    <td class="text-end">{{list.openingDebtCash.value |numberFormat}}</td>
+                    <td class="text-end">{{list.openingDebtBonus.value |numberFormat}}</td>
+                    <td class="text-end">{{list.casinoLossesForPeriodCash.value |numberFormat}}</td>
+                    <td class="text-end">{{list.casinoLossesForPeriodBonus.value |numberFormat}}</td>
+                    <td class="text-end">{{list.compensationsForPeriodCash.value |numberFormat}}</td>
+                    <td class="text-end">{{list.compensationsForPeriodBonus.value |numberFormat}}</td>
+                    <td class="text-end">{{list.closingDebtCash.value |numberFormat}}</td>
+                    <td class="text-end">{{list.closingDebtBonus.value |numberFormat}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- **************************POPUP************************************ -->
+<div class="black_cover" *ngIf="FraudPlayerslistPopup" (click)="closepopup()"></div>
+<div class="popup_1 pop_sm" *ngIf="FraudPlayerslistPopup">
+    <div class="PopupHead">
+        <h5 class="text-center">Fraud Player</h5>
+        <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13">
+        <div class="fd p_5 ">
+
+            <div class="df m_3">
+                <label class="col-sm-8"> Player </label>
+                <span class="col-sm-4">{{oneFraudPlayerlist.player.account}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Opening Debt (Cash Part) </label>
+                <span class="col-sm-4">{{oneFraudPlayerlist.openingDebtCash.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Opening Debt (Bonus Part) </label>
+                <span class="col-sm-4">{{oneFraudPlayerlist.openingDebtBonus.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Casino Losses for the Period (Cash Part) </label>
+                <span class="col-sm-4">{{oneFraudPlayerlist.casinoLossesForPeriodCash.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Casino Losses for the Period (Bonus Part)</label>
+                <span class="col-sm-4">{{oneFraudPlayerlist.casinoLossesForPeriodBonus.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Compensations for the Period (Cash Part) </label>
+                <span class="col-sm-4">{{oneFraudPlayerlist.compensationsForPeriodCash.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Compensations for the Period (Bonus Part) </label>
+                <span class="col-sm-4">{{oneFraudPlayerlist.compensationsForPeriodBonus.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8"> Closing Debt (Cash Part) </label>
+                <span class="col-sm-4">{{oneFraudPlayerlist.closingDebtCash.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8"> Closing Debt (Bonus Part) </label>
+                <span class="col-sm-4">{{oneFraudPlayerlist.closingDebtBonus.value}}</span>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>

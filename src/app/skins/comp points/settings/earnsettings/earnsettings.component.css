@@ -1,0 +1,286 @@
+.game_fil{
+    align-items: end;
+    width: 25%;
+    margin-bottom:5px;
+    font-size: 14px;
+}
+.popup_1{
+    overflow: hidden;
+    padding-bottom: 10px;
+}
+.pop_sm{
+    max-width: 70% !important;
+}
+.value_div{
+    height: 80vh;
+    overflow: auto;
+}
+.game_rows{
+    background-color: bisque;
+    /* background-color: #9ccedb; */
+} 
+.earn_tr{
+    background-color: rgb(218, 206, 191) !important;
+    cursor: pointer;
+}
+.point_st {
+    box-shadow: 3px 0px 0px 0px #5f5c58;
+    border-radius: 5px;
+    /* padding: 10px; */
+    /* background-color: #a6dddd; */
+    height: 55vh;
+    overflow: auto;
+}
+.para{
+    font-size: 16px;
+    font-weight: 600;
+}
+.point_name{
+    box-shadow: 0px 0px 4px 0px #5f5c58;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-evenly;
+}
+.para_font{
+    font-size: 15px;
+}
+.para_b{
+    padding: 4px;
+    font-size: 14px;
+}
+.para_b:hover {
+    background-color:#13657e;
+    cursor: pointer;
+    color: #ffff;
+}
+ 
+.active_p{
+    background-color:#13657e;
+    color: #fff;
+}
+.min_box{
+    width: 100%;
+    height: 200px;
+    margin: 5px;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0px 1px 10px 0px;
+    border-radius:5px;
+}
+.over_flow{
+    overflow: auto;
+}
+.min_para {
+    padding: 5px;
+    background-color: #13657e;
+    color: #ffff;
+    position: sticky;
+    top: -1px;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.fil_para {
+    box-shadow: 0px 2px 7px 0px #9E9E9E;
+    padding: 4px 0px 4px 10px;
+    margin-top: 10px;
+    border-radius: 30px 0px 30px 0px;
+}
+
+/* .break_line{
+        margin-top: 10px; 
+        margin-top: 10px;
+        padding: 2px;
+       background-image: linear-gradient(to right, #FFE4C3, #0d627c,  #ffe4c4);
+} */
+.back_gd{
+    background-color: transparent !important;
+    height: 50%;
+}
+.vertical_p{
+    position: absolute ;
+    bottom: 9%;
+    background-color: wheat;
+    /* width: 24%; */
+    z-index: 1;
+    padding-bottom: 5px;
+}
+.btn_up{
+    width: 40%;
+}
+
+.button_s{
+    background-color: #13657e;
+    width: 71px;
+    padding: 4px 6px 4px 6px;
+    margin: 5px;
+    border-radius: 14px;
+    margin: 11px 9px 0px 0px;
+    color: #fff;
+    border: none;
+    box-shadow: 1px 4px 2px 0px #4d848e;
+}
+.button_s:disabled{
+    background-color: grey ;
+    box-shadow: 1px 4px 2px 0px grey;
+    cursor: no-drop;
+}
+.d_flex{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+tr:nth-child(even) {
+    background-color: transparent;
+    /* background-color: bisque; */
+    /* background-color: #9ccedb; */
+}
+.min_box table tr :hover{
+    background-color: #13657e;
+    color: #fff;
+    border-radius:5px;
+    cursor: pointer;
+}
+.check_box:hover{
+    background-color: transparent !important;
+}
+/* .{
+    position: sticky;
+    top: -1px;
+    white-space: nowrap;
+    z-index: 10;
+} */
+
+
+.Blindpopup {
+    background: #fff;
+    max-width: 500px;
+    margin: auto;
+    top: 150px;
+    /* top: 250px; */
+    position: fixed;
+    z-index: 1000;
+    left: 15px;
+    right: 15px;
+    border-radius: 5px;
+    overflow: auto;
+    max-height: 80vh;
+  }
+  .wh{
+    width: 100%;
+    height: 200px;
+    margin-top: 5px;
+    /* align-items: center;
+    justify-content: center; */
+    display: flex;
+  }
+  .table_2 thead{
+    position: sticky;
+    top: 0;
+  }
+   .deletebtn {
+    width: 50%;
+    padding: 12px 20px ;
+    margin: 0  25% 0 ;  
+    display: inline-block;
+    border: 1px solid #ccc; 
+    border-radius: 4px;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  .overflow{
+      overflow: auto;
+  }
+  .AddNewRangebtn {
+      padding: 5px 7px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 10px;
+      transition: all 0.5s;
+      margin: 3px;
+      border: solid 1px #ddd;
+      color: #fff;
+      background: linear-gradient(45deg, #00b782, #006b9f);
+      width: 70%;
+      position: relative;
+  
+  }
+  .AddNewRangebtn:disabled{
+    cursor: no-drop;
+    color: #0c0c0c ;
+    background: #5e5d5d34;
+  }
+  .btn_grade_1 {
+      background: linear-gradient(45deg, #00b782, #006b9f);
+      background: linear-gradient(45deg, #00b782, #006b9f);
+  }
+  .SeletedRangeArea{
+      padding: 5px;
+      margin: 3px;
+      border: 1px solid gray;
+      border-radius: 5px;
+      box-shadow: 1px 4px 9px gray;
+  }
+  .SeletedRangeArea label{
+      width: 35px;
+  }
+  .SeletedRangeArea input{
+      width: 50px;
+  }
+  .SeletedRangeArea button{
+     
+      width: 50px;
+      margin-left: 55px;
+  }
+  .ParticipantRangeArea{
+    height: 32px;
+  }
+  
+  .ParticipantRangeArea p {
+    padding:2px;
+    margin: 2px 2 0 0;
+    text-align: center;
+    
+    border: 1px solid gray;
+    border-radius: 5px;
+    /* position: relative;
+    overflow: auto; */
+    /* box-shadow: 1px 4px 9px gray; */
+  }
+  .save_div{
+        position: absolute;
+        bottom: 0;
+        background: azure;
+        width: 100%;
+  }
+  .mar_bottom{
+    margin-bottom: 13%;
+  }
+  .Point_list {
+    position: sticky;
+    top: 0;
+    background: bisque;
+    padding: -15px;
+    /* margin-top: -23px; */
+}
+
+    
+.disabled-div {
+    pointer-events: none;
+    opacity: 0.5;
+    /* Optional: Add additional styles to convey disabled state */
+    background-color: #ffffff;
+    color: #999;
+    cursor: not-allowed;
+}    
+.Pad_6{
+    padding-bottom:8% ;
+}
+
+table td:hover{
+    background-color: #98af96;
+}
+
+
+

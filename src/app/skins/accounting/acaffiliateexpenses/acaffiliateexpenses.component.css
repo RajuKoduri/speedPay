@@ -1,0 +1,11 @@
+tfoot{
+  position:sticky;
+  bottom: -1px;
+}
+
+.tablCode thead th {
+  position: sticky;
+  top: -1px;
+  white-space: nowrap;
+  padding: 8px 10px;
+}

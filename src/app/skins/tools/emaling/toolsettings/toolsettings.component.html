@@ -1,0 +1,62 @@
+<div>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportExcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export CSV</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="onFormSubmit()"> Requery </button>
+    <h3>Settings </h3>
+
+</div>
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class=" table_2">
+        <table class="tablCode" id="excel_table">
+            <thead>
+                <tr class="tablCoderow">
+                    <th>Parameter</th>
+                    <th>State</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Parameter</td>
+                    <td>State</td>
+                    <td>Action</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="EditSettingsPopup">
+    <div class="popup_1 pop_sm" *ngIf="EditSettingsPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="EditSettingsPopclose()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df p_5 m_t_5 text-center">
+                    <p><b>Do you want to delete the selected record?</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="EditSettingsPopclose()"> Save </button>
+            <button class="btn_grade_2" (click)="EditSettingsPopclose()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- *****************************PopUp********************************** -->
+
+<!-- *****************************Spinnwer********************************** -->
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+<!-- *****************************SpinnwerEnd********************************** -->

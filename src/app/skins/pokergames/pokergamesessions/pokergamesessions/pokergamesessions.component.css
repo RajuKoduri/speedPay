@@ -1,0 +1,108 @@
+th{
+  position: sticky;
+  top:0
+}
+.seclectopt {
+  padding: 5px;
+  width: 200px;
+  margin: 2px;
+}
+/* .filterDiv input, .filterDiv select {
+  border: solid 1px #ddd;
+} */
+/* .Birthdayinputs {
+  width: 28.8%;
+} */
+
+/* .games-list-container{
+  border:1px solid #ddd;
+  background-color:#ffffff;
+  width: 205px;
+  height:40px;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+} */
+
+.games-input-container{
+  background: transparent;
+  border: none;
+  outline: none;
+  height:18px;
+  display: flex;
+  flex-direction: row;
+
+  overflow: hidden;
+}
+
+/* .games-input-container::-webkit-scrollbar{
+  display: none;
+} */
+.IcArrow-games{
+  background-color:#ffffff;
+}
+
+.fillterbtn-games {
+  width: 25px;
+  height: 30px;
+  border: none;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  background-color:#ffffff;
+}
+
+.filterDiv-game-filter {
+  background:#fff;
+  max-width: 80%;
+  margin: auto;
+  top: 150px;
+  position: fixed;
+  z-index: 1000;
+  left: 15px;
+  right: 15px;
+  border-radius: 5px;
+  overflow: auto;
+  max-height: 80vh;
+  
+}
+
+.poker-caption-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 15px;
+  /* margin: 5px 5px 5px 0px;
+  width:100px; */
+}
+.caption-checkbox{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* justify-content: ; */
+  width: 200px;
+}
+
+.all-games{
+  background-color: aquamarine;
+  margin: 10px;
+  position: sticky;
+  top: 45px;
+}
+
+.with-out-navigete{
+  text-decoration: none;
+  color: black;
+  cursor: no-drop;
+
+}
+
+.with-navigate{
+  text-decoration: underline;
+  color: rgb(62, 10, 248);
+  cursor: pointer;
+}
+.err_msg{
+  display: flex;
+  justify-content: flex-start;
+}

@@ -1,0 +1,133 @@
+<!-- <div class="topnav">
+    <a >Actions</a>
+    <a (click)="openDepositPop()">Open</a>
+    <a >Explore</a>
+    <a (click)="ignoreContext()">Ignore Context</a>
+    <div class="dropdown">
+       <button class="dropbtn">View</button>
+       <div class="dropdown-content">
+           <a (click)="onRequery()">Normal</a>
+           <a>Autosize</a>
+           <a>Card</a>
+       </div>
+   </div>
+    <a (click)="onRequery()">Requery</a>
+    <a (click)="exportExcel()">Export to XSL</a>
+    <a (click)="onPrint()">Print</a>
+</div> -->
+<div>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportExcel()"> Export
+        Excel</button>
+    <h4>Deposit Limits Settings:</h4>
+</div>
+<div class="fd over_tbl" id="tablerecords" style="overflow-x:auto;">
+    <div clas='fd' *ngIf="dataLoader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="table_2 fd">
+        <table class="fd tablCode " id="excel_table">
+            <thead>
+                <tr>
+                    <th *ngIf="playerExporer">User Login</th>
+                    <th>Payment System</th>
+                    <th>Currency</th>
+                    <th>Min single Deposit Amount</th>
+                    <th>Max single Deposit Amount</th>
+                    <th>Deposits Number</th>
+                    <th>Deposit Amount</th>
+                    <th>Limit Period,h</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="DepositList" (click)="openDepositPop()">
+                <tr *ngFor="let i=index; let list of DepositList ">
+                    <td *ngIf="playerExporer">{{list.paymentSystemTypeName}}</td>
+                    <td>{{list.paymentSystemTypeName}}</td>
+                    <td>{{list.currencyName}}</td>
+                    <td class="text-end">{{list.symbol}} {{list.minSingleDepositAmount.value |numberFormat}}</td>
+                    <td class="text-end">{{list.symbol}} {{list.maxSingleDepositAmount.value |numberFormat}}</td>
+                    <td>{{list.depositsNumberLimit}}</td>
+                    <td class="text-end"> {{list.symbol}} {{list.depositsAmountLimit.value |numberFormat}}</td>
+                    <td>{{list.limitPeriod}}</td>
+                </tr>
+            </tbody>
+            <tfoot *ngIf="DepositList">
+                <tr>
+                    <td *ngIf="playerExporer"></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-end">SUM={{minSingleDepositAmountValue |numberFormat}}</td>
+                    <td class="text-end">SUM={{maxSingleDepositAmountValue |numberFormat}}</td>
+                    <td></td>
+                    <td class="text-end">SUM={{depositsAmountLimitValue |numberFormat}}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+        class="pt-2 page-item float-right">
+    </pagination-controls> -->
+    <div class="df fd">
+        <div style="margin-right:20px;" *ngIf="DepositList">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+        <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div>
+</div>
+
+<!-- sub_popup table -->
+
+<!-- <div class="popupCover" *ngIf="depositlimit" (click)="depositpopupsub()"></div>
+<div class="popup_1" *ngIf="depositlimit"> -->
+<div class="black_cover" *ngIf="depositlimit">
+    <div class="popup_1 pop_sm" *ngIf="depositlimit">
+        <div class="PopupHead">
+            <h5 class="text-center">Deposit Limits Settings </h5>
+            <span class="closetop" (click)="depositpopupsub('no')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="fd overflow-auto">
+            <table class="tablCode fd Blindtable margtp">
+                <thead>
+                    <tr class="tablCoderow ">
+                        <th>Payment System</th>
+                        <th>Currency</th>
+                        <th>Min single Deposit Amount</th>
+                        <th>Max single Deposit Amount</th>
+                        <th>Deposits Number</th>
+                        <th>Deposit Amount</th>
+                        <th>Limit Period,h</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let list of ChangeDepositLimitList">
+                        <td>{{list.paymentSystemTypeName}}</td>
+                        <td>{{list.currencyName}}</td>
+                        <td> <input type="text" [(ngModel)]=list.minSingleDepositAmount.value /> </td>
+                        <td> <input type="text" [(ngModel)]=list.maxSingleDepositAmount.value /> </td>
+                        <td> <input type="text" [(ngModel)]=list.depositsNumberLimit.value /> </td>
+                        <td> <input type="text" [(ngModel)]=list.depositsAmountLimit.value /></td>
+                        <td> <input type="text" [(ngModel)]=list.limitPeriod /></td>
+                    </tr>
+                </tbody>
+                <div class="fd">
+                    <p style="width: 200px;">
+                        <input type="checkbox" #checkboxElement [checked]="initialValue"
+                            (change)="onChange(checkboxElement.checked)" />Apply to all Registered users
+                    </p>
+                </div>
+            </table>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="depositpopupsub('yes')"> Save </button>
+            <button class="btn_grade_2" (click)="depositpopupsub('no')"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- ################################################### -->
+<div class="black_cover" *ngIf="Spinner"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="Spinner">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+<!-- ################################################### -->

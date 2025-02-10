@@ -1,0 +1,130 @@
+<div>
+    <h3>Remote Game Sessions</h3>
+</div>
+<div class="dropdown fd fil_export">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <div>
+        <!-- <button class="fillterbtn m_l_5" style=" float: right;" (click)="getPlayerHouseRevenue()">Requery</button> -->
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportExcel()"> Export Excel</button>
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    </div>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList"
+                                [(ngModel)]="selectedItems" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="Currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Session Status</label>
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownRemote" [data]="remoteGameId"
+                                [(ngModel)]="selectedRemote" (onSelect)="onItemSelectstatus($event)"
+                                (onDeSelect)="OnItemDeSelectstatus($event)"
+                                (onSelectAll)="onSelectAllstatus($event)"
+                                (onDeSelectAll)="onDeSelectAllstatus($event)" formControlName="Status">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div> 
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex">
+                        <label>Game </label>    
+                        <div class="fd d-flex flex-row align-items-center games-list-container"
+                            (click)="filtergamesbtn()">
+                            <div class="games-input-container">
+                                [{{gamesTobeSelected}}]
+                            </div>
+                            <button class="fillterbtn-games font-size-16">
+                                <i *ngIf="!Filtergamesbtn" class="fa fa-chevron-down IcArrow-games" title="open"
+                                    style="font-size:14px;"></i>
+                                <i *ngIf="Filtergamesbtn" class="fa fa-chevron-up IcArrow-games" title="close"
+                                    style="font-size:14px;"></i>
+                            </button>
+                        </div>
+    
+                    </div> 
+                </div>
+
+
+
+            </div>
+        </div>
+    </form>
+</div>
+<div>
+    <button (click)="submitBTN()">Submit</button>
+</div>
+
+ 
+
+
+
+<div *ngIf="Filtergamesbtn" class="black_cover"></div>
+<div *ngIf="Filtergamesbtn" class="fd filterDiv-game-filter">
+    <div class="PopupHeads">
+        <h5 class="text-center">Remote Game Sessions </h5>
+        <span class="closetop" (click)="filtergamesbtn()"> <img src="assets/icons/closePop.svg">
+        </span>
+    </div> 
+
+    <div *ngFor="let provider of GamesAllProvider; let i = index">
+        <div class="d-flex flex-row all-games">
+          <input class="m_r_5" type="checkbox" id="{{provider.name}}" [(ngModel)]="pokerGamesCheckbox[i]"
+            (change)="clickonCheckboxForAllGames($event, i)">
+          <label for="{{provider.name}}">{{provider.name}}</label>
+        </div>
+      
+        <div class="poker-caption-container">
+          <div class="caption-checkbox" *ngFor="let game of provider.games; let j = index">
+            <input class="m_r_5" type="checkbox" [(ngModel)]="checkedList[i][j]" id="checkboxId{{i}}_{{j}}"
+              (change)="clickonCheckboxIndivisualGames($event, i, j)">
+            <label for="checkboxId{{i}}_{{j}}">{{game.name}}</label>
+          </div>
+        </div>
+      </div>
+      
+      
+
+    <div class="bottomFixs">
+        <button class="closeBTN" (click)="filtergamesbtn()">close</button>
+    </div>
+</div> 

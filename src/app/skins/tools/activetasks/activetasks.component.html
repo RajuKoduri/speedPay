@@ -1,0 +1,33 @@
+<div class="df justify-content-between">
+<h3>Active Tasks</h3>
+<div>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportExcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="getActiveQueries()"> Requery </button>
+</div>
+</div>
+
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Initiator</th>
+                <th>Start Date</th>
+                <th>Duration</th>
+                <th>Task Name </th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+           
+        </tbody>
+    </table>
+</div>
+<!-- <span *ngIf="this.Faqdata">Rows On the Page: {{rowsOnthePage}}</span>
+<span *ngIf="this.Faqdata"> Result Count: {{ResultCount}} </span> -->

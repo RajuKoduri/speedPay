@@ -1,0 +1,181 @@
+<!-- <div class="topnav">
+    <a >Actions</a>
+    <a (click)="openMerchantPop()">Open</a>
+    <a >Explore</a>
+    <a (click)="ignoreContext()">Ignore Context</a>
+    <div class="dropdown">
+       <button class="dropbtn">View</button>
+       <div class="dropdown-content">
+           <a (click)="onRequery()">Normal</a>
+           <a>Autosize</a>
+           <a>Card</a>
+       </div>
+   </div>
+    <a (click)="onRequery()">Requery</a>
+    <a (click)="exportExcel()">Export to XSL</a>
+    <a (click)="onPrint()">Print</a>
+</div> -->
+
+<div>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportExcel()"> Export
+        Excel</button>
+    <button class="fillterbtn m_l_5" style="float: right;"> <a
+            (click)="onRequery()">Requery</a></button>
+    <h4>Merchant Settings:</h4>
+</div>
+<div class="fd over_tbl" id="tablerecords" style="overflow-x:auto;">
+    <div clas='fd' *ngIf="dataLoader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class=" fd tablCode">
+        <table class="fd table_2" id="excel_table">
+            <thead>
+                <tr>
+                    <th>Server</th>
+                    <th>payment System</th>
+                    <th>Track URL</th>
+                    <th>Deposit URL</th>
+                    <th>Creditback URL</th>
+                    <th>Merchant ID</th>
+                    <th>Merchant Password</th>
+                    <th>Additional ID</th>
+                    <th>Admin Email</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="merchantsettings">
+                <tr (dblclick)="openMerchantPop();onClick(i)"
+                    *ngFor="let merchantlist of merchantsettings, let i = index">
+                    <td>{{"BackOffice"}}</td>
+                    <td>{{merchantlist.comment}}</td>
+                    <td>{{merchantlist.trackUrl}}</td>
+                    <td>{{merchantlist.depositUrl}}</td>
+                    <td>{{merchantlist.creditbackUrl}}</td>
+                    <td>{{merchantlist.merchantId}}</td>
+                    <td>{{merchantlist.merchantPassword}}</td>
+                    <td>{{merchantlist.additionalId}}</td>
+                    <td>{{merchantlist.adminEmail}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+         class="pt-2 page-item float-right">
+    </pagination-controls> -->
+
+    <div class="df fd">
+        <div style="margin-right:20px;" *ngIf="merchantsettings">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+        <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div>
+</div>
+
+<!-- onclick row popup -->
+<!-- <div class="main_popup" *ngIf="merchantpopup">
+    <div class="fd popup">
+        <div class="head_popup">
+            <p class="text-center"><b> Merchant Settings</b></p>
+            <span (click)="closePopup()">X</span>
+        </div>
+        <div class="sub_popup">
+            <table>
+                <tr>
+                    <th>payment System:</th>
+                    <td>{{subMerchant.comment}}</td>
+                </tr>
+                <tr>
+                    <th>Track URL:</th>
+                    <td>{{subMerchant.trackUrl}}</td>
+                </tr>
+                <tr>
+                    <th>Deposit URL:</th>
+                    <td>{{subMerchant.depositUrl}}</td>
+                </tr>
+                <tr>
+                    <th>Creditback URL:</th>
+                    <td>{{subMerchant.creditbackUrl}}</td>
+                </tr>
+                <tr>
+                    <th>Merchant ID:</th>
+                    <td>{{subMerchant.merchantId}}</td>
+                </tr>
+                <tr>
+                    <th>Merchant Password:</th>
+                    <td>{{subMerchant.merchantPassword}}</td>
+                </tr>
+                <tr>
+                    <th>Additional ID:</th>
+                    <td>{{subMerchant.additionalId}}</td>
+                </tr>
+                <div class="btn_row">
+                    <button class="savebtn" (click)="closePopup()">Save</button>
+                    <button class="closebtn" (click)="closePopup()">Close</button>
+                </div>
+            </table>
+        </div>
+    </div>
+</div> -->
+
+<!-- *********************Popup***************************** -->
+<div class="black_cover" *ngIf="merchantpopup">
+    <div class="popup_1 pop_sm" *ngIf="merchantpopup">
+        <div class="PopupHead">
+            <h5 class="text-center"> Merchant Settings </h5>
+            <span class="closetop" (click)="Changemerchantsettings('no')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-4"> payment System</label>
+                    <span class="col-sm-8">{{subMerchant.comment}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4"> Track URL</label>
+                    <input type="text" class="col-sm-8" [(ngModel)]=subMerchant.trackUrl />
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Deposit URL</label>
+                    <!-- <span class="col-sm-8">{{subMerchant.depositUrl}}</span> -->
+                    <input type="text" class="col-sm-8" [(ngModel)]=subMerchant.depositUrl />
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Creditback URL</label>
+                    <!-- <span class="col-sm-8">{{subMerchant.creditbackUrl}}</span> -->
+                    <input type="text" class="col-sm-8" [(ngModel)]=subMerchant.creditbackUrl />
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Merchant ID</label>
+                    <!-- <span class="col-sm-8">{{subMerchant.merchantId}}</span> -->
+                    <input type="text" class="col-sm-8" [(ngModel)]=subMerchant.merchantId />
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Merchant Password</label>
+                    <!-- <span class="col-sm-8">{{subMerchant.merchantPassword}}</span> -->
+                    <input type="text" class="col-sm-8" [(ngModel)]=subMerchant.merchantPassword />
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Additional ID</label>
+                    <!-- <span class="col-sm-8">{{subMerchant.additionalId}}</span> -->
+                    <input type="text" class="col-sm-8" [(ngModel)]=subMerchant.additionalId />
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Admin Email </label>
+                    <!-- <span class="col-sm-8">{{subMerchant.adminEmail}}</span> -->
+                    <input type="text" class="col-sm-8" [(ngModel)]=subMerchant.adminEmail />
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="Changemerchantsettings('yes')"> Save </button>
+            <button class="btn_grade_2" (click)="Changemerchantsettings('no')"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- ################################################### -->
+<div class="black_cover" *ngIf="Spinner"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="Spinner">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+<!-- ################################################### -->

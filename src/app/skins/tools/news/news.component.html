@@ -1,0 +1,293 @@
+<div>
+    <h3>News List </h3>
+</div>
+<div>
+    <button class="fillterbtn font_16" (click)="fillermenu()">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel
+    </button>
+</div>
+<div class="fd">
+    <div class="fd filterDiv" *ngIf="FillterMenu">
+        <form [formGroup]="filterForm">
+            <div class="p_25 text_weight">
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>StartDate</label>
+                            <input class="inp_agent_time Birthdayinputs" type="date" [max]="endDate"
+                                formControlName="startDate" [ngModel]="startDate" (ngModelChange)="startDate = $event"
+                                (change)="showDate($event)" />
+                            <input class="inp_agent_time Birthdayinputs mobile_view" type="time"
+                                formControlName="startTime" step="1" [ngModel]="startTime"
+                                (ngModelChange)="startTime = $event" (change)="timechange($event)" [max]="endTime" />
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>EndDate</label>
+                            <input class="inp_agent_time Birthdayinputs" type="date" [max]="todaydate"
+                                formControlName="endDate" [ngModel]="endDate" (ngModelChange)="endDate = $event"
+                                (change)="showDate($event)" />
+                            <input class="inp_agent_time  Birthdayinputs mobile_view" type="time"
+                                formControlName="endTime" step="1" [ngModel]="endTime"
+                                (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                        </div>
+
+                        <div class="div_flex p_5_10">
+                            <label>Type</label>
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="typeDropdownSettings" [data]="NewsTypesList"
+                                    [(ngModel)]="selectedType" formControlName="Type">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>Language</label>
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="languageDropdownSettings" [data]="Languages"
+                                    [(ngModel)]="selectedLanguage" formControlName="Language">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Status</label>
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="statusDropdownSettings" [data]="NewsStatusList"
+                                    [(ngModel)]="selectedStatus" formControlName="Status">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Sites</label>
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="siteDropdownSettings" [data]="faceParameterslist"
+                                    [(ngModel)]="selectedSites" formControlName="Sites">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>First Record</label>
+                            <input type="text" formControlName="firstRecord" />
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Page Size</label>
+                            <input type="text" formControlName="maxCountRecord" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style=" float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <div style="margin-right:20px;" *ngIf="NewsData">Rows On the Page:{{rowsOnthePage}} </div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel-table">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Creation Date</th>
+                <th>Admin</th>
+                <th>Type</th>
+                <th>Actions</th>
+                <th>Announce Date</th>
+                <th>Status</th>
+                <th>News Name</th>
+                <th>Sites</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="NewsData">
+            <tr *ngFor="let list of NewsData,let i=index" (dblclick)="PopupOpen();onClick(i)">
+                <td>{{i+1}}</td>
+                <td>{{(list.creationDate).split("T")[0]}}</td>
+                <td>{{list.creator.login}}</td>
+                <td>{{list.type}}</td>
+                <td>
+                    <div class="fd">
+                        <div class="trigger">
+                            <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmenu(i,list)"> </i> </a>
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                    <button (click)="onEditNews(list.guid)">Edit News</button>
+                                    <button (click)="onPublishNews(list)" [disabled]="list.status !='Archived'">Publish News</button>
+                                    <button (click)="onArchieveNews(list)" [disabled]="list.status =='Archived'">Archieve News</button>
+                                    <button (click)="onDeleteNews(list)">Delete News</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{dateFormat(list.announceDate)}}</td>
+                <td>{{list.status}}</td>
+                <td>{{list.name}}</td>
+                <td><span *ngIf="list.faces.length <  this.faceParameterslist.length "> [{{list.faces}}] </span>
+                    <span *ngIf="list.faces.length ==  this.faceParameterslist.length "> [All] </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- pagination-controls -->
+<div class="fd" *ngIf="NewsData">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || NewsData==null" (click)="fastbackforward()">
+            <i class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||NewsData==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="NewsData">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="NewsData==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="NewsData==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- <div>
+    <input matInput type="time" placeholder="Choose a time" [ngModel]="appointmentTime  | date:'HH:mm'" />
+</div> -->
+
+
+<!-- ************************************************************************************* -->
+<div class="black_cover" *ngIf="NewsPopup" (click)="closepopup()"></div>
+<div class="popup_1 pop_sm" *ngIf="NewsPopup">
+    <div class="PopupHead">
+        <h5>Edit News </h5>
+        <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="fd font_13 p_t_15">
+        <form [formGroup]="PopUpForm">
+            <div class="fd df bg_ff">
+                <div class="col-6 p_lr_15">
+                    <label> News Name: </label>
+                    <!-- <span>News Name: <input type="text" [value]="NewsName"/></span> -->
+                    <!-- <input type="text" class="fd" [(ngModel)]=NewsPopupList.name /> -->
+                    <input type="text" class="fd" formControlName="NewsName" />
+                </div>
+                <div class="col-6 p_lr_15">
+                    <label> Type: </label>
+                    <input type="text" class="fd" [value]="NewsPopupList.type" />
+                </div>
+            </div>
+
+            <div class="fd df parentdv bg_ff">
+                <div class="childdivs">
+                    <div class="childhead fd">
+                        <p>sites</p>
+                    </div>
+                    <div class="fd p_10">
+                        <select class="fd">
+                            <option [ngValue]="Status.name" *ngFor="let  Status of faceParameterslist">
+                                {{Status.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="childdivs">
+                    <div class="childhead">
+                        <p>Visibility</p>
+                    </div>
+                    <div class="df p_5">
+                        <label>Announce Date</label>
+                        <input type="date" />
+                    </div>
+                    <div class="df p_5">
+                        <label>Hot News Period, Min:</label>
+                        <input type="text" />
+                    </div>
+                    <div class="df p_5">
+                        <label>Archive After 'Hot' News Period:</label>
+                        <input style="width:15px" type="checkbox" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- <div class="fd"> -->
+        <div class="fd p_lr_15">
+            <div class="fd childhead_1">
+                <select [(ngModel)]="selectValue" (click)="selectclick(selectValue)">
+                    <option *ngFor="let  newsParameters of newsParametersList">
+                        {{newsParameters.tag}}
+                    </option>
+                </select>
+            </div>
+            <!-- <textarea class="textareas p_5" *ngFor="let a of selectValueArray">{{a}}</textarea> -->
+            <textarea class="fd textareas p_5">{{selectValue}}</textarea>
+
+            <div class="fd childhead_1">
+                <select [(ngModel)]="selectValue1">
+                    <option *ngFor="let  newsParameters of newsParametersList">
+                        {{newsParameters.tag}}
+                    </option>
+                </select>
+            </div>
+            <textarea class="fd textareas p_5 ">{{selectValue1}}</textarea>
+        </div>
+
+    </div>
+
+    <div class="bottomFix">
+        <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+        <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+    </div>
+</div>
+
+<!-- ************************************************************************************* -->
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Delete conformation popup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+
+<div class="black_cover" *ngIf="isDelete">
+    <div class="popup_1 pop_sm text-black" *ngIf="isDelete">
+        <div class="PopupHead">
+            <h5 class="text-center">Warning</h5>
+            <span class="closetop" (click)="closeErrPopup()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 p_lr_15 my-3 text-center">
+            <i>Do you want to delete the News for all languages?</i>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onConformDelNews()"> OK </button>
+            <button class="btn_grade_2" (click)="closeErrPopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- #################################################################################################-->
+
+<div *ngIf="isEditNewsPopup">
+    <add-news-record (notifyParent)="editNewsPopup()" [editableData]="editObjList"></add-news-record>
+</div>
+
+
+<!-- Spinner -->
+<div class="black_cover" *ngIf="SpinnwerT">
+    <div class="spinnerTrue" *ngIf="SpinnwerT">
+        <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+    </div>
+</div>

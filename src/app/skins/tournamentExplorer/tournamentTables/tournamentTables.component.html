@@ -1,0 +1,158 @@
+<div>
+  <h3> Sit'n'Go Tables</h3>
+</div>
+
+
+<div class="dropdown fd">
+  <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+    <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+      style="font-size:14px;  transition:all 0.5s ;"></i>
+    <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+      style="font-size:14px; transition:all 0.5s"></i>
+  </button>
+
+  <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export
+    Excel</button>
+  <button class="fillterbtn m_l_5" style="float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+
+
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+  <form [formGroup]="filterForm">
+    <div class="p_25">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-xl-4">
+          <div class="div_flex p_5_10">
+            <label>StartDate*</label>
+            <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+              [(ngModel)]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+            <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+              [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+              [max]="endTime" />
+          </div>
+          <div class="div_flex p_5_10">
+            <label>EndDate*</label>
+            <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate" [ngModel]="endDate"
+              (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+            <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1" [ngModel]="endTime"
+              (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+          </div>
+
+          <div class="red_col" *ngIf="steddate">
+            Start date should be below or equal to end date
+          </div>
+          <div class="red_col" *ngIf="timeerror">
+            Start time should be below or equal to end time
+          </div>
+        </div>
+
+
+        <div class="col-12 col-sm-6 col-xl-4">
+          <div class="div_flex p_5_10">
+            <label>Player Login</label>
+            <input type="text" formControlName="PlayerLogin" />
+          </div>
+
+          <div class="div_flex p_5_10">
+            <label>Player NickName</label>
+            <input type="text" formControlName="PlayerNickname" />
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-4">
+          <div class="div_flex p_5_10">
+            <label>Table Name</label>
+            <input type="text" formControlName="tableName" />
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-4">
+          <div class="div_flex p_5_10">
+            <label>First Record</label>
+            <input type="text" formControlName="firstRecord" pattern="[0-9]*" maxLength="9"
+              oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-4">
+          <div class="div_flex p_5_10">
+            <label>Page Size</label>
+            <input type="text" formControlName="maxCountRecord" type="text" pattern="[0-9]*" maxLength="9"
+              oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+
+<div class="fd">
+  <button class="fillterbtn font_14" style="margin-top:4px; float: right;"
+      (click)="onFormSubmit()"  [disabled]="steddate || timeerror">Submit</button>
+  <div class="df m_5">
+      <div style="margin-right:20px;" *ngIf="pokerHandsHistoryData">Rows On the Page: {{rowsOnthePage}} </div>
+      <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+              the filters</b></div>
+  </div>
+</div>
+
+<div class="fd table_2">
+  <div clas='fd' *ngIf="loader">
+    <div class="loaderWraper">
+      <div class="loader"></div>
+    </div>
+  </div>
+  <table class="tablCode fd" id="excel-table">
+    <thead>
+      <tr class="tablCoderow">
+        <th>Sit'n'Go</th>
+        <th>TableName</th>
+        <th>StartDate</th>
+        <th>FinishDate</th>
+        <th>HandNumber</th>
+        
+      </tr>
+    </thead>
+    <tbody *ngIf="pokerHandsHistoryData">
+      <tr *ngFor="let pokerHistory of pokerHandsHistoryData;let i=index">
+        <td>{{pokerHistory?.tournament?.caption}}</td>
+        <td class="text-nowrap">{{pokerHistory?.name}}</td>
+        <td>{{changeSelect(pokerHistory?.startDate)}}</td>
+        <td>{{changeSelect(pokerHistory?.finishDate)}}</td>
+        <td *ngIf="getGamepokergamesessionActiveHands(pokerHistory.hands<=0); else withNavigate" class="with-out-navigate">{{pokerHistory?.hands}}</td>
+        <ng-template #withNavigate>
+        <td class="with-navigate" (click)="navigatePokerHandsHistory(pokerHistory?.guid,pokerHistory?.tournament?.guid)">{{pokerHistory?.hands}}</td>
+        </ng-template>
+       
+        
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+<div class="fd">
+  <div class="fd" *ngIf="pokerHandsHistoryData">
+      <div class="pagecount">
+          <button class="Pagebtns" [disabled]="PageCount==1 || pokerHandsHistoryData==null"
+              (click)="fastbackforward()"><i class="fa fa-step-backward" style="font-size:20px"></i>
+          </button>
+          <button class="Pagebtns" [disabled]="PageCount==1 ||pokerHandsHistoryData==null" (click)="prev()">
+              <i class="fa fa-caret-left" style="font-size:20px"></i>
+          </button>
+          <div class="PageCountNoDiv">
+              <div class="" *ngIf="pokerHandsHistoryData">{{PageCount}}</div>
+          </div>
+          <button class="Pagebtns " [disabled]="pokerHandsHistoryData==null || pagecontrolbtn" (click)="next()">
+              <i class="fa fa-caret-right" style="font-size:20px"></i>
+          </button>
+          <button class="Pagebtns" [disabled]="pokerHandsHistoryData==null || pagecontrolbtn" (click)="fastforward()">
+              <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+      </div>
+  </div>
+</div>

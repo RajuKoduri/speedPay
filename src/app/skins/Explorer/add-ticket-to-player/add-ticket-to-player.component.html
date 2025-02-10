@@ -1,0 +1,105 @@
+<div class="main-container">
+  <h6>Player : {{PlayerName}}</h6>
+  <div class="seratch-find-container">
+    <h6>Tournament :</h6>
+    <input type="text" [(ngModel)]="searchInput">
+    <button class="btn_grade_1"  (click)="searchgPokerTournamentSettings()">Find</button>
+  </div>
+  <h6>Available Tournament Settings :</h6>
+  <div class="tournament-setting-container">
+    <div class="container">
+      <p *ngFor="let eachItem of tournamentsData;let i=index"
+       [ngClass]="{'selectedTourney':activeIndex == i}" (click)="clickToSelectTournament(i)">
+        <!-- <span  >{{eachItem.caption}}</span> </p> -->
+        {{eachItem.caption}} </p>
+    </div>
+    <div class="tournament-info-container">
+      <h6> Tournament Info : <span *ngIf="tournamentsData.length" style="font-size: 12px;"> {{tournamentsData[activeIndex]?.caption}} {{tournamentsData[activeIndex]?.gameName}} Local</span>   </h6>
+      <button [ngClass]="{'btn_grade_1': tournamentsData.length>=1 , 'btn_grade': tournamentsData.length == 0}" (click)="clickOnToViewTheTournament()">View</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ********************************************  tournamentEditPopup ***************************************************** -->
+<div *ngIf="tournamentType">
+  <div class="black_cover" *ngIf="tournamentType">
+      <div class="popup_1 pop_sm_1">
+          <div class=" PopupHead">
+              <h5 class="text-center"> View Poker Tournament </h5>
+              <span class="closetop" (click)="editTournyPop()"> <img
+                      src="assets/icons/closePop.svg">
+              </span>
+          </div>
+          <div class="soon font_13 fd p_lr_15">
+              <div class="fd p_10">
+                  <app-create-poker-touranament [EditPokerTourneyData]="PlayerSitandGoData"
+                      [onlyViewpopFromParent]="onlyViewpopUp"
+                      [selectedViewItemViewOnly]="selectedViewItem"
+                      ></app-create-poker-touranament>
+                      <!-- 
+                      [editOptionMode]="editOptionMode" 
+                      (sendPayoutData)="getPayoutData($event)"
+                      (tournamentGameType)="getTournamentType($event)"
+                      (filterbodyData)="getEditTournanentFilterBodyData($event)" -->
+              </div>
+          </div>
+
+          <div class="bottomFix">
+              <!-- <button class="btn_grade_1" [disabled]="PlayerTableGroupData.active==true" (click)="closepopup()"> Save </button> -->
+              <button [ngClass]="prevButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!prevButtonCss"
+                  (click)="getTabTourneyPrev()">Prev </button>
+              <button [ngClass]="nextButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!nextButtonCss"
+                  (click)="getTabTournetNxt()">Next </button>
+              <button (click)="onFormSubmit()" [disabled]="!saveButton"
+                  [ngClass]="saveButton ? 'btn_grade_1' : 'btn_grade'"> Save </button>
+              <button class="btn_grade_2" (click)="editTournyPop()"> Cancel </button>
+          </div>
+      </div>
+  </div>
+
+</div>
+<!-- ********************************************  tournamentEditPopup ***************************************************** -->
+
+<!-- **********************************************  Edit Sit'n'Go start  **********************************************-->
+<div class="black_cover" *ngIf="sitngoType">
+  <div class="popup_1" *ngIf="sitngoType">
+      <div class="PopupHead">
+          <h5 class="text-center">View Sit'n'Go </h5>
+          <!-- <span>{{PlayerTableGroupData.name}}</span>   -->
+          <span class="closetop" (click)="sitngoClosePopup()">
+              <img src="assets/icons/closePop.svg"> </span>
+      </div>
+      <div class="soon font_13 fd p_lr_15">
+          <div class="fd p_5 ">
+              <!-- (sendPayoutData)="editSitPayoutData($event)" -->
+              <app-create-poker-sitn-go [EditSitnGoData]="PlayerSitandGoData"
+              [onlyViewpopFromParent]="onlyViewpopUp"
+              (satellitePrevButton)="prevButtonCss=$event"
+              (satelliteNxtButton)="nextButtonCss=$event"
+              [selectedViewItemViewOnly]="selectedViewItem"
+              ></app-create-poker-sitn-go>
+              <!-- [editOptionMode]="editOptionMode"
+                 (sendPayoutData)="getPayoutData($event)" 
+                 (tournamentGameType)="getTournamentType($event)"
+                 
+                 (filterbodyData)="getEditSitngoFilterBodyData($event)" -->
+            </div>
+          </div>
+          <div class="bottomFix">
+          <!-- <button class="btn_grade_1" [disabled]="PlayerTableGroupData.active==true" (click)="closepopup()"> Save </button> -->
+          <button [ngClass]="prevButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!prevButtonCss"
+              (click)="getTab('First','sitngo')">Prev </button>
+          <button [ngClass]="nextButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!nextButtonCss"
+              (click)="getTab('Second','sitngo')">Next </button>
+          <button class="btn_grade" (click)="sitngoClosePopup()"> Save </button>
+          <button class="btn_grade_2" (click)="sitngoClosePopup()"> Cancel </button>
+      </div>
+
+  </div>
+</div>
+
+
+<!-- **********************************************Edit Sit'n'Go End **********************************************-->
+
+

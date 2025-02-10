@@ -1,0 +1,208 @@
+<div>
+    <h3>Transfers & Activities Summary </h3>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date"  [max]="endDate" formControlName="startDate"
+                        [ngModel]="startDate" (ngModelChange)="startDate = $event"  (change)="showDate($event)"/>
+                        <input class="inp_agent_time mobile_view"  type="time" formControlName="startTime"  
+                        step="1" [ngModel]="startTime" (ngModelChange)="startTime = $event"  (change)="timechange($event)" 
+                        [max]="endTime"/>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date"   [max]="todaydate" formControlName="endDate"
+                      [ngModel]="endDate" (ngModelChange)="endDate = $event"  (change)="showDate($event)"/>
+                      <input  class="inp_agent_time mobile_view" type="time" formControlName="endTime"  
+                      step="1" [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)"/>
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                      </div>
+                      <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time  
+                      </div>
+                   
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Face</label>
+                        <!-- <select class="seclectopt" formControlName="Face">
+                            <option [ngValue]="Status.name" *ngFor="let  Status of faceParameterslist">
+                                {{Status.name}}
+                            </option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList12"
+                              [(ngModel)]="selectedItems12" (onSelect)="onItemSelectnew($event)"
+                              (onDeSelect)="OnItemDeSelectnew($event)" (onSelectAll)="onSelectAllnew($event)"
+                              (onDeSelectAll)="onDeSelectAllnew($event)" formControlName="Face">
+                            </ng-multiselect-dropdown>
+                          </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="currency" #tb2>
+                            <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlists">
+                                {{CURRENCY.description}}
+                            </option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencystatus"
+                                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Game Session Type</label>
+                        <input type="text" formControlName="GameSessionType" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers">
+        <div style="margin-right:20px;" *ngIf="TransferActivitieData">Rows On the Page: {{rowsOnthePage}} </div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div>
+</div>
+
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+        <table class="tablCode" id="excel-table">
+            <thead>
+                <tr>
+                    <th>S.no</th>
+                    <th>Face</th>
+                    <th>Player</th>
+                    <th>Game Session Type</th>
+                    <th>Activity</th>
+                    <th>Amount</th>
+                    <th>Game Sessions </th>
+                    <th>Bets </th>
+                    <th>Wins </th>
+                    <th>House Revenue </th>
+                </tr>
+            </thead>
+            <tbody *ngIf="TransferActivitieData">
+                <tr *ngFor="let list of TransferActivitieData, let i =index" (click)="onClick(i)">
+                    <td>{{i+1}}</td>
+                    <td>{{list.player.network}}</td>
+                    <td>{{list.player.account}}</td>
+                    <td></td>
+                    <td>{{list.activity}}</td>
+                    <td class="text-end">{{list.amount.value |numberFormat}}</td>
+                    <td>{{list.counter}}</td>
+                    <td class="text-end">{{list.bets.value |numberFormat}}</td>
+                    <td class="text-end">{{list.wins.value |numberFormat}}</td>
+                    <td class="text-end">{{list.houseRevenue.value |numberFormat}}</td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+<div class="fd">
+    <div class="fd" *ngIf="TransferActivitieData">
+        <div class="pagecount">
+            <button class="Pagebtns" [disabled]="PageCount==1 || TransferActivitieData==null"
+                (click)="fastbackforward()"><i class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||TransferActivitieData==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="TransferActivitieData">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="TransferActivitieData==null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="TransferActivitieData==null || pagecontrolbtn" (click)="fastforward()">
+                <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- *********************PopUp*************************** -->
+<div class="black_cover" *ngIf="PlayerActivitieSummarypopup">
+    <div class="popup_1 pop_sm" *ngIf="PlayerActivitieSummarypopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Transfers & Activities Summary </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df">
+                    <label class="col-sm-6"> Face </label>
+                    <span class="col-sm-6">{{PlayerActivitieSummaryData.player.network}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Player </label>
+                    <span class="col-sm-6">{{PlayerActivitieSummaryData.player.account}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Game Session Type </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Activity </label>
+                    <span class="col-sm-6">{{PlayerActivitieSummaryData.activity}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Amount </label>
+                    <span class="col-sm-6">{{PlayerActivitieSummaryData.amount.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Game Sessions </label>
+                    <span class="col-sm-6">{{PlayerActivitieSummaryData.counter}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Bets </label>
+                    <span class="col-sm-6">{{PlayerActivitieSummaryData.bets.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Wins </label>
+                    <span class="col-sm-6">{{PlayerActivitieSummaryData.wins.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Revenue House </label>
+                    <span class="col-sm-6">{{PlayerActivitieSummaryData.houseRevenue.value}}</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>

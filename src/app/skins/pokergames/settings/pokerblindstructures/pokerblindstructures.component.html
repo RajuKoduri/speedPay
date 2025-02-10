@@ -1,0 +1,120 @@
+<div>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    <button class="fillterbtn m_l_5" style="margin-right:0px; float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+    <button class="fillterbtn Addbutton" style="float: right;width:150px"
+     routerLink="/CreatePokerBlindStructure" title="Add BlindStructure">
+        Add BlindStructure
+        <!-- <img class="Addicon" src="assets/icons/Pluse.png" /> -->
+    </button>
+    <button class="fillterbtn font_14 ml_25"style=" float: right;" (click)="onRequery()">Requery</button>
+    <h2> Blind Structures</h2>
+</div>
+<div class="fd">
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr class="tablCoderow">
+                <th>Name</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="objList">
+            <tr *ngFor="let List of objList,let i=index">
+                <td (click)="playerdetalispopup(List.levels)">{{List.name}}</td>
+                <td (click)="playerdetalispopup(List.levels)">{{List.activIN}}</td>
+                <td>
+                    <div class="fd">
+                        <!-- <div class="trigger" *ngIf="List.status!=='Closed'"> -->
+                        <div class="trigger">
+                            <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,List.guid)">
+                                </i>
+                            </a>
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+
+                                    <button [disabled]="List.editable==false" (click)="editBlindMethod()">Edit Blind
+                                        Structure</button>
+                                    <!-- <button [disabled]="List.status=='Closed'"
+                                        (click)="setPlayerActions('Reversel',i)">Cashout
+                                        Reversel</button>
+                                  -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- <div class="popupCover"  *ngIf="playerdetailspopup"></div> -->
+<div class="black_cover" *ngIf="playerdetailspopup"></div>
+<div class="popup_1 heightpopup" *ngIf="playerdetailspopup">
+    <div class="fd">
+        <!-- <p class="blindpara ">Blind Structure </p>  -->
+        <div class="PopupHead">
+            <h5 class="text-center">Blind Structure</h5>
+            <span class="closetop" (click)="playerdetalisclosepopup()"> <img
+                    src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="fd table_2 p_5">
+            <table class="tablCode Blindtable" >
+                <thead>
+                    <tr class="tablCoderow">
+                        <th>Level</th>
+                        <th>Low Stake</th>
+                        <th>High Stake</th>
+                        <th>Ante</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="subdata">
+                    <tr *ngFor="let listdata of subdata">
+                        <td>{{listdata.sno+1}}</td>
+                        <td>{{listdata.lowStake.value}}</td>
+                        <td>{{listdata.highStake.value}}</td>
+                        <td>{{listdata.ante.value}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- <div class="closeevnte"> -->
+    <div class="bottomFix">
+
+        <button class="closeBTN" (click)="playerdetalisclosepopup()">close</button>
+    </div>
+
+</div>
+<!-- <span (click)="playerdetalisclosepopup()"> X</span> -->
+
+<div class="black_cover" *ngIf="EditBlindStructurepopup"></div>
+<div class="popup_1 heightpopup" *ngIf="EditBlindStructurepopup">
+    <div class="fd">
+        <!-- <p class="blindpara ">Blind Structure </p>  -->
+        <div class="PopupHead">
+            <h5 class="text-center">Edit Blind Structure</h5>
+            <span class="closetop" (click)="EditBlindStructurepopupclose()"> <img
+                    src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="fd p_5">
+            <app-create-poker-blind-structure [EditBlindData]="EditBlindData"></app-create-poker-blind-structure>
+        </div>
+    </div>
+    <!-- <div class="closeevnte"> -->
+    <div class="bottomFix">
+        <div class="fd">
+            <div class="bottomFix">
+                <!-- <button class="btn_grade_1" (click)="addItems()"> Add New Level </button>
+                <button class="btn_grade_1" (click)="BlindStructureList()"> Copy form Existing </button>
+                <button class="btn_grade_1" (click)="onFormSubmit()"> Save </button> -->
+                <button class="btn_grade_1" (click)="EditBlindMethods('Add New')"> Add New Level </button>
+                <button class="btn_grade_1" (click)="EditBlindMethods('Copy')"> Copy form Existing </button>
+                <button class="btn_grade_1" (click)="EditBlindMethods('Save')"> Save </button>
+                <button class="closeBTN" (click)="EditBlindStructurepopupclose()">close</button>
+            </div>
+        </div>
+    </div>
+</div>

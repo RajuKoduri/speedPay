@@ -1,0 +1,121 @@
+<div class="popup_4 pop_sm">
+    <div class=" PopupHead" *ngIf="!PlayerPermissionDataChange">
+        <h5 class="text-center">New Player Permissions Group </h5>
+    </div>
+    <form [formGroup]="NewPlayerPermissionsForm">
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-4"> Group Name</label>
+                    <div class="col-sm-4">
+                        <input  class="col-sm-12"  type=text formControlName="GroupName" />
+                        <div class="text-danger"
+                            *ngIf="f['GroupName'].touched && f['GroupName'].invalid || submitted">
+                            <div *ngIf="f['GroupName'].errors && f['GroupName'].errors['required']"> 
+                                <b>Please Enter Group Name</b> </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div *ngIf="NewPlayerPermissionsForm.controls['GroupName'].errors && NewPlayerPermissionsForm.controls['GroupName'].touched">
+                    <p>*please Enter Name</p>
+                </div> -->
+            </div>
+
+            <div class="fd p_5">
+                <span class="p_b_5  p_5 ">Permissions :</span>
+                <!-- <table class="fd ">
+            <tr>
+                <th>Permission</th>
+                <th>Value</th>
+            </tr>
+            <tr *ngFor="let list of playerPermissionList">
+                <td>{{list.name}}
+                    <div class="fd" *ngFor="let listIn of list.children;let i = index">
+                        <span class="col-sm-6"> {{listIn.name}} </span>
+                        <select class="col-sm-4">
+                            <option *ngFor="let levels of listIn.levels">{{levels.name}}</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <select class="col-sm-4">
+                        <option *ngFor="let levels of list.levels ">{{levels.name}}</option>
+                    </select>
+                </td>
+            </tr>
+        </table> -->
+                <div class="fd">
+                    <tr>
+                        <th>Permission</th>
+                        <th>Value</th>
+                    </tr>
+                    <div class="row " *ngFor="let list of playerPermissionList,let i=index">
+                        <span class="col-sm-4"> {{list.name}}</span>
+                        <select class="col-sm-6" [formControlName]="list.name + i" id="select_box" [disabled]="!list.levels || list.levels.length === 0 "
+                            (change)="onSelected(i, $event, list )">
+                            <option *ngFor="let levels of list.levels" [ngValue]="levels.name">
+                                {{levels.name}}</option>
+                        </select>
+                        <!-- <div class="row " *ngFor="let listIn of list.children;let i = index"> -->
+                        <div class="row" style="margin-left: 10px;" *ngFor="let listIn of list.children;let k = index">
+                            <span class="col-sm-4"> {{listIn.name}} </span>
+                            <select class="col-sm-6" style="margin-left: 0px;" [formControlName]="listIn.name + i" 
+                                (change)="onChildernSelected(i, $event, listIn )">
+                                <option [ngValue]="levels.name" *ngFor="let levels of listIn.levels,let j = index">
+                                    {{levels.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottomFix">
+                <button type="submit" class="btn_grade_1"   (click)="onFormSubmit()"> Save </button>
+                <button type="submit" class="btn_grade_2"  *ngIf="!PlayerPermissionDataChange"  (click)="onFormReset()"> Reset </button>
+                <button type="submit" class="btn_grade_2"  *ngIf="PlayerPermissionDataChange"  (click)="EditCancel()"> Cancel </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="CreateSuccessPop">
+    <div class="popup_1 pop_sm" *ngIf="CreateSuccessPop">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <b class="p_5 text-success">{{successmsg}} </b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->
+<div *ngIf="loader" class="black_cover"></div>
+<div class="loader_spin" *ngIf="loader">
+    <div class="fa fa-spinner fa-spin"></div>
+</div>
+<!-- ************************ErrorPopUp*********************************** -->
+<div class="black_cover" *ngIf="ErrorPopup">
+    <div class="popup_1 pop_sm" *ngIf="ErrorPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <i class="p_5 text-danger">Technical Error... </i>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="TechnicalError()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************ErrorPopUpClose*********************************** -->
+

@@ -1,0 +1,183 @@
+<div>
+    <h3>Agent Personal Info</h3>
+</div>
+<div class="popup_4 pop_sm fd" *ngIf="AgentPersonalData">
+
+    <div class=" PopupHead">
+        <h5 class="text-center"> Agent : {{AgentPersonalData[0].agent.login}}</h5>
+        <!-- <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span> -->
+    </div>
+    <div class="soon font_13 fd p_lr_15" (dblclick)="AgentUpdateMeth()">
+        <div class="fd p_5 ">
+            <div class="df m_3">
+                <label class="col-sm-6"> Login</label>
+                <span>{{AgentPersonalData[0].agent.login}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Password</label>
+                <span>{{AgentPersonalData[0].password}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">First Name</label>
+                <span>{{AgentPersonalData[0].agent.firstName}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Last Name</label>
+                <span>{{AgentPersonalData[0].agent.lastName}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Address</label>
+                <span>{{AgentPersonalData[0].address}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">City</label>
+                <span>{{AgentPersonalData[0].city}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">State</label>
+                <span>{{AgentPersonalData[0].state}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Zip</label>
+                <span>{{AgentPersonalData[0].zipCode}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Country</label>
+                <span>{{AgentPersonalData[0].countryName}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Phone</label>
+                <span>{{AgentPersonalData[0].phone}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Email</label>
+                <span>{{AgentPersonalData[0].agent.email}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Language</label>
+                <span>{{AgentPersonalData[0].languageName}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Face</label>
+                <span>{{AgentPersonalData[0].agent.network}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Subnetwork</label>
+                <span>{{AgentPersonalData[0].agent.subNetwork}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">commissionCycle</label>
+                <span>{{AgentPersonalData[0].agent.commissionCycle}}</span>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- ####################################### popup ############################################# -->
+
+<div class="black_cover" *ngIf="AgentUpdate">
+    <div class="popup_1 pop_sm text-black" *ngIf="AgentUpdate">
+        <div class="PopupHead">
+            <h5 class="text-center">Personal Info</h5>
+            <span class="closetop" (click)="close_popup()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <form [formGroup]="personalInfo" class="p-3">
+            <div class="df m_3">
+                <label class="col-sm-6"> Login</label>
+                <input type="text" [value]="EditableData[0].agent.login" disabled>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Password</label>
+                <div class="stakes-error-message" *ngIf="f['password'].touched && f['password'].invalid || submitted">
+                    <div class="text-danger" *ngIf="f['password'].errors && f['password'].errors['required']">
+                        <b class="bi bi-x-circle-fill p-1" title="Enter valid pasword"></b>
+                    </div>
+                </div>
+                <input type="text" formControlName="password" [(ngModel)]="EditableData[0].password">
+
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">First Name</label>
+                <input type="text" [(ngModel)]="EditableData[0].agent.firstName" [ngModelOptions]="{standalone: true}">
+
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Last Name</label>
+                <input type="text" [(ngModel)]="EditableData[0].agent.lastName" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Address</label>
+                <input type="text" [(ngModel)]="EditableData[0].address" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">City</label>
+                <input type="text" [(ngModel)]="EditableData[0].city" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">State</label>
+                <input type="text" [(ngModel)]="EditableData[0].state" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Zip</label>
+                <input type="text" [(ngModel)]="EditableData[0].zipCode" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="df m_3" *ngIf="EditableData">
+                <label class="col-sm-6">Country</label>
+                <select [(ngModel)]="EditableData[0].CID" [ngModelOptions]="{standalone: true}">
+                    <option [ngValue]="name.CID" *ngFor="let name of countrieslist">{{name.cuntryName}} </option>
+                </select>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Phone</label>
+                <input type="text" [(ngModel)]="EditableData[0].phone" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Email</label>
+                <div class="stakes-error-message" *ngIf="f['Email'].touched && f['Email'].invalid || submitted">
+                    <div class="text-danger" *ngIf="f['Email'].errors && f['Email'].errors['required']">
+                        <b class="bi bi-x-circle-fill p-1" title="Enter valid pasword"></b>
+                    </div>
+                </div>
+                <input type="text" formControlName="Email" [(ngModel)]="EditableData[0].agent.email">
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Language</label>
+                <input type="text" [value]="EditableData[0].languageName" disabled>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Face</label>
+                <!-- <input type="text" [(ngModel)]="EditableData[0].agent.network"
+                    [ngModelOptions]="{standalone: true}"> -->
+                    <select [(ngModel)]="EditableData[0].agent.network"  [ngModelOptions]="{standalone: true}">
+                        <option [ngValue]="list.name" *ngFor="let list of faceParametersList">{{list.name}}</option>
+                    </select>
+            </div>
+
+            <div class="df m_3">
+                <label class="col-sm-6">Commission Cycle</label>
+                <select type=text formControlName="Cycle" [(ngModel)]="EditableData[0].agent.commissionCycle">
+                    <option [ngValue]="'MONTH'">Month</option>
+                    <option [ngValue]="'WEEK'">Week</option>
+                    <option [ngValue]="'FORTNIGHT'">Fort Night</option>
+                </select>
+            </div>
+            <!-- <button (click)="parsonalData()" class="Succ_BTN">Save</button> -->
+        </form>
+        <div class="bottomFix">
+            <!-- <button class="btn_grade_1" [disabled]="" (click)="onSubmit()"> Save </button> -->
+            <button class="btn_grade_2" (click)="parsonalData()"> Save </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>

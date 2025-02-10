@@ -1,0 +1,329 @@
+<div>
+    <h3>Active Tables </h3>
+</div>
+<div class="dropdown fd ">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-4">
+
+                    <!-- <div>
+                        <label>StartDate</label>
+                        <input class="flex_input" type="date" [ngModel]="startDate | date:'yyyy-MM-dd'"
+                            formControlName="Datefrom" [max]="todaydate">
+                    </div>
+                    <div>
+                        <label>EndDate</label>
+                        <input class="flex_input" type="date" [ngModel]="endDate | date:'yyyy-MM-dd'"
+                            formControlName="Dateto" [max]="todaydate">
+                    </div> -->
+
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="Currency">
+                            <option [ngValue]="Wallet.currency" *ngFor="let  Wallet of walletlists">
+                                {{Wallet.description}}
+                            </option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList"
+                                [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                                (onDeSelectAll)="onDeSelectAll($event)" formControlName="skills">
+
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Game</label>
+                        <!-- <input type="text" formControlName="Game" /> -->
+                        <div class="fd d-flex flex-row align-items-center games-list-container"
+                            (click)="filtergamesbtn()">
+                            <!-- <input class="games-input-container" type="text" formControlName="GameName"> -->
+                            <div class="games-input-container">
+                                [{{gamesTobeSelected}}]
+                            </div>
+                            <button class="fillterbtn-games font-size-16">
+                                <i *ngIf="!Filtergamesbtn" class="fa fa-chevron-down IcArrow-games" title="open"
+                                    style="font-size:14px;"></i>
+                                <i *ngIf="Filtergamesbtn" class="fa fa-chevron-up IcArrow-games" title="close"
+                                    style="font-size:14px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Stakes</label>
+                        <div class="df">
+                            <input class="Birthdayinputs" type="text" formControlName="StakesFrom" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                            <input class="Birthdayinputs" type="text" formControlName="StakesTo" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>Player Nick Name</label>
+                        <input type="text" formControlName="PlayerNickNmae" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Player Login </label>
+                        <input type="text" formControlName="PlayerLogin" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Table Name</label>
+                        <input type="text" formControlName="TableName" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Hand #</label>
+                        <input type="text" formControlName="Hand" />
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>Tables</label>
+                        <select class="seclectopt" formControlName="Tables">
+                            <option [ngValue]="tableType.guid" *ngFor="let tableType of PokerTableTypeList">
+                                {{tableType.value}}</option>
+                        </select>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>First Record </label>
+                        <input formControlName="firstRecord" type="text" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input formControlName="maxCountRecord" type="text" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                    <!-- <div>
+                        <label></label>
+                        <input type="reset" class="fillterbtn m_l_5" (click)="resetForm()" />
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- fillter games popup -->
+<div *ngIf="Filtergamesbtn" class="black_cover"></div>
+<!-- <div class="fd filterDiv-game-filter" *ngIf="Filtergamesbtn"> -->
+<!-- <div *ngIf="Filtergamesbtn" class="popup_view fd filterDiv-game-filter"> -->
+<div *ngIf="Filtergamesbtn" class="fd filterDiv-game-filter">
+    <div class="PopupHeads">
+        <h5 class="text-center">Poker games </h5>
+        <span class="closetop" (click)="filtergamesbtn()"> <img src="assets/icons/closePop.svg">
+        </span>
+    </div>
+    <div class="d-flex flex-row all-games">
+        <input class="" type="checkbox" id="checkboxForallgameCaption" [checked]="pokerGamesCheckbox"
+            (change)="clickonCheckboxForAllGames($event)">
+        <label style="padding-left: 10px;" for="">Poker Games</label>
+    </div>
+    <div class="poker-caption-container">
+        <div class="caption-checkbox" *ngFor="let game of filterItem let i = index">
+            <input class="" type="checkbox" [checked]="checkedList[i]" value="{{game.caption}}" id="checkboxId{{i}}"
+                (change)="clickonCheckboxIndivisualGames()">
+            <!-- (change) ="clickonCheckboxIndivisualGames($event,'checkboxId'+i)"> -->
+            <label style="padding-left: 10px;" for="checkboxId{{i}}">{{game.caption}}</label>
+        </div>
+
+    </div>
+
+
+    <div class="bottomFixs">
+        <button class="closeBTN" (click)="filtergamesbtn()">close</button>
+    </div>
+</div>
+
+<!-- fillter games popup -->
+
+
+
+
+<div class="fd">
+    <div class="text-centers div_sub">
+        <div class="df m_5">
+            <div style="margin-right:20px;" *ngIf="PokerTableHistoryData">Rows On the Page: {{rowsOnthePage}} </div>
+            <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                    the filters</b></div>
+        </div>
+        <button class="fillterbtn btn_sub12" (click)="onFormSubmit()" [disabled]="steddate || timeerror">Submit</button>
+    </div>
+</div>
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel-table">
+        <thead>
+            <tr class="tablCoderow">
+                <th>Currency</th>
+                <th>Game</th>
+                <th>Stakes </th>
+                <th>Table Name</th>
+                <th>Hands</th>
+                <th>Total Pot</th>
+                <th>Total Rake</th>
+                <th>Total Jackpot Fee</th>
+                <th>Avg.pot</th>
+                <th>Raked Hands %</th>
+                <th>Comp Points </th>
+                <th>Start Date</th>
+                <th>Finish Date</th>
+                <th>Rule Name</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="PokerTableHistoryData">
+            <tr *ngFor="let list of PokerTableHistoryData;let i=index " (click)="PlayerPopup(i)">
+                <td>{{list.highStake.wallet}}</td>
+                <td>{{list.gameName}}</td>
+                <td>[{{list.lowStake.value}}/{{list.highStake.value}}]</td>
+                <td>{{list.name}}</td>
+                <td>{{list.hands}}</td>
+                <td>{{list.pot?.value | numberFormat}}</td>
+                <td>{{list.rake?.value | numberFormat}}</td>
+                <td>{{list.jackpotFee?.value | numberFormat}}</td>
+                <td>{{list?.avaragePot?.value | numberFormat}}</td>
+                <td>{{list.rakedHandsPercent}}</td>
+                <td>{{list?.compPoints?.value | numberFormat}}</td>
+                <td>{{changeSelect(list.startDate)}}</td>
+                <td>{{changeSelect(list.finishDate) }}</td>
+                <td>{{list.accessRuleName}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="fd" *ngIf="PokerTableHistoryData">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || PokerTableHistoryData==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||PokerTableHistoryData==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="PokerTableHistoryData">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="PokerTableHistoryData==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PokerTableHistoryData==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="pokerTournamentDatapopup">
+    <div class="popup_1 pop_sm" *ngIf="pokerTournamentDatapopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Poker Table History </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df">
+                    <label class="col-sm-6"> Currency </label>
+                    <span class="col-sm-6">{{pokerPlayerData.highStake.wallet}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Game</label>
+                    <span class="col-sm-6">{{pokerPlayerData.gameName}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Stakes </label>
+                    <span
+                        class="col-sm-6">[{{pokerPlayerData.lowStake.value}}/{{pokerPlayerData.highStake.value}}]</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Table Name </label>
+                    <span class="col-sm-6">{{pokerPlayerData.name}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Hands </label>
+                    <span class="col-sm-6">{{pokerPlayerData.hands}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Total Pot </label>
+                    <span class="col-sm-6">{{pokerPlayerData.pot.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Total Rake </label>
+                    <span class="col-sm-6">{{pokerPlayerData.rake.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Total Jackpot Fee</label>
+                    <span class="col-sm-6">{{pokerPlayerData.jackpotFee.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Avg.pot</label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Ranked Hands % </label>
+                    <span class="col-sm-6">{{pokerPlayerData.rakedHandsPercent}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Comp Points </label>
+                    <span class="col-sm-6">{{pokerPlayerData.compPoints.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Start Date </label>
+                    <span class="col-sm-6">{{pokerPlayerData.startDate}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Finish Date </label>
+                    <span class="col-sm-6">{{pokerPlayerData.finishDate}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Rule Name </label>
+                    <span class="col-sm-6">{{pokerPlayerData.accessRuleName}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->

@@ -1,0 +1,97 @@
+<div class="fd">
+  <h2>Players Info</h2>
+</div>
+
+<div class="fd ">
+
+  <div class="text-centers div_sub">
+      <div class="df m_t_5">
+
+          <div style="margin-right:20px;" *ngIf="playersData">Rows On the Page: {{rowsOnthePage}}</div>
+          <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                  the filters</b></div>
+      </div>
+      <!-- <button class="fillterbtn btn_sub12" (click)="onFormSubmit()" [disabled]="steddate || timeerror">Submit</button> -->
+      <div style=" float: right;">
+        <button class="fillterbtn m_l_5 btn_sub12" (click)="exportexcel()"> Export Excel</button>
+        <button class="fillterbtn m_l_5"  (click)="exportCsv()"> Export Csv</button>
+      </div>
+  
+    </div>
+
+  
+</div>
+
+
+<div class="fd over_tbl">
+  <div clas='fd' *ngIf="loader">
+    <div class="loaderWraper">
+      <div class="loader"></div>
+  </div>
+  </div>
+
+  <div class="table_2">
+    <table class="fd tablCode" id="excel_table">
+      <thead>
+        <tr>
+          <th>Sit'n'Go Name</th>
+          <th>Total Cost</th>
+          <th>-Buy-In</th>
+          <th>-Fee</th>
+          <th>-Marketing Fee</th>
+          <th>-Knockout Bounty</th>
+          <th>-Buy-In Type</th>
+          <th>Place</th>
+          <th>Prize</th>
+          <th>Knockout Bounty Won Number</th>
+          <th>Total Won</th>
+          <th>Prize Type</th>
+          <th>Comp Points</th>
+          <th>Players</th>
+        </tr>
+
+      </thead>
+
+      <tbody *ngIf="playersData">
+        <tr *ngFor="let eachPlayerData of playersData,let i=index">
+          <td class="text-nowrap">{{eachPlayerData?.tournamentCaption}}</td>
+          <td class="text-end">{{eachPlayerData?.currencycode}} {{eachPlayerData?.totalCost?.value | numberFormat}}</td>
+          <td class="text-end">{{eachPlayerData?.currencycode}} {{eachPlayerData?.buyIn?.value | numberFormat}}</td>
+          <td class="text-end text-nowrap">{{eachPlayerData?.currencycode}} {{eachPlayerData?.fee?.value | numberFormat}}</td>
+          <td class="text-end">{{eachPlayerData?.currencycode}} {{eachPlayerData?.maintenanceFee?.value | numberFormat}}</td>
+          <td class="text-end">{{eachPlayerData?.currencycode}} {{eachPlayerData?.knockoutBounty?.value | numberFormat}}</td>
+          <td> {{eachPlayerData?.buyInType}}</td>
+          <td>{{eachPlayerData?.place?.from}}</td>
+          <td class="text-end">{{eachPlayerData?.prize?.value | numberFormat}}</td>
+          <td></td>
+          <td></td>
+          <td>{{eachPlayerData?.prizeType}}</td>
+          <td class="text-end">{{eachPlayerData?.compPoints?.value | numberFormat}}</td>
+          <td>{{eachPlayerData?.player?.login}}</td>
+        </tr>
+      </tbody>
+
+
+    </table>
+
+  </div>
+</div>
+
+<div class="fd" *ngIf="playersData">
+  <div class="pagecount">
+      <button class="Pagebtns" [disabled]="PageCount==1 || playersData==null" (click)="fastbackforward()"><i
+              class="fa fa-step-backward" style="font-size:20px"></i>
+      </button>
+      <button class="Pagebtns" [disabled]="PageCount==1 ||playersData==null" (click)="prev()">
+          <i class="fa fa-caret-left" style="font-size:20px"></i>
+      </button>
+      <div class="PageCountNoDiv">
+          <div class="" *ngIf="playersData">{{PageCount}}</div>
+      </div>
+      <button class="Pagebtns " [disabled]="playersData==null || pagecontrolbtn" (click)="next()">
+          <i class="fa fa-caret-right" style="font-size:20px"></i>
+      </button>
+      <button class="Pagebtns" [disabled]="playersData==null || pagecontrolbtn" (click)="fastforward()">
+          <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+  </div>
+</div>

@@ -1,0 +1,455 @@
+<div class="fd">
+    <h2> Sit'n'Go</h2>
+</div>
+<div class="fd fil_export">
+    <button class="fillterbtn font-size-16" (click)="filterbtn()">Filters
+        <i *ngIf="!Fillterdata" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="Fillterdata" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+    <div class="df">
+        <button class=" fillterbtn m_l_5 btn_sub12 " routerLink="/CreatePokerSitngo" title="Add SnG">
+            <!-- <img class="Addicon" src="assets/icons/Pluse.png" /> -->
+            Add SnG </button>
+        <button class="fillterbtn m_l_5 btn_sub12" (click)="exportexcel()"> Export
+            Excel</button>
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    </div>
+
+</div>
+
+
+<div class="fd filterDiv" *ngIf="Fillterdata">
+    <form [formGroup]="filterForm" (ngSubmit)="onFormSubmit()">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-xl-4">
+
+                    <!-- <label> Reporting Period</label>
+                        <input class="Birthdayinputs" format="yyyy-MM-dd" type="datetime-local" step="1"
+                            formControlName="repotingstart">
+                        <input class="Birthdayinputs" format="yyyy-MM-dd" type="datetime-local" step="1"
+                            formControlName="repotingend"> -->
+
+                    <!-- <div class="div_flex p_5_10">
+                            <label>StartDate*</label>
+                            <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                                [ngModel]="startDate" (ngModelChange)="startDate = $event"
+                                (change)="showDate($event)" />
+                            <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                                [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                                [max]="endTime" />
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>EndDate*</label>
+                            <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                                [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                            <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                                [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                        </div>
+                        <div class="red_col" *ngIf="steddate">
+                            Start date should be below or equal to end date
+                        </div>
+                        <div class="red_col" *ngIf="timeerror">
+                            Start time should be below or equal to end time
+                        </div> -->
+
+
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="Currency">
+                            <option [ngValue]="currency.guid" *ngFor="let currency of walletlists">
+                                {{currency.description}}</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList"
+                                [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                                (onDeSelectAll)="onDeSelectAll($event)" formControlName="skills">
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Game</label>
+                        <div class="fd d-flex flex-row align-items-center games-list-container"
+                            (click)="filtergamesbtn()">
+                            <!-- <input class="games-input-container" type="text" formControlName="GameName"> -->
+                            <div class="games-input-container">
+                                [{{gamesTobeSelected}}]
+                            </div>
+                            <button class="fillterbtn-games font-size-16">
+                                <i *ngIf="!Filtergamesbtn" class="fa fa-chevron-down IcArrow-games" title="open"
+                                    style="font-size:14px;"></i>
+                                <i *ngIf="Filtergamesbtn" class="fa fa-chevron-up IcArrow-games" title="close"
+                                    style="font-size:14px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Manual Prize Pool</label>
+                        <input type="checkbox" formControlName="ManualPrizePool" />
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-sm-6 col-xl-4">
+
+                    <div class="div_flex p_5_10">
+                        <label>-Buy-In</label>
+                        <div class="df">
+                            <input class="Birthdayinputs" type="text" formControlName="BuyInFrom" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' ">
+                            <input class="Birthdayinputs" type="text" formControlName="BuyInTo" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' ">
+                        </div>
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>- Fee</label>
+                        <div class="df">
+                            <input class="Birthdayinputs" type="text" formControlName="FeeFrom" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' ">
+                            <input class="Birthdayinputs" type="text" formControlName="FeeTo" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' ">
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>- Knockout Bounty</label>
+                        <div class="df">
+                            <input class="Birthdayinputs" type="text" formControlName="KnockoutBountyFrom"
+                                pattern="[0-9]*" maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' ">
+                            <input class="Birthdayinputs" type="text" formControlName="KnockoutBountyTo"
+                                pattern="[0-9]*" maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' ">
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Total Cost</label>
+                        <div class="df">
+                            <input class="Birthdayinputs" type="text" formControlName="TotalCostFrom" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' ">
+                            <input class="Birthdayinputs" type="text" formControlName="TotalCostTo" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' ">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Status</label>
+                        <select class="seclectopt" formControlName="Status">
+                            <option [ngValue]="Status.guid" *ngFor="let Status of StutusList">{{Status.value}}</option>
+                        </select>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>FirstRecord</label>
+                        <input type="text" formControlName="firstRecord" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' ">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>MaxCount Record</label>
+                        <input type="text" formControlName="maxCountRecord" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' ">
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="m_t_10">
+                <button type="submit" class="btn_1" (click)="filterPokerGroup()">Submit</button>
+            </div> -->
+        </div>
+    </form>
+</div>
+
+<!-- fillter games popup -->
+<div *ngIf="Filtergamesbtn" class="black_cover"></div>
+<!-- <div class="fd filterDiv-game-filter" *ngIf="Filtergamesbtn"> -->
+<!-- <div *ngIf="Filtergamesbtn" class="popup_view fd filterDiv-game-filter"> -->
+<div *ngIf="Filtergamesbtn" class="fd filterDiv-game-filter">
+    <div class="PopupHeads">
+        <h5 class="text-center">Poker games </h5>
+        <span class="closetop" (click)="filtergamesbtn()"> <img src="assets/icons/closePop.svg">
+        </span>
+    </div>
+    <div class="d-flex flex-row all-games">
+        <input class="" type="checkbox" id="checkboxForallgameCaption" [checked]="pokerGamesCheckbox"
+            (change)="clickonCheckboxForAllGames($event)">
+        <label for="">Poker Games</label>
+    </div>
+    <div class="poker-caption-container">
+        <div class="caption-checkbox" *ngFor="let game of filterItem let i = index">
+            <input class="" type="checkbox" [checked]="checkedList[i]" value="{{game.caption}}" id="checkboxId{{i}}"
+                (change)="clickonCheckboxIndivisualGames()">
+            <!-- (change) ="clickonCheckboxIndivisualGames($event,'checkboxId'+i)"> -->
+            <label for="checkboxId{{i}}">{{game.caption}}</label>
+        </div>
+
+    </div>
+
+
+    <div class="bottomFixs">
+        <button class="closeBTN" (click)="filtergamesbtn()">close</button>
+    </div>
+</div>
+
+<!-- fillter games popup -->
+
+
+
+<div class="fd">
+
+    <div class="text-centers div_sub">
+        <div class="df m_t_5">
+
+            <div style="margin-right:20px;" *ngIf="SitandGoList">Rows On the Page: {{rowsOnthePage}}</div>
+            <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                    the filters</b></div>
+        </div>
+        <button class="fillterbtn btn_sub12" (click)="onFormSubmit()" [disabled]="steddate || timeerror">Submit</button>
+    </div>
+</div>
+<div class="fd over_tbl" id="tablerecords">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class=" table_2">
+        <table class="fd tablCode" id="excel_table">
+            <thead>
+                <tr>
+                    <th>Sit'n'Go Setting Id</th>
+                    <th>Name</th>
+                    <th>Series Name</th>
+                    <th>Currency</th>
+                    <th>Game</th>
+                    <th>Actions</th>
+                    <th>Level Length, Min</th>
+                    <th>Seats</th>
+                    <th>Total Cost</th>
+                    <th>Buy-In</th>
+                    <th>Fee</th>
+                    <th>Knockout Bounty</th>
+                    <th>Payout Table</th>
+                    <th>Players</th>
+                    <th>Chips for Players</th>
+                    <th>Access Rule</th>
+                    <th>Played</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="SitandGoList">
+                <tr *ngFor="let sitngo of SitandGoList,let i=index" (dblclick)="PlayerPopup(i)">
+                    <!-- <td>{{sitngo.guarantedPrize.value}}</td> -->
+                    <td></td>
+                    <td >{{sitngo.caption}}</td>
+                    <td >{{sitngo.Name}}</td>
+                    <!-- <td>CHP</td> -->
+                    <td>{{sitngo.totalCost.wallet}}</td>
+                    <td>{{sitngo.gameName}}</td>
+                    <!-- <td>{{sitngo.played}}</td> -->
+                    <td>
+                        <div class="fd">
+                            <div class="trigger">
+                                <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i)">
+                                    </i>
+                                </a>
+                                <div *ngIf="popupArrow" class="fd">
+                                    <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                        <button (click)="SitnGoActions('Edit')">Edit Sit'n'Go</button>
+                                        <button [disabled]="sitngo.enableNow==true"
+                                            (click)="SitnGoActions('EnableDisable')">Enable Sit'n'Go</button>
+                                        <button [disabled]="sitngo.enableNow==false"
+                                            (click)="SitnGoActions('EnableDisable')">Disable Sit'n'Go</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{sitngo.levelLength/60000}}</td>
+                    <td>{{sitngo.seats}}</td>
+                    <td class="text-end">{{sitngo.totalCost.value |numberFormat}}</td>
+                    <td class="text-end">{{sitngo.buyIn.value |numberFormat}}</td>
+                    <td class="text-end">{{sitngo.fee.value |numberFormat}}</td>
+                    <td class="text-end">{{sitngo.knockoutBounty.value |numberFormat}}</td>
+                    <td>{{sitngo.payoutTable}}</td>
+                    <!-- <td>{{sitngo.Players}}</td> -->
+                    <td>{{sitngo.minPlayers}}</td>
+                    <td class="text-end">{{sitngo.chipsPerPlayer.value |numberFormat}}</td>
+                    <td>{{sitngo.accessRuleName}}</td>
+                    <td>{{sitngo.played}}</td>
+                    <td>{{sitngo.status}}</td>
+                </tr>
+            </tbody>
+            <tfoot *ngIf="SitandGoList">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>SUM={{TotalCostValue |numberFormat}}</td>
+                    <td>SUM={{BuyInValue |numberFormat}}</td>
+                    <td>SUM={{FeeValue |numberFormat}}</td>
+                    <td>Sum={{knockoutBountyValue |numberFormat}}</td>
+                    <td></td>
+                    <td></td>
+                    <td>Sum={{ChipsPerPlayerValue |numberFormat}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+        </table>
+        <div class="fd" *ngIf="pokerGamesLoader"> Loading... </div>
+    </div>
+</div>
+
+<div class="fd" *ngIf="SitandGoList">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || SitandGoList==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||SitandGoList==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="SitandGoList">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="SitandGoList==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="SitandGoList==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+
+
+<!-- `````````````````````````Edit Sit'n'Go start -->
+<div class="black_cover" *ngIf="PlayerEditSitNgoDatapopup">
+    <div class="popup_1" *ngIf="PlayerEditSitNgoDatapopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Edit Sit'n'Go </h5>
+            <!-- <span>{{PlayerTableGroupData.name}}</span>   -->
+            <span class="closetop" (click)="editTournyCancel()">
+                <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <app-create-poker-sitn-go [EditSitnGoData]="PlayerSitandGoData"
+                (closePopup)= "showhistory($event)"
+                ></app-create-poker-sitn-go>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <!-- <button class="btn_grade_1" [disabled]="PlayerTableGroupData.active==true" (click)="closepopup()"> Save </button> -->
+            <button class="btn_grade_1" (click)="editTournySave()"> Save </button>
+            <button class="btn_grade_2" (click)="editTournyCancel()"> Cancel </button>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- `````````````````````````Edit Sit'n'Go End -->
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="PlayerSitandGoDatapopup">
+    <div class="popup_1 pop_sm" *ngIf="PlayerSitandGoDatapopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Poker Sit'n'Go </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df">
+                    <label class="col-sm-6"> Sit'n'Go Settings Id </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Name </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.caption}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Series Name </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.Name}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Currency </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.totalCost.wallet}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Game </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.gameName}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Level Length, Min </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.levelLength/60000}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Seats </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.seats}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Total Cost </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.totalCost.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">-Buy-In </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.buyIn.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> -Fee </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.fee.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> -Knockout Bounty </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.knockoutBounty.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Payout Table </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.payoutTable}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Players </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.minPlayers}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Chips for Players </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.chipsPerPlayer.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Access Rules </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.accessRuleName}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Played </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.played}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Status </label>
+                    <span class="col-sm-6">{{PlayerSitandGoData.status}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->
+
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>

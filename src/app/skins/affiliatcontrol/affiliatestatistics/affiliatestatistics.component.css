@@ -1,0 +1,12 @@
+.aplay{
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    background: #91bdd3;
+    margin-top: 5px;
+    color: black;
+}
+.df{
+    display: flex;
+    margin-top: 10px;
+}

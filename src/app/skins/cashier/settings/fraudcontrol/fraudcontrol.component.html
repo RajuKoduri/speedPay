@@ -1,0 +1,220 @@
+<!-- <div class="topnav">
+    <a >Actions</a>
+    <a (click)="openFraudPop()">Open</a>
+    <a >Explore</a>
+    <a (click)="ignoreContext()">Ignore Context</a>
+    <div class="dropdown">
+       <button class="dropbtn">View</button>
+       <div class="dropdown-content">
+           <a (click)="onRequery()">Normal</a>
+           <a>Autosize</a>
+           <a>Card</a>
+       </div>
+   </div>
+    <a (click)="onRequery()">Requery</a>
+    <a (click)="exportExcel()">Export to XSL</a>
+    <a (click)="onPrint()">Print</a>
+</div> -->
+
+<div>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportExcel()"> Export
+        Excel</button>
+    <button class="fillterbtn m_l_5" style="float: right;"> <a
+            (click)="onRequery()">Requery</a></button>
+    <h4>Fraud Control Settings</h4>
+</div>
+
+<!--<div class="fd over_tbl" id="tablerecords" style="overflow-x:auto;">
+    <div *ngIf="dataLoader">
+      <div class="loaderWraper">
+        <div class="loader"></div>
+    </div>
+</div>
+     <div class="fd tablCode">
+        <table class="fd table_2" id="excel_table">
+            <thead>
+                <tr>
+                    <th>First deposit checking period, days:</th>
+                    <th>Prevent using of Credit Cards registered to other users:</th>
+                    <th>Prevent using of Bank Accounts registered to other users:</th>
+                    <th>Prevent using of NETeller Accounts registered to other user:</th>
+                    <th>Check for Black Label:</th>
+                    <th>Suspicious payouts/bets threshold (for player's lifetime):</th>
+                    <th>Active Bank Accounts limits:</th>
+                    <th>Check user presence in the Casino Black List:</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="fraudList">
+                <tr (click)="openFraudPop();onClick(i)"
+                    *ngFor="let i = index; let list of fraudList | paginate: {itemsPerPage:selectnum, currentPage:p}">
+                    <td>{{list.expireDays}}</td>
+                    <td>
+                        <input *ngIf="list.checkExistingCC==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="list.checkExistingCC==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <td>
+                        <input *ngIf="list.checkExistingBankAccount==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="list.checkExistingBankAccount==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <td>
+                        <input *ngIf="list.checkExistingNetellerAccount==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="list.checkExistingNetellerAccount==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <td>
+                        <input *ngIf="list.checkBlackLabel==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="list.checkBlackLabel==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <td>{{list.maxRatio}}</td>
+                    <td>{{list.activeBankAccountsLimit}}</td>
+                    <td>
+                        <input *ngIf="list.checkUserPresInBlackList==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="list.checkUserPresInBlackList==false" type="checkbox" class="checkclick" />
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div> -->
+<!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+         class="pt-2 page-item float-right">
+    </pagination-controls> 
+</div>-->
+
+
+<div class="df fd">
+    <div style="margin-right:20px;" *ngIf="fraudList">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+    <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+</div>
+
+
+
+<div class="popup_4 pop_sm fd" *ngIf="fraudList" (dblclick)="openFraudPop();onClick('i')">
+    <div class=" PopupHead1">
+        <h6 class="text-center">Fraud Control Settings</h6>
+    </div>
+    <div class="soon font_13 fd p_lr_15" id="excel_table">
+        <div class="fd p_5 ">
+            <div class="df m_3">
+                <label class="col-sm-8">First deposit checking period, days</label>
+                <span>{{fraudList.expireDays}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Prevent using of Credit Cards registered to other users</label>
+                <span>
+                    <input *ngIf="fraudList.checkExistingCC==true" type="checkbox" class="checkclick" checked />
+                    <input *ngIf="fraudList.checkExistingCC==false" type="checkbox" class="checkclick" />
+                </span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Prevent using of Bank Accounts registered to other users</label>
+                <span>
+                    <input *ngIf="fraudList.checkExistingBankAccount==true" type="checkbox" class="checkclick"
+                        checked />
+                    <input *ngIf="fraudList.checkExistingBankAccount==false" type="checkbox" class="checkclick" />
+                </span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Prevent using of NETeller Accounts registered to other user</label>
+                <span>
+                    <input *ngIf="fraudList.checkExistingNetellerAccount==true" type="checkbox" class="checkclick"
+                        checked />
+                    <input *ngIf="fraudList.checkExistingNetellerAccount==false" type="checkbox" class="checkclick" />
+                </span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Check for Black Label</label>
+                <span>
+                    <input *ngIf="fraudList.checkBlackLabel==true" type="checkbox" class="checkclick" checked />
+                    <input *ngIf="fraudList.checkBlackLabel==false" type="checkbox" class="checkclick" />
+                </span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Suspicious payouts/bets threshold (for player's lifetime)</label>
+                <span>{{fraudList.maxRatio}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Active Bank Accounts limits</label>
+                <span>{{fraudList.activeBankAccountsLimit}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Check user presence in the Casino Black List</label>
+                <span>
+                    <input *ngIf="fraudList.checkUserPresInBlackList==true" type="checkbox" class="checkclick"
+                        checked />
+                    <input *ngIf="fraudList.checkUserPresInBlackList==false" type="checkbox" class="checkclick" />
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--  popup -->
+<div class="black_cover" *ngIf="fraudcontrolpopup">
+    <div class="popup_1 pop_sm" *ngIf="fraudcontrolpopup">
+        <div class="PopupHead">
+            <h5 class="text-center"> Fraud Control Settings </h5>
+            <span class="closetop" (click)="changeSettings('no')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-9"> First deposit checking period, days</label>
+                    <input type="text" class="col-sm-3" [(ngModel)]="subFraud.expireDays" />
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-9">Prevent using of Credit Cards registered to other users</label>
+                    <span class="col-sm-3">
+                        <input [(ngModel)]="subFraud.checkExistingCC" type="checkbox" />
+                    </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-9"> Prevent using of Bank Accounts registered to other users</label>
+                    <span class="col-sm-3">
+                        <input [(ngModel)]="subFraud.checkExistingBankAccount" type="checkbox" />
+                    </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-9"> Prevent using of NETeller Accounts registered to other user</label>
+                    <span class="col-sm-3">
+                        <input [(ngModel)]="subFraud.checkExistingNetellerAccount" type="checkbox" />
+                    </span>
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-9">Check for Black Label</label>
+                    <span class="col-sm-3">
+                        <input [(ngModel)]="subFraud.checkBlackLabel" type="checkbox" />
+                    </span>
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-9">Suspicious payouts/bets threshold (for player's lifetime)</label>
+                    <input type="text" class="col-sm-3" [(ngModel)]="subFraud.maxRatio" />
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-9">Active Bank Accounts limits</label>
+                    <input type="text" class="col-sm-3" [(ngModel)]="subFraud.activeBankAccountsLimit" />
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-9">Check user presence in the Casino Black List</label>
+                    <span class="col-sm-3">
+                        <input [(ngModel)]="subFraud.checkUserPresInBlackList" type="checkbox" />
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="changeSettings('yes')"> Save </button>
+            <button class="btn_grade_2" (click)="changeSettings('no')"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ################################################### -->
+<div class="black_cover" *ngIf="Spinner"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="Spinner">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+<!-- ################################################### -->

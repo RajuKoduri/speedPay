@@ -1,0 +1,14 @@
+<div class="child-component" *ngFor="let eachTournament of childTourneys; let i=index">
+    <span (click)="transformingTourneyIndexToParent(eachTournament.id)"
+        [class]="{'highlightedrow':eachTournament?.id==indexOfCreatedTournament,'nonhlightetext':eachTournament?.id!=indexOfCreatedTournament}">
+        {{eachTournament?.tourn?.caption}}: {{selectedTournamentCurrency}}
+        {{eachTournament?.tourn?.totalCost?.value}}.00
+        (Buy-In+Knockout Bounty+ Fee)</span>
+
+    <ul *ngIf="eachTournament?.childrenTourney?.length>=1">
+        <app-create-poker-satellite-tree [childTourneys]="eachTournament?.childrenTourney"
+            [selectedTournamentCurrency]="selectedTournamentCurrency"
+            [indexOfCreatedTournament]="indexOfCreatedTournament"></app-create-poker-satellite-tree>
+    </ul>
+
+</div>

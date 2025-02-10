@@ -1,0 +1,147 @@
+<!-- *****************************************@playerSaveDocuments @Starts********************************** -->
+<div class="fd" *ngIf="!isVisible">
+
+    <div class="fd">
+        <button class="fillterbtn font_14 ml_25" style=" float: right;" (click)="onRequery()">Requery</button>
+        <h3 > Attached Documents</h3>
+    </div>
+
+    <div class="fd table_2">
+        <div *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <table class="tablCode" id="excel-table">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Document Description</th>
+                    <th>File</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="AttachedDocumentsList">
+                <tr *ngFor="let list of AttachedDocumentsList,let i=index">
+
+                    <td>{{list.user.login}}</td>
+                    <td> {{list.descr}}</td>
+                    <td class="hyperLink"><a (click)="getStoredFileContent(list.guid,list)">{{list.fileName}} </a> </td>
+                    <td>
+                        <div class="fd">
+                            <div class="trigger">
+                                <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,list.guid)"></i>
+                                </a>
+                                <div *ngIf="popupArrow" class="fd">
+                                    <div class="popup1 " *ngIf="SeletedIconIndex==i">
+                                        <button (click)="setPlayerActions(list,i)">Delete Document</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- <div class="black_cover" *ngIf="isVisible">
+            <div class="popup_1">  -->
+        <img id="a123" [src]="imagePath">
+        <!-- </div>
+        </div> -->
+
+
+    </div>
+
+</div>
+<!-- *****************************************@playerSaveDocuments @Ends********************************** -->
+
+<div class="black_cover" *ngIf="isVisible">
+    <div class="popup_1">
+        <div class="PopupHead">
+            <h5 class="text-center">Attach Documents </h5>
+            <span class="closetop" (click)="closepopUP()">
+                <img src="assets/icons/closePop.svg"> </span>
+        </div>
+
+        <div class="main-container">
+            <form [formGroup]="documentForm">
+                <div class="form-group">
+                    <label for="login-input-userQuestion"></label>
+                    <input type="file" (change)="onFileSelected($event)" formControlName="file" required />
+
+                    <div class="m_3"
+                        *ngIf="documentForm.get('file')?.invalid && (documentForm.get('file')?.dirty || documentForm.get('file')?.touched) ||  submitted"
+                        class="text-danger">
+                        <div *ngIf="documentForm.get('file')?.errors?.['required']">
+                            You must select file before attach
+                        </div>
+                    </div>
+
+                    <!-- <b> base64 Output :</b>
+                <pre>{{base64Output}}</pre> -->
+                    <!-- <img *ngIf="base64Output" src="data:image/png;base64,{{base64Output}}" /> -->
+
+
+                    <!-- <img *ngIf="base64Output" [src]="'data:image/jpeg;base64,' + base64Output" /> -->
+
+                    <!-- <input type="file" (change)="onFileSelected1($event)" />
+                 Bit Array Output: 
+                <pre>{{ bitArrayOutput }}</pre>
+                <img *ngIf="imageUrl" id="byteImg" [src]="imageUrl" /> -->
+                </div>
+                <div class=" p_0">
+                    <b>Description:</b>
+                    <textarea class="ng-pristine ng-invalid ng-touched form-control" [(ngModel)]="description"
+                        cols="100" formControlName="description" id="Message" rows="4"></textarea>
+
+                    <div class="m_3"
+                        *ngIf="documentForm.get('description')?.invalid && (documentForm.get('description')?.dirty || documentForm.get('description')?.touched)||  submitted"
+                        class="text-danger">
+                        <div *ngIf="documentForm.get('description')?.errors?.['required']">
+                            Description is required.
+                        </div>
+                        <div *ngIf="documentForm.get('description')?.errors?.['minlength']">
+                            Description must be at least 5 characters long.
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <div class="bottomFix">
+            <div>
+                <button class="btn_grade_1" (click)="onsavefile() ">Save </button>
+                <button class="btn_grade_2" (click)="closepopUP()"> close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <img [src]="imageUrlSafe" alt="" style="width:50%;">
+</div>
+
+
+
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+<div class="black_cover" *ngIf="conformationPopup">
+    <div class="popup_1 pop_sm" *ngIf="conformationPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Player Comment </h5>
+            <span class="closetop" (click)="deleteConfirm('no')"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10  text-center">
+                <b class="p_5 text-danger">Do you want to delete the selected document?</b>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="deleteConfirm('yes')"> Yes </button>
+            <button class="btn_grade_2" (click)="deleteConfirm('No')"> No </button>
+        </div>
+    </div>
+</div>
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->

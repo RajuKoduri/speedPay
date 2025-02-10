@@ -1,0 +1,44 @@
+.backbutton{
+    display: inline-block;
+    padding: 6px 18px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    border: solid #272833;
+    margin: 0px 5px 5px 0px;
+    background: #272833;
+  }
+
+  input:focus::placeholder {
+    color: transparent;
+  }
+   ::placeholder{
+    color: #212529
+  }
+ 
+
+  tfoot{
+    position: sticky;
+    bottom: -1px;
+  }
+  table tfoot tr td{
+    border-radius: 2em; 
+    background-color:  #D3E2E5; 
+    color:#000000;
+  }
+  p {
+    margin-top: 1px;
+    margin-bottom: 0;
+}
+.popup_1 table thead th {
+  position: sticky;
+  top:300px;
+}
+.table_2{
+  height:75vh !important;
+}
+  

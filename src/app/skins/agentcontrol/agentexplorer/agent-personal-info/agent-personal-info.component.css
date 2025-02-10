@@ -1,0 +1,99 @@
+
+.selectopt{
+    padding:5px;
+    width:200px;
+    margin: 2px;
+  }
+  .table_2 thead th {
+    position: sticky;
+    top: 0;
+      /* text-wrap: nowrap */
+      white-space:nowrap
+  }
+ 
+  tfoot{
+    position: sticky;
+    bottom: -1px;
+  }
+
+  .Birthdayinputs{
+    width: 28.8%;
+  }
+ 
+  input,select{
+    /* border: none; */
+    /* border-bottom: 1px solid; */
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    padding: 5px;
+    background: #fff;
+    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+    border-width: 2px;
+    border-style: inset;
+}
+label{
+  font-weight: bold;
+}
+  .popup_4 {
+    background: #fff;
+    max-width: 800px;
+    margin: auto;
+    /* top: 80px; */
+    /* position: fixed; */
+    /* z-index: 1000; */
+    /* left: 15px; */
+    /* right: 15px; */
+    border-radius: 5px;
+    overflow: auto;
+    /* max-height: 85vh; */
+    box-shadow: 7px 11px 39px 5px rgb(0 0 0 / 20%);
+  }
+
+ .popup {
+   width: 350px;
+   height: auto;
+   margin: auto;
+   overflow: auto;
+   display: block;
+   border: 1px solid rgb(56, 58, 56);
+   position: relative;
+ }
+ .cover_BG {
+  position: absolute;
+  top: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 100;
+}
+.popup_Cls{
+  justify-content: center;
+  width: 400px;
+  display: flex;
+  position: absolute;
+  background: #8aaeb4;
+  /* background: #b5b5b5; */
+  margin: auto;
+  height: fit-content;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: 4px; 
+  box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19)!important; 
+  padding: 10px;
+  z-index: 101;
+
+}
+button.Succ_BTN {
+  border: none;
+  padding: 5px 14px;
+  font-size: 15px;
+  background: #f28916;
+}
+.tablCode thead th {
+  z-index: 0;
+}

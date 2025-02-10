@@ -1,0 +1,189 @@
+<div>
+    <h1>Player Ip History</h1>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="float: right;"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+
+                <div class="col-12 col-lg-6 col-xl-4">
+
+                    <div class="div_flex p_5_10">
+                        <label>Ip Address</label>
+                        <input type="text" formControlName="IpAddress">
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>Login StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            formControlName="startTime" [(ngModel)]="selectedTime" name="selectedTime"
+                            [ngModelOptions]="{standalone: true}" (change)="timechange($event)" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Login EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1" formControlName="endTime"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>User Agent</label>
+                        <input type="text" formControlName="UserAgent">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Logout StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="logoutstartDate"
+                            [ngModel]="logoutstartDate" (ngModelChange)="logoutstartDate = $event"
+                            (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            formControlName="logoutstartTime" [(ngModel)]="logoutselectedTime" name="logoutselectedTime"
+                            [ngModelOptions]="{standalone: true}" (change)="timechange($event)" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>logout EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="logoutendDate"
+                            [ngModel]="logoutendDate" (ngModelChange)="logoutendDate = $event"
+                            (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            formControlName="logoutendTime" [(ngModel)]="logoutselectedEndTime"
+                            name="logoutselectedEndTime" [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <div class="red_col" *ngIf="logoutstartdate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="logouttimeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="fd">
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="onFormSubmit()"
+        [disabled]="steddate || timeerror|| logoutstartdate||logouttimeerror">Submit</button>
+    <div class="df">
+        <div style="margin-right:20px;" *ngIf="PlayerIplist">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div>
+</div>
+<div class="fd table_2">
+    <div>
+        <table class="tablCode" id="excel_table">
+            <div *ngIf="loader">
+                <div class="loaderWraper">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>User Agent</th>
+                    <th>Ip Address</th>
+                    <th>Login Date</th>
+                    <th>Logout Date</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="PlayerIplist">
+                <tr (dblclick)="PlayerIplistRow(i)" *ngFor="let list of PlayerIplist, let i=index">
+                    <td class="hyperLink" (click)="PlayerExplore(list.playerLogin, list.playerId, list )">{{list.playerLogin}}</td>
+                    <td>{{list.userAgent}}</td>
+                    <td>{{list.ipAddress}}</td>
+                    <td>{{changeSelect(list.loginDate)}}</td>
+                    <td>{{changeSelect(list.logoutDate)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="fd" *ngIf="PlayerIplist && PlayerIplist.length>0">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || PlayerIplist==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||PlayerIplist==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="PlayerIplist">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="PlayerIplist==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PlayerIplist==null || pagecontrolbtn" (click)="fastforward()"><i
+                class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<div class="black_cover" *ngIf="PlayerIplistPopup" (click)="closepopup()"></div>
+<div class="popup_1 pop_sm" *ngIf="PlayerIplistPopup">
+    <div class="PopupHead">
+        <h5 class="text-center">Suspicious Player</h5>
+        <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13">
+        <div class="fd p_5 ">
+
+            <div class="df m_3">
+                <label class="col-sm-6"> Player </label>
+                <span class="col-sm-6">{{PlayerIplistRowData.playerLogin}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> User Agent </label>
+                <span class="col-sm-6">{{PlayerIplistRowData.userAgent}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> IP Address </label>
+                <span class="col-sm-6">{{PlayerIplistRowData.ipAddress}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Login Date </label>
+                <span class="col-sm-6">{{changeSelect(PlayerIplistRowData.logoutDate)}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Logout Date </label>
+                <span class="col-sm-6">{{changeSelect(PlayerIplistRowData.logoutDate)}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="bottomFix">
+        <!-- <button class="btn_grade_1" (click)="closepopup()"> Save </button> -->
+        <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+    </div>
+</div>

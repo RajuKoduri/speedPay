@@ -1,0 +1,186 @@
+<div>
+    <h1>Loser list </h1>
+</div>
+
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5 btn_sub12" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex">
+                        <label>Currency</label>
+                        <select formControlName="Currency" class="seclectopt">
+                            <option [ngValue]="currency.guid" *ngFor="let currency of walletTypesList">{{currency.description}}</option>
+                        </select>
+                    </div>
+
+                    <div class="div_flex">
+                        <label>Reporting Period Start</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            formControlName="startTime" [ngModel]="startTime" (ngModelChange)="startTime = $event"
+                            (change)="timechange($event)" [max]="endTime" />
+                    </div>
+                    <div class="div_flex">
+                        <label>Reporting Period End</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1" formControlName="endTime"
+                            step="1" [ngModel]="endTime" (ngModelChange)="endTime = $event"
+                            (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">Start date should be below or equal to end date</div>
+                    <div class="red_col" *ngIf="timeerror">Start time should be below or equal to end time</div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex">
+                        <label>Face </label>
+                        <!-- <input type="text" formControlName="Face" /> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingsSkins" [data]="faceParametersList"
+                                [(ngModel)]="selectedFaceParameters" (onSelect)="onItemSelectFaceParameters($event)"
+                                (onDeSelect)="OnItemDeSelectFaceParameters($event)"
+                                (onSelectAll)="onSelectAllFaceParameters($event)"
+                                (onDeSelectAll)="onDeSelectAllFaceParameters($event)" formControlName="Face">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex">
+                        <label>Player </label>
+                        <input type="text" formControlName="Player" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <div class="div_flex">
+                        <label>Page Size </label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <div class="text-centers div_sub">
+        <div class="df">
+            <div style="margin-right:20px;" *ngIf="LosersList">Rows On the Page: {{rowsOnthePage}} </div>
+            <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                    the filters</b></div>
+        </div>
+        <button class="fillterbtn btn_sub12" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    </div>
+</div>
+<div class="fd table_2">
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader position"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr>
+                <th>Player</th>
+                <th>Face</th>
+                <th>Number of Played games</th>
+                <th>Bets</th>
+                <th>Payouts</th>
+                <th>Income</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="LosersList">
+            <tr (dblclick)="onClick(i)" *ngFor="let List of LosersList; let i = index">
+                <td class="hyperLink" (click)="PlayerExplore(List.player.account, List.player.guid, List.player)">
+                    <a>{{List.player.account}}</a></td>
+                <td>{{List.player.network}}</td>
+                <td class="text-end">{{List.gameCount}}</td>
+                <td class="text-end">{{List.symbol}} {{List.bets?.value |numberFormat}}</td>
+                <td class="text-end">{{List.symbol}} {{List.payouts?.value |numberFormat}}</td>
+                <td class="text-end">{{List.symbol}} {{List.incomeLoss?.value |numberFormat}}</td>
+            </tr>
+        </tbody>
+        <tfoot class="shadow-lg" *ngIf="LosersList && LosersList.length>0">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <span *ngFor="let sums of sumsArray; let i = index">
+                        <b class="text-nowrap">SUM = {{sums.symbol}} {{sums.betsum | numberFormat}}</b>
+                    </span>
+                </td>
+                <td>
+                    <span *ngFor="let sums of sumsArray; let i = index">
+                        <b class="text-nowrap">SUM = {{sums.symbol}} {{sums.payoutSum | numberFormat}}</b>
+                    </span>
+                </td>
+                <td>
+                    <span *ngFor="let sums of sumsArray; let i = index">
+                        <b class="text-nowrap">SUM = {{sums.symbol}} {{sums.incomeSum | numberFormat}}</b>
+                    </span>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<!-- **************************POPUP************************************ -->
+<div class="black_cover" *ngIf="losersListDetailsPopup" (click)="closepopup()"></div>
+<div class="popup_1 pop_sm" *ngIf="losersListDetailsPopup">
+    <div class="PopupHead">
+        <h5 class="text-center">Statistics losers</h5>
+        <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13">
+        <div class="fd p_5 ">
+
+            <div class="df m_3">
+                <label class="col-sm-6"> Player </label>
+                <span class="col-sm-6">{{losersListDetails.player.account}}</span>
+            </div>
+
+            <div class="m_3">
+                <label class="col-sm-6">Face</label>
+                <span class="col-sm-6">{{losersListDetails.player.network}}</span>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-6">Number of Played Games</label>
+                <span class="col-sm-6">{{losersListDetails.gameCount}}</span>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-6">Bets</label>
+                <span class="col-sm-6">{{losersListDetails.symbol}} {{losersListDetails.bets?.value
+                    |numberFormat}}</span>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-6">Payouts</label>
+                <span class="col-sm-6">{{losersListDetails.symbol}} {{losersListDetails.payouts?.value
+                    |numberFormat}}</span>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-6">Income</label>
+                <span class="col-sm-6">{{losersListDetails.symbol}} {{losersListDetails.incomeLoss?.value
+                    |numberFormat}}</span>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <!-- <button class="btn_grade_1" (click)="closepopup()"> Okay </button> -->
+            <button class="btn_grade_2" (click)="closepopup()"> Close </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,111 @@
+<div>
+    <h2>Promotion Prize Payments </h2>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodStart</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" step="1" formControlName="startTime"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            (change)="timechnage($event)" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodEnd</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" step="1" formControlName="endTime"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Player Login</label>
+                        <input type="number" formControlName="PlayerLogin">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Promotion Name </label>
+                        <input type="number" formControlName="PromotionName">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="number" formControlName="firstRecord">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="number" formControlName="maxCountRecord">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df m-1">
+        <div style="margin-right:20px;" *ngIf="promotionPrizePaymentsData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="table_2">
+        <table class="tablCode " id="excel-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Promotion Name</th>
+                    <th>Player</th>
+                    <th>Prize</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="promotionPrizePaymentsData">
+                <tr *ngFor="let list of  promotionPrizePaymentsData,let i=index">
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="fd" *ngIf="promotionPrizePaymentsData && promotionPrizePaymentsData.length>0">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || promotionPrizePaymentsData==null"
+            (click)="fastbackforward()"><i class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||promotionPrizePaymentsData==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="promotionPrizePaymentsData">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="promotionPrizePaymentsData==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="promotionPrizePaymentsData==null || pagecontrolbtn"
+            (click)="fastforward()"><i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>

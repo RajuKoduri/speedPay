@@ -1,0 +1,150 @@
+<div>
+    <h4>Ip History</h4>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="IpHistoryForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label class="datelabel">Login startDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view " type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label class="datelabel">Login EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Ip Address</label>
+                        <input type="text" formControlName="IpAddress">
+                    </div>
+                </div>
+
+                <!-- ********************* -->
+
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label class="datelabel">Logout startDate</label>
+                        <input class="inp_agent_time" type="date" [max]="LOgoutendDate"
+                            formControlName="LOgoutstartDate" [ngModel]="LOgoutstartDate"
+                            (ngModelChange)="LOgoutstartDate = $event" (change)="LOgoutshowDate($event)" />
+                        <input class="inp_agent_time mobile_view " type="time" formControlName="LOgoutstartTime"
+                            step="1" [ngModel]="LOgoutstartTime" (ngModelChange)="LOgoutstartTime = $event"
+                            (change)="LOgouttimechange($event)" [max]="LOgoutendTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label class="datelabel">Logout EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="LOgouttodaydate"
+                            formControlName="LOgoutendDate" [ngModel]="LOgoutendDate"
+                            (ngModelChange)="LOgoutendDate = $event" (change)="LOgoutshowDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="LOgoutendTime" step="1"
+                            [ngModel]="LOgoutendTime" (ngModelChange)="LOgoutendTime = $event"
+                            (change)="LOgouttimechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="LOgoutsteddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="LOgouttimeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Status</label>
+                        <!-- <select class="seclectopt" formControlName="Status">
+                            <option [ngValue]="logintype.guid" *ngFor="let logintype of LoginTypeList">
+                                {{logintype.value}}</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingsGuids" [data]="LoginTypeList"
+                                [(ngModel)]="selectTypelist" (onSelect)="onItemSelectSTatus($event)"
+                                (onDeSelect)="OnItemDeSelectSTatus($event)"
+                                (onSelectAll)="onSelectAllSTatus($event)"
+                                (onDeSelectAll)="onDeSelectAllSTatus($event)" formControlName="Status">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ********************* -->
+
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <div style="margin-right:20px;" *ngIf="IpHistoryData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div *ngIf="ResultCount">Result Count: {{ResultCount}}</div>
+        <!-- <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div> -->
+    </div>
+</div>
+<div class="fd">
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="fd table_2">
+        <table class="tablCode" id="excel_table">
+            <thead>
+                <tr>
+                    <th>Agent</th>
+                    <th>Ip Address</th>
+                    <th>Location</th>
+                    <th>Login Date</th>
+                    <th>Logout Date</th>
+                    <th>Status</th>
+                    <th>description</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="IpHistoryData">
+                <tr *ngFor="let List of IpHistoryData,let i =index">
+                    <td>{{List.agent.login}}</td>
+                    <td>{{List.ipAddress}}</td>
+                    <td>
+                        <span *ngIf="isObjectEmpty(List.ipLocation)">,</span>
+                        <span *ngIf="!isObjectEmpty(List.ipLocation)">{{List.ipLocation}}</span>
+                    </td>
+                    <td>{{changeSelect(List.loginDate)}}</td>
+                    <td>{{changeSelect(List.logoutDate)}}</td>
+                    <td>{{List.agent.status}}</td>
+                    <td>{{List.description}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

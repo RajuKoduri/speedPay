@@ -1,0 +1,44 @@
+<div>
+    <h3>Comp Points Counters </h3>
+</div>
+<div class="fd">
+    <div class="col-md-12">
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    </div>
+</div>
+<div class="fd">
+    <button class="fillterbtn m_l_5" style="float: right;"
+        (click)="onSubmit()">Requery</button>
+    <!-- <div class="text-centers">
+        <div class="text-centers">
+            <div style="margin-right:20px;" *ngIf="tableAdjest">Rows On the Page: {{rowsOnthePage}}</div>
+            <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                    the filters</b></div>
+        </div>
+    </div> -->
+</div>
+
+<div class="fd">
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="fd table_2">
+        <table class="tablCode" id="excel-table">
+            <thead>
+                <tr class="tablCoderow">
+                    <th>Counter</th>
+                    <th>Earned</th>
+                </tr>
+            </thead>
+            <!-- <tbody *ngIf="LevelChangeData">
+                <tr *ngFor="let list of LevelChangeData;let i=index" (dblclick)="onClick(i)">
+                   <td></td>
+                   <td></td>
+                </tr>
+            </tbody> -->
+        </table>
+    </div>
+</div>

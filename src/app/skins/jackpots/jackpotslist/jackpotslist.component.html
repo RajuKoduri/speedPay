@@ -1,0 +1,369 @@
+<!-- top navbar -->
+<!-- <div class="topnav">
+    <a (click)="fillterMenu()">Filter</a>
+    <div class="dropdown">
+        <button class="dropbtn">Actions</button>
+        <div class="dropdown-content">
+            <a (click)="openJackpotPop()">Edit Jackpot</a>
+        </div>
+    </div>
+    <a (click)="openJackpotPop()">Open</a>
+    <a>Explore</a>
+    <a (click)="ignoreContext()">Ignore Context</a>
+    <div class="dropdown">
+        <button class="dropbtn">View</button>
+        <div class="dropdown-content">
+            <a (click)="onRequery()">Normal</a>
+            <a>Autosize</a>
+            <a>Card</a>
+        </div>
+    </div>
+    <a (click)="onRequery()">Requery</a>
+    <a (click)="exportExcel()">Export to XSL</a>
+    <a (click)="onPrint()">Print</a>
+</div> -->
+<!-- <div class="center">
+    <div class="dropList" style="margin-top: 100px;" *ngIf="dropDownList">
+        <ul>
+          <li><a>Actions</a></li>
+          <li><a (click)="openJackpotPop()">Open</a></li>
+          <li><a (click)="ignoreContext()">Ignore content</a></li>
+          <li><a>View</a></li>
+          <li><a (click)="onRequery()">Requery</a></li> 
+          <li><a (click)="exportExcel()">Export to XSL</a></li>
+          <li><a (click)="onPrint()">Print</a></li>
+        </ul>
+    </div>
+</div> -->
+
+<div>
+    <h3>Jackpots List:</h3>
+</div>
+<div>
+    <button class="fillterbtn font_16" (click)="fillterMenu()">Filters
+        <i *ngIf="!FillterList" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="FillterList" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="margin-right:15px; float: right;" (click)="exportExcel()"> Export
+        Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<!-- FillterList start -->
+<!-- <div class="ff" *ngIf="FillterList">
+    <form [formGroup]="filterForm"> -->
+<!-- <div class="fd filterDiv" *ngIf="FillterList">
+    <form [formGroup]="filterForm" (ngSubmit)="onFormSubmit()">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4"> -->
+<div class="fd filterDiv" *ngIf="FillterList">
+    <form [formGroup]="filterForm" (ngSubmit)="onFormSubmit()">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>Jackpot Name </label>
+                        <input type="text" formControlName="jackpotname" placeholder="(none)">
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>Owner Name </label>
+                        <input type="text" formControlName="ownername" placeholder="(none)">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="currency">
+                            <option *ngFor="let currency of currencys" [ngValue]="currency.guid">
+                                {{currency.description}}</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencystatus"
+                                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label> Jackpots Simulator </label>
+                        <select class="seclectopt" formControlName="jackpotsimulator">
+                            <option [ngValue]="type.guid" *ngFor="let type of Enabled_Disabled_AllList">{{type.value}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <!-- <button class="fillterbtn" (click)="onFormSubmit()">Apply</button>
+                    <button class="fillterbtn" (click)="FormReset()">Reset</button> -->
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!-- FillterList end -->
+<div class="fd">
+    <button class="fillterbtn font_14" style="margin-right:15px; float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df m_t_5">
+
+        <div style="margin-right:20px;" *ngIf="jackpotsList">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<!-- table start -->
+
+<div class="fd over_tbl" id="tablerecords" style="overflow-x:auto;">
+    <div clas='fd' *ngIf="dataLoader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="fd table_2">
+        <table class=" tablCode" id="excel_table">
+            <thead>
+                <tr>
+                    <th>Jackpot Name</th>
+                    <th>Owner Name</th>
+                    <th>Currency</th>
+                    <th>Current Jackpot Amount</th>
+                    <th>Jackpot Simulator</th>
+                    <th>Jackpot Simulator Amount</th>
+                </tr>
+            </thead>
+
+            <tbody *ngIf="jackpotsList">
+                <tr (dblclick)="onClick(i)"
+                    *ngFor="let i = index; let list of jackpotsList | paginate: {itemsPerPage:selectnum, currentPage:p}">
+                    <td>{{list.name}}</td>
+                    <td></td>
+                    <td>{{list.moneyType}}</td>
+                    <td class="text-end">{{list.currentAmount.value |numberFormat}}</td>
+                    <!-- <td>{{list.simulated}}</td> -->
+                    <td>
+                        <input *ngIf="list.simulated==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="list.simulated==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <td class="text-end">{{list.simulatedAmount.value |numberFormat}}</td>
+                </tr>
+            </tbody>
+            <tfoot *ngIf="jackpotsList">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>SUM={{currentAmountValue |numberFormat}}</td>
+                    <td></td>
+                    <td>SUM={{simulatedAmountValue |numberFormat}}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+        class="pt-2 page-item float-right">
+    </pagination-controls> -->
+
+
+    <!-- <div class="page_count">
+        <div style="margin-right:20px;" *ngIf="jackpotsList">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+        <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div> -->
+</div>
+<!-- table end -->
+<div class="fd">
+    <div class="fd" *ngIf="jackpotsList">
+        <div class="pagecount">
+            <button class="Pagebtns" [disabled]="PageCount==1 || jackpotsList==null" (click)="fastbackforward()"><i
+                    class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||jackpotsList==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="jackpotsList">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="jackpotsList==null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="jackpotsList==null || pagecontrolbtn" (click)="fastforward()">
+                <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="jackpotpopup">
+    <div class="popup_1 pop_sm" *ngIf="jackpotpopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Edit Jackpot "{{subJackpot.name}}" </h5>
+            <span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15" *ngIf="!subJackpot.owner">
+            <div class="fd row margin-bottom">
+                <!-- <div class="fd row" style="height: 80vh; border: 2px solid sandybrown;"> -->
+                <div class="col-12 col-xl-6 ">
+                    <div class="fd p_5 ">
+                        <div class="df">
+                            <label class="col-sm-6"> Jackpot Name </label>
+                            <span class="col-sm-6">{{subJackpot.name}}</span>
+                        </div>
+                        <div class="df">
+                            <label class="col-sm-6"> Currency </label>
+                            <span class="col-sm-6">{{subJackpot.moneyType}}</span>
+                        </div>
+                        <div class="df">
+                            <label class="col-sm-6"> Current Jackpot Amount </label>
+                            <span class="col-sm-6">
+                            <!-- <input type="number" [(ngModel)]="subJackpot.currentAmount.value" (keypress)="inputpayout12($event)" maxlength = "11"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value.slice(0, this.maxLength)) : 0;"
+                                /> -->
+                            <!-- <input type="text" [ngModel]="subJackpot.currentAmount.value | inputMaxlengthValidation:11" (ngModelChange)="subJackpot.currentAmount.value = $event"
+                                /> -->
+                                 <input type="text" [(ngModel)]="subJackpot.currentAmount.value" appMaxLengthValidation  [maxNumber]=11/>
+                            <!-- <input type="number" [(ngModel)]="subJackpot.currentAmount.value"  
+                            oninput="javascript: if (this.value.length > this.maxLength) 
+                            this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value.slice(0, this.maxLength))  : 0;"
+                                type = "number" maxlength = "11"/> -->
+                            </span>
+                        </div>
+
+                        <div class="fd SettingsTab">
+                            <div class="headTitle">Fee Structure</div>
+                            <div class="p_10">
+                                <div class="df">
+                                    <label class="col-sm-6"> For every Pot, chips </label>
+                                    <span class="col-sm-6">
+                                        <input type="text" (input)="btnSaveDisable()"
+                                            [(ngModel)]="subJackpot.settings[0].potPart.value" appMaxLengthValidation [maxNumber]=11/>
+                                        <span class="text-danger"
+                                            *ngIf="subJackpot.settings[0].potPart.value<0.02">value must be greater or
+                                            equal 0.02</span>
+                                    </span>
+                                </div>
+                                <div class="df">
+                                    <label class="col-sm-6"> Paid Jackpot Fee, chips </label>
+                                    <span class="col-sm-6">
+                                        <input type="text" (input)="btnSaveDisable()" 
+                                            [(ngModel)]="subJackpot.settings[0].feePerPotPart.value" appMaxLengthValidation [maxNumber]=16/>
+                                        <span class="text-danger"
+                                            *ngIf="subJackpot.settings[0].feePerPotPart.value<=0">value must be positive
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="df">
+                                    <label class="col-sm-6"> Max Fee, chips </label>
+                                    <span class="col-sm-6">
+                                        <input type="text" (input)="btnSaveDisable()"  appMaxLengthValidation [maxNumber]= 11
+                                            [(ngModel)]="subJackpot.settings[0].maxFee.value" />
+                                        <span class="text-danger" *ngIf="subJackpot.settings[0].maxFee.value<=0">value
+                                            must be positive </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl-6 ">
+                    <div class="fd SettingsTab">
+                        <div class="headTitle">Bad Beat Requirements</div>
+                        <div class="p_10">
+                            <div class="df">
+                                <label class="col-sm-6"> Min Active Players </label>
+                                <span class="col-sm-6">
+                                    <input type="text" (input)="btnSaveDisable()"
+                                        [(ngModel)]="subJackpot.settings[0].minActivePlayers" maxlength="29"/>
+                                    <span class="text-danger"
+                                        *ngIf="subJackpot.settings[0].minActivePlayers<=0||subJackpot.settings[0].minActivePlayers>=11">value
+                                        must be between 2 and 10</span>
+                                </span>
+                            </div>
+                            <div class="df">
+                                <label class="col-sm-6"> Min Combination </label>
+                                <span class="col-sm-6">
+                                    <!-- <input type="text" value={{subJackpot.settings[0].minCombination}} /> -->
+                                    <!-- <select class="col-sm-12" [(ngModel)]="MinCombination"> -->
+                                    <select [(ngModel)]="MinCombination" style="width: 164px;">
+                                        <option [ngValue]="list.guid" *ngFor="let list of BadBeatMinCombinationsList">
+                                            {{list.value}}</option>
+                                    </select>
+                                </span>
+                            </div>
+                            <div class="df">
+                                <label class="col-sm-6">Min Rake </label>
+                                <span class="col-sm-6">
+                                    <input type="text" value={{subJackpot.settings[0].minRake.value}} appMaxLengthValidation [maxNumber]= 11/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fd SettingsTab">
+                        <div class="headTitle">Payout Settings</div>
+                        <div class="p_10">
+                            <div class="df">
+                                <label class="col-sm-6"> Bad Beat Hand, %</label>
+                                <span class="col-sm-6">
+                                    <input type="number"
+                                        (input)="btnSaveDisable()"
+                                        [(ngModel)]="subJackpot.settings[0].badBeatHandPercent" appMaxLengthValidation [maxNumber]=3/>
+                                    <span class="text-danger" *ngIf="subJackpot.settings[0].badBeatHandPercent<=0">value
+                                        must be positive</span>
+                                </span>
+                            </div>
+                            <div class="df">
+                                <label class="col-sm-6"> Winners Hand, %</label>
+                                <span class="col-sm-6">
+                                    <input  type="number"
+                                        (input)="btnSaveDisable()"
+                                        [(ngModel)]="subJackpot.settings[0].winnerHandPercent" appMaxLengthValidation [maxNumber]=3/>
+                                    <span class="text-danger" *ngIf="subJackpot.settings[0].winnerHandPercent<=0">value
+                                        must be positive</span>
+                                </span>
+                            </div>
+                            <div class="df">
+                                <label class="col-sm-6"> Rest Players, % </label>
+                                <span class="col-sm-6">
+                                    <input  type="number"
+                                        (input)="btnSaveDisable()"
+                                        [(ngModel)]="subJackpot.settings[0].restPlayersPercent" appMaxLengthValidation [maxNumber]=3/>
+                                    <span class="text-danger" *ngIf="subJackpot.settings[0].restPlayersPercent<=0">value
+                                        must be positive</span>
+                                </span>
+                            </div>
+                            <div class="df">
+                                <label class="col-sm-6"> House Revenue, %</label>
+                                <span class="col-sm-6">
+                                    <input  type="number"
+                                        (input)="btnSaveDisable()"
+                                        [(ngModel)]="subJackpot.settings[0].houseRevenuePercent" appMaxLengthValidation [maxNumber]=3/>
+                                </span>
+                            </div>
+                            <div class="df">
+                                <label class="col-sm-6"> New Jackpot, % </label>
+                                <!-- <span class="col-sm-6">{{NewJackpotCal()}} </span> -->
+                                <span class="col-sm-6" [ngClass]="{'negative-value': isNegativeValue() }">
+                                    {{ NewJackpotCal() }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="setJackpot()" [disabled]="btnsave"> Save </button>
+            <button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->
+
+<!-- ****************************SpinnwerT*********************************** -->
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>

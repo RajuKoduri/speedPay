@@ -1,0 +1,480 @@
+<div>
+    <h2>Transactions</h2>
+</div>
+<div>
+    <button class="fillterbtn font_16" (click)="fillermenu()">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodStart</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            formControlName="startTime" (change)="timechnage($event)" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodEnd</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime" formControlName="endTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencyList"
+                                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="Currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>User Type</label>
+                        <!-- <select class="seclectopt " formControlName="UserType">
+                            <option [ngValue]="typeofuser.guid" *ngFor="let typeofuser of usertypes">
+                                {{typeofuser.value}}
+                            </option>
+                        </select>  -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingsUsertypes" [data]="usertypes"
+                                [(ngModel)]="selectedUserlist" (onSelect)="onItemSelectUsertypes($event)"
+                                (onDeSelect)="OnItemDeSelectUsertypes($event)"
+                                (onSelectAll)="onSelectAllUsertypes($event)"
+                                (onDeSelectAll)="onDeSelectAllUsertypes($event)" formControlName="UserType">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label> User Login Mask</label>
+                        <input type="text" formControlName="UserLoginMask" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Short Id</label>
+                        <input type="text" formControlName="ShortId" />
+                    </div>
+
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Payments Systems</label>
+                        <!-- <select class="seclectopt " formControlName="PaymentsSystems">
+                            <option [ngValue]="PaymentsSystem.guid" *ngFor="let  PaymentsSystem of PaymentsSystemsList">
+                                {{PaymentsSystem.value}}
+                            </option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingsPaymentSystem"
+                                [data]="PaymentsSystemsList" [(ngModel)]="selectedPaymentsSystemsList"
+                                (onSelect)="onItemSelectPaymentSystem($event)"
+                                (onDeSelect)="OnItemDeSelectPaymentSystem($event)"
+                                (onSelectAll)="onSelectAllPaymentSystem($event)"
+                                (onDeSelectAll)="onDeSelectAllPaymentSystem($event)" formControlName="PaymentsSystems">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Payment Means Number</label>
+                        <input type="text" formControlName="PaymentMeansNumber" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Statuses</label>
+                        <!-- <select class="seclectopt " formControlName="Statuses">
+                            <option [ngValue]="OperationList.guid"
+                                *ngFor="let  OperationList of TransactionStatusesList">
+                                {{OperationList.value}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownStatusSettings"
+                                [data]="TransactionStatusesList" [(ngModel)]="convertedStatus"
+                                (onSelect)="onItemSelectStatus($event)" (onDeSelect)="OnItemDeSelectStatus($event)"
+                                (onSelectAll)="onSelectAllStatus($event)" (onDeSelectAll)="onDeSelectAllStatus($event)"
+                                formControlName="Statuses"></ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Operation</label>
+                        <!-- <select class="seclectopt " formControlName="Operation">
+                            <option [ngValue]="OperationList.guid"
+                                *ngFor="let  OperationList of TransactionOperationsList">
+                                {{OperationList.value}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownsettingsOpertaion"
+                                [data]="TransactionOperationsList" [(ngModel)]="converetedopertion"
+                                (onSelect)="onItemSelectOperation($event)"
+                                (onDeSelect)="OnItemDeSelectOperation($event)"
+                                (onSelectAll)="onSelectAllOperation($event)"
+                                (onDeSelectAll)="onDeSelectAllOperation($event)"
+                                formControlName="Operation"></ng-multiselect-dropdown>
+                        </div>
+
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Internal ID</label>
+                        <input type="text" formControlName="InternalId" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>External Id</label>
+                        <input type="text" formControlName="ExternalId" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Initiator Login Mask </label>
+                        <input type="text" formControlName="InitiatorLoginMask" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Face </label>
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList12"
+                                [(ngModel)]="selectedItems12" (onSelect)="onItemSelectnew($event)"
+                                (onDeSelect)="OnItemDeSelectnew($event)" (onSelectAll)="onSelectAllnew($event)"
+                                (onDeSelectAll)="onDeSelectAllnew($event)" formControlName="Face">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>First Record </label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df">
+        <div style="margin-right:20px;" *ngIf="TransactionsData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Face</th>
+                <th>Date</th>
+                <th>Elapsed Time</th>
+                <th>Actions</th>
+                <th>User Type</th>
+                <th>User</th>
+                <th>Short ID</th>
+                <th>Operation</th>
+                <th>Status</th>
+                <th>Order Amount</th>
+                <th>Payment System</th>
+                <th>Payment Means Number</th>
+                <th>Internal ID </th>
+                <th>External ID </th>
+                <th>External ID 2</th>
+                <th>First Deposit </th>
+                <th>Deposit Details </th>
+                <th>System Comment </th>
+                <th>Initiator </th>
+            </tr>
+        </thead>
+        <tbody *ngIf="TransactionsData">
+            <tr (dblclick)="Transactionspopup(i)" *ngFor="let list of TransactionsData,  let i =index">
+                <td>{{i + 1}}</td>
+                <td>{{list.userFace}}</td>
+                <td>{{transformDate(list.date)}}</td>
+                <td>{{timeFormat(list.elapsedTime)}}</td>
+                <td>
+                    <div class="fd">
+                        <div class="trigger">
+                            <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,list.guid)"> </i> </a>
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                    <!-- <button *ngIf="List.player.status == 'Active'"
+                                                (click)="setPlayerActions(List.player.status,i)">Lock</button> -->
+                                    <button
+                                        [disabled]="list.status =='Approved'|| list.status =='!Locked'|| list.status =='Failed'"
+                                        (click)="setTransactionActions('commit',i)">Commit transaction</button>
+                                    <button [disabled]="list.status =='Approved' || list.status =='Failed'"
+                                        (click)="setTransactionActions('rollback',i)">Rollback transaction</button>
+                                    <button
+                                        [disabled]="list.status =='!Approved' || list.status =='Locked' || list.status =='Failed'"
+                                        (click)="setTransactionActions('Chargeback',i)">Charge back </button>
+                                    <button [disabled]="list.status =='Approved' || list.status =='Failed'"
+                                        (click)="setTransactionActions('restart',i)">Restart Transaction</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{list.user?.type}}</td>
+                <td>
+                    <span *ngIf="list.user?.type == 'Player'" class="hyperLink"
+                        (click)="PlayerExplore(list.user.login, list.user.guid, list)">{{list.user?.login}}
+                    </span>
+                    <span *ngIf="list.user?.type == 'Agent'" class="hyperLink"
+                        (click)="AgentExplore(list.user.login, list.user.guid, list)">{{list.user?.login}}
+                    </span>
+                    <span *ngIf="list.user?.type == 'Affiliate'">{{list.user?.login}} </span>
+                </td>
+                <td>{{list.user?.shortId}}</td>
+                <td>{{list.operationType}}</td>
+                <td [ngClass]="{ 'text-warning' : list.status == 'Locked','text-danger' : list.status=='Failed' }">
+                    {{list.status}}</td>
+                <td class="text-end">{{currencySymbol(list.orderAmount.wallet)}} {{list.orderAmount.value}}</td>
+                <td>{{list.paymentSystemType}}</td>
+                <td>{{list.paymentMeansNumber}}</td>
+                <td [ngClass]="{hyperLink : list.operationType == 'Deposit' || list.operationType == 'Withdrawal'}"
+                    (click)="(list.operationType == 'Deposit' || list.operationType == 'Withdrawal') && navigateToDeposite(list.internalId,list.operationType)">
+                    {{list.internalId}}</td>
+                <td>{{list.externalId}}</td>
+                <td></td>
+                <td>{{list.firstDeposit}}</td>
+                <td></td>
+                <td style="word-break: break-word;">{{list.comment}}</td>
+                <td>{{list?.initiator?.login}}</td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="TransactionsData && TransactionsData.length > 0">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(orderAmount)">
+                        {{orderAmount[key]}} ; </span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="fd" *ngIf="TransactionsData && TransactionsData.length > 0">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || TransactionsData==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||TransactionsData==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="TransactionsData">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="TransactionsData==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="TransactionsData==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="TransactionsDatapopup">
+    <div class="popup_1 pop_sm" *ngIf="TransactionsDatapopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Transaction</h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df">
+                    <label class="col-sm-6"> Face </label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.userFace}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Date </label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.date}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Elapsed Time </label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.elapsedTime}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> User Type </label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.user.type}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> User</label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.user.login}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Short ID</label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.user.shortId}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Operation </label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.operationType}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Status</label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.status}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Order Amount</label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.orderAmount.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Paymeny System</label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.paymentSystemType}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Payment Means Number</label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.paymentMeansNumber}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Internal ID</label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.internalId}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> External ID</label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.externalId}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">External ID 2</label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">First Deposit</label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.firstDeposit}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Deposit Details</label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">System Comment</label>
+                    <span class="col-sm-6"
+                        style="word-break: break-word;">{{TransactionsDatafulldetails.comment}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Initiator</label>
+                    <span class="col-sm-6">{{TransactionsDatafulldetails.initiator.login}}</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->
+
+
+<!-- ****************************conformationType*********************************** -->
+<div class="black_cover" *ngIf="conformationType||ChargebackPopup">
+    <div class="popup_1 pop_sm" *ngIf="conformationType ||ChargebackPopup">
+        <div class="PopupHead">
+            <h5 class="text-center" *ngIf="!ChargebackPopup">Warning</h5>
+            <h5 class="text-center" *ngIf="ChargebackPopup">Charge back</h5>
+            <span class="closetop" (click)="TransactionActions('no')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5" *ngIf="!ChargebackPopup">
+                <div class="df text-center py-2"><b> Do you want to {{conformationType}} the transaction</b></div>
+            </div>
+            <div class="fd p_5" *ngIf="ChargebackPopup">
+                <div>
+                    <div class="df m_3">
+                        <label class="col-sm-6"> player </label>
+                        <span class="col-sm-6">{{(TransactionsDatafulldetails.user.login)}}
+                            {{(TransactionsDatafulldetails.user.fullName)}}</span>
+                    </div>
+                    <div class="df m_3">
+                        <label class="col-sm-6">External ID</label>
+                        <span class="col-sm-6">{{TransactionsDatafulldetails.orderAmount.value |numberFormat}}</span>
+                    </div>
+                    <div class="df m_3">
+                        <div class="col-sm-6">Payment system</div>
+                        <span class="col-sm-6">{{TransactionsDatafulldetails.paymentMeansNumber}}</span>
+                    </div>
+                    <div class="df m_3">
+                        <label class="col-sm-6">Payment means</label>
+                        <span class="col-sm-6">{{TransactionsDatafulldetails.paymentSystemType}}</span>
+                    </div>
+                    <div class="mt-2">
+                        <input class="me-1" type="checkbox" [(ngModel)]="notifyPlayerCheckbox"> <span>Sent chargeback
+                            nptification to the player via email</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" *ngIf="!ChargebackPopup" (click)="TransactionActions('yes')"> Save </button>
+            <button class="btn_grade_1" *ngIf="ChargebackPopup" (click)="TransactionActions('yes')"> Charge Back
+            </button>
+            <button class="btn_grade_2" (click)="TransactionActions('no')"> Cancel </button>
+        </div>
+    </div>
+
+</div>
+<!-- ****************************conformationType*********************************** -->
+<!-- ****************************referenceNumberPopup*********************************** -->
+<div class="black_cover" *ngIf="referenceNumberPopup">
+    <div class="popup_1 pop_sm" *ngIf="referenceNumberPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Reference Number</h5>
+            <span class="closetop" (click)="commitTransaction('no')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class=" font_13 fd p_lr_15  ">
+           <div class="p-3 m-4 shadow shadow-2 rounded">
+            <div>Reference Number</div>
+            <div> <input type="text" class="form-control" [(ngModel)]="referenceNumber"/>   </div>
+           </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1"  (click)="commitTransaction('yes')"> Save </button>
+            <button class="btn_grade_2" (click)="commitTransaction('no')"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ****************************referenceNumberPopup*********************************** -->
+
+<div class="black_cover" *ngIf="Spinner"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="Spinner">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>

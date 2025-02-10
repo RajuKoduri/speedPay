@@ -1,0 +1,107 @@
+<div>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="getPlayerComments()">Requery</button>
+    <h3>Comments</h3>
+</div>
+<div>
+    <div class="fd">
+        <div class="table_2">
+            <div *ngIf="loader">
+                <div class="loaderWraper">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            <table class="tablCode" id="excel_table">
+                <thead>
+                    <tr class="tablCoderow">
+                        <th>Player Login</th>
+                        <th>Admin</th>
+                        <th>Date</th>
+                        <th>Comment</th>
+                        <th>Actions</th>
+                </thead>
+                <tbody *ngIf="PlayerComents">
+                    <tr (dblclick)="openPopUp(i)" *ngFor="let list of PlayerComents,let i=index">
+                        <td>{{list.player.account}}</td>
+                        <td>{{list.admin}}</td>
+                        <td>{{transformDate(list.date)}}</td>
+                        <td>{{list.comment}}</td>
+                        <td>
+                            <div class="fd">
+                                <div class="trigger">
+                                    <a><i class="fa fa-reorder" style="color: #fff;"
+                                            (click)="showmanu(i,list.guid)"></i>
+                                    </a>
+                                    <div *ngIf="popupArrow" class="fd">
+                                        <div class="popup1 " *ngIf="SeletedIconIndex==i">
+                                            <button (click)="setPlayerActions(list,i)">Delete Comments</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="fd df">
+        <div>
+            <span>Rows On the Page : <b>{{rowsOnthePage}}</b></span> ;&nbsp;
+            <span>Result Count : <b>{{ResultCount}}</b></span>
+        </div>
+    </div>
+    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Edit Comment@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <div class="black_cover" *ngIf="editPopup">
+        <div class="popup_1 pop_sm" *ngIf="editPopup">
+            <div class="PopupHead">
+                <h5 class="text-center">Player Comment </h5>
+                <span class="closetop" (click)="editNdDelete('edit','no')"> <img src="assets/icons/closePop.svg">
+                </span>
+            </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="fd p_10  ">
+                    <div class="df">
+                        <label class="col-lg-6">Player Login</label>
+                        <span class="col-lg-6">{{seletedComment.player.account}}</span>
+                    </div>
+                    <div class="df">
+                        <label class="col-lg-6">Admin</label>
+                        <sapn class="col-lg-6">{{seletedComment.admin}}</sapn>
+                    </div>
+                    <div class="df">
+                        <label class="col-lg-6">Date</label>
+                        <span class="col-lg-6">{{transformDate(seletedComment.date)}}</span>
+                    </div>
+                    <div class="df">
+                        <label class="col-lg-6">Comment</label>
+                        <span class="col-lg-6 "><textarea class="border fd"
+                                [(ngModel)]="seletedComment.comment"></textarea></span>
+                    </div>
+                </div>
+            </div>
+            <div class="bottomFix">
+                <button class="btn_grade_1" (click)="editNdDelete('edit','yes')"> Save </button>
+                <button class="btn_grade_2" (click)="editNdDelete('edit','No')"> Close </button>
+            </div>
+        </div>
+    </div>
+    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Edit Comment@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <div class="black_cover" *ngIf="conformationPopup">
+        <div class="popup_1 pop_sm" *ngIf="conformationPopup">
+            <div class="PopupHead">
+                <h5 class="text-center">Player Comment </h5>
+                <span class="closetop" (click)="editNdDelete('delete','no')"> <img src="assets/icons/closePop.svg">
+                </span>
+            </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="fd p_10  text-center">
+                    <b class="p_5 text-danger">Are you sure you want to delete the Administrator comment?</b>
+                </div>
+                
+            </div>
+            <div class="bottomFix">
+                <button class="btn_grade_1" (click)="editNdDelete('delete','yes')"> Yes </button>
+                <button class="btn_grade_2" (click)="editNdDelete('delete','No')"> No </button>
+            </div>
+        </div>
+    </div>

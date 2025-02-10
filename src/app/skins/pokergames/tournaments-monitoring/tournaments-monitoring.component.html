@@ -1,0 +1,175 @@
+<div>
+    <h3> Live Tournament Monitoring </h3>
+</div>
+<div>
+    <div>
+        <button class="fillterbtn m_l_5"  style="margin-right:15px; float: right;" (click)="exportexcel()"> Export
+            Excel</button>
+            <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    </div>
+    <p>This Page Will Auto Refresh Every 1 Minute</p>
+</div>
+<!-- <div class="dropdown fd"> -->
+    <!-- <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button> -->
+    <!-- <button class="fillterbtn m_l_5 m_t_5" (click)="exportexcel()"> Export
+        Excel</button> -->
+    <!-- <div class="df m_5"> -->
+        <!-- <div>
+            <div class="p_5" >Rows On the Page: {{rowsOnthePage}} </div>
+            <div class="p_5" > Result Count: {{ResultCount}} -->
+                <!-- <b >To get data set and apply the filters</b> 
+            </div>
+        </div>
+        <div>
+            <button class="fillterbtn m_l_5"  style="margin-right:15px;margin-top:4px; float: right;" (click)="exportexcel()"> Export
+                Excel</button>
+        </div> -->
+        <!-- <button class="fillterbtn m_l_5 m_t_5" style="margin-right:15px;margin-top:4px; float: right;" (click)="exportexcel()"> Export
+            Excel</button> -->
+<!-- 
+    </div> -->
+
+    <!-- <div style=" float: right;"> -->
+        <!-- <button class="fillterbtn m_l_5" (click)="exportexcel()"> Export
+            Excel</button> -->
+        <!-- <button class="fillterbtn font_14" (click)="onFormSubmit()">Submit</button> -->
+    <!-- </div>
+</div> -->
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="df">
+                        <label>Date Period</label>
+                        <input class="Birthdayinputs" format="yyyy-MM-dd HH:mm:ss" type="datetime-local" step="1"
+                            formControlName="Datefrom">
+                        <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                            formControlName="Dateto">
+                    </div>
+                    <!-- <div>
+                        <label>Status</label>
+                        <select class="seclectopt" [(ngModel)]="All" formControlName="Status">
+                            <option [value]="All" >All</option>
+                            <option [ngValue]="StatusList.guid" *ngFor="let StatusList of TournamentStatusList">
+                                {{StatusList.value}}
+                            </option>
+                        </select> 
+                    </div> -->
+                </div>
+                <div class="col-sm-4">
+                    <div>
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div>
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class=" table_2">
+        <table class="fd tablCode" id="excel_table">
+            <!-- <div class="fd">
+    <div class="table_2">
+        
+        <table class="tablCode fd "> -->
+            <thead>
+                <tr class="tablCoderow">
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>State</th>
+                    <th>Registered Users </th>
+                    <th>BuyIn</th>
+                    <th>Fee </th>
+                    <!-- <th>Number Of Tickets</th> -->
+                    <th>N.Rebuys</th>
+                    <th>N.Addon</th>
+                    <th>Current Prize Pool</th>
+                    <th>Tot.Fee </th>
+                    <th>Mkt.Fee</th>
+                    <th>Late Reg (min)</th>
+
+
+                </tr>
+            </thead>
+            <tbody *ngIf="pokerTournamentData">
+                <!-- <tr *ngFor="let list of pokerTournamentData;let i=index " (click)="PlayerPopup(i)"> -->
+                <tr *ngFor="let list of pokerTournamentData;let i=index ">
+                    <td>20230707{{i+1}}</td>
+                    <td>{{list.caption}}</td>
+                    <td>{{list.status}}</td>
+                    <td>{{list.registered}}</td>
+                    <td class="text-end">{{list.buyIn.value | numberFormat}}</td>
+                    <td class="text-end">{{list.fee.value | numberFormat}}</td>
+                    <td>{{list.totalRebuyCount}}</td>
+                    <td>{{list.totalAddonCount}}</td>
+                    <td class="text-end">{{list.totalBuyIn.value | numberFormat}}</td>
+                    <td class="text-end">{{list.totalFee.value | numberFormat}}</td>
+                    <!-- <td>{{list.rebuyCost.value}}</td>
+                        <td>{{list.addonCost.value}}</td> -->
+                    <!-- <td>{{list.buyIn.value}}</td>
+                            <td>{{list.fee.value}}</td> -->
+
+                    <td class="text-end">{{list.maintenanceFee.value + list.maintenanceFeesAddOn.value +
+                        list.maintenanceFeesRebuy.value  | numberFormat}}
+                        <!-- <td>{{list.fee.value*0.25}}</td> -->
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- <button class="fillterbtn font_14" style="margin-right:85px;margin-top:4px; float: right;"
+                    (click)="onFormSubmit()">Submit</button> -->
+
+
+    <div class="fd df  m_t_10" *ngIf="pokerTournamentData">
+
+        <!-- <button class="fillterbtn m_l_5 m_t_5" (click)="exportexcel()"> Export
+            Excel</button>
+        <div class="df m_5">
+            <div class="p_5" *ngIf="pokerTournamentData">Rows On the Page: {{rowsOnthePage}} </div>
+            <div class="p_5" *ngIf="pokerTournamentData"> Result Count: {{ResultCount}}
+                <b *ngIf="resultcount">To get data set and apply the filters</b>
+            </div>
+
+        </div> -->
+
+        <div class="pagecount" *ngIf="pokerTournamentData">
+            <button class="Pagebtns" [disabled]="PageCount==1 || pokerTournamentData==null"
+                (click)="fastbackforward()"><i class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||pokerTournamentData==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="pokerTournamentData">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="pokerTournamentData==null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="pokerTournamentData==null || pagecontrolbtn" (click)="fastforward()">
+                <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+</div>

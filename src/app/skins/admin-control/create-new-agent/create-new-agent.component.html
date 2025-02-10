@@ -1,0 +1,202 @@
+<div class="popup_4 pop_sm">
+    <div class=" PopupHead">
+        <h5 class="text-center">Create New Agent </h5>
+    </div>
+    <form [formGroup]="CreateNewAgentForm">
+        <div class="soon font_13 fd p_lr_15">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="fd p_5 ">
+                            <div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6"> Login*</label>
+                                    <div class="col-sm-6">
+                                        <input class="col-sm-12" type=text formControlName="AgentLogin" />
+                                        <div class="stakes-error-message"
+                                            *ngIf="f['AgentLogin'].touched && f['AgentLogin'].invalid || submitted">
+                                            <div *ngIf="f['AgentLogin'].errors && f['AgentLogin'].errors['required']">
+                                                Please Enter
+                                                Agent Name</div>
+                                            <div *ngIf="f['AgentLogin'].errors && f['AgentLogin'].errors['minlength']">
+                                                Name Should
+                                                be 4 Character.</div>
+                                            <div *ngIf="f['AgentLogin'].errors && f['AgentLogin'].errors['maxlength']">
+                                                Minimum
+                                                Length 10 Characters </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">Password*</label>
+                                    <div class="col-sm-6">
+                                        <input class="col-sm-12" type=text formControlName="Password" />
+
+                                        <div class="stakes-error-message"
+                                            *ngIf="f['Password'].touched && f['Password'].invalid || submitted">
+                                            <div *ngIf="f['Password'].errors && f['Password'].errors['required']">Please
+                                                Enter
+                                                Password</div>
+                                            <div *ngIf="f['Password'].errors && f['Password'].errors['minlength']">
+                                                Password Should
+                                                be 6 Character.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">First Name</label>
+                                    <input class="col-sm-6" type=text formControlName="FirstName" />
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">Last Name</label>
+                                    <input class="col-sm-6" type=text formControlName="LastName" />
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">Address</label>
+                                    <input class="col-sm-6" type=text formControlName="Address" />
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">City</label>
+                                    <input class="col-sm-6" type=text formControlName="City" />
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">State/Province</label>
+                                    <input class="col-sm-6" type=text formControlName="State" />
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">Zip/Postal Code</label>
+                                    <input class="col-sm-6" type=text formControlName="ZipCode" />
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">Country</label>
+                                    <select class="col-sm-6" type=text formControlName="Country"
+                                        [(ngModel)]="SeletedCountry">
+                                        <option [ngValue]="Country.CID" *ngFor="let Country of Countries">
+                                            {{Country.title}}</option>
+                                    </select>
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">Phone</label>
+                                    <input class="col-sm-6" type=text formControlName="Phone" />
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">Email*</label>
+                                    <div class="col-sm-6">
+                                        <input class="col-sm-12" type=text formControlName="Email" />
+                                        <div class="stakes-error-message"
+                                            *ngIf="f['Email'].touched && f['Email'].invalid || submitted">
+                                            <div *ngIf="f['Email'].errors && f['Email'].errors['required']">
+                                                Please Enter Email</div>
+                                            <!-- <div *ngIf="f['Email'].errors && f['Email'].errors['minlength']">
+                                                Name Should
+                                                be 4 Character.</div>
+                                            <div *ngIf="f['Email'].errors && f['Email'].errors['maxlength']">
+                                                Minimum
+                                                Length 10 Characters </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">Language</label>
+                                    <select class="col-sm-6" type=text formControlName="Language"
+                                        [(ngModel)]="SeletedLang">
+                                        <option [ngValue]="Language.guid" *ngFor="let Language of LanguagesList">
+                                            {{Language.value}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">Commission Cycle</label>
+
+                                    <div class="col-sm-6">
+                                        <select class="col-sm-12" type=text formControlName="Cycle"
+                                        [(ngModel)]="commissionCycle">
+                                        <!-- <option  disabled selected >Select</option> -->
+                                        <option [ngValue]="'MONTH'">Month</option>
+                                        <option [ngValue]="'WEEK'">Week</option>
+                                        <option [ngValue]="'FORTNIGHT'">Fourth Neight</option>
+                                    </select>
+                                        <div class="stakes-error-message"
+                                            *ngIf="f['Cycle'].touched && f['Cycle'].invalid || submitted">
+                                            <div *ngIf="f['Cycle'].errors && f['Cycle'].errors['required']">
+                                                *required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">Face</label>
+                                    <select class="col-sm-6" type=text formControlName="Face" (change)="onFaceChange()">
+                                        <option *ngFor="let faces of faceParametersList">{{faces.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="df m_3">
+                                    <label class="col-sm-6">Sub Network</label>
+                                    <select class="col-sm-6" type=text formControlName="Subnetwork" (change)="onFaceChange()">
+                                        <option *ngFor="let subNet of subNetWorks">{{subNet.subnetwork}}</option>
+                                    </select>
+                                </div>
+                                <!-- <div class="df m_3">
+                                    <label class="col-sm-6">Sub Network</label>
+                                    <select class="col-sm-6" type=text formControlName="Subnetwork">
+                                        <option *ngFor="let subNet of subNetWorks">{{subNet.subnetwork}}</option>
+                                    </select>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="df m_3">
+                            <table class="tablCode table_2" id="excel-table">
+                                <thead>
+                                    <tr>
+                                        <th>Revenue program</th>
+                                        <th>Parameter</th>
+                                        <th>Value</th>
+                                        <th>Last Change</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="AgentRevenueData">
+                                    <tr *ngFor="let list of AgentRevenueData,let i=index"
+                                        [ngClass]="{'highlightedrow': i=== selectedIndex  }"
+                                        (click)="SelectedIndexMethod(i)">
+                                        <td>{{list.programName}}</td>
+                                        <td>{{list.parameter}}</td>
+                                        <td><input type="number" value="{{list.percent}}" [(ngModel)]="list.percent"
+                                                [ngModelOptions]="{standalone: true}"
+                                                oninput="this.value = Math.abs(this.value)" type="number" min="0" />
+                                        </td>
+                                        <td>{{changeSelect(list.changeDate) }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onFormSubmit()"> Save </button>
+        </div>
+    </form>
+</div>
+
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="CreateNewAgentPopup">
+    <div class="popup_1 pop_sm" *ngIf="CreateNewAgentPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="PopupClose()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <b class="p_5 text-success">Agent Successfully Created </b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="PopupClose()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->

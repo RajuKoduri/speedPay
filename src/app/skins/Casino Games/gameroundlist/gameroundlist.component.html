@@ -1,0 +1,170 @@
+<!-- topnav -->
+<!-- <div class="topnav">
+    <a (click)="fillterMenu()">Filter</a>
+    <div class="dropdown">
+      <button class="dropbtn">Actions</button>
+      <div class="dropdown-content">
+        <a>View Detailed History (Flash)</a>
+      </div>
+    </div>
+   <a (click)="openGamePop()">Open</a>
+   <a >Explore</a>
+   <a (click)="ignoreContext()">Ignore Context</a>
+   <div class="dropdown">
+      <button class="dropbtn">View</button>
+      <div class="dropdown-content">
+        <a (click)="onRequery()">Normal</a>
+        <a>Autosize</a>
+        <a>Card</a>
+      </div>
+    </div>
+   <a (click)="onRequery()">Requery</a>
+   <a (click)="exportExcel()">Export to XSL</a>
+   <a (click)="onPrint()">Print</a>
+</div> -->
+<!-- topnav End -->
+
+<div>
+    <h4>Game Round List:</h4>
+</div>
+
+<!-- filter-Form -->
+<form class="ff" [formGroup]="filterForm" *ngIf="FillterMenu">
+    <label>First Record:</label>
+    <input type="number" formControlName="firstRecord">
+    <label>Page Size:</label>
+    <input type="number" formControlName="pageSize">
+    <button (click)="onRequery()" >Apply</button>
+    <button (click)="FormReset()">Reset</button>
+</form>
+<!-- filter-form-end -->
+
+<!-- table-start -->
+<div class="fd over_tb1" id="tablerecords" style="overflow-x:auto;">
+  <div clas='fd' *ngIf="dataLoader">
+    <div class="loaderWraper">
+        <div class="loader"></div>
+    </div>
+</div>  
+<table class="table_1 table_2" id="excel_table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Round Number</th>	
+            <th>Start Date</th>	
+            <th>Finish Date</th>	
+            <th>Game</th>	
+            <th>Player</th>	
+            <th>Buy-In</th>	
+            <th>Bet</th>	
+            <th>Win</th>	
+            <th>Gain/Loss Amount</th>	
+            <th>Gain/Loss %</th>	
+            <th>Comp Points</th>
+        </tr>
+    </thead>
+    <tbody *ngIf="gameroundList">
+        <tr (click)="openGamePop();onClick(i)" *ngFor="let i = index; let List of gameroundList | paginate: {itemsPerPage:selectnum, currentPage:p}">
+            <td></td>
+            <td>{{List.roundNumber}}</td>
+            <td>{{List.startDate}}</td>
+            <td>{{List.endDate}}</td>
+            <td>{{List.gameName}}</td>
+            <td>{{List.playerNickname}}</td>
+            <td>{{List.buyIn.value}}.00</td>
+            <td>{{List.bet.value}}.00</td>
+            <td>{{List.win.value}}.00</td>
+            <td></td>
+            <td></td>
+            <td>{{List.compPoints.value}}.00</td>
+        </tr>
+    </tbody>
+    <tfoot *ngIf="gameroundList">
+      <tr>
+        <td><b>{{rowsOnthePage}}</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>SUM:{{buyInValue}}.00</td>
+        <td>SUM:{{betValue}}.00</td>
+        <td>SUM:{{winValue}}.00</td>
+        <td></td>
+        <td>AVG=</td>
+        <td>SUM:{{compPointsValue}}.00</td>
+      </tr>
+    </tfoot>
+</table>
+    <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+    class="pt-2 page-item float-right">
+    </pagination-controls>
+    <div class="text-centers">
+      <div style="margin-right:20px;" *ngIf="gameroundList">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+      <div> Result Count:<b>{{ResultCount}}</b>  <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div>
+</div>
+<!-- table-end -->
+
+<!-- onclick row popup -->
+<div class="main_popup" *ngIf="gamespopup">
+    <div class="fd popup">
+      <div class="head_popup">
+        <p class="text-center"><b>Games Round List</b></p>
+        <span (click)="closePopup()">X</span>
+      </div>
+      <div class="sub_popup">
+        <table>
+          <tr>
+            <th>Round Number</th>
+            <td>:{{subGame.null}}</td>
+          </tr>
+          <tr>
+            <th>Start Date</th>
+            <td>:{{subGame.null}}</td>
+          </tr>
+          <tr>
+            <th>Finish Date</th>
+            <td>:{{subGame.null}}</td>
+          </tr>
+          <tr>
+            <th>Game</th>
+            <td>:{{subGame.null}}</td>
+          </tr>
+          <tr>
+            <th>Player</th>
+            <td>:{{subGame.null}}</td>
+          </tr>
+          <tr>
+            <th>Buy-In</th>
+            <td>:{{subGame.null}}</td>
+          </tr>
+          <tr>
+            <th>Bet</th>
+            <td>:{{subGame.bet}}</td>
+          </tr>
+          <tr>
+            <th>Win</th>
+            <td>:{{subGame.win}}</td>
+          </tr>
+          <tr>
+            <th>Gain/Loss Amount</th>
+            <td>:{{subGame.null}}</td>
+          </tr>
+          <tr>
+            <th>Gain/Loss % </th>
+            <td>:{{subGame.null}}</td>
+          </tr>
+          <tr>
+            <th>Comp Point</th>
+            <td>:{{subGame.null}}</td>
+          </tr>
+          <div class="btn_row">
+            <button class="savebtn" (click)="closePopup()">Save</button>
+            <button class="closebtn" (click)="closePopup()">Close</button>
+          </div>
+        </table>
+      </div>
+    </div>
+  </div>
+  

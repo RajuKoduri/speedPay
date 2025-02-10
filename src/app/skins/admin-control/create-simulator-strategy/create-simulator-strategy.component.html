@@ -1,0 +1,153 @@
+<div class="black_cover">
+    <div class="popup_1 pop_sm text-black">
+            <div class="PopupHead">
+                <h5 class="text-center">Create Simulator Strategy</h5>
+                <span class="closetop" (click)="createSimulatorPopup()"> <img src="assets/icons/closePop.svg">
+                </span>
+            </div>
+        <form [formGroup]="createSimulatorForm">
+            <div class="soon font_13 fd p_lr_15">
+                <div class="PopupHead">
+                    <h6>Common Settings</h6>
+                </div>
+                <div class="border border-3 rounded">
+                    <div class=" fd p-2 d-flex ">
+                        <div class="col-sm-4 p-0">
+                            Strategy Name:
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span *ngIf="f['strategyName'].touched && f['strategyName'].invalid">
+                                <span *ngIf="f['strategyName'].errors && f['strategyName'].errors['required']"
+                                    class="text-danger">
+                                    <b class="bi bi-x-circle-fill p-1" title="value can be empty"></b>
+                                </span>
+                            </span>
+                            <input type="text" class="form-control" formControlName="strategyName">
+                        </div>
+                    </div>
+                    <div class=" fd p-2 d-flex ">
+                        <div class="col-sm-4 p-0">
+                            Initial Balance:
+                        </div>
+                        <div>
+                            <input type="text" class="form-control text-end" appMaxLengthValidation formControlName="initialBalance">
+                        </div>
+                        <div class="ms-2">
+                            <select class="form-select" formControlName="wallet" (change)="getCurrencyCodeByGuid()">
+                                <option [ngValue]="list.guid" *ngFor="let list of filteredWalletFormats; let i = index">{{list.currencyCode}}</option>
+                            </select>
+                            <h3></h3>
+                        </div>
+                    </div>
+                    <div class=" fd p-2 d-flex ">
+                        <div class="col-sm-4 p-0">
+                            Number of Bots:
+                        </div>
+                        <div>
+                            <input type="number" class="form-control text-end" formControlName="numberOfBots">
+                        </div>
+                    </div>
+                    <div class=" fd p-2 d-flex ">
+                        <div class="col-sm-4 p-0">
+                            Enabel now:
+                        </div>
+                        <div>
+                            <input type="checkbox" class="" formControlName="enableNow" (change)="change($event)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="PopupHead">
+                    <h6>Strategy Specific Settings</h6>
+                </div>
+                <div class=" fd p-2">
+                    <div class=" fd p-2 d-flex ">
+                        <div class="col-sm-4 p-0">
+                            Strategy Type:
+                        </div>
+                        <div>
+                            <select class="form-select" formControlName="strategyType" (change)="strategy()">
+                                <option [ngValue]="list.guid" *ngFor="let list of botStrategyTypeList">{{list.value}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class=" fd p-2 d-flex align-items-center ">
+                        <div class="col-sm-4 p-0">
+                            Big Blind (from:to):
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <input type="text" formControlName="bigBlindFrom" (change)="onBigBlindChange('from')" appMaxLengthValidation class="form-control text-end"><span class="mx-1">:</span>
+                            <input type="text" formControlName="bigBlindTo" (change)="onBigBlindChange('to')" appMaxLengthValidation class="form-control text-end">
+                            <label class="ms-2">{{selectedCurrencyCode}}</label>
+                        </div>
+                    </div>
+                    <div class=" fd p-2 d-flex align-items-center " *ngIf="f['strategyType'].value?.lowLong == 11">
+                        <div class="col-sm-4 p-0">
+                            Correction (low limit:high limit):
+                        </div>
+                        <div class="d-flex align-items-center">
+                           <span *ngIf="lowLimit" class="text-danger"> <b class="bi bi-x-circle-fill p-1" title="value must be between 0 and 99.99"></b></span>
+                            <input type="text" formControlName="correctionLow" (change)="onCorrectionChange('low')" appMaxLengthValidation class="form-control text-end"><span class="mx-1">:</span>
+                            <span *ngIf="highLimit" class="text-danger"><b class="bi bi-x-circle-fill p-1" title="value must be greater than or equal to 100.01"></b></span>
+                            <input type="text" formControlName="correctionHigh" (change)="onCorrectionChange('high')" appMaxLengthValidation class="form-control text-end">
+                            <label class="ms-2">%</label>
+                        </div>
+                    </div>
+                    <div class=" fd p-2 d-flex ">
+                        <div class="col-sm-4 p-0">
+                            Schedule:
+                        </div>
+                        <div>
+                            <textarea  formControlName="schedule"></textarea>
+                        </div>
+                    </div>
+                    <div class=" fd p-2 d-flex align-items-center">
+                        <div class="col-sm-4 p-0">
+                            Preflop Speed (fold/check):
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <input type="text" formControlName="preflopSpeedFold" (change)="onPreflopSpeedChange('fold')" appMaxLengthValidation class="form-control text-end"><span class="mx-1">:</span>
+                            <input type="text" formControlName="preflopSpeedCheck" (change)="onPreflopSpeedChange('check')" appMaxLengthValidation class="form-control text-end">
+                            <label class="ms-2">Seconds</label>
+                        </div>
+                    </div>
+                    <div class=" fd p-2 d-flex align-items-center">
+                        <div class="col-sm-4 p-0">
+                            Preflop Speed (call/raise):
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <input type="text" formControlName="preflopSpeedCall" (change)="onPreflopSpeedChange('call')" appMaxLengthValidation class="form-control text-end"><span class="mx-1">:</span>
+                            <input type="text" formControlName="preflopSpeedRaise" (change)="onPreflopSpeedChange('raise')" appMaxLengthValidation class="form-control text-end">
+                            <label class="ms-2">Seconds</label>
+                        </div>
+                    </div>
+                    <div class=" fd p-2 d-flex align-items-center">
+                        <div class="col-sm-4 p-0">
+                            Postflop Speed:
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <input type="text" formControlName="postflopSpeedLow" (change)="onPreflopSpeedChange('low')" appMaxLengthValidation class="form-control text-end"><span class="mx-1">:</span>
+                            <input type="text" formControlName="postflopSpeedHigh" (change)="onPreflopSpeedChange('high')" appMaxLengthValidation class="form-control text-end">
+                            <label class="ms-2">Seconds</label>
+                        </div>
+                    </div>
+                    <div class=" fd p-2 d-flex align-items-center">
+                        <div class="col-sm-4 p-0">
+                            Loose play w/o Players:
+                        </div>
+                        <div>
+                            <input type="checkbox">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+        <div class="bottomFix">
+            <button class="btn_grade_1" [disabled]="" (click)="onSubmit()"> Save </button>
+            <button class="btn_grade_2" (click)="createSimulatorPopup()"> Cancel </button>
+        </div>
+    </div>
+</div>

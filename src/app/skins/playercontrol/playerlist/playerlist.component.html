@@ -1,0 +1,910 @@
+<!-- <div class="cover_newMenu" *ngIf="popupArrow" (click)="showmanuClose()"></div> -->
+ 
+<div>
+    <h3>Player list</h3>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_16" (click)="fillermenu()">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+    <!-- <b style="font-weight:100;margin-left:40px">Applied Filters: {{counter}}</b> -->
+
+    <!-- <button class="fillterbtn m_l_5" (click)="onFormSubmit()">Submit</button> -->
+    <!-- <button class="fillterbtn m_l_5" (click)="fastforward()">fastforward</button> -->
+    <!-- <button class="fillterbtn m_l_5" style="margin-right:85px; float: right;" (click)="exportexcel()"> Export
+        Excel</button> -->
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export CSV</button>
+</div>
+
+
+<div class="fd">
+    <div class="fd filterDiv" *ngIf="FillterMenu">
+        <form [formGroup]="filterForm" (ngSubmit)="onFormSubmit()">
+            <div class="p_25 text_weight">
+                <div class="row">
+                    <div class=" col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>currency</label>
+                            <select class="seclectopt" formControlName="wallet" #tb2 (ngModelChange)="counterfunc(tb2)">
+                                <option value="" disabled> Real Money </option>
+                                <!-- <option> User Preferred</option> -->
+                                <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlists">
+                                    {{CURRENCY.description}}
+                                </option>
+                            </select>
+                            <!-- <div class="seclectopt">
+                                <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="walletlists"
+                                    [(ngModel)]="selectedItemscurrency" (onSelect)="onItemSelect($event)"
+                                    (onDeSelect)="OnItemDeSelectcurrency($event)" (onSelectAll)="onSelectAllcurrency($event)"
+                                    (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="wallet">
+                                </ng-multiselect-dropdown>
+                            </div> -->
+                        </div>
+
+                        <div class="div_flex p_5_10">
+                            <label>player Login</label>
+                            <input type="text" formControlName="accountMask" (ngModelChange)="counterfunc(tb2)">
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Nickname</label>
+                            <input type="text" formControlName="nickName" #tb3 (ngModelChange)="counterfunc(tb3)">
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Short Id</label>
+                            <input type="text" formControlName="shortId" (ngModelChange)="counterfunc(tb2)">
+                        </div>
+
+                        <div class="div_flex p_5_10">
+                            <label>Face</label>
+                            <!-- <select class="seclectopt" formControlName="networkNames">
+                                <option [ngValue]="Status.name" *ngFor="let  Status of faceParameterslist12">
+                                    {{Status.name}}
+                                </option>
+                            </select> -->
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList12"
+                                    [(ngModel)]="selectedItems12" (onSelect)="onItemSelectnew($event)"
+                                    (onDeSelect)="OnItemDeSelectnew($event)" (onSelectAll)="onSelectAllnew($event)"
+                                    (onDeSelectAll)="onDeSelectAllnew($event)" formControlName="networkNames">
+                                </ng-multiselect-dropdown>
+                            </div>
+                            <!-- <ng-multiselect-dropdown  style="width: 200px;"
+                            [settings]="dropdownSettings"
+                            [data]="dropdownList12"
+                            [(ngModel)]="selectedItems"
+                            (onSelect)="onItemSelect($event)"
+                            (onDeSelect)="OnItemDeSelect($event)" 
+                            (onSelectAll)="onSelectAll($event)"
+                            (onDeSelectAll)="onDeSelectAll($event)"
+                            formControlName="networkNames"
+                            >
+                            </ng-multiselect-dropdown> -->
+
+                        </div>
+
+                        <!-- <select >
+                            <option value="selectAll">Select All</option>
+                            <option *ngFor="let option of options" [value]="option.name">{{option.siteName }}</option>
+                          </select> -->
+
+                        <!-- <div>
+                            <input type="checkbox" (change)="selectAll($event)"> Select All
+                          </div>
+                          
+                          <div *ngFor="let checkbox of checkboxes">
+                            <input type="checkbox" [(ngModel)]="checkbox.selected"  [ngModelOptions]="{standalone: true}"> {{ checkbox.face }}
+                          </div> -->
+
+
+                        <!-- <div>
+                            <label>Alias</label>
+                            <input type="text" formControlName="alias" (ngModelChange)="counterfunc(tb2)">
+                        </div>
+                        <div>
+                            <label>E-mail</label>
+                            <input type="text" formControlName="email" #tb4 (ngModelChange)="counterfunc(tb4)">
+                        </div>
+                        <div>
+                            <label>First Name </label>
+                            <input type="text" formControlName="firstName" #tb5 (ngModelChange)="counterfunc(tb5)">
+                        </div>
+                        <div>
+                            <label>Last Name</label>
+                            <input type="text" formControlName="lastName" placeholder="(none)">
+                        </div> -->
+                        <!-- <input type="text" formControlName="Lastname" #tb6 (ngModelChange)="counterfunc(tb6)"> -->
+                    </div>
+
+                    <div class=" col-12 col-lg-6 col-xl-4">
+
+                        <!-- <div class="df ">
+                            <label>Birthday Day</label>
+                            <input formControlName="birthDayOfMonthFrom" (keypress)="keyPressNumbers($event)"
+                                class="Birthdayinputs" type="text">
+                            <input formControlName="birthDayOfMonthTo" (keypress)="keyPressNumbers($event)"
+                                class="Birthdayinputs" type="text">
+                        </div> -->
+                        <!-- <div>
+                            <label>Birthday Month</label>
+                            <select class="seclectopt" formControlName="birthMonths">
+                                <option [ngValue]="monthlist.guid" *ngFor="let  monthlist of BirthdatMonths">
+                                    {{monthlist.value}}</option>
+                            </select>
+                        </div> -->
+                        <!-- <option >Select All </option> -->
+                        <!-- <option  [(ngModel)]="monthlist.guid" >Select All </option> -->
+                        <!-- <ng-select *ngFor="let  monthlist of BirthdatMonths" [items]="monthlist.value" bindLabel="name" placeholder="Select Category" appendTo="body"
+                            [multiple]="true" [(ngModel)]="selected">
+                        </ng-select> -->
+                        <div class="div_flex p_5_10">
+                            <label>Balance Amount</label>
+                            <input class="Birthdayinputs" type="text" formControlName="balanceAmountlow"
+                                appMaxLengthValidation [maxNumber]=9>
+                            <input class="Birthdayinputs" type="text" formControlName="balanceAmounthigh"
+                                appMaxLengthValidation [maxNumber]=9>
+                        </div>
+                        <!-- <div class="df ">
+                            <label>Debt Amount</label>
+                            <input class="Birthdayinputs" type="text" formControlName="debtAmountlow">
+                            <input class="Birthdayinputs" type="text" formControlName="debtAmounthigh">
+                        </div> -->
+                        <div>
+                            <!-- <label>Registration</label>
+                            <input class="Birthdayinputs" format="yyyy-MM-dd HH:mm:ss" type="datetime-local" step="1"
+                                formControlName="RegistrationStart">
+                            <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                                formControlName="RegistrationEnd"> -->
+
+                            <div class="div_flex p_5_10">
+                                <label>StartDate</label>
+                                <input class="inp_agent_time Birthdayinputs" type="date" [max]="endDate"
+                                    formControlName="startDate" [ngModel]="startDate"
+                                    (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                                <input class="inp_agent_time Birthdayinputs mobile_view" type="time"
+                                    formControlName="startTime" step="1" [ngModel]="startTime"
+                                    (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                                    [max]="endTime" />
+                            </div>
+                            <div class="div_flex p_5_10">
+                                <label>EndDate</label>
+                                <input class="inp_agent_time Birthdayinputs" type="date" [max]="todaydate"
+                                    formControlName="endDate" [ngModel]="endDate" (ngModelChange)="endDate = $event"
+                                    (change)="showDate($event)" />
+                                <input class="inp_agent_time  Birthdayinputs mobile_view" type="time"
+                                    formControlName="endTime" step="1" [ngModel]="endTime"
+                                    (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                            </div>
+                            <div class="red_col" *ngIf="steddate">
+                                Start date should be below or equal to end date
+                            </div>
+                            <div class="red_col" *ngIf="timeerror">
+                                Start time should be below or equal to end time
+                            </div>
+                        </div>
+                        <!-- <div>
+                        <label for="meeting-time">Choose a time for your appointment:</label>
+
+                        <input type="datetime-local" id="meeting-time" name="meeting-time" value="2018-06-12T19:30"
+                            min="2018-06-07T00:00" max="2018-06-14T00:00">
+                     </div> -->
+                        <div class="div_flex p_5_10">
+                            <label>IP Adress</label>
+                            <input type="text" formControlName="ipAddress">
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Status</label>
+                            <!-- <select class="seclectopt" formControlName="statusesIdList" #tb7
+                                (ngModelChange)="dropdowncounterfunc(tb7)">
+                                <option [ngValue]="Status.guid" *ngFor="let  Status of playerStatusList">
+                                    {{Status.value}}
+                                </option>
+                            </select> -->
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="dropdownSettingsstatus"
+                                    [data]="playerstatusdropList" [(ngModel)]="selectedItemsStatus"
+                                    (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+                                    (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
+                                    formControlName="statusesIdList">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>Country</label>
+                            <!-- <select class="seclectopt" [(ngModel)]='all || country.title' formControlName="countryValue" #tb8 (ngModelChange)="dropdowncounterfunc(tb8)"> -->
+                            <select class="seclectopt" formControlName="country" [(ngModel)]="selectedCountry " #tb8
+                                (ngModelChange)="dropdowncounterfunc(tb8)">
+                                <option>All</option>
+                                <option *ngFor="let  country of countrieslist" [ngValue]=" country.CID ">
+                                    {{country.title}}
+                                    <!-- <option *ngFor="let  country of countrieslist" [ngValue]="country.CID  || country.title "> {{country.title}} -->
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- <div class="fd col">
+                            <div *ngFor="let country of countrieslist; let i=index">
+                                <input type="checkbox" formArrayName="selectedCountries" [value]="country.CID"
+                                    (change)="onCheckboxChange($event)" />
+                                {{ country.title}}
+                            </div>
+                        </div> -->
+
+
+                        <div>
+                            <!-- <label>Receive News</label>
+                            <select class="seclectopt" formControlName="ReceiveNews" #tb9
+                                (ngModelChange)="dropdowncounterfunc(tb9)">
+                                <option [ngValue]="Status.guid" *ngFor="let  Status of ReceiveNewsList">
+                                    {{Status.value}}
+                                </option>
+                            </select> -->
+                            <!-- <div class="fd" *ngFor="let  Status of ReceiveNewsList">
+                                   <input type="checkbox" formControlName="ReceiveNews" (change)="ReceiveNewsguid($event,Status.guid)" [value]="Status.guid" name="Status.guid"> {{Status.value}} 
+                              </div> -->
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Player level</label>
+                            <!-- <select class="seclectopt" formControlName="Playerlevel">
+                                <option [ngValue]="playerlevelname.guid"
+                                    *ngFor="let  playerlevelname of getPlayerLevelsNameslists">
+                                    {{playerlevelname.name}}</option>
+                            </select> -->
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="dropdownSettingslevel" [data]="dropdownlevelList"
+                                    [(ngModel)]="playerlevelchange" (onSelect)="onItemSelectplayerLevel($event)"
+                                    (onDeSelect)="OnItemDeSelectplayerLevel($event)"
+                                    (onSelectAll)="onSelectAllplayerLevel($event)"
+                                    (onDeSelectAll)="onDeSelectAllplayerLevel($event)" formControlName="Playerlevel">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Permission Group</label>
+                            <input type="text" formControlName="permissionsGroup">
+                        </div>
+
+                        <!-- <div>
+                            <label>Referred By</label>
+                            <input type="text" formControlName="referringPlayerLogin">
+                        </div> -->
+                        <!-- <div>
+                            <label>Affiliate Login</label>
+                            <input type="text" formControlName="affiliateLogin">
+                        </div> -->
+                        <div class="div_flex p_5_10">
+                            <label>First Record</label>
+                            <div class="fd">
+                                <input type="text" type="number" (input)="recordsinput('firstRecord')"
+                                    oninput="this.value = Math.abs(this.value)" formControlName="firstRecord">
+                                <div *ngIf="f['firstRecord']" class="first-record">
+                                    <p *ngIf="f['firstRecord']?.hasError('required')"> Value should not be empty. </p>
+                                    <p *ngIf="f['firstRecord']?.hasError('min') || f['firstRecord']?.hasError('max')">
+                                        Value must be between 1 and 999999999. </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="div_flex p_5_10">
+                            <label>Page Size</label>
+                            <div class="fd">
+                                <input type="text" type="number" (input)="recordsinput('maxCountRecord')"
+                                    oninput="this.value = Math.abs(this.value)" formControlName="maxCountRecord">
+                                <div class="first-record" *ngIf="f['maxCountRecord']">
+                                    <p *ngIf="f['maxCountRecord']?.hasError('required')"> Value should not be empty.</p>
+                                    <p
+                                        *ngIf="f['maxCountRecord']?.hasError('min') || f['maxCountRecord']?.hasError('max')">
+                                        Value must be between 1 and 999999999. </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="fd">
+    <div class=" div_sub">
+        <!-- <button class="fillterbtn m_l_5" style="float: left;margin-left: -5px;" (click)="onFormSubmit()">Submit</button> -->
+        <div class="df">
+            <div style="margin-right:20px;" *ngIf="PlayerList">Rows On the Page: {{rowsOnthePage}}</div>
+            <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and applythe filters</b></div>
+        </div>
+
+
+        <!-- <div> Applied Filters: {{counter}}</div> -->
+
+        <!-- <div class="paginationdiv" *ngIf="PlayerList"> -->
+
+        <div class="paginationdiv1">
+            <!-- <pagination-controls (pageChange)="p = $event" class="pagination"></pagination-controls> -->
+
+            <!-- <button class="nextprev"><i class="fa fa-step-backward" style="font-size:24px"></i></button> -->
+            <!-- <button class="nextprev" (click)="prev()">
+                    <i class="fa fa-caret-left" style="font-size:20px"></i>
+                    Previous </button>
+        
+                <button class="nextprev " (click)="next()"> Next
+                    <i class="fa fa-caret-right" style="font-size:20px"></i>
+                </button> -->
+            <!-- <button class="fillterbtn m_r_3 btn_sub12" style="float: right;" (click)="onFormSubmit()"
+                [disabled]="paginationValidation">Submit</button> <br> -->
+            <button class="fillterbtn m_r_3 btn_sub12" style="float: right;" (click)="onFormSubmit()"
+                [disabled]="steddate || timeerror || !filterForm.valid">Submit</button> <br>
+
+            <!-- <div class="nextprev"><i class="fa fa-step-forward" style="font-size:24px"></i></div> -->
+
+            <!-- <a href="#" class="previous">&laquo; Previous</a>
+                        <a href="#" class="next">Next &raquo;</a> -->
+
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="text-center">
+    <div>Rows On the Page: {{rowsOnthePage}}</div>
+
+    <div> ResultCount: {{ResultCount}}</div>
+</div> -->
+
+<!-- <div class="fd display">
+    <div>
+        <input class="abc" type="date" />
+    </div>
+    <div>
+        <input type="date" />
+    </div>
+</div> -->
+<div class="fd">
+    <!-- <div class="fd">
+        <ul id="tabsUl" class="tabsUl fd">
+            <li (click)="tabActive(111)"> Player List </li>
+        </ul>
+    </div> -->
+    <div id="tabContent">
+        <div class="tabsAllHide" id="111">
+            <table class=" tablCode fd table_2" id="excel-table">
+                <thead>
+                    <tr>
+                        <!-- <th>S.no  add short id here instead </th> -->
+                        <th>shortId</th>
+                        <th>Login</th>
+                        <th>Nickname</th>
+                        <th>Actions</th>
+                        <!-- <th>ALias</th> -->
+                        <th>Email</th>
+                        <!-- <th>Full Name</th> -->
+                        <th>Agent</th>
+                        <!-- <th>Network</th> -->
+                        <th>Status</th>
+                        <!-- <th>Receive News</th>
+                        <th>Dcline Deposits</th>
+                        <th>Trusted</th>
+                        <th>suspicious</th>
+                        <th>BlackList</th> -->
+                        <!-- <th>Allow Chat</th> -->
+                        <!-- <th>Docs</th> -->
+                        <!-- <th>ipAddress</th> -->
+                        <th>Reg date</th>
+                        <th>Matches</th>
+                        <th>Balance</th>
+                        <th>Cash</th>
+                        <th>Bonus</th>
+                        <th>TM</th>
+                        <th>Tickets</th>
+                        <th>CompPoints</th>
+                        <th>CP Level</th>
+                        <!-- <th>Deposits</th>
+                        <th>Withdrawals</th>
+                        <th>Transfers From Agents </th>
+                        <th>Transfers ToAgents </th>
+                        <th>Country</th>
+                        <th>Affiliate</th>
+                        <th>Group</th> -->
+                        <!-- <th>Agent</th> -->
+                        <th>Sub Network</th>
+                        <th>Super Agent</th>
+                    </tr>
+                </thead>
+                <div *ngIf="loader">
+                    <div class="loaderWraper">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+                <tbody *ngIf="PlayerList">
+                    <!-- [class.highlighted]="List.player.account === playernickName" -->
+                    <tr (dblclick)="openNewTab(i, List.player.nickName)"
+                        [ngClass]="{'highlightedrow': List.player.nickName === playernickName  }"
+                        *ngFor="let List of PlayerList  | paginate: { itemsPerPage: selectnum, currentPage: p }; let i=index">
+                        <!-- <td>{{i+1}}</td> -->
+                        <td>{{List.player.shortId}}</td>
+                        <!-- <td id={{i}} (click)="openNewTab(i, List.player.nickName)">{{List.player.account}}</td> -->
+                        <td id={{i}} (click)="PlayerExplore(List.player.account,List.guid , List)">
+                            <a>{{List.player.account}}</a>
+                        </td>
+                        <td>{{List.player.nickName}}</td>
+                        <!-- <td>{{List.player.account}}</td> -->
+                        <td>
+                            <div class="fd">
+                                <div class="trigger">
+                                    <a><i class="fa fa-reorder" style="color: #fff;"
+                                            (click)="showmanu(i,List.guid)"></i> </a>
+                                    <!-- <div *ngIf="popupArrow" class="fd">
+                                        <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                            <button *ngIf="List.player.status == 'Active'"
+                                                (click)="ActionsLockUnclock(List.player.status)">Lock</button>
+                                            <button *ngIf="List.player.status == 'Locked'"
+                                                (click)="ActionsLockUnclock(List.player.status)">Unlock</button>
+                                            <button (click)="Actions('markAT')">Mark as Trusted</button>
+                                            <button (click)="Actions('reactIV')">Reactivetions</button>
+                                        </div>
+                                    </div> -->
+                                    <div *ngIf="popupArrow" class="fd">
+                                        <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                            <button *ngIf="List.player.status == 'Active'"
+                                                (click)="setPlayerActions(List.player.status,i)">Lock</button>
+                                            <button *ngIf="List.player.status == 'Locked'"
+                                                (click)="setPlayerActions(List.player.status,i)">Unlock</button>
+                                            <button *ngIf="List.trust==false"
+                                                (click)="setPlayerActions('MarkasTrusted',i)">Mark as Trusted</button>
+                                            <button *ngIf="List.trust==true"
+                                                (click)="setPlayerActions('Distrust',i)">Distrust</button>
+                                            <button (click)="setPlayerActions('ChangePmGroup',i)">Change permission
+                                                Group</button>
+                                            <button (click)="setPlayerActions('AssinCPLevel',i)">Assign CP
+                                                Level</button>
+                                            <button *ngIf="List.declineDeposits==false"
+                                                (click)="setPlayerActions('DeclineDepositsOn',i)">Decline Deposits
+                                                on</button>
+                                            <button *ngIf="List.declineDeposits==true"
+                                                (click)="setPlayerActions('DeclineDepositsOff',i)">Decline Deposits
+                                                off</button>
+                                            <button *ngIf="List.chatAllowed==false"
+                                                (click)="setPlayerActions('AllowChat',i)">Allow Chat</button>
+                                            <button *ngIf="List.chatAllowed==true"
+                                                (click)="setPlayerActions('DisallowChat',i)">Disallow Chat</button>
+                                            <button (click)="setPlayerActions('Reactivation',i)">Reactivation</button>
+                                            <button (click)="setPlayerActions('SetAlias',i)">Set Alias</button>
+                                            <button (click)="onRestrictOrFraud('Restrict',List)"
+                                                [disabled]="List.restricted">Restrict</button>
+                                            <button (click)="onRestrictOrFraud('Fraud',List)">Mark as fraud</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- <td>{{List.player.alias}}</td> -->
+                        <td>{{List.player.email}}</td>
+                        <!-- <td>{{List.player.fullName}}</td> -->
+                        <!-- <td>{{List.player.network}}</td> -->
+                        <td>{{List.affiliate.alias}}</td>
+                        <td
+                            [ngClass]="{'active': List.trust == true && !List.suspicious==false, 'inactive': List.suspicious == true && !List.trust == true, 'default': !List.trust== true && !List.suspicious== true}">
+                            {{List.player.status}}</td>
+                        <!-- <td>{{List.receiveNews}}</td> -->
+                        <!-- <td>
+                            <input *ngIf="List.receiveNews==true" type="checkbox" class="checkclick" checked />
+                            <input *ngIf="List.receiveNews==false" type="checkbox" class="checkclick" />
+                        </td> -->
+                        <!-- <td>{{List.declineDeposits}}<input *ngIf="disablecheckbox" type="checkbox" checked/><input *ngIf="!disablecheckbox" type="checkbox" /></td> -->
+                        <!-- <td>
+                            <input *ngIf="List.declineDeposits==true" type="checkbox" class="checkclick" checked />
+                            <input *ngIf="List.declineDeposits==false" type="checkbox" class="checkclick" />
+                        </td> -->
+                        <!-- <td>{{List.trust}}</td> -->
+                        <!-- <td>
+                            <input *ngIf="List.trust==true" type="checkbox" class="checkclick" checked />
+                            <input *ngIf="List.trust==false" type="checkbox" class="checkclick" />
+                        </td> -->
+                        <!-- <td>{{List.suspicious}}</td> -->
+                        <!-- <td>
+                            <input *ngIf="List.suspicious==true" type="checkbox" class="checkclick" checked />
+                            <input *ngIf="List.suspicious==false" type="checkbox" class="checkclick" />
+                        </td> -->
+                        <!-- <td>{{List.suspiciousByBlackList}}</td> -->
+                        <!-- <td>
+                            <input *ngIf="List.suspiciousByBlackList==true" type="checkbox" class="checkclick"
+                                checked />
+                            <input *ngIf="List.suspiciousByBlackList==false" type="checkbox" class="checkclick" />
+                        </td> -->
+                        <!-- <td>{{List.chatAllowed}}</td> -->
+                        <!-- <td>
+                            <input *ngIf="List.chatAllowed==true" type="checkbox" class="checkclick" checked />
+                            <input *ngIf="List.chatAllowed==false" type="checkbox" class="checkclick" />
+                        </td> -->
+                        <!-- <td>{{List.storedDoc}}</td> -->
+                        <!-- <td>
+                            <input *ngIf="List.storedDoc==true" type="checkbox" class="checkclick" checked />
+                            <input *ngIf="List.storedDoc==false" type="checkbox" class="checkclick" />
+                        </td> -->
+                        <!-- {{List.storedDoc}} -->
+                        <!-- <td>{{List.ipAddress}}</td> -->
+                        <!-- <td>{{dates}}</td> -->
+                        <td>{{changeSelect(List.regDate)}}</td>
+
+                        <!-- <td *ngFor="let item of array_1">{{item.regDate}}</td> -->
+                        <td>{{List.gameCount}}</td>
+                        <td class="text-end">{{getWalletSymbol(List.balance.wallet)}} {{List.balance.value | numberFormat}}</td>
+                        <td class="text-end">{{getWalletSymbol(List.cash.wallet)}} {{List.cash.value | numberFormat}}</td>
+                        <td class="text-end">{{getWalletSymbol(List.bonus.wallet)}} {{List.bonus.value | numberFormat}}</td>
+                        <td class="text-end">{{getWalletSymbol(List.tournamentMoney.wallet)}} {{List.tournamentMoney.value | numberFormat}}</td>
+                        <td class="text-end">{{getWalletSymbol(List.tournamentTicketsCost.wallet)}} {{List.tournamentTicketsCost.value | numberFormat}}</td>
+                        <td class="text-end">{{getWalletSymbol(List.compPoints?.wallet)}} {{List.compPoints?.value | numberFormat}}</td>
+                        <td class="text-end">{{List.levelInfo.compPointsLevelName}}</td>
+                        <!-- <td>{{List.deposits.value}}</td> -->
+                        <!-- <td>{{List.debts.value}}</td> -->
+                        <!-- <td>{{List.transfersFromAgents.value}}</td> -->
+                        <!-- <td>{{List.transfersToAgents.value}}</td> -->
+                        <!-- <td (input)="currentCountry = setCountryValue(List.country)">{{currentCountry}}</td> -->
+                        <!-- <td *ngFor="let  country of countrieslist"> {{country.title}}</td> -->
+                        <!-- <td>{{List.country}}</td> -->
+                        <!-- <td> {{List.affiliate?.alias}} </td> -->
+                        <!-- <td *ngIf="List.affiliate.alias == undefined " >{{List.affiliate.alias}}</td> -->
+                        <!-- <td>{{List.permissionsGroupName}}</td> -->
+                        <!-- <td>{{List.affiliate.alias}}</td> -->
+
+                        <td>{{List.player.subNetwork}}</td>
+                        <td>{{List.player.superAgent}}</td>
+                    </tr>
+                </tbody>
+                <tfoot *ngIf="PlayerList && PlayerList.length > 0">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <!--<td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td> -->
+                        <td></td>
+
+                        <!-- <td>Total:{{balance| number: '1.2-2' }}</td> -->
+                        <!-- <td>Total:{{formatNumber(balance) }}</td> -->
+
+                        <td class="text-nowrap text-end">SUM =<span *ngFor="let key of keys(balance)">{{balance[key] }}</span></td>
+                        <td class="text-nowrap text-end">SUM =<span *ngFor="let key of keys(cash)">{{cash[key] }}</span></td>
+                        <td class="text-nowrap text-end">SUM =<span *ngFor="let key of keys(bonus)">{{bonus[key] }}</span></td>
+                        <td class="text-nowrap text-end">SUM =<span *ngFor="let key of keys(tournamentMoney)">{{tournamentMoney[key] }}</span></td>
+                        <td class="text-nowrap text-end">SUM =<span *ngFor="let key of keys(tournamentTicketsCost)">{{tournamentTicketsCost[key] }}</span></td>
+                        <td class="text-nowrap text-end">SUM =<span *ngFor="let key of keys(compPoints)">{{compPoints[key]}}</span></td>
+                        <td></td>
+                        <!-- <td>Total:{{deposits}}</td>
+                        <td>Total:{{debts}}</td>
+                        <td>Total:{{transfersFromAgents}}</td>
+                        <td>Total:{{transfersToAgents}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td> -->
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <!-- <select class="selt_bkp slct_wid float-left" (change)="onChange(selectnum)">
+        <option *ngFor="let count of itemsperpagecount" [selected]="selectnum == count.num">{{count.num}}
+        </option>
+      </select> -->
+
+            <!-- <select class="selt_bkp slct_wid float-left" (change)="onChange($event.target.value)">
+        <option *ngFor="let count of itemsperpagecount" [selected]="selectnum == count.num">{{count.num}}
+        </option>
+      </select>  -->
+            <div class="paginationdiv" *ngIf="PlayerList">
+                <!-- <pagination-controls (pageChange)="p = $event" class="pagination"></pagination-controls> -->
+
+                <!-- </pagination-controls> -->
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- pagination-controls -->
+<div class="fd" *ngIf="PlayerList">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || PlayerList==null" (click)="fastbackforward()">
+            <i class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||PlayerList==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="PlayerList">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="PlayerList==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PlayerList==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+
+
+<!-- ***************************Popup***************************************** -->
+<div class="black_cover" *ngIf="playerdetailspopup">
+    <div class="popup_1 pop_sm" *ngIf="playerdetailspopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Player: {{playerfulldetails.player.account}}</h5>
+            <span class="closetop" (click)="playerdetalisclosepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-6">Player Login </label>
+                    <span class="col-sm-6">{{playerfulldetails.player.account}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Nick Name </label>
+                    <span class="col-sm-6">{{playerfulldetails.player.nickName}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">shortId </label>
+                    <span class="col-sm-6">{{playerfulldetails.player.shortId}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Alias</label>
+                    <span class="col-sm-6">{{playerfulldetails.player.alias}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">E-mail </label>
+                    <span class="col-sm-6">{{playerfulldetails.player.email}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Full Name </label>
+                    <span class="col-sm-6">{{playerfulldetails.player.fullName}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Face </label>
+                    <span class="col-sm-6">{{playerfulldetails.player.network}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Status </label>
+                    <span class="col-sm-6">{{playerfulldetails.player.status}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Receive News </label>
+                    <span class="col-sm-6">
+                        <input *ngIf="playerfulldetails.receiveNews==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="playerfulldetails.receiveNews==false" type="checkbox" class="checkclick" />
+                    </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Decline Deposits </label>
+                    <span class="col-sm-6">
+                        <input *ngIf="playerfulldetails.declineDeposits==true" type="checkbox" class="checkclick"
+                            checked />
+                        <input *ngIf="playerfulldetails.declineDeposits==false" type="checkbox" class="checkclick" />
+                    </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Trusted </label>
+                    <span class="col-sm-6">
+                        <input *ngIf="playerfulldetails.trust==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="playerfulldetails.trust==false" type="checkbox" class="checkclick" />
+                    </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Suspicious </label>
+                    <span class="col-sm-6">
+                        <input *ngIf="playerfulldetails.suspicious==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="playerfulldetails.suspicious==false" type="checkbox" class="checkclick" />
+                    </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Black List </label>
+                    <span class="col-sm-6">
+                        <input *ngIf="playerfulldetails.suspiciousByBlackList==true" type="checkbox" class="checkclick"
+                            checked />
+                        <input *ngIf="playerfulldetails.suspiciousByBlackList==false" type="checkbox"
+                            class="checkclick" />
+                    </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Allow Chat </label>
+                    <span class="col-sm-6">
+                        <input *ngIf="playerfulldetails.chatAllowed==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="playerfulldetails.chatAllowed==false" type="checkbox" class="checkclick" />
+                    </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Docs </label>
+                    <span class="col-sm-6">
+                        <input *ngIf="playerfulldetails.storedDoc==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="playerfulldetails.storedDoc==false" type="checkbox" class="checkclick" />
+                    </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Registration Date </label>
+                    <span class="col-sm-6">{{changeSelect(playerfulldetails.regDate)}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Matches </label>
+                    <span class="col-sm-6">{{playerfulldetails.gameCount}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Balance </label>
+                    <span class="col-sm-6">{{playerfulldetails.balance.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">-cash </label>
+                    <span class="col-sm-6">{{playerfulldetails.cash.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">-Bonus </label>
+                    <span class="col-sm-6">{{playerfulldetails.bonus.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">TM </label>
+                    <span class="col-sm-6">{{playerfulldetails.tournamentMoney.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Tickets </label>
+                    <span class="col-sm-6">{{playerfulldetails.tournamentTicketsCost.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Comp points </label>
+                    <span class="col-sm-6">{{playerfulldetails.compPoints.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">CP Level </label>
+                    <span class="col-sm-6">{{playerfulldetails.levelInfo.compPointsLevelName}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Deposits </label>
+                    <span class="col-sm-6">{{playerfulldetails.deposits.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Withdrawals </label>
+                    <span class="col-sm-6">{{playerfulldetails.debts.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Transfers from Agents </label>
+                    <span class="col-sm-6">{{playerfulldetails.transfersFromAgents.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Transfers to Agents </label>
+                    <span class="col-sm-6">{{playerfulldetails.transfersToAgents.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Registation IP </label>
+                    <span class="col-sm-6">{{playerfulldetails.ipAddress}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Country </label>
+                    <span class="col-sm-6">{{playerfulldetails.country}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Affiliate </label>
+                    <span class="col-sm-6">{{playerfulldetails.affiliate.alias}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Group </label>
+                    <span class="col-sm-6">{{playerfulldetails.permissionsGroupName}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <!-- <button class="btn_grade_2" (click)="playerdetalisclosepopup()"> Save </button> -->
+            <button class="btn_grade_1" (click)="playerdetalisclosepopup()"> OK </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="Cover_Body" *ngIf="ActionAlertPopup" (click)="closeClick('no')"></div>
+<div *ngIf="ActionAlertPopup" class="opPopHTML"> 
+    <div class="cont_Icon">
+
+        <span ><i class="fa fa-question-circle" style="font-size: 34px; color: #07439d;"></i></span>
+        <p class="qutionTag">{{AlertMessage}}</p>
+    </div>
+    <div class="Save_No_flex">
+        <button class="save_BTN" (click)="closeClick('yes')"> Save </button>
+        <button class="Np_BTN" (click)="closeClick('no')"> Cancel </button>
+    </div>
+
+</div> -->
+
+<!-- Spinner -->
+<!-- Cover_Body -->
+<div class="black_cover" *ngIf="SpinnwerT">
+    <div class="spinnerTrue" *ngIf="SpinnwerT">
+        <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+    </div>
+</div>
+
+<!-- ************************Conforim popup*********************************** -->
+<!-- <div class="Cover_Body" *ngIf="ActionAlertPopup"> -->
+<div class="black_cover" *ngIf="ActionAlertPopup">
+    <div class="popup_1 pop_sm" *ngIf="ActionAlertPopup">
+        <div class="PopupHead">
+            <h5 class="text-center" *ngIf="AlertMessage">Alert</h5>
+            <h5 class="text-center" *ngIf="ChangePmGroup">Change Permission Group</h5>
+            <h5 class="text-center" *ngIf="AssinCPLevel">Assin CP Level</h5>
+            <h5 class="text-center" *ngIf="SetAliaspop">Set Alias for Players</h5>
+            <span class="closetop" (click)="closeClick('no')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <!-- <div class="fd p_10 text-center "> -->
+            <div class="fd p_10  ">
+                <b class="p_5 text-success text-center" *ngIf="AlertMessage">{{AlertMessage}} </b>
+                <div *ngIf="ChangePmGroup" class="text-center">
+                    <select [(ngModel)]="selectedPermissionGroup">
+                        <option [ngValue]="list.guid" *ngFor="let list of UserPermissionsGroupList">{{list.name}}
+                        </option>
+                    </select>
+                </div>
+                <div *ngIf="AssinCPLevel">
+                    <div>
+                        <div>
+                            <label class="col-sm-6">New Level</label>
+                            <span class="col-sm-6">
+                                <select *ngFor="let lists of PlayerLevelsList" [(ngModel)]="SelectedLevel">
+                                    <option [ngValue]="list.guid" *ngFor="let list of lists.compPointsLevels">
+                                        {{list.name}}</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div>
+                            <label class="col-sm-6">Player</label>
+                            <span class="col-sm-6">{{Actiondataforplayer.player.account}}</span>
+                        </div>
+                        <div>
+                            <label class="col-sm-6">Current Level</label>
+                            <span class="col-sm-6">{{Actiondataforplayer.player.compPointsLevel.name}}</span>
+                        </div>
+                        <div>
+                            <label class="col-sm-6">Comment</label>
+                            <textarea class="col-sm-6"></textarea>
+                        </div>
+                        <div>
+                            <input type="checkbox" class="m_3" id="Notification"
+                                (change)="NotificationCheckchange($event)" [ngModel]="NotificationCheck" />
+                            <label for="Notification">Send Notification</label>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="SetAliaspop">
+                    <div>
+                        <label class="col-sm-6">Alias</label>
+                        <span class="col-sm-6"> <input type="text" [(ngModel)]="SetAliasName" /> </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" *ngIf="!AssinCPLevel" (click)="closeClick('yes')"> Yes </button>
+            <button class="btn_grade_2" *ngIf="!AssinCPLevel" (click)="closeClick('no')"> NO </button>
+            <button class="btn_grade_1" *ngIf="AssinCPLevel" (click)="closeClick('yes')"> Assign </button>
+            <button class="btn_grade_2" *ngIf="AssinCPLevel" (click)="closeClick('no')"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ************************ConforimPopUpClose*********************************** -->
+
+<div *ngIf="isRestrictandFraud">
+    <!-- <player-restrict-and-fraud (notifyParent)="isRestrictandFraud = $event" [playerActionType]="action" [playerData]="Actiondataforplayer"></player-restrict-and-fraud> -->
+    <player-restrict-and-fraud (notifyParent)="playerRestrictfromchild($event)" [playerActionType]="action"
+        [playerData]="Actiondataforplayer"></player-restrict-and-fraud>
+</div>

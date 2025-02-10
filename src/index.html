@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>BackOffice</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+
+  <!-- <script>
+    const domain = window.location.href;
+    console.log(domain)
+    // const domain = "http://prode.undertesting.com/";
+      let title = '';
+      function extractDomainName(domain) {
+        localStorage.removeItem('siteName');
+        let extractedDomain = '';
+        if (domain.startsWith('http') || domain.startsWith('https')) {
+          const domainParts = domain.split('/');  
+          const domainName = domainParts[2]; 
+          const domainNameParts = domainName.split('.');  
+          extractedDomain = domainNameParts[0]; 
+        } else {
+          const domainParts = domain.split('/');
+          const domainName = domainParts[0];
+          const domainNameParts = domainName.split('.');
+          extractedDomain = domainNameParts[0]; 
+        }
+        return extractedDomain;
+      }
+      const extractedDomain = extractDomainName(domain).toLocaleLowerCase();   
+      switch (extractedDomain) {
+        case 'lapokerbo':
+        case 'rapoker':
+        case 'prode': 
+          title = 'PRODE24';
+          localStorage.setItem("siteName", "poker");
+          break;
+        case 'admin':
+        case 'rapoker-wl':
+          localStorage.setItem("siteName", "whitelable");          
+          title = 'LAPOKER';
+          // document.getElementById('favicon').href = 'src/assets/favicon.ico';
+          break;
+        default:
+          title = 'BackOffice ';
+          // title = 'Default Title';
+          localStorage.setItem("siteName", "Local");          
+
+          break;
+      }    
+      document.title = title;    
+    </script> -->
+
+
+  <app-root></app-root>
+</body>
+</html>

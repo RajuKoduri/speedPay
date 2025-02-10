@@ -1,0 +1,164 @@
+<div>
+    <h1>player Registration Settings </h1>
+</div>
+
+
+<div class="fd">
+
+    <!-- <table class="table_1 table_2" id="excel-table"> -->
+    <table class="table_1 tablCode" id="excel-table">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Email Activation</th>
+                <th>Password strength Threshold</th>
+                <th>Failed Login Threshold</th>
+                <th>Registration Fields</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="RegistrationResData12">
+            <tr *ngFor="let list of RegistrationResData12, let i=index" (dblclick)="PopupOpen()">
+                <td>{{i+1}}</td>
+                <td>
+                    <input *ngIf="list.emailActivation==true" type="checkbox" class="checkclick" />
+                    <input *ngIf="list.emailActivation==false" type="checkbox" class="checkclick" />
+                </td>
+                <td>{{passwordStrengthThresholdValue(list.passwordStrengthThreshold)}}</td>
+                <td>{{list.failedLoginThreshold}}</td>
+                <!-- <td title={{list.fields[i].name}}>{{list.fields[0].name}} </td> -->
+                <!-- <td >{{list.fields[0].name}} </td> -->
+                <td>
+                      <div class="reg_main">
+                      <span>{{list.fields[0]?.name}}</span> 
+                    <!-- <select>
+                        <option *ngFor="let list of RegistrationDatafields">{{list.name}}</option>
+                    </select> -->
+                    <ul class="reg_names" *ngFor="let list of RegistrationResData12,let k=index">
+                        <li *ngFor="let sublist of list.fields,let m=index"  style="margin: 0px;padding: 0px;">{{sublist.name}} </li>   
+                    </ul>
+
+                </div>      
+                </td>  
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!-- <div class="full_div" *ngIf="Registrationdetailspopup">
+
+    <div class="fd popup">
+        <div class="head">
+            <p class="text-center">Player </p>
+            <span (click)="closepopup()"> X</span>
+        </div>
+        <div class="sub_pop">
+            <table>
+            </table>
+        </div>
+    </div>
+</div> -->
+
+<!-- <div class=" fd popupdiv">
+    <div>
+        <h1>hello</h1>
+
+    </div>
+</div> -->
+
+
+
+
+<!-- ************************************POPUP******************************************************* -->
+      
+<div class="black_cover" *ngIf="Registrationdetailspopup" (click)="closepopup()"></div>
+<div class="popup_1 pop_sm" *ngIf="Registrationdetailspopup">
+    <!-- <div class="PopupHead">
+        <span class="close_2" (click)="closepopup()"> </span>
+        <h5>Edit Registration Settings</h5>
+        <span class="closetop" (click)="closepopup()">X</span>
+    </div> -->
+    <div class="PopupHead">
+        <h5 class="text-center">Edit Registration Settings</h5>
+        <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <form [formGroup]="RegistrationForm" >
+        <div class="soon font_13">
+            <div class="fd p_5 ">  
+                    <table class="reg_table">
+                        <thead>
+                            <tr>
+                                <td> <label>Email Verification</label> <span><input type="checkbox" (change)="emailverification($event)"></span></td>
+                                <td> <span  class="act_per"><label >Activation Period</label>
+                                    <!-- <input  type="number" min="1" formControlName="activationperiod" [disabled]="isDisabled" /> -->
+                                    <input  type="number" min="1" formControlName="activationperiod" (change)="negativevalue($event)"/>
+                                    <label >Days</label></span> 
+                                </td>
+                            </tr>
+                            <tr>  
+                                <td>    <label>Block Password Weaker Then </label></td> 
+                                <td> <select class="selectlabel"  [(ngModel)]="passwordstrength"  formControlName="blackpasswordshoter">
+                                    <option [ngValue]=list.guid *ngFor="let list of PasswordStrengthList">{{list.value}}</option>  
+                                </select></td>   
+                            </tr>
+                            <tr> 
+                                <td> <label>Chang Password After</label></td>
+                                <td><span><input type="number" min="0" formControlName="changepasswordafter" (change)="negativevalue($event)"></span>
+                                    <label>Failed Logins</label></td>
+                            </tr>
+                            <tr>
+                                <td><label>Block Password Shoter then</label></td>
+                                <td> <span><input type="number" min="0" formControlName="blockpasswordshoter" (change)="negativevalue($event)"></span>
+                                    <label>Symbols</label></td>
+                            </tr>
+                            <tr *ngIf="lockaccountafter">
+                                <td><label>lock Account After</label></td>
+                                <td><span><input type="number" min="0" formControlName="lockaccountafter" ></span>
+                                    <label>Days Since Last login</label></td>
+                            </tr>
+                        </thead>
+                    </table>
+
+                <div>
+                    <div class="Profilebg">
+                        <h4>Profile Fields</h4>
+                    </div>
+                    <table class="tablCode ">
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Registration Form</th>
+                                <th>Profile Form</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let list of RegistrationDatafields,let i = index">
+                                <td>{{list.name}} </td>
+                                <td>
+                                    <select [formControlName]="list.name" (change)="registrationchange($event,list)">  
+                                        <option *ngFor="let RegFormlist of RegistrationFromFieldStatusList" [ngValue]="RegFormlist.value">
+                                            {{RegFormlist.value}}
+                                        </option>
+                                    </select> 
+                                </td>
+                                <td>
+                                    <select (change)="permissionsvalidation($event,list,i)" [formControlName]="list.name + i">
+                                        <option *ngFor="let prolist of ProfileFromFieldStatusList"  [ngValue]="prolist.value">{{prolist.value}} 
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="bottomFix">
+                <button class="btn_grade_1" (click)="setRegistartion()"> Save </button>
+                <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- *************************************POPUP-ClOSE************************************************** -->

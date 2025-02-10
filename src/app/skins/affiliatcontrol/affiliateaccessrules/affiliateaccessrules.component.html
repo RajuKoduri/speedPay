@@ -1,0 +1,90 @@
+<div>
+    <h2>Affiliate Access Rules</h2>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="margin-right:85px; float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+
+                    <div>
+                        <label>Access Area</label>
+                        <select class="seclectopt" formControlName="AccessArea">
+                            <option [ngValue]="AccessList.guid" *ngFor="let  AccessList of AffiliateAccessAreaList">
+                                {{AccessList.value}}
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Status</label>
+                        <select class="seclectopt" formControlName="Status">
+                            <option [ngValue]="Status.guid" *ngFor="let  Status of AffiliateAccessStatusList">
+                                {{Status.value}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div>
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord">
+                    </div>
+                    <div>
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="margin-right:85px; float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers">
+        <div style="margin-right:20px;" *ngIf="AffiliateAccessRulesdata">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+
+</div>
+
+
+<div>
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <table class="table_1" id="excel-table">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Rule Name</th>
+                <th>Access Area</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody *ngIf="AffiliateAccessRulesdata">
+            <tr *ngFor="let list of AffiliateAccessRulesdata; let i=index">
+                <td>{{i+1}}</td>
+                <td>{{list.name}}</td>
+                <td>{{list.accessArea}}</td>
+                <td>{{list.status}}</td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>

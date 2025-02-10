@@ -1,0 +1,74 @@
+
+table th{
+    position: sticky;
+    top:0
+}
+
+.trigger {
+    margin: auto;
+    position: relative;
+    text-align: center;
+    border: none;
+    padding: 5px 8px;
+    background: #4aab4e;
+    border-radius: 50px;
+    color: #fff;
+    width: 30px;
+    cursor: pointer;
+    }
+
+    .popup1 {
+        position: absolute;
+        right: 29px;
+        top: 20px;
+        transform: translate3d(0, -50%, 0);
+        background: none;
+        color: #000;
+        max-width: 280px;
+        box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19) !important;
+        z-index: 100;
+        width: 190px;
+    }
+    
+    .popup1.btnGrp button:hover {
+    background: #dd6c0c;
+    color: #fff;
+    }
+    
+    .popup1.btnGrp button {
+    margin: 0px;
+    border: none;
+    padding: 7px 10px;
+    border-bottom: 1px solid #b0adad;
+    }
+    
+    .popup1.btnGrp {
+    display: grid;
+    }
+    
+    .popup1:after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    transform: rotate(-45deg);
+    background: #fff;
+    position: absolute;
+    z-index: 10;
+    bottom: 70%;
+    left: calc(99% - 9px);
+    }
+    .popup1 {
+    padding: 0px;
+    background: #fff;
+    }
+    
+    .popup_1.pop_sm {
+    max-width: 550px;
+    max-height: 89vh;
+    }
+    .popup1.btnGrp button[disabled]:hover {
+        border: none;
+        background: #cccccc;
+        color: #666666;
+        cursor: no-drop;
+      }

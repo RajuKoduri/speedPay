@@ -1,0 +1,112 @@
+<!-- <div class="fd">
+    <P class="common">Common</P>
+    <div class="row">
+        <div class="col-6 ">
+            <label>Player Login</label>
+            <input type="text">
+        </div>
+        <div class="col-6">
+            <label>ABP Amount</label>
+            <input type="text">
+        </div>
+
+    </div>
+</div> -->
+<div>
+    <h3>Participants Ranks</h3>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    <!-- <button class="fillterbtn m_l_5" style=" float: right;"> Export Excel</button> -->
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Player Login</label>
+                        <input type="text" formControlName="playerLogin">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>LBP Amount</label>
+                        <input class="inp_agent_time" type="text" formControlName="LBPAmount">:
+                        <input class="inp_agent_time mobile_view" type="text" formControlName="LBPAmount">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Page size</label>
+                        <input type="text" formControlName="pageSize">
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="onFormSubmit()">Submit</button>
+    <!-- <div class="text-centers">
+        <div style="margin-right:20px;" *ngIf="periodcalPromotionList">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div> -->
+</div>
+
+<div class="fd">
+    <div class="table_2">
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+    <table class="tablCode fd" id="excel-table">
+        <thead>
+            <tr class="tablCoderow">
+                <th>Promotional Name</th>
+                <th>Player</th>
+                <th>Place</th>
+                <th>LBP</th>
+                <th>Heads Number</th>
+                <th>1st Place in Tournament</th>
+                <th>In the Money</th>
+                <th>Tournaments Number</th>
+                <th>Combination</th>
+                <th>Date</th>
+                <th>Session Number</th>
+                <th>Prize</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>

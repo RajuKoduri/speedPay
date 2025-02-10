@@ -1,0 +1,204 @@
+<!-- <div class="topnav">
+    <a (click)="fillterMenu()">Filter</a>
+    <a >Actions</a>
+    <a (click)="openCasinoPop()">Open</a>
+    <a >Explore</a>
+    <a (click)="ignoreContext()">Ignore Context</a>
+    <div class="dropdown">
+       <button class="dropbtn">View</button>
+       <div class="dropdown-content">
+           <a (click)="onRequery()">Normal</a>
+           <a>Autosize</a>
+           <a>Card</a>
+       </div>
+   </div>
+    <a (click)="onRequery()">Requery</a>
+    <a (click)="exportExcel()">Export to XSL</a>
+    <a (click)="onPrint()">Print</a>
+</div> -->
+<div>
+    <h2>Casino Games Balance:</h2>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillterMenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterList" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterList" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportExcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export CSV</button>
+</div>
+<!-- filter menu -->
+<div class="fd filterDiv" *ngIf="FillterList">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <select class="seclectopt" formControlName="currency" [(ngModel)]="selectedCurrency">
+                            <option *ngFor="let curreny of currencys" [ngValue]="curreny.guid">{{curreny.description}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodStart</label> 
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            (change)="timechnage($event)" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodEnd</label> 
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                </div>
+                <!-- <button class="fillterbtn"(click)="onRequery()">Apply</button>
+                <button class="fillterbtn" (click)="FormReset()">Reset</button> -->
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="fd ">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df m_3">
+        <div style="margin-right:20px;" *ngIf="gameList">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+
+</div>
+<!-- table start -->
+<div class="fd  table_2 over_tb1" id="tablerecords" style="overflow-x:auto;">
+    <div clas='fd' *ngIf="dataLoader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr>
+                <!-- <th>Server</th> -->
+                <th>Game</th>
+                <th>Opening Balance</th>
+                <th>Bets</th>
+                <th>Wins</th>
+                <th>Jackpots Wins</th>
+                <th>Gain/Loss %</th>
+                <th>Turnover</th>
+                <th>Closing Balance</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="gameList">
+            <!-- <tr (click)="openCasinoPop(); onClick(i)" -->
+            <tr *ngFor="let i = index; let list of gameList | paginate: {itemsPerPage:selectnum, currentPage:p}">
+                <!-- <td>{{"BackOffice"}}</td> -->
+                <td>{{list.game.gameName}}</td>
+                <td class="text-end">{{list.openingBalance.value |numberFormat}}</td>
+                <td class="text-end">{{list.bets.value |numberFormat}}</td>
+                <td class="text-end">{{list.payouts.value |numberFormat}}</td>
+                <td class="text-end">{{list.jackpotPayout.value |numberFormat}}</td>
+                <td>{{list.gain}}</td>
+                <td class="text-end">{{list.totalTurnover.value |numberFormat}}</td>
+                <td class="text-end">{{list.closingBalance.value |numberFormat}}</td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="gameList">
+            <tr>
+                <!-- <td><b>{{rowsOnthePage}}</b></td> -->
+                <td></td>
+                <td>SUM={{openingBalanceValue |numberFormat}}</td>
+                <td>SUM={{betsValue |numberFormat}}</td>
+                <td>SUM={{payoutsValue |numberFormat}}</td>
+                <td>SUM={{jackpotPayoutValue |numberFormat}}</td>
+                <td>AVG=</td>
+                <td>SUM={{totalTurnoverValue |numberFormat}}</td>
+                <td>SUM={{closingBalanceValue |numberFormat}}</td>
+            </tr>
+        </tfoot>
+    </table>
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+        class="pt-2 page-item float-right">
+    </pagination-controls>
+
+    <div class="page_count">
+        <div style="margin-right:20px;" *ngIf="gameList">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+        <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div> -->
+</div>
+
+<!-- onclick row popup -->
+<div class="main_popup" *ngIf="casinoBalpopup">
+    <div class="fd popup">
+        <div class="head_popup">
+            <p class="text-center"><b> Casino Games Balance</b></p>
+            <span (click)="closePopup()">X</span>
+        </div>
+        <div class="sub_popup">
+            <table>
+                <tr>
+                    <th>Game:</th>
+                    <td>{{subCasino.game.gameName}}</td>
+                </tr>
+                <tr>
+                    <th>Opening balance:</th>
+                    <td>{{subCasino.openingBalance.value}}</td>
+                </tr>
+                <tr>
+                    <th>Bets:</th>
+                    <td>{{subCasino.bets.value}}</td>
+                </tr>
+                <tr>
+                    <th>Wins:</th>
+                    <td>{{subCasino.payouts.value}}</td>
+                </tr>
+                <tr>
+                    <th>Jackpots Wins:</th>
+                    <td>{{subCasino.jackpotPayout.value}}</td>
+                </tr>
+                <tr>
+                    <th>Gain/Loss %:</th>
+                    <td>{{subCasino.gain}}</td>
+                </tr>
+                <tr>
+                    <th>Turnover:</th>
+                    <td>{{subCasino.totalTurnover.value}}</td>
+                </tr>
+                <tr>
+                    <th>Closing balance:</th>
+                    <td>{{subCasino.closingBalance.value}}</td>
+                </tr>
+                <div class="btn_row">
+                    <button class="savebtn" (click)="closePopup()">Save</button>
+                    <button class="closebtn" (click)="closePopup()">Close</button>
+                </div>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- filter menu -->
+<!-- <div class="fd">
+    <div class="text-center">
+    <div>Rows On the Page: {{rowsOnthePage}}</div>
+    <div> Result Count: {{ResultCount}} <b>To get data set and apply the filters</b></div>
+    <div> Applied Filters: {{counter}}</div>
+    <div class="paginationdiv">
+        <button class="backbutton" (click)="prev()"> < Previous</button>
+        <button class="backbutton" (click)="next()"> Next > </button>
+    </div>
+    </div>
+</div> -->

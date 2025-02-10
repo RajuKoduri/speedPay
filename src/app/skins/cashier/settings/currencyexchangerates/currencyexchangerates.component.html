@@ -1,0 +1,108 @@
+<!-- <div class="topnav">
+    <a >Actions</a>
+    <a (click)="openCurrencyPop()">Open</a>
+    <a >Explore</a>
+    <a (click)="ignoreContext()">Ignore Context</a>
+    <div class="dropdown">
+       <button class="dropbtn">View</button>
+       <div class="dropdown-content">
+           <a (click)="onRequery()">Normal</a>
+           <a>Autosize</a>
+           <a>Card</a>
+       </div>
+   </div>
+    <a (click)="onRequery()">Requery</a>
+    <a (click)="exportExcel()">Export to XSL</a>
+    <a (click)="onPrint()">Print</a>
+</div> -->
+
+<div>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="onRequery()">
+        Requery</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportExcel()"> Export
+        Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    <h3>Currency Exchange Rates:</h3>
+</div>
+<div class="df fd">
+    <div style="margin-right:20px;" *ngIf="Exchangelist">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+    <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+</div>
+<div class="fd over_tbl" id="tablerecords" style="overflow-x:auto;">
+    <div   *ngIf="dataLoader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="table_2">
+        <table class="fd tablCode" id="excel_table">
+            <thead>
+                <tr>
+                    <th>Currency</th>
+                    <th>Has Wallet</th>
+                    <th>Default</th>
+                    <th>Auto Update</th>
+                    <th>Exchange</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody *ngIf="Exchangelist">
+                <tr (click)=" onClick(i)" *ngFor="let i = index; let list of Exchangelist ">
+                    <!-- <tr  *ngFor="let i = index; let list of Exchangelist "> -->
+                    <td>{{list.currency}}</td>
+                    <td>
+                        <input *ngIf="list.hasWallet==true" type="checkbox" class="checkclicked" checked />
+                        <input *ngIf="list.hasWallet==false" type="checkbox" class="checkclicked" />
+                    </td>
+                    <td>{{list.faces}}</td>
+                    <td>{{list.retriverName}}</td>
+                    <td>{{list.exchange | numberFormat}}</td>
+                    <td>{{changeSelect(list.date)}}</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+         class="pt-2 page-item float-right">
+    </pagination-controls> -->
+
+
+</div>
+
+<!--  popup -->
+<div class="black_cover" *ngIf="currencypopup">
+    <div class="popup_1 pop_sm" *ngIf="currencypopup">
+        <div class="PopupHead">
+            <h5 class="text-center"> Edit Exchange Rates</h5>
+            <span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <p>chips is Default System currency</p>
+                <div class="df m_3">
+                    <p class="col-sm-8">1 Chips =<input type="text" [value]="subCurrency.exchange" /> U.S
+                        Dollars</p>
+                </div>
+                <!-- <div class="df m_3">
+                    <input type="checkbox" />
+                    <p>Auto update From</p>
+                    <select>
+                        <option [value]="list.code" *ngFor="let list of rateRetriversList">{{list.labelDisplay}}</option>
+                    </select>
+                </div>
+                <div class="df m_3">
+                    <p class="m_3">Update Period:24 Hours</p>
+                </div>
+                <div class="df m_3">
+                    <p class="m_3"> Last Updated:{{subCurrency.date}}</p>
+                </div> -->
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closePopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+        </div>
+    </div>
+</div>

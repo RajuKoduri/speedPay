@@ -1,0 +1,37 @@
+.bgcolour{
+    background-color: rgb(218, 206, 191);
+}
+.active{
+    background-color: rgb(122, 243, 202) !important;
+}
+.popup_20 {
+    background: #fff;
+    max-width: 450px;
+    margin: auto; 
+    top: 15%;
+    left: 32%;
+    position: fixed;
+    z-index: 250;
+    /* height: fit-content; */
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 5s;
+    box-shadow: 7px 11px 39px 5px rgb(0 0 0 / 20%);
+  }
+  td input{
+    text-align: right;
+    padding-right: 15px;
+    outline: none;
+    border: 1px solid #ddd;
+  }
+
+  table tfoot {
+    inset-block-end: 0;
+    position: sticky;
+    bottom: -1px;
+  }
+  
+  table tfoot tr td {
+    background-color: #a6bfc5;
+    color: #000000;
+  }

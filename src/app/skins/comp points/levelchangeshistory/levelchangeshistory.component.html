@@ -1,0 +1,271 @@
+<div>
+    <h3>Level Change History </h3>
+</div>
+<div class="fd">
+    <div class="col-md-12">
+        <button class="fillterbtn" (click)="filterlevel()">Filter
+            <i *ngIf="showPro" class="fa fa-chevron-up" style="font-size:15px"></i>
+            <i *ngIf="!showPro" class="fa fa-chevron-down" style="font-size:15px"></i>
+        </button>
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    </div>
+</div>
+
+<div class="fd filterDiv" *ngIf="showBox">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+                    <!-- <div class="div_flex p_5_10">
+                        <label>Date Period</label>
+                        <input class="Birthdayinputs" format="yyyy-MM-dd" type="datetime-local" step="1"
+                            formControlName="DateStart">
+                        <input class="Birthdayinputs" format="yyyy-MM-dd" type="datetime-local" step="1"
+                            formControlName="DateEnd">
+                    </div>
+                     -->
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>Initiator :</label>
+                        <input type="text" formControlName="initiator" />
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10"  *ngIf="!playerExplorer">
+                        <label>PlayerLogin:</label>
+                        <input type="text" formControlName="PlayerLogin" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Level:</label>
+
+                        <!-- <select class="seclectopt" formControlName="Level">
+                            <option *ngFor="let LevelsList of PlayerLevelsNamesList.compPointsLevels"
+                                [ngValue]="LevelsList.guid">
+                                {{LevelsList.name}}
+                            </option>
+                        </select> -->
+
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingsLevel" [data]="Levelstatus"
+                                (onSelectAll)="onSelectAllLevel($event)" [(ngModel)]="selectedLevel"
+                                (onSelect)="onItemSelectLevel($event)" (onDeSelect)="OnItemDeSelectLevel($event)"
+                                (onDeSelectAll)="onDeSelectAllLevel($event)" formControlName="Level">
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Status:</label>
+                        <!-- <select class="seclectopt" formControlName="status">
+                            <option>All</option>
+                            <option *ngFor="let status of playerlevelChangeStatusList" [ngValue]="status.guid">
+                                {{status.value}}</option>
+                        </select> -->
+
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingStatus" [data]="statusLevel"
+                                (onSelectAll)="onSelectAllStatus($event)" [(ngModel)]="selectedStatus"
+                                (onSelect)="onItemSelectStatus($event)" (onDeSelect)="OnItemDeSelectStatus($event)"
+                                (onDeSelectAll)="onDeSelectAllStatus($event)" formControlName="status">
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6  col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Frist Record:</label>
+                        <div class="fd">
+                            <input type="text" formControlName="firstRecord" (input)="recordsinput('firstRecord')"
+                        oninput="this.value = Math.abs(this.value)" />
+                        <div class="first-record" *ngIf="f['firstRecord']">
+                            <p *ngIf="f['firstRecord']?.hasError('required')"> Value should not be empty. </p> 
+                            <p *ngIf="f['firstRecord']?.hasError('min')">Value must be greater than 0. </p>
+                           </div>
+
+                        </div>
+                        
+                    </div>
+                   
+                    <div class="div_flex p_5_10">
+                        <label>Page Size :</label>
+                        <div class="fd">
+                            <input type="text" formControlName="maxCountRecord" (input)="recordsinput('maxCountRecord')"
+                            oninput="this.value = Math.abs(this.value)" />
+                            <div class="first-record" *ngIf="f['maxCountRecord']">
+                                <p *ngIf="f['maxCountRecord']?.hasError('required')"> Value should not be empty. </p> 
+                                <p *ngIf="f['maxCountRecord']?.hasError('min')">Value must be greater than 0. </p>
+                               </div>
+
+                        </div>
+                       
+                    </div>
+                    
+                </div>
+                <!-- <div class="row">
+                    <div (click)="levelPage()" class="col-md-3">
+                        <button class="pagesetting"> Paging
+                            <i *ngIf="!openPagen" class="fa fa-chevron-left" style="font-size:15px"></i>
+                            <i *ngIf=" openPagen" class="fa fa-chevron-right" style="font-size:15px"></i>
+
+                        </button>
+                    </div>
+                    <div class="col-md-9 pagesettingSub">
+                        <div class="row" *ngIf="openpageBox">
+                            <div class="col-md-6 record ">
+                                <label>Frist Record :</label>
+                                <input type="text" formControlName="firstRecord" />
+                            </div>
+                            <div class="col-md-6 record">
+                                <label>Page Size :</label>
+                                <input type="text" formControlName="maxCountRecord" />
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd div_sub ">
+
+    <div class="text-centers">
+        <!-- <button class="fillterbtn m_l_5" style="float:right;margin-left: 1px;" (click)="onFormSubmit()">Submit</button> -->
+        <div style="margin-right:20px;" *ngIf="LevelChangeData">Rows On the Page: {{rowsOnthePage}} </div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div>
+    <button class="fillterbtn font_14" (click)="onFormSubmit()"  [disabled]="steddate || timeerror">Submit</button>
+    <!-- <button class="fillterbtn font_14 ml_25" (click)="onFormSubmit()"  [disabled]="steddate || timeerror|| paginationValidation">Submit</button> -->
+</div>
+<div class="fd">
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="fd table_2">
+        <table class="tablCode"  id="excel-table">
+            <thead>
+                <tr class="tablCoderow">
+                    <th>Date</th>
+                    <th>Initiator</th>
+                    <th>Player</th>
+                    <th>Old Level</th>
+                    <th>New Level</th>
+                    <th>Status</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="LevelChangeData">
+                <tr *ngFor="let list of LevelChangeData;let i=index" (dblclick)="onClick(i)">
+                    <!-- <td>{{list.date}}</td> -->
+                    <td>{{changeSelect(list.date)}}</td>
+                    <td>{{list.initiatorLogin ? list.initiatorLogin : 'System'}}</td>
+                    <!-- <td>{{list.playerLogin}}</td> -->
+                    <td class="hyperLink" (click)="PlayerExplore(list.playerLogin, list.playerId, list)">{{list.playerLogin}}</td>
+                    <td>{{list?.prevLevel?.name}}</td>
+                    <td>{{list.level.name}}</td>
+                    <td>{{list.status}}</td>
+                    <td>{{list.description}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="fd">
+    <div class="fd" *ngIf="LevelChangeData">
+        <div class="pagecount">
+            <button class="Pagebtns" [disabled]="PageCount==1 || LevelChangeData==null" (click)="fastbackforward()"><i
+                    class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||LevelChangeData==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="LevelChangeData">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="LevelChangeData==null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="LevelChangeData==null || pagecontrolbtn" (click)="fastforward()">
+                <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="PlayerLevelChangeDataPopUp">
+    <div class="popup_1 pop_sm" *ngIf="PlayerLevelChangeDataPopUp">
+        <div class="PopupHead">
+            <h5 class="text-center">Admin: </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-6"> Date </label>
+                    <span class="col-sm-6">{{changeSelect(PlayerLevelChangeDetails.date)}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Initiator </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <!-- <div class="df m_3">
+                        <label class="col-sm-6"> Player </label>
+                        <span class="col-sm-6">{{PlayerLevelChangeDetails.player.account}}</span>
+                </div> -->
+                <div class="df m_3">
+                    <label class="col-sm-6"> Player </label>
+                    <span class="col-sm-6">{{PlayerLevelChangeDetails.playerLogin}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Old Level </label>
+                    <span class="col-sm-6">{{PlayerLevelChangeDetails?.prevLevel?.name}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> New Level </label>
+                    <span class="col-sm-6">{{PlayerLevelChangeDetails.level.name}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Status </label>
+                    <span class="col-sm-6">{{PlayerLevelChangeDetails.status}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Reason </label>
+                    <span class="col-sm-6">{{PlayerLevelChangeDetails.description}}</span>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="bottomFix">
+            <!-- <button class="btn_grade_1" (click)="closepopup()"> Save </button> -->
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->

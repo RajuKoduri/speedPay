@@ -1,0 +1,172 @@
+<div>
+    <h2>Fraud Transactions </h2>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4"> 
+                    <div class="div_flex p_5_10">
+                        <label>Reporting Period Start</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            (change)="timechnage($event)" />
+                    </div>
+                </div>
+                    <div class="col-12 col-lg-6 col-xl-4"> 
+                    <div class="div_flex p_5_10">
+                        <label>Reporting Period End</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div> 
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10"> 
+                        <label>currency</label>
+                        <!-- <select class="seclectopt" formControlName="currency">
+                            <option value="" disabled> Real Money </option>
+                            <option> User Preferred</option>
+                            <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlists">
+                                {{CURRENCY.value}}
+                            </option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencyList"
+                                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers">
+        <div style="margin-right:20px;" *ngIf="FraudTransresData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+
+</div>
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Payment System </th>
+                <th>Payment Means Number</th>
+                <th>Date </th>
+                <th>Fraud Mark Date</th>
+                <th>User Type </th>
+                <th>User </th>
+                <th>Amount </th>
+                <th>Bonus </th>
+                <th>Promotional Code Type </th>
+                <th>Locked Bonus </th>
+            </tr>
+        </thead>
+        <tbody *ngIf="FraudTransresData">
+            <tr *ngFor="let list of FraudTransresData; let i=index"(click)="PlayerPopup(i)">
+                <td>{{i+1}}</td>
+                <td>{{list.paymentSystem}}</td>
+                <td>{{list.paymentMeanNumber}}</td>
+                <td>{{list.transactionDate}}</td>
+                <td>{{list.fraudMarkDate}}</td>
+                <td>{{list.user.type}}</td>
+                <td>{{list.user.login}}</td>
+                <td class="text-end">{{list.amount.value |numberFormat}}</td>
+                <td class="text-end">{{list.bonus.value |numberFormat}}</td>
+                <td></td>
+                <td class="text-end">{{list.lockedBonuses.value  |numberFormat}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="FraudTransresDataPopUp">
+    <div class="popup_1 pop_sm" *ngIf="FraudTransresDataPopUp">
+        <div class="PopupHead">
+            <h5 class="text-center">Fraud Transactions </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df">
+                    <label class="col-sm-6"> Payment System  </label>
+                    <span class="col-sm-6">{{FraudPlayerData.paymentSystem}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Payment Means Number </label>
+                    <span class="col-sm-6">{{FraudPlayerData.paymentMeanNumber}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Date </label>
+                    <span class="col-sm-6">{{FraudPlayerData.transactionDate}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Fraud Mark Date </label>
+                    <span class="col-sm-6">{{FraudPlayerData.fraudMarkDate}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> User Type</label>
+                    <span class="col-sm-6">{{FraudPlayerData.user.type}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> User </label>
+                    <span class="col-sm-6">{{FraudPlayerData.user.login}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Amount </label>
+                    <span class="col-sm-6">{{FraudPlayerData.amount.value |numberFormat}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Bonus </label>
+                    <span class="col-sm-6">{{FraudPlayerData.bonus.value |numberFormat}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Promotional Code Type </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Locked Bonus </label>
+                    <span class="col-sm-6">{{FraudPlayerData.lockedBonuses.value |numberFormat}}</span>
+                </div>
+                
+
+
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->

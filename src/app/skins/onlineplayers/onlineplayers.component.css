@@ -1,0 +1,81 @@
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  .fillterbtn {
+    width: 100px;
+    height: 30px;
+    border: none;
+    margin-bottom: 5px
+  }
+  .IcArrow{
+    margin-left: 10px;
+  }
+ 
+  input {
+    /* border: 5px solid rgb(21, 182, 120); */
+    /* background-color:red; */
+    /* border-radius:10px; */
+    padding: 5px;
+    width: 200px;
+    margin: 2px;
+  
+ 
+  }
+  .text-centers {
+    display: flex;
+    /* justify-content: space-around; */
+    margin: 5px;
+  }
+  label {
+    padding-right: 20px;
+    width: 130px;
+  }
+   .seclectopt {
+   padding: 5px;
+   width: 200px;
+   margin: 2px;
+ }
+  input :focus {
+    outline: none;
+  }
+  .filterDiv input:focus,
+  .filterDiv select:focus {
+    outline: none;
+  }
+ 
+  .filterDiv input,
+  .filterDiv select {
+    border: solid 1px #ddd;
+  }
+ 
+  .filterDiv {
+    background: #f6f6f6;
+    border: solid 1px #ddd;
+    border-radius: 8px;
+    padding: 15px 0px;
+    margin: 10px 0px;
+  }
+  .table_2 {
+    overflow-y: auto;
+    display: block;
+    height: 400px;
+    /* background: #e8eeef; */
+    background-color: #eee;
+  }
+  .popup_1.pop_sm {
+    max-width: 100%;
+    overflow: auto;
+    max-height: 100vh;
+}
+ .selectHabame  input{
+  width: 25px;
+ }
+.selectHabame .chkBoxHabmes input[type="checkbox"] { width: 20px !important; }
+.selectHabame .chkBoxHabmes {
+  width: 20%;
+  float: left;
+  padding: 6px;
+  cursor: pointer;
+}

@@ -1,0 +1,145 @@
+
+<div class="fd">
+    <table class="tablCode">
+        <tr class="tablCoderow">
+            <th>Email Activation</th>
+            <th>Password stength Threshold</th>
+            <th>Filed Login Threshold</th>
+            <th>Registration Fileds</th>
+        </tr>
+        <tr *ngFor="let list of registrar" (click)="affilatSetting(list)"  >
+            <td>
+                <input *ngIf="list.emailActivation==true" type="checkbox" class="pointer" checked />
+                <input *ngIf="list.emailActivation==false" type="checkbox" class="pointer">
+            </td>
+            <td>{{list.passwordStrengthThreshold}}</td>
+            <td>{{list.failedLoginThreshold}}</td>
+            <!-- <td>{{list.fields[0].name}}</td> -->
+            <td>
+                <div class="reg_main">
+                <span>LOGIN</span> 
+              <ul class="reg_names">
+                  <li  *ngFor="let list of registrarField" style="margin: 0px;padding: 0px;">{{list.name}} </li>   
+              </ul>
+
+          </div>      
+          </td>
+        </tr>
+    </table>
+</div> 
+
+<div class="black_cover" *ngIf="showSaveSetting" (click)="cancelaffile()"></div>
+<div class="popup_1 pop_sm" *ngIf="showSaveSetting">
+    <div class="PopupHead">
+        <h5 class="text-center">Edit Registration Settings</h5>
+        <span class="closetop" (click)="cancelaffile()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+        <form [formGroup]="RegistrationForm" >
+            <div class="soon font_13">
+                <div class="fd p_5 ">  
+                        <table class="reg_table">
+                            <thead>
+                                <tr>
+                                    <td> <label>Email Verification</label> <span><input type="checkbox" (change)="emailverification($event)"></span></td>
+                                    <td> <span  class="act_per"><label >Activation Period</label>
+                                        <input  type="number" min="1" formControlName="activationperiod" [disabled]="isDisabled" />
+                                        <label >Days</label></span> </td>
+                                </tr>
+                                <tr>  
+                                    <td>    <label>Block Password Weaker Then </label></td> 
+                                    <td> <select class="selectlabel" (change)="blockpassword($event)" >
+                                        <option [ngValue]=list.guid *ngFor="let list of registrarList">{{list.value}}</option>
+                                    </select></td>   
+                                </tr>
+                                <tr> 
+                                    <td> <label>Chang Password After</label></td>
+                                    <td><span><input type="number" formControlName="changepasswordafter"></span>
+                                        <label>Failed Logins</label></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Block Password Shoter then</label></td>
+                                    <td> <span><input type="number" formControlName="blockpasswordshoter"></span>
+                                        <label>Symbols</label></td>
+                                </tr>
+                                <tr>
+                                    <td><label>lock Account After</label></td>
+                                    <td><span><input type="number" formControlName="lockaccountafter" ></span>
+                                        <label>Days Since Last login</label></td>
+                                </tr>
+                            </thead>
+                        </table>
+    
+                    <div>
+                        <div class="Profilebg">
+                            <h4>Profile Fields</h4>
+                        </div>
+                        <table class="tablCode ">
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Registration Form</th>
+                                    <th>Profile Form</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let list of registrarField,let i = index">
+                                    <td>{{list.name}} </td>
+                                    <td>
+                                        <select [formControlName]="list.name" (change)="registrationchange($event,list)">  
+                                            <option *ngFor="let RegFormlist of agentStatuslist" [ngValue]="RegFormlist.value">
+                                                {{RegFormlist.value}}
+                                            </option>
+                                        </select> 
+                                    </td>
+                                    <td>
+                                        <select (change)="permissionsvalidation($event,list,i)" [formControlName]="list.name + i">
+                                            <option *ngFor="let prolist of AgentFormlist"  [ngValue]="prolist.value">{{prolist.value}} 
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+        
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="bottomFix">
+                    <button class="btn_grade_1" (click)="setRegistartion()"> Save </button>
+                    <button class="btn_grade_2" (click)="cancelaffile()"> Cancel </button>
+                </div>
+            </div>
+        </form>
+</div> 
+
+
+<!-- <div class="fd cover" *ngIf="showSaveSetting">
+    <div class="firstCover">
+    <div class="secondCover">
+        <table class="tablCodeAgent">
+    <tr  class="tablCoderowAgent">
+        <th>Field</th>
+        <th>Registration Form</th>
+        <th>Profile Form</th>
+    </tr>
+    <tr *ngFor="let data of registrarField"> 
+        <td>{{data.name}}</td>
+        <td>
+            <select class="selectagent"> 
+                <option  *ngFor="let a of data.registrationStatusesRange " [value]="a" > {{a.nextregister}} </option>
+            </select>
+        </td>
+        <td >
+            <select class="selectagent"> 
+                <option *ngFor="let b of data.profileStatusesRange"> {{b.nextprofile}} </option>
+            </select>
+
+        </td>
+    </tr>
+</table>
+</div>
+<div class="saveCancel">
+<button class="agentsave">Save</button>
+<button class="agentcancel" (click)="cancelaffile()">Cancel</button>
+</div>
+</div> 
+</div>  -->

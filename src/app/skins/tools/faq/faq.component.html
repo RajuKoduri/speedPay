@@ -1,0 +1,80 @@
+<div class="df justify-content-between">
+    <h3>FAQ </h3>
+    <div>
+        <button class="fillterbtn m_l_5" style="float: right;" (click)="exportExcel()"> Export Excel</button>
+        <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="onRequery()"> Requery </button>
+    </div>
+</div>
+
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Object Alias </th>
+                <th>Responsible Email Answer</th>
+                <th>Actions</th>
+                <th>Type </th>
+                <th>E-mail Template</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="Faqdata" >
+            <tr *ngFor="let list of Faqdata;let i=index" (dblclick)="openPopup(list)">
+                <td>{{i+1}}</td>
+                <td>{{list.categoryAlias}}</td>
+                <td>{{list.responsEMail}}</td>
+                <td>
+                    <div class="fd">
+                        <div class="trigger">
+                            <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,list.guid)"> </i> </a>
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                    <button (click)="deleteCategory(list.guid)">Delete Category</button>
+                                    <button (click)="onEditTemplate(list)">Edit Template</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{getCategotyType(list.categoryType)}}</td>
+                <td>{{getTemplateTypesValues(list.emailTemplate)}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<span *ngIf="this.Faqdata">Rows On the Page: {{rowsOnthePage}}</span>
+<span *ngIf="this.Faqdata"> Result Count: {{ResultCount}} </span>
+
+<!-- ########################################### del conform popup ###################################### -->
+
+<div class="black_cover" *ngIf="isDelete">
+    <div class="popup_1 pop_sm text-black" *ngIf="isDelete">
+        <div class="PopupHead">
+            <h5 class="text-center">Warning</h5>
+            <span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 p_lr_15 my-3">
+            <b class="text-center">Do you want to delete the FAQ Category with all texts?</b>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onConformationDel()"> OK </button>
+            <button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isEdit">
+    <add-email-template (notifyParent)="closeEditPopup()" [selectedListForEdit]="selectedListForEdit"
+        [isEditTemplate]='true'></add-email-template>
+</div>
+
+<div *ngIf="isCategory">
+    <add-faq-category (notifyParent)="isCategory=$event" [editableData]="selectedCategoryData"></add-faq-category>
+</div>

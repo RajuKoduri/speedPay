@@ -1,0 +1,193 @@
+<div>
+    <h3>Skins Reports By Sessions </h3>
+</div>
+<div class="dropdown fd fil_export">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+   
+<div>
+    <button class="fillterbtn m_l_5 btn_sub12" (click)="exportCsv()"> Export
+        CSV</button>
+        <button class="fillterbtn m_l_5 btn_sub12" (click)="exportexcel()"> Export
+            Excel</button>
+</div>
+
+      
+    </div>
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date"  [max]="endDate" formControlName="startDate"
+                        [ngModel]="startDate" (ngModelChange)="startDate = $event"  (change)="showDate($event)"/>
+                        <input class="inp_agent_time mobile_view"  type="time" formControlName="startTime"  step="1" [ngModel]="startTime" (ngModelChange)="startTime = $event"  (change)="timechange($event)" [max]="endTime"/>
+                    </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date"   [max]="todaydate" formControlName="endDate"
+                      [ngModel]="endDate" (ngModelChange)="endDate = $event"  (change)="showDate($event)"/>
+                      <input  class="inp_agent_time mobile_view" type="time" formControlName="endTime"  step="1" [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)"/>
+                    </div>
+                    
+                </div>
+                <div class="red_col text-center" *ngIf="steddate">
+                    Start date should be below or equal to end date
+                  </div>
+                  <div class="red_col text-center" *ngIf="timeerror">
+                    Start time should be below or equal to end time  
+                  </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    
+    <div class="text-centers div_sub" >
+        <div class="text-centers df m_t_5">
+            <!-- <div style="margin-right:20px;" *ngIf="SkinsReports">Rows On the Page: {{rowsOnthePage}}</div> -->
+            <!-- <div> Result Count: {{ResultCount}} </div> -->
+        </div>
+                <button class="fillterbtn btn_sub12" (click)="onFormSubmit()"  [disabled]="steddate">Submit</button>
+        </div>
+</div>
+
+<div class="fd">
+    <table class="tablCode table_2" id="excel-table">
+        <thead>
+            <tr>
+                <th *ngIf="SkinId">Skin </th>
+                <!-- <th>Affiliate</th> -->
+                <th *ngIf="CashGames">Cash Games </th>
+                <th *ngIf="Tournaments">Tournaments </th>
+                <th *ngIf="Tickets">Tickets</th>
+                <th *ngIf="Result">Result </th>
+                <th *ngIf="Rake"> Rake</th>
+                <!-- <th>Rack Back</th> -->
+                <th *ngIf="Jackpot">Jackpot</th>
+                <th *ngIf="RabbitHunting">Rabbit Hunting</th>
+                <th *ngIf="TouramentFee">Tourament Fee</th>
+                <th *ngIf="MarketingFee">Marketing Fee</th>
+                <th *ngIf="HorsesResult">Horses (Result)</th>
+                <th *ngIf="CasinoResult">Casino (Result)</th>
+                <!-- <th>Slot.Profit</th>
+                <th>Aff.Profit </th> -->
+
+                <th>
+                    <i class="fa fa-cog" (click)="myFunction()" aria-hidden="true"
+                        style="font-size: 20px; color: #fff;"></i>
+                </th>
+                <div class="softkeyboard">
+                    <div id="myDropdown" class="softkey" *ngIf="showDrop">
+                        <form [formGroup]="TableSettingsForm">
+                            <div>
+                                <input type="checkbox" id="Skin" formControlName="Skin" />
+                                <label class="label12" style="color: aliceblue;" for="Skin">Skin</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="CashGames" formControlName="CashGames" />
+                                <label class="label12" style="color: aliceblue;" for="CashGames">Cash Games</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Tournaments" formControlName="Tournaments" />
+                                <label class="label12" style="color: aliceblue;" for="Tournaments">Tournaments</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Tickets" formControlName="Tickets" />
+                                <label class="label12" style="color: aliceblue;" for="Tickets">Tickets</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Result" formControlName="Result" />
+                                <label class="label12" style="color: aliceblue;" for="Result">Result</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Rake" formControlName="Rake" />
+                                <label class="label12" style="color: aliceblue;" for="Rake">Rake</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Jackpot" formControlName="Jackpot" />
+                                <label class="label12" style="color: aliceblue;" for="Jackpot">Jackpot
+                                </label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="RabbitHunting" formControlName="RabbitHunting" />
+                                <label class="label12" style="color: aliceblue;" for="RabbitHunting">Rabbit Hunting
+                                </label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="TouramentFee" formControlName="TouramentFee" />
+                                <label class="label12" style="color: aliceblue;" for="TouramentFee">Tourament Fee
+                                </label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="MarketingFee" formControlName="MarketingFee" />
+                                <label class="label12" style="color: aliceblue;" for="MarketingFee">Marketing Fee
+                                </label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="horsesResult" formControlName="HorsesResult" />
+                                <label class="label12" style="color: aliceblue;" for="horsesResult">Horses
+                                    (Result)</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="casinoResult" formControlName="CasinoResult" />
+                                <label class="label12" style="color: aliceblue;" for="casinoResult">Casino
+                                    (Result)</label>
+                            </div>
+                        </form>
+                        <button class=" save_btn" (click)="tableSettingSave()">Save</button>
+                    </div>
+                </div>
+            </tr>
+        </thead>
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <tbody *ngIf="SkinsReports">
+            <tr *ngFor="let List of SkinsReports,let i =index">
+                <td *ngIf="SkinId">{{List.skin}}</td>
+                <td *ngIf="CashGames">{{List.casino_result_value}}</td>
+                <td *ngIf="Tournaments">{{List.tournament}}</td>
+                <td *ngIf="Tickets">{{List.ticket}}</td>
+                <td class="text-end" *ngIf="Result">{{List.result_value | numberFormat}}</td>
+                <td class="text-end" *ngIf="Rake">{{List.rake_value | numberFormat}}</td>
+                <td class="text-end" *ngIf="Jackpot">{{List.jackpot_fee_value | numberFormat}}</td>
+                <td class="text-end" *ngIf="RabbitHunting">{{List.rabbit_hunting_value | numberFormat}}</td>
+                <td class="text-end" *ngIf="TouramentFee">{{List.tournament_fee_value | numberFormat}}</td>
+                <td class="text-end" *ngIf="MarketingFee">{{List.marketing_fee_value | numberFormat}}</td>
+                <td class="text-end" *ngIf="HorsesResult">{{List.horses_result_value | numberFormat}}</td>
+                <td class="text-end" *ngIf="CasinoResult">{{List.casino_result_value | numberFormat}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="fd" *ngIf="SkinsReports">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || SkinsReports==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||SkinsReports==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="SkinsReports">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="SkinsReports == null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="SkinsReports==null || pagecontrolbtn" (click)="fastforward()"><i
+                class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>

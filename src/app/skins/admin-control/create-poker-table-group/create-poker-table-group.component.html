@@ -1,0 +1,270 @@
+<div class="popup_4 pop_sm">
+    <div class=" PopupHead" *ngIf="PlayerTableGroupData==null">
+        <h5 class="text-center"> New Poker Table Group </h5>
+        <!-- <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span> -->
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+        <form class="fd p_5 " [formGroup]="CreatePokerTableForm" (ngSubmit)="onFormSubmit()">
+            <div class="df m_3">
+                <label class="col-sm-6"> Money Type</label>
+                <select class="col-sm-6" (change)="onSelected($event)" name="selectedCurrency" id="selectedCurrency"
+                    [(ngModel)]="selectedCurrency" required formControlName="MoneyType" placeholder="select money ">
+                    <option [ngValue]="Moneytype.guid" selected *ngFor="let Moneytype of currencyList">
+                        {{Moneytype.description}}</option>
+                </select>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Game Type </label>
+                <select class="col-sm-6" formControlName="GameType" id="GameType">
+                    <option [ngValue]="list" *ngFor="let list of Onlygamescaption" class="col-sm-6">{{list}}</option>
+                </select>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Table Group Name </label>
+                <!-- <input class="col-sm-6" placeholder="*this field is required"  type="text" id = "TableGroupName"  formControlName="TableGroupName" /> -->
+                <input class="col-sm-6" type="text" id="TableGroupName" formControlName="TableGroupName" />
+            </div>
+            <!-- <div *ngIf="f.TableGroupName.touched && f.TableGroupName.invalid"> -->
+            <div class="stakes-error-message"
+                *ngIf="f['TableGroupName'].touched && f['TableGroupName'].invalid || TableGroupNameError">
+                <div *ngIf="f['TableGroupName'].errors && f['TableGroupName'].errors['required']">Please enter table
+                    groupname</div>
+                <div *ngIf="f['TableGroupName'].errors && f['TableGroupName'].errors['minlength']">Name should be 5
+                    character.</div>
+                <div *ngIf="f['TableGroupName'].errors && f['TableGroupName'].errors['maxlength']"> Minimum length 50
+                    characters </div>
+            </div>
+
+            <div class="df m_3">
+                <label class="col-sm-6"> Password </label>
+                <input class="col-sm-6" type="text" formControlName="Password" maxlength="15" />
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Stakes </label>
+                <!-- <input  (focusin) = "onStakesFromInputChange($event)" (input) = "onStakesFromInputChange($event)"  style="margin: 0px 1px 0px 0px;" class="col-sm-3" formControlName="StakesFrom" oninput="this.value = Math.abs(this.value)" type="number" min="0" [(ngModel)]="from"/>
+                <input (input) = "onStakesToInputChange($event)" (focusin) = "onStakesToInputChange($event)"   style="margin: 0px 0px 0px 1px;" class="col-sm-3" formControlName="StakesTo" oninput="this.value = Math.abs(this.value)" type="number" min="0"  [(ngModel)]="to"/> -->
+                <input (focusin)="onStakesFromInputChange($event)" (input)="onStakesFromInputChange($event)"
+                    style="margin: 0px 1px 0px 0px;" class="col-sm-3" formControlName="StakesFrom" type="text" min="0"
+                    [(ngModel)]="from" appMaxLengthValidation [maxNumber]=11 />
+                <input (input)="onStakesToInputChange($event)" (focusin)="onStakesToInputChange($event)"
+                    style="margin: 0px 0px 0px 1px;" class="col-sm-3" formControlName="StakesTo" type="text" min="0"
+                    [(ngModel)]="to" appMaxLengthValidation [maxNumber]=11 />
+            </div>
+            <!-- <div  *ngIf="!CreatePokerTableForm.get('StakesFrom').valid && form.get('StakesFrom').touched">
+                {{StakesErrorMessage}}
+            </div> -->
+            <div class="stakes-error-message" [attr.disabled]="isStakesDisable?true:false">{{StakesErrorMessage}}</div>
+            <div class="df m_3" style="padding: 0px 2px 0px 0px;">
+                <label class="col-sm-6"> BuyIn </label>
+                <!-- <input  (focusin) = "onBuyInFromChangeInput($event)" (input) = "onBuyInFromChangeInput($event)"   style="margin: 0px 1px 0px 0px;" class="col-sm-3" type="number" min="0"
+                    formControlName="BuyInFrom" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" />
+                <input (input) = "onBuyInToChangeInput($event)" (focusin) = "onBuyInToChangeInput($event)"  style="margin: 0px 0px 0px 1px;" class="col-sm-3" type="number" min="0" formControlName="BuyInTo"
+                    oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" /> -->
+
+
+                <input (focusin)="onBuyInFromChangeInput($event)" (input)="onBuyInFromChangeInput($event)"
+                    style="margin: 0px 1px 0px 0px;" class="col-sm-3" type="number" min="0" formControlName="BuyInFrom"
+                    appMaxLengthValidation [maxNumber]=11 />
+                <input (input)="onBuyInToChangeInput($event)" (focusin)="onBuyInToChangeInput($event)"
+                    style="margin: 0px 0px 0px 1px;" class="col-sm-3" type="number" min="0" formControlName="BuyInTo"
+                    appMaxLengthValidation [maxNumber]=11 />
+
+            </div>
+            <div class="stakes-error-message" [attr.disabled]="isBuyInDisable?true:false">{{BuyInErrorMessage}}</div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Seats </label>
+                <input class="col-sm-6" type="text" formControlName="Seats" (input)="seatcount($event)" maxlength="2" />
+            </div>
+            <div class="stakes-error-message" [attr.disabled]="seatsNumberCondition?true:false">
+                {{seatsNumberErrorMessage}}</div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Action Time Out, sec </label>
+                <input class="col-sm-6" type="text" formControlName="ActionTimeOut" maxlength="4"
+                    (input)="changeActionTimeOut($event)" />
+            </div>
+            <div class="stakes-error-message" [attr.disabled]="actionTimeOutCondition?true:false">
+                {{actionTimeOutErrorMessage}}</div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Time Bank, sec </label>
+                <input class="col-sm-6" type="text" formControlName="TimeBank" maxlength="3" />
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Time Bank autoincrement amount, sec </label>
+                <input class="col-sm-6" type="text" formControlName="TimeBankautoincrementamount" maxlength="3" />
+            </div>
+
+
+            <div class="df m_3">
+                <label class="col-sm-6"> Disconnection Protection </label>
+                <input class="col-sm-6" type="checkbox" formControlName="DisconnectionProtection" />
+            </div>
+
+            <div class="df m_3">
+                <label class="col-sm-6"> Time Forced </label>
+                <input class="col-sm-6" type="checkbox" formControlName="TimeForced" maxlength="4" />
+            </div>
+
+
+            <div class="df m_3">
+                <!-- <label class="col-sm-6" [class.my_class] = "timeForecdElement"> TimeFoced Time, Sec </label> -->
+                <label class="col-sm-6" [class.my_class]="timeForecdElement"> TimeFoced Time, Sec </label>
+                <input class="col-sm-6" type="text" maxlength="4" formControlName="TimeFocedTimeSec"
+                    oninput="this.value = !!this.value && Math.abs(this.value) >= 0  ? Math.abs(this.value) : 0" />
+            </div>
+
+
+            <div class="df m_3">
+                <label class="col-sm-6"> Access Rule </label>
+                <select class="col-sm-6" formControlName="AccessRule">
+                    <option [ngValue]="AccessRule.name" *ngFor="let AccessRule of UserAccessRulesResData">
+                        {{AccessRule.name}}</option>
+                </select>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Rake Structure </label>
+                <select class="col-sm-6" formControlName="RakeStructure">
+                    <option [ngValue]="RakeList.guid" *ngFor="let RakeList of RakeStructurelist">{{RakeList.name}}
+                    </option>
+                </select>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Chat Accesability </label>
+                <select class="col-sm-6" formControlName="ChatAccesability" [(ngModel)]="firstInputValue">
+                    <option [ngValue]="list.guid" *ngFor="let list of ChatAccessList">{{list.value}}</option>
+                </select>
+            </div>
+
+            <div class="df m_3">
+                <label class="col-sm-6"> BOMB POT AT HAND #: </label>
+                <input class="col-sm-6" type="text" maxlength="4" formControlName="Bombpotathand" maxlength="4"
+                    oninput="this.value = !!this.value && Math.abs(this.value) >= 0  ? Math.abs(this.value) : 0" />
+            </div>
+
+            <div class="df m_3">
+
+                <label class="col-sm-6"> No of hands to hide stack </label>
+                <input class="col-sm-6" type="text" maxlength="3" formControlName="Nohandshidestack" maxlength="3"
+                    oninput="this.value = !!this.value && Math.abs(this.value) >= 0  ? Math.abs(this.value) : 0" />
+            </div>
+
+            <div class="df m_3">
+
+                <label class="col-sm-6"> No of hands to hide nick name </label>
+                <input class="col-sm-6" type="text" maxlength="3" formControlName="Nohandshidenickname" maxlength="3"
+                    oninput="this.value = !!this.value && Math.abs(this.value) >= 0  ? Math.abs(this.value) : 0" />
+            </div>
+
+
+
+
+            <div class="df m_3">
+                <label class="col-sm-6"> Bad bet jackpot Table </label>
+                <input class="col-sm-3" type="checkbox" formControlName="BadbetjackpotTable" />
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> RunItTwice </label>
+                <input class="col-sm-3" type="checkbox" formControlName="RunItTwice" />
+            </div>
+
+            <div class="df m_3">
+                <label class="col-sm-6">Third Blind </label>
+                <input class="col-sm-3" type="checkbox" formControlName="ThirdBlind" />
+            </div>
+
+            <!-- <div class="df m_3">
+                <label class="col-sm-6"> Rabbit Hunting </label>
+                <input class="col-sm-3" type="checkbox" formControlName="RabbitHunting" />
+            </div> -->
+
+            <div class="df m_3">
+                <label class="col-sm-6"> Rit Forced </label>
+                <input class="col-sm-3" type="checkbox" formControlName="RitHunting" (change)="clickonRitHunting()" />
+            </div>
+
+            <div class="df m_3">
+                <label class="col-sm-6"> Straddle </label>
+                <input class="col-sm-3" type="checkbox" formControlName="straddle" (change)="clickonstraddle()" />
+            </div>
+
+
+            <!-- <div class="df m_3">
+                <label class="col-sm-6"> Bounty </label>
+                <input class="col-sm-3" type="checkbox" formControlName="Bounty" />
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> RakeBack </label>
+                <input class="col-sm-3" type="checkbox" formControlName="RakeBack" />
+            </div> -->
+
+            <div class="bottomFix text-center df m_3" *ngIf="PlayerTableGroupData==null">
+                <!-- <button class="btn_grade_1" (click)="onFormSubmit()" [disabled]="CreatePokerTableForm.invalid"> Save </button> -->
+                <button class="btn_grade_1" type="submit"> Save </button>
+
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<!-- <div class=" text-center">
+        <button class="btn_grade_1" (click)="onFormSubmit()" [disabled]="CreatePokerTableForm.invalid"> Save </button>
+    </div> -->
+
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="CreateSuccessPop">
+    <div class="popup_1 pop_sm" *ngIf="CreateSuccessPop">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <b class="p_5 text-success">{{successMessage}} </b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->
+
+<!-- ************************ErrorPopUp*********************************** -->
+<div class="black_cover" *ngIf="ErrorPopup">
+    <div class="popup_1 pop_sm" *ngIf="ErrorPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <i class="p_5 text-danger">Technical Error... </i>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="TechnicalError()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************ErrorPopUpClose*********************************** -->
+
+<!-- ************************FormGroupErrorPopUp*********************************** -->
+<div class="black_cover" *ngIf="FormGroupErrorPopup">
+    <div class="popup_1 pop_sm" *ngIf="FormGroupErrorPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <p class="p_5 text-danger" *ngIf="SelectMoneyErrorMsg">{{SelectMoneyErrorMsg}} </p>
+                <p class="p_5 text-danger" *ngIf="SelectGameErrorMsg">{{SelectGameErrorMsg}} </p>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="FormGroupErrorPopClose()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************FormGroupErrorPopUpClose*********************************** -->

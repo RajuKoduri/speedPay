@@ -1,0 +1,259 @@
+button.json_button {
+    border: 3px solid #b1bad3;
+    background: #344049;
+    color: #fff;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    padding: 5px;
+    border: none;
+    margin: 3px;
+    transition: all 0.5s;
+    border-radius: 6px 6px 0 0;
+}
+
+button.json_button:focus {
+    outline: none;
+}
+
+button.json_button:hover {
+    border-bottom: 3px solid #55c7c2;
+    color: #55c7c2;
+}
+.activeTab {
+    color: #55c7c2 !important;
+    border-bottom: 3px solid #55c7c2 !important;
+    border-radius: 6px 6px 0 0;
+    padding: 5px;
+    /* display: flex; */
+    /* white-space: pre; */
+}
+.DisableDiv {
+    /* color: #55c7c2 !important;
+    border-bottom: 3px solid #55c7c2 !important;
+    border-radius: 6px 6px 0 0;
+    padding: 5px; */
+    opacity: 0.5;
+    /* color: red; */
+    position: relative;
+    /* z-index: 1000; */
+    /* z-index: 900; */
+    cursor: no-drop;
+    
+}
+
+button.view_button {
+    border: 3px solid #b1bad3;
+    background: #344049;
+    color: #fff;
+    padding: 5px;
+    border: none;
+    margin: 3px;
+    transition: all 0.5s;
+    border-radius: 6px 6px 6px 6px;
+}
+input{
+    accent-color: crimson;
+  }
+.headTitle{
+    background: navajowhite;
+    padding: 4px;
+}
+.SettingsTab{
+    /* border: 1px solid #343330; */
+    border: 1px solid #ddd;
+    margin: 2px;
+}
+.selectTag {
+    border: 1px solid #ddd;
+    float: left;
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    min-height:80vh;
+}
+
+
+
+
+ textarea:focus,
+ input:focus,
+ select:focus {
+  outline: none;
+}
+
+ input,
+select {
+  border: solid 1px #c7c4c4 ;
+  padding: 2px;
+  margin: 2px;
+}
+
+.col-sm-4 label {
+  padding: 2px;
+  margin: 2px;
+}
+
+.col-sm-6 textarea,
+.col-sm-6 select,
+.col-sm-6 input {
+  margin: 2px;
+}
+.labelalign{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+}
+.Knockoutlabel {
+    position: absolute;
+    margin: 8px !important;
+    margin-left: 0px !important;
+}
+.selectHabame  input{
+    width: 20px;
+   }
+  .selectHabame .chkBoxHabmes input[type="checkbox"] { width: 20px !important; }
+  .weekly_Cl.row {
+    /* width: 96%; */
+    float: left;
+    padding: 6px;
+    display: flex;
+    cursor: pointer;
+    width: 100%;
+}
+.weekly_Cl .row .col-sm-4{
+    padding: 10px;
+}
+  .selectHabame .chkBoxHabmes {
+    /* width: 96%; */
+    float: left;
+    padding: 6px;
+    display: flex;
+    cursor: pointer;
+    width: 39%;
+}
+.my_class{
+    opacity: 0.7;
+    cursor: no-drop;
+    pointer-events: none;
+}
+.popup_view {
+    background:#fff;
+    max-width: 600px;
+    margin: auto;
+    top: 50px;
+    position: fixed;
+    z-index: 1000;
+    left: 15px;
+    right: 15px;
+    border-radius: 5px;
+    overflow: auto;
+    max-height: 80vh;
+  }
+
+/* .tablCode th{
+    white-space: nowrap;
+    position: sticky;
+    top: 50px;
+} */
+
+.tablCode thead tr th {
+    position: sticky;
+    white-space: nowrap;
+    top: -10px;
+}
+.Blindtable thead tr th {
+    position: sticky;
+    top: 40px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.btn_grade{
+  
+        padding: 10px 40px;
+        border-radius: 50px;
+        text-transform: uppercase;
+        font-weight: bold;
+        transition: all 0.5s;
+        margin: 5px;
+        border: solid 1px #ddd;
+        color: #000;
+        cursor: no-drop;
+}
+
+.pre-next-save-container{
+    /* display: flex;
+    position: relative; */
+    /* margin-left: 20%; */
+    display: flex;
+    justify-content: center;
+
+}
+
+.schedule-error-popUp{
+    position: fixed;
+    left: 0px;
+    right:0px;
+    top:0px;
+    bottom:0px;
+    background-color: #33383b13;
+    z-index: 10px;
+}
+
+.error-pop{
+    background: #fff;
+    max-width: 460px;
+    margin: auto;
+    top: 200px;
+    position: fixed;
+    z-index: 1000;
+    left: 15px;
+    right: 15px;
+    border-radius: 5px;
+    overflow: auto;
+    /* max-height: 80vh; */
+    font-size:16px;
+}
+
+.error-apply-margin{
+margin:5px;
+}
+
+
+.PopupHead{
+    z-index: 99;
+    top: -7px;
+}
+
+.bottomcreateTournament{
+        position: fixed;
+        bottom: 0;
+        background-color: #fff;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        padding: 5px;
+        box-shadow: 0px -1px 7px 2px rgb(0 0 0 / 10%);
+        /* width: 63%; */
+   
+}
+.view_button:disabled{
+    color: #000;
+    background-color: #ddd;
+}
+.po_f{
+    position: fixed;
+    bottom: 0;
+    background: antiquewhite;
+    width: 100%;
+    text-align: center;
+
+}
+
+.margin-bottom{
+    margin-bottom: 10%;
+}

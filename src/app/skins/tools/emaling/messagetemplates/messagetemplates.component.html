@@ -1,0 +1,210 @@
+<div>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportExcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="onFormSubmit()"> Requery </button>
+    <h3>Message Templates</h3>
+
+    <span *ngIf="messageTemplates">Rows On the Page: {{rowsOnthePage}}</span>
+    <span *ngIf="messageTemplates"> Result Count: {{ResultCount}} </span>
+
+</div>
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+
+    </div>
+    <div class="">
+        <table class="tablCode" id="excel_table">
+            <thead>
+                <tr class="tablCoderow">
+                    <th>Template</th>
+                    <th> Type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="messageTemplates">
+                <tr *ngFor="let list of messageTemplates,let i=index">
+                    <td>{{list.name}}</td>
+                    <td>{{list.typeName}}</td>
+                    <td>
+                        <div class="fd">
+                            <!-- <div class="trigger" *ngIf="List.status!=='Closed'"> -->
+                            <div class="trigger">
+                                <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,list.guid)">
+                                    </i>
+                                </a>
+                                <div *ngIf="popupArrow" class="fd">
+                                    <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+
+                                        <button [disabled]="list.nameChangeable==false" setPlayerActions
+                                            (click)="setPlayerActions('Delete',list.guid)">Delete Template</button>
+                                        <button [disabled]="list.status=='Closed'"
+                                            (click)="setPlayerActions('Edit',list.guid)">Edit Template</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="text-centers df fd m_t_5">
+    <div class="fd">
+        <div class="fd" *ngIf="messageTemplates">
+            <div class="pagecount">
+                <button class="Pagebtns" [disabled]="PageCount==1 || messageTemplates==null"
+                    (click)="fastbackforward()"><i class="fa fa-step-backward" style="font-size:20px"></i>
+                </button>
+                <button class="Pagebtns" [disabled]="PageCount==1 ||messageTemplates==null" (click)="prev()">
+                    <i class="fa fa-caret-left" style="font-size:20px"></i>
+                </button>
+                <div class="PageCountNoDiv">
+                    <div class="" *ngIf="messageTemplates">{{PageCount}}</div>
+                </div>
+                <button class="Pagebtns " [disabled]="messageTemplates==null || pagecontrolbtn" (click)="next()">
+                    <i class="fa fa-caret-right" style="font-size:20px"></i>
+                </button>
+                <button class="Pagebtns" [disabled]="messageTemplates==null || pagecontrolbtn" (click)="fastforward()">
+                    <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="EditmessageTemplatesPopup">
+    <div class="popup_1 pop_sm" *ngIf="EditmessageTemplatesPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Edit E-mail Template </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df">
+                    <label class="col-sm-3">Name: </label>
+                    <!-- <input class="col-sm-9" type="text"  value="{{ActionTemplatedata.name}}"/> -->
+                    <input class="col-sm-9" type="text" [disabled]="ActionTemplatedata.nameChangeable==false"
+                        [(ngModel)]="ActionTemplatedata.name" />
+                </div>
+                <div class="df">
+                    <label class="col-sm-3">Type: </label>
+                    <input type="text" class="col-sm-9" disabled [(ngModel)]="ActionTemplatedata.typeName" />
+                </div>
+            </div>
+            <div>
+                <div class="fd">
+                    <div class="fd">
+                        <ul id="tabsUl" class="tabsUl fd">
+                            <li class="list_BTN" *ngFor="let list of LanguagesList; let i=index"
+                                (click)="LanguageSelect(list.guid, i)" [ngClass]="{'active': i === activeButton}">
+                                {{list.value}} </li>
+                        </ul>
+                    </div>
+                    <div class="fd border_sty">
+                        <div class="df">
+                            <label class="col-sm-3">To(Name): </label>
+                            <!-- <input type="text" class="col-sm-9" [(ngModel)]="MailTemplateText!=''?MailTemplateText.toName:MailTemplateText" /> -->
+                            <input type="text" class="col-sm-9" [(ngModel)]="MailTemplateTextList[activeButton].toName" />
+                        </div>
+                        <div class="df">
+                            <label class="col-sm-3">From(Name): </label>
+                            <!-- <input type="text" class="col-sm-9"  [(ngModel)]="MailTemplateText!=''?MailTemplateText.fromName:MailTemplateText" /> -->
+                            <input type="text" class="col-sm-9"  [(ngModel)]="MailTemplateTextList[activeButton].fromName" />
+                        </div>
+                        <form [formGroup]="EditmessageTemplateForm">
+                            <div class="">
+                                <label class="col-sm-3">From(E-mail): </label>
+                                <!-- <input type="text" class="col-sm-9" formControlName="Email" [(ngModel)]="MailTemplateText!=''?MailTemplateText.fromEmail:MailTemplateText" /> -->
+                                <input type="text" class="col-sm-9" formControlName="Email" [(ngModel)]="MailTemplateTextList[activeButton].fromEmail" />
+                                <div class="stakes-error-message text-center "
+                                    *ngIf="f['Email'].touched && f['Email'].invalid || submitted">
+                                    <div *ngIf="f['Email'].errors && f['Email'].errors['required']">
+                                        Please Enter Email</div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="df">
+                            <label class="col-sm-3">Subject: </label>
+                            <!-- <input class="col-sm-9" type="text" [(ngModel)]="MailTemplateText!=''?MailTemplateText.subject:MailTemplateText" /> -->
+                            <input class="col-sm-9" type="text" [(ngModel)]="MailTemplateTextList[activeButton].subject" />
+                        </div>
+                        <div class="df">
+                            <label class="col-sm-3">Text:</label>
+                            <span style="margin-top: 5px;">*Please Use context Menu to insert Parameters*</span>
+                        </div>
+                        <div>
+                            <!-- <textarea class="textarea"> {{text}} </textarea> -->
+                            <!-- <textarea class="textarea"  [(ngModel)]="MailTemplateText.text"> {{MailTemplateText.text}} </textarea> -->
+                            <!-- <textarea class="textarea" [(ngModel)]="MailTemplateText!=''?MailTemplateText.text:MailTemplateText">  </textarea> -->
+                            <textarea class="textarea" [(ngModel)]="MailTemplateTextList[activeButton].text">  </textarea>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="setMailTemplate()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- *****************************PopUpEnd********************************** -->
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="deletemessageTemplatesPopup">
+    <div class="popup_1 pop_sm" *ngIf="deletemessageTemplatesPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="deleteMessageclosepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df p_5 m_t_5 text-center">
+                    <p><b>Do you want to delete the selected record?</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="delMailTemplates()"> Save </button>
+            <button class="btn_grade_2" (click)="deleteMessageclosepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- #################################################### Error popup ###########################-->
+<div class="black_cover" *ngIf="isValid">
+    <div class="popup_1 pop_sm text-black" *ngIf="isValid">
+        <div class="PopupHead">
+            <h5 class="text-center text-danger">Error</h5>
+            <span class="closetop" (click)="errorPopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df p_5 m_t_5 text-center">
+                    <p><i>Missing parameter. Please, enter value.</i></p>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <!-- <button class="btn_grade_1" (click)="delMailTemplates()"> Save </button> -->
+            <button class="btn_grade_2" (click)="errorPopup()"> Ok </button>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- *****************************PopUp********************************** -->
+<!-- *****************************Spinnwer********************************** -->
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+<!-- *****************************SpinnwerEnd********************************** -->

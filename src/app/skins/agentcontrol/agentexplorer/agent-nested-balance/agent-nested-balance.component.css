@@ -1,0 +1,8 @@
+
+table thead th{
+    position: sticky;
+    top:0
+}
+.tablCode thead th {
+    z-index: 0;
+  }

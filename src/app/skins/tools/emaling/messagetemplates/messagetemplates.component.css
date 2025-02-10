@@ -1,0 +1,131 @@
+.table_2 table thead th {
+    position: sticky;
+    top: 0;
+    z-index:10;
+  }
+  
+  .trigger {
+    margin: auto;
+    position: relative;
+    text-align: center;
+    border: none;
+    padding: 5px 8px;
+    background: #4aab4e;
+    border-radius: 50px;
+    color: #fff;
+    width: 30px;
+    cursor: pointer;
+  }
+  
+  .popup1 {
+    position: absolute;
+    left: -140px;
+    top: 15px;
+    transform: translate3d(0, -50%, 0);
+    background: none;
+    color: #000;
+    max-width: 256px;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19) !important;
+    z-index: 1;
+  }
+  input:disabled {
+    background: #ccc8c8;
+  }
+  
+  .groupBTN {
+    padding: 0px 10px;
+  }
+  
+  .popup1.btnGrp button:hover {
+    background: #dd6c0c;
+    color: #fff;
+  }
+  
+  .popup1.btnGrp button {
+    margin: 0px;
+    border: none;
+    padding: 7px 10px;
+    border-bottom: 1px solid #b0adad;
+  }
+  
+  .popup1.btnGrp {
+    display: grid;
+  }
+  
+  .trigger button[disabled] {
+    /* border: 1px solid #999999; */
+    border: none;
+    background: #cccccc;
+    color: #666666;
+    cursor: no-drop
+  }
+  
+  .trigger button[disabled]:hover {
+    background: #cccccc !important;
+  }
+  
+  li {
+    background: linear-gradient(45deg, #4aadff, #f672ff);
+    padding: 7px 20px;
+    border-radius: 8px 8px 0px 0px;
+    color: #000;
+    cursor: pointer;
+  }
+  li:active {
+    background: linear-gradient(45deg, #1471bd, #7a717a);
+    padding: 7px 20px;
+    border-radius: 8px 8px 0px 0px;
+    color: #000;
+    cursor: pointer;
+  }
+  input {
+    margin-top: 5px;
+    outline: none;
+    border: 1px solid #ddd;
+    padding: 3px;
+  }
+  .active{
+    background: linear-gradient(45deg, #ff6902, #00a788);
+    /* background: #f00 !important; */
+    color: #fff;
+  }
+  .border_sty {
+    padding: 8px;
+    border: 1px solid #7b7676;
+    border-radius: 3px;
+  }
+  
+  label {
+    font-weight: 400;
+  }
+  
+  ul.tabsUl {
+    display: flex;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .textarea:focus {
+    outline: none;
+  }
+  
+  textarea {
+    width: 100%;
+    max-height: -moz-fit-content;
+    min-height: 150px;
+    padding: 5px;
+    margin-top: 5px;
+  }
+  .spinnerTrue {
+    position: fixed;
+    z-index: 999;
+    left: 50%;
+    right: 0;
+    top: 50%;
+    margin: auto;
+  }
+  .stakes-error-message{
+    color: red;
+    left: 50%;
+    /* text-align: right; */
+  }

@@ -1,0 +1,45 @@
+/* .active{
+    border-radius: 5px;
+} */
+
+/* language-selector.component.css */
+
+.language-buttons {
+    list-style: none; /* Remove default list style */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+    display: flex; /* Display items in a row */
+    flex-wrap: wrap; /* Wrap items if necessary */
+    gap: 10px; /* Space between buttons */
+  }
+  
+  .language-buttons .button {
+    background: linear-gradient(135deg, #6c63ff, #8c82ff); /* Gradient background */
+    color: #fff; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 25px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effects */
+    font-size: 1rem; /* Font size */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove text underline */
+    font-family: 'Roboto', sans-serif; /* Stylish font */
+  }
+  
+  .language-buttons .button:hover {
+    transform: translateY(-3px); /* Lift effect on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  }
+  
+  .language-buttons .button.active {
+    background: linear-gradient(135deg, #ff6c63, #ff826c); /* Active gradient */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+    transform: translateY(-5px); /* More lift for active button */
+  }
+  
+  .language-buttons .button:active {
+    transform: translateY(0); /* Reset lift on click */
+    box-shadow: none; /* Remove shadow on click */
+  }
+  

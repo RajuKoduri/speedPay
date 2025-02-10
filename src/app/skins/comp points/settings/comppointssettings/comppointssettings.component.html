@@ -1,0 +1,91 @@
+<div class="fd" (click)="totalAbuse()">
+    <!-- <tr class="tablCoderow">
+        <th>Bonus Abuse</th>
+    </tr> -->
+    <div>
+        <button class="fillterbtn font_14 ml_25" style="float: right;" (click)="onRequery()">Requery</button>
+        <h3> Points Settings</h3>
+    </div>
+    <div class=" fd abuse">
+        <div class=" table_2">
+            <div *ngIf="loader">
+                <div class="loaderWraper">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            <table class="fd tablCode" id="excel_table">
+                <!-- <table class="abuseTable "> -->
+                <thead>
+                    <tr class="tablCoderow">
+                        <th colspan="2"> Points Settings
+                            <div class="arrow" (click)="Abusearrow()">
+                                <i *ngIf="showing" class="fa fa-chevron-up"></i>
+                                <i *ngIf="!showing" class="fa fa-chevron-down"></i>
+                            </div>
+
+                        </th>
+                    </tr>
+                </thead>
+                <ng-container *ngIf="summary">
+                    <tbody *ngIf="showing" (dblclick)="pointsSetting(summary[0])">
+                        <tr *ngFor="let list of summary">
+                            <td class="headtd">Enable Comp Points</td>
+                            <td><input [checked]="list.compPointsEnabled" type="checkbox" class="pointer" /></td>
+                        </tr>
+                        <tr *ngFor="let list of summary">
+                            <td class="headtd">Allow Exchange to Cash</td>
+                            <td><input [checked]="list.conversionToCashEnabled" type="checkbox" class="pointer" /> </td>
+                        </tr>
+                        <tr *ngFor="let list of summary">
+                            <td class="headtd">Allow Exchange to Bonus</td>
+                            <td> <input [checked]="list.conversionToWithdrawRestrictedEnabled" type="checkbox"
+                                    class="pointer" /> </td>
+                        </tr>
+                        <tr *ngFor="let list of summary">
+                            <td class="headtd">Allow Tournament Buy-In For Comp Points</td>
+                            <td> <input [checked]="list.conversionToTournamentBuyInEnabled" type="checkbox"
+                                    class="pointer" /></td>
+                        </tr>
+                    </tbody>
+                </ng-container>
+            </table>
+        </div>
+    </div>
+
+    <!-- *************************************************************************** -->
+    <div class="black_cover" *ngIf="pointsPopup">
+        <div class="popup_1 pop_sm" *ngIf="pointsPopup">
+            <div class="PopupHead">
+                <h5 class="text-center">Points Settings</h5>
+                <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+            </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="fd p_5 ">
+                    <div class="df m_3">
+                        <label class="col-sm-9"> Enable Comp Points </label>
+                        <input type="checkbox" [(ngModel)]="pointspopdata.compPointsEnabled"
+                            [checked]="pointspopdata.compPointsEnabled" />
+                    </div>
+                    <div class="df m_3">
+                        <label class="col-sm-9"> Allow Exchange to Cash </label>
+                        <input type="checkbox" [(ngModel)]="pointspopdata.conversionToCashEnabled"
+                            [checked]="pointspopdata.conversionToCashEnabled" checked />
+                    </div>
+                    <div class="df m_3">
+                        <label class="col-sm-9"> Allow Exchange to Bonus </label>
+                        <input type="checkbox" [(ngModel)]="pointspopdata.conversionToWithdrawRestrictedEnabled"
+                            [checked]="pointspopdata.conversionToWithdrawRestrictedEnabled" />
+                    </div>
+                    <div class="df m_3">
+                        <label class="col-sm-9"> Allow Tournament Buy-In For Comp Points </label>
+                        <input type="checkbox" [(ngModel)]="pointspopdata.conversionToTournamentBuyInEnabled"
+                            [checked]="pointspopdata.conversionToTournamentBuyInEnabled==true" />
+                    </div>
+                </div>
+            </div>
+            <div class="bottomFix">
+                <button class="btn_grade_1" (click)="settingsSave()"> Save </button>
+                <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+            </div>
+        </div>
+    </div>

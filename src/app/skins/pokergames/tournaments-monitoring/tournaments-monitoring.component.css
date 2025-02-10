@@ -1,0 +1,13 @@
+select{
+    border: 1px solid #ddd;
+}
+.Birthdayinputs{
+    width: 28%;
+}
+th{
+    position: sticky;
+    top: 0;
+    /* width: fit-content; */
+    /* text-wrap: nowrap */
+    white-space:nowrap
+}

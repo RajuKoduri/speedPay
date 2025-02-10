@@ -1,0 +1,46 @@
+.filterDiv-game-filter {
+    background:#fff;
+    max-width: 80%;
+    margin: auto;
+    top: 150px;
+    position: fixed;
+    z-index: 1000;
+    left: 15px;
+    right: 15px;
+    border-radius: 5px;
+    overflow: auto;
+    max-height: 80vh;
+    
+  }  
+  .all-games {
+    background-color: #4ccf80;
+    margin: 10px;
+    position: sticky;
+    padding: 4px;
+    top: 45px;
+    color: #000;
+    font-size: 15px;
+} .poker-caption-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 11px;
+    /* margin: 5px 5px 5px 0px;
+    width:100px; */
+  } 
+  .caption-checkbox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 250px;
+    padding-top: 5px;
+}
+
+  .fillterbtn-games {
+    width: 25px;
+    height: 30px;
+    border: none;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    background-color:#ffffff;
+  }

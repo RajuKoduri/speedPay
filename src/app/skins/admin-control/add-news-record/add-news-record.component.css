@@ -1,0 +1,36 @@
+ul li {
+  padding: 10px 15px;
+  margin: 5px;
+  background: linear-gradient(135deg, #58baea, #9bd9e3, #58baea);
+  border-radius: 20px 20px 0px 0px;
+  cursor: pointer;
+  /* box-shadow: 5px 5px 5px rgb(183, 181, 181); */
+}
+.NgxEditor__Wrapper{
+    padding: 0px;
+    height: 210px;
+    overflow: scroll;
+}
+
+.activeEditor{
+  background: linear-gradient(135deg, #ff6c63, #ff826c);
+}
+
+ul li:hover {
+  transform: translateY(-3px); 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+
+ul li.active {
+  background: linear-gradient(135deg, #ff6c63, #ff826c); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
+  transform: translateY(-5px); 
+}
+
+ul li:active {
+  transform: translateY(0); 
+  box-shadow: none; 
+}
+
+
+

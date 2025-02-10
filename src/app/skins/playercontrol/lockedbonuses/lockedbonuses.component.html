@@ -1,0 +1,182 @@
+<div>
+    <h1>Locked Bonuses </h1>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+
+                        <!-- <select class="seclectopt" formControlName="currency" #tb2>
+                            <option value="" disabled> Real Money </option>
+                            <option> User Preferred</option>
+                            <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlists">
+                                {{CURRENCY.value}}
+                            </option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencydropdownlist"
+                                [(ngModel)]="selectcurrency" (onSelect)="Onselectedcurrency($event)"
+                                (OnDeselect)="OnItemDeselectedcurrency($event)"
+                                (OnSelectAll)="OnselectedAllcurrency($event)"
+                                (OnDeselectAll)="OnDeselectedDeAllcurrency($event)" formControlName="currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers">
+        <!-- <button class="fillterbtn m_l_5" style="float:right;margin-left: 1px;" (click)="onFormSubmit()">Submit</button> -->
+        <div style="margin-right:20px;" *ngIf="LockedbonusList">Rows On the Page: {{rowsOnthePage}} </div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="fd">
+        <table class="tablCode fd" id="excel_table">
+            <thead>
+                <tr class="tablCoderow">
+                    <th>S.no</th>
+                    <th>Player</th>
+                    <th>Player's Full Name</th>
+                    <th>Balance</th>
+                    <th>Bonus</th>
+                    <th>Locked Bonus</th>
+                    <th>Accumulated Bet</th>
+                    <th>Required Bet</th>
+                </tr>
+            </thead>
+
+            <tbody *ngIf="LockedbonusList">
+                <tr *ngFor="let list of LockedbonusList, let i =index" (dblclick)="PopupOpen();onClick(i)">
+                    <td>{{i+1}}</td>
+                    <td class="hyperLink" (click)="PlayerExplore(list.player.account, list.player.guid, list.player)">{{list.player.account}}</td>
+                    <td>{{list.player.fullName}}</td>
+                    <td class="text-end">{{getWalletSymbol(list.balance.wallet)}} {{list.balance.value| numberFormat}}</td>
+                    <td class="text-end">{{getWalletSymbol(list.bonus.wallet)}} {{list.bonus.value| numberFormat}}</td>
+                    <td class="text-end">{{getWalletSymbol(list.lockedBonus.wallet)}} {{list.lockedBonus.value| numberFormat}}</td>
+                    <td class="text-end">{{getWalletSymbol(list.accumulatedBet.wallet)}} {{list.accumulatedBet.value| numberFormat}}</td>
+                    <td class="text-end">{{getWalletSymbol(list.remainingBet.wallet)}} {{list.remainingBet.value | numberFormat}}</td>
+                </tr>
+                <!-- <tr >
+                <td colspan="4">hello</td>
+            </tr> -->
+            </tbody>
+            <!-- <tfoot *ngIf="LockedbonusList"> -->
+            <tfoot *ngIf="LockedbonusList">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-end">SUM ={{balance_1 | numberFormat}}</td>
+                    <td class="text-end">SUM ={{bonusvalue | numberFormat}}</td>
+                    <td class="text-end">SUM ={{lockedBonusValue | numberFormat}}</td>
+                    <td class="text-end">SUM ={{accumulatedBetValue | numberFormat}}</td>
+                    <td class="text-end">SUM ={{remainingBetValue | numberFormat}}</td>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<!-- **************************POPUP************************************ -->
+<div class="black_cover" *ngIf="Registrationdetailspopup" (click)="closepopup()"></div>
+<div class="popup_1 pop_sm" *ngIf="Registrationdetailspopup">
+    <div class="PopupHead">
+        <h5 class="text-center">Locked Bonuses</h5>
+        <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <!-- <div class="PopupHead">
+        <h5>Locked Bonuses </h5>
+        <span class="closetop" (click)="closepopup()">X</span>
+    </div> -->
+    <div class="soon font_13">
+        <div class="fd p_5 ">
+
+            <div class="df m_3">
+                <label class="col-sm-6"> Player Login</label>
+                <span class="col-sm-6">{{playerfulldetails.player.account}}</span>
+            </div>
+
+            <div class="m_3">
+                <label class="col-sm-6">Player's Full Name</label>
+                <span class="col-sm-6">{{playerfulldetails.player.fullName}}</span>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-6">Balance</label>
+                <span class="col-sm-6">{{playerfulldetails.balance.value}}</span>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-6">Bonus</label>
+                <span class="col-sm-6">{{playerfulldetails.bonus.value}}</span>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-6">Locked Bonus</label>
+                <span class="col-sm-6">{{playerfulldetails.lockedBonus.value}}</span>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-6">Accumulate dBet</label>
+                <span class="col-sm-6">{{playerfulldetails.accumulatedBet.value}}</span>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-6">Required Bet</label>
+                <span class="col-sm-6">{{playerfulldetails.remainingBet.value}}</span>
+            </div>
+
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- **************************POPUP-END************************************ -->
+
+<!-- <div class="black_cover">
+    <div class="popup_1 pop_sm">
+        <span class="text-center">Hello </span>
+        <span class="close_2">X </span>
+        <div class="soon font_16">
+            Please Login
+            <br> <br>
+            <button class="btn_comSoon"> OK </button>
+        </div>
+    </div>
+</div> -->

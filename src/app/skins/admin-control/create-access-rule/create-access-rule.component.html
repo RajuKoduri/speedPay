@@ -1,0 +1,236 @@
+<div class="popup_4 pop_sm">
+    <div class=" PopupHead" *ngIf="!PlayerAccessData">  
+        <h5 class="text-center">Create Access Rule </h5>
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+        <form [formGroup]="AccessRuleForm">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-4"> Rule Name</label>
+                    <input class="col-sm-4" type=text formControlName="RuleName" />
+                </div>
+                <div class="df m_3" >
+                    <label class="col-sm-4"> User Type</label>
+                    <select class="col-sm-4" formControlName="UserType" (change)="onSelectedType($event)" >
+                        <option [ngValue]="type.guid" *ngFor="let type of usertypesList">{{type.value}}</option>
+                    </select>
+                </div>
+               
+                <div class="df m_3">
+                    <label class="col-sm-4"> Access Area</label>
+                    <select class="col-sm-4" formControlName="AccessArea" (change)="onSelectedRuleType($event)">  
+                        <!-- <option *ngFor="let Area of AccessAreas">{{Area.value}}</option> -->
+                        <option [ngValue]="Area.guid" *ngFor="let Area of AccessAreaFilteredList">{{Area.value}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        <!-- </form> -->
+
+        <div class="fd p_5">
+            <span class="p_b_5  p_5 ">Rule :</span>
+            <div class="fd">
+                <div class="fd p_r_20 border">
+                    <span class="p_b_5  p_5 extend-add-class"> 
+                        <button class="operation-list-class" (click)="changeSelectingLogicalOprtation()">{{selectedLogicalOperation}}</button>
+                         <!-- <b (click)="addItems()" title="{{Ruletitle}}">+</b> -->
+                         <!-- <i class="bi bi-plus-circle-fill"></i> -->
+                         <i (click)="addItems()" title="{{Ruletitle}}" class="bi bi-plus-circle-fill font-size-bot-icon"></i>
+                        </span>
+                        <div *ngIf="logicalOperationPopUp" class="black_cover" (click) ="removePopUp()"></div>
+                        <div *ngIf="logicalOperationPopUp" class="black_cover_inner">
+                        <div  class="dropdown-content-option" *ngIf = "logicalOperationPopUp">
+      
+                            <a (click) ="clickOnSelectOperation( 'And' )">And</a>
+                            <a (click) ="clickOnSelectOperation('Or')">Or</a>
+                            <a (click) ="clickOnSelectOperation('Not And')">Not And</a>
+                            <a (click) ="clickOnSelectOperation('Not Or')">Not Or</a>
+                            <a (click) ="clickOnSelectOperation('Add Condition')">Add Condition</a>
+                            <a (click) ="clickOnSelectOperation('Add Group')">Add Group</a>
+                            <a (click) ="clickOnSelectOperation('Clear All')">Clear All</a>
+                        </div>
+                    </div>
+                    <div class="fd textarea">
+                        <div *ngFor="let Rulelist of AccessRuleConditions,let i=index" class="Condition-class">
+                            <!-- <select [(ngModel)]="OnselectRuleslist" (input)="changeOnselectRuleslistOptions()"> -->
+                            <select [formControlName]="'OnselectRuleslist_'+Rulelist.id" (change)="changeOnselectRuleslistOptions(Rulelist.id,$event)" class="onselect-ruleslist">
+                                <option *ngFor="let ids of Rulelist.data" [ngValue]="ids.id" > {{ids.title}}</option>
+                            </select>
+
+                            <!-- <select formControlName="operationsToSelected" (change)="changeOperationstoSelectedOption(Rulelist.id,$event)"  class="onselect-ruleslist"> -->
+                            <select [formControlName]="'operationsToSelected12_'+Rulelist.id" (change)="changeOperationstoSelectedOption(Rulelist.id,$event)"  class="onselect-ruleslist">
+                                <!-- <ng-container *ngFor="let ids of Rulelist.data,let j=index"> -->
+                                <!-- <option *ngFor="let operationsIds of ids.operations,let k=index"> -->
+                                <option *ngFor="let operationsIds of OperationsList,let k=index"
+                                [ngValue]="operationsIds.id">
+                                    {{operationsIds.title}}
+                                </option>
+                                <!-- </ng-container> -->
+                            </select>
+                            
+                            <div [ngSwitch] = "userSelectDropdownUuid[Rulelist.id]?.['user']">
+
+                                <!-- <div *ngSwitchCase="'UserIp'"  class="onselect-country-option">
+                                    <input type="" formControlName = "userInputSelectOptionIpAdres" value = ""
+                                    placeholder="Enter IP Address"
+                                        (change)="onChangeinputField(Rulelist.id)" class="onselect-drop-down"/>
+                                    
+                                    
+
+                                </div> -->
+                                <div *ngSwitchCase="'UserInfoCountry'"  class="onselect-country-option">
+                                    <select class="onselect-drop-down"  [formControlName]="'lastinputvalue_'+Rulelist.id" (change)="onChangeinputField(Rulelist.id)">
+                                    <!-- <select class="onselect-drop-down" formControlName = "userInputSelectOption" (change)="onChangeinputField(Rulelist.id)"> -->
+                                        <option *ngFor ="let eachCountry of countrieslist" [ngValue] ="eachCountry.code"> {{eachCountry.title}}</option>
+                                    </select>
+                                    <button class="deletebtn" (click)="deleteRow(i)"><i class="fa fa-trash"></i></button>
+
+                                </div>
+                                <div *ngSwitchCase="'UserIpCountry'" class="onselect-country-option">
+                                    <select class="onselect-drop-down"  [formControlName]="'lastinputvalue_'+Rulelist.id" (change)="onChangeinputField(Rulelist.id)">
+                                    <!-- <select class="onselect-drop-down" formControlName = "userInputSelectOption" (change)="onChangeinputField(Rulelist.id)"> -->
+                                        <option *ngFor ="let eachCountry of countrieslist" [ngValue] ="eachCountry.code"> {{eachCountry.title}}</option>
+                                    </select>
+                                    <button class="deletebtn" (click)="deleteRow(i)"><i class="fa fa-trash"></i></button>
+
+                                </div>
+
+
+                                <div *ngSwitchCase ="'UserPersonalInfo_matches_black_list'" class="onselect-country-option"> 
+                                    <div class="checkbox-elemtnt">
+                                        <input type="checkbox" [formControlName]="'lastinputvalue_'+Rulelist.id" (change)="onChangeinputField(Rulelist.id)" class="onselect-drop-down"/>
+                                        <!-- <input type="checkbox" formControlName = "userInputSelectOption" value = "" (change)="onChangeinputField(Rulelist.id,'')" class="onselect-drop-down"/> -->
+                                    </div>
+                                   
+                                    <button class="deletebtn" (click)="deleteRow(i)"><i class="fa fa-trash"></i></button>
+
+                                </div>
+
+                                <div *ngSwitchCase ="'User_is_Trusted'" class="onselect-country-option"> 
+                                    <div class="checkbox-elemtnt">
+                                        <input type="checkbox" [formControlName]="'lastinputvalue_'+Rulelist.id"  (change)="onChangeinputField(Rulelist.id)" class="onselect-drop-down"/>
+                                        <!-- <input type="checkbox" formControlName = "userInputSelectOption" value = ""(change)="onChangeinputField(Rulelist.id,'')" class="onselect-drop-down"/> -->
+                                    </div>
+                                    
+                                    <button class="deletebtn" (click)="deleteRow(i)"><i class="fa fa-trash"></i></button>
+            
+                                </div>
+
+
+                                <div *ngSwitchDefault class="onselect-country-option"> 
+                                    <!-- <input type="text" value="{{Rulelist.value}}" placeholder="Enter a value" class="onselect-drop-down"/> -->
+                                    <!-- <input type="text" formControlName = "userInputSelectOption"  -->
+                                    <input type="text" [formControlName]="'lastinputvalue_'+Rulelist.id" 
+                                     (change)="onChangeinputField(Rulelist.id)" placeholder="Enter a value" class="onselect-drop-down" />
+                                    <button class="deletebtn" (click)="deleteRow(i)"><i class="fa fa-trash"></i></button>
+
+                                </div>
+
+                            </div>
+
+
+
+                    </div>
+
+                    
+
+                    <!-- <div *ngIf="AccessRuleConditions[0]?.children.length >= 1"> -->
+                        <!-- <app-create-access-rule-tree #treeComponent [childComponentsData] ="AccessRuleConditions[0].children"  -->
+                    <div *ngIf="childComponentsData.length >= 1">
+                        <app-create-access-rule-tree #treeComponent [childComponentsData] ="childComponentsData" 
+                        [accessRuleConditionList]="accessRuleConditionList" (eventEmitData)="childComponentsData=$event">
+                    </app-create-access-rule-tree>
+                    </div>
+
+
+
+                    </div>
+                </div>
+                <div class="fd">
+                    <span>
+                        <h6>Daniel Message</h6>
+                    </span>
+                </div>
+                <div class="p_r_20 border">
+                    <textarea class="fd " formControlName = "denialMessagesText"></textarea>
+                    <!-- <div class="fd textarea">
+                        <div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </form>
+    
+<!-- ************************SuccessPopUp && ErrorPopUp*********************************** -->
+<div class="black_cover" *ngIf="CreateSuccessPop">
+    <div class="popup_1 pop_sm" *ngIf="CreateSuccessPop">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <!-- <b class="p_5 text-success">Successfully Created </b> -->
+                <b class="p_5 text-success">{{FilltererrorMessageText}} </b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose && ErrorPopUp*********************************** -->
+
+
+
+<!-- ************************AlertPopUp*********************************** -->
+<div class="black_cover" *ngIf="ErrorPopup">
+    <div class="popup_1 pop_sm" *ngIf="ErrorPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <!-- <i class="p_5 text-danger">{{errorMessageText}}  Technical Error... </i> -->
+                <i class="p_5 text-danger">{{errorMessageText}}</i>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="TechnicalError()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************AlertPopUpClose*********************************** -->
+        
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onFormSubmit()"> Save </button>
+        </div>
+    </div>
+
+
+    <!-- <div *ngIf="logicalOperationPopUp" class="black_cover"></div> -->
+    
+
+
+        <!-- <button *ngIf="List.player.status == 'Active'" (click)="setPlayerActions(List.player.status,i)">Lock</button>
+        <button *ngIf="List.player.status == 'Locked'" (click)="setPlayerActions(List.player.status,i)">Unlock</button>
+        <button *ngIf="List.trust==false" (click)="setPlayerActions('MarkasTrusted',i)">Mark as
+            Trusted</button>
+        <button *ngIf="List.trust==true" (click)="setPlayerActions('Distrust',i)">Distrust</button>
+        <button (click)="setPlayerActions('ChangePmGroup',i)">Change permission
+            Group</button>
+        <button (click)="setPlayerActions('AssinCPLevel',i)">Change CP Level
+            Group</button>
+        <button *ngIf="List.declineDeposits==false" (click)="setPlayerActions('DeclineDepositsOn',i)">Decline Deposits
+            on</button>
+        <button *ngIf="List.declineDeposits==true" (click)="setPlayerActions('DeclineDepositsOff',i)">Decline Deposits
+            off
+        </button>
+        <button *ngIf="List.chatAllowed==false" (click)="setPlayerActions('AllowChat',i)">Allow Chat</button>
+        <button *ngIf="List.chatAllowed==true" (click)="setPlayerActions('DisallowChat',i)">Disallow Chat</button>
+        <button (click)="setPlayerActions('Reactivation',i)">Reactivation</button>
+        <button (click)="setPlayerActions('SetAlias',i)">Set Alias</button> -->
+    
+</div>

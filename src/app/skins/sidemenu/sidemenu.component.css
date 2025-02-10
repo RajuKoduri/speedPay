@@ -1,0 +1,131 @@
+ul.menuSide li div {
+    color: #fff;
+}
+
+ul.menuSide li div:hover {
+    background: #000;
+    color: #cae804;
+}
+
+ul.menuSide li {
+    cursor: pointer;
+}
+
+ul.menuSide li div ul {
+    all: unset;
+    width: 100%;
+    float: left;
+    padding-left: 10px;
+    box-sizing: border-box;
+    background: #272833;
+}
+
+ul.menuSide li div ul li {
+    padding: 10px;
+    width: 100%;
+    float: left;
+    list-style: none;
+    color: #8d8fa1;
+    
+}
+
+ul.menuSide li div ul li:hover {
+    color: #cae804;
+}
+
+.popupcont {
+    position: fixed;
+    width: 200px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f08;
+    right: 0;
+    z-index: 99999999999999999;
+    top: 75px;
+}
+/* ul.menuSide li .fd #rightMouse_list{
+    display: none;
+    background-color: #fff;
+    color: rgb(165, 35, 35);
+} */
+.fd #rightMouse_list {
+    display: none;
+    background-color: #fff;
+    color: rgb(10 10 10);
+    /* position: absolute; */
+    z-index: 9999;
+    left: 80px;
+    font-weight: 600;
+    box-shadow: 0px 0px 9px 1px #000;
+    width: 13%;
+    /* margin-left: 43px; */
+    position: fixed;
+    border-radius: 5px;
+    padding: 12px;
+}
+.popup_1 .pop_sm.PopupHead{
+    color: #000;
+}
+.sidebtns a.active{
+    background-color: #cae804;
+}
+.sidebtns a:active{
+    background-color: #ad5e30;
+}
+.active{
+    background: #a7c006;
+    color: #000 !important;
+  }
+  .font_ss{
+    /* margin-left: 10%; */
+    display: flex;
+    flex-direction: row;
+    align-self: flex-end ;
+    font-size: 20px;
+  }
+  .icon_i{
+    display: flex;
+    justify-content: space-between;
+  }
+  .active_link_1{
+    background: #a7c006;
+    color: #000 !important;
+  }
+  .back_color:hover{
+    background: #a7c006 !important;
+    color: #000 !important;
+   }
+
+   .popup1 button{
+ 
+    position: relative;
+    left: 200px;
+    top: 80px;
+    transform: translate3d(0, -50%, 0);
+    background: white;
+    color: #000;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19) !important;
+    z-index: 990;
+    display: grid;
+    width: 250px;
+    margin: 0px;
+    border: none;
+    padding: 7px 10px;
+    border-bottom: 1px solid #b0adad;
+  }
+  
+  .popup1 button:hover {
+    background: #dd6c0c;
+    color: #fff;
+  }
+  
+  /* button[disabled]{
+    border: none;
+    background: #cccccc;
+    color: #666666;
+    cursor: default
+  } */
+
+  

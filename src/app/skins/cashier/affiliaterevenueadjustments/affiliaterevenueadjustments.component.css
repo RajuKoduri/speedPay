@@ -1,0 +1,53 @@
+.color{
+    /* background-color: #63c5ea; */
+    background-color: #ace4f9;
+}
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+input {
+    padding: 5px;
+    /* width: 200px; */
+    margin: 2px;
+}
+
+label {
+    padding-right: 20px;
+    width: 130px;
+}
+.df {
+    display: flex;
+}
+
+.reglabel {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.text-centers {
+    display: flex;
+    /* justify-content: space-around; */
+    margin: 5px;
+}
+.table_2 {
+    overflow-y: auto;
+    display: block;
+    height: 400px;
+    /* background: #e8eeef; */
+    background-color: #eee;
+}
+
+.table_1 thead th {
+    position: sticky;
+    top: 0;
+}
+.table_1 thead th {
+    position: sticky;
+    top: 0;
+    padding: 1px 81.5px;
+}

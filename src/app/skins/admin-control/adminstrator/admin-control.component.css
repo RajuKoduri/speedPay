@@ -1,0 +1,104 @@
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.popup_1 input:focus,
+.popup_1 select:focus {
+  outline: none;
+}
+
+.popup_1 input,
+.popup_1 select {
+  border: solid 1px #ddd;
+  padding: 2px;
+}
+
+.soon .col-sm-6 label {
+  padding: 2px;
+  margin: 2px;
+}
+
+.soon .col-sm-6 select,
+.soon .col-sm-6 input {
+  margin: 2px;
+}
+
+
+
+
+
+.trigger {
+  margin: auto;
+  position: relative;
+  text-align: center;
+  border: none;
+  padding: 5px 8px;
+  background: #4aab4e;
+  border-radius: 50px;
+  color: #fff;
+  width: 30px;
+  cursor: pointer;
+}
+
+.popup1 {
+  position: absolute;
+  left: -132px;
+  top: 10px;
+  transform: translate3d(0, -50%, 0);
+  background: none;
+  color: #000;
+  max-width: 256px;
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19) !important;
+  z-index: 1;
+}
+
+
+.popup1.btnGrp button:hover {
+  background: #dd6c0c;
+  color: #fff;
+}
+
+.popup1.btnGrp button {
+  margin: 0px;
+  border: none;
+  padding: 7px 10px;
+  border-bottom: 1px solid #b0adad;
+} 
+
+.popup1.btnGrp {
+  display: grid;
+}
+button[disabled] {
+  /* border: 1px solid #999999; */
+  border: none;
+  background: #cccccc;
+  color: #666666;
+  cursor:no-drop
+}
+button[disabled]:hover {
+  background:  #cccccc !important;
+  color: #666666 !important;
+}
+.spinnerTrue {
+  position: fixed;
+  z-index: 999;
+  left: 50%;
+  right: 0;
+  top: 50%;
+  margin: auto;
+}
+
+
+.black_cover1 {
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  /* background: rgba(250, 250, 250, 0.8); */
+}

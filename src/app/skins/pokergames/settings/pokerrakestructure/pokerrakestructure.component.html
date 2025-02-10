@@ -1,0 +1,179 @@
+<div>
+    <h2>Rake Structures</h2>
+</div>
+<div>
+    <button class="fillterbtn font_16" (click)="filterbtn()">Filters
+        <i *ngIf="!filterdata" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="filterdata" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="margin-right:15px; float: right;" (click)="exportCsv()"> Export Csv</button>
+    <button class="fillterbtn m_l_5" style="margin-right:6px; float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+        <button class="fillterbtn Addbutton"  style="margin-right:2px; float: right;" routerLink="/CreatePokerRakeStructure" title="Add RakeStructure">
+            <!-- <img class="Addicon" src="../../../../assets/icons/Pluse.png"/> -->
+            Add Rake
+        </button>
+</div>
+
+<!-- <div>
+    <h2></h2>
+</div>
+<div class="fd">
+    <button class="fillterbtn font-size-16" (click)="filterbtn()">Filters
+        <i *ngIf="!filterdata" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="filterdata" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+</div> -->
+
+<div class="fd">
+    <div class="fd filterDiv" *ngIf="filterdata">
+        <form [formGroup]="filterForm" (ngSubmit)="onFormSubmit()">
+            <div class="p_25">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="div_flex p_5_10">
+                            <label>Name</label>
+                            <input type="text" formControlName="name" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="div_flex p_5_10">
+                            <label>Status</label>
+                            <select class="seclectopt" formControlName="status">
+                                <option [ngValue]="list.guid" *ngFor="let list of EnabledDisabledAllList">
+                                    {{list.value}}</option>
+                            </select>
+
+                            <!-- <div class="seclectopt">
+                                <ng-multiselect-dropdown [settings]="dropdownSettingsStatus" [data]="EnabledDisabledAllList"
+                                    [(ngModel)]="selectedItemsStatus" (onSelect)="onItemSelect($event)"
+                                    (onDeSelect)="OnItemDeSelectStatus($event)" (onSelectAll)="onSelectAllStatus($event)"
+                                    (onDeSelectAll)="onDeSelectAllStatus($event)" formControlName="status">
+                                </ng-multiselect-dropdown>
+                            </div>  -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- <button (click)="onFormSubmit()">Submit</button> -->
+    </div>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="margin-right:15px; float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <div style="margin-right:20px;" *ngIf="objList">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd table_2">
+    <table class="tablCode" id="excel-table">
+        <!-- <table class="table_1 table_2" id="excel-table"> -->
+        <thead>
+            <tr class="tablCoderow">
+                <th>Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <div *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <tbody *ngIf="objList">
+            <tr *ngFor="let object of objList;let i=index">
+                <td (click)="showRakeTable(object.rakes, object.ranges)">{{object.name}}</td>
+                <td (click)="showRakeTable(object.rakes,object.ranges)">{{object.activIna}}</td>
+                <td>
+                    <div class="fd">
+                    <div class="trigger">
+                        <a><i class="fa fa-reorder" style="color: #fff;" (click)="showpopactions(object,object.rakes, object.ranges,i)" ></i>
+                    </a>
+                    <div *ngIf="actionoptons" class="fd">
+                        <div *ngIf="selectinmdex == i" class="popup1 btnGrp">
+                            <button (click)="showRakeTable(object.rakes,object.ranges)">view</button>
+                            <button (click)="editedrakestructure(object)">Edit</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- <div class="popupCover" *ngIf="showRake"></div> -->
+<div class="black_cover" *ngIf="showRake"></div>
+<div class="popup_1" *ngIf="showRake">
+    <div class="fd">
+        <p class="blindpara ">Rake  Structure </p>
+        <table class="tablCode Blindtable">
+            <tr class="tablCoderow">
+                <th></th>
+                <th>Rake</th>
+                <th>Per Pot</th>
+                <th>Max Rake</th>
+            </tr>
+            <tr *ngFor="let list of assignobj">
+                <td> {{list.from}} - {{list.to}} </td>
+                <td>{{list.rake}}</td>
+                <td>{{list.perPot}}</td>
+                <td>{{list.maxRake}}</td>
+            </tr>
+        </table>
+
+        <!-- <div class="closeevnte"> -->
+        <div class="bottomFix">
+            <button class="closeBTN" (click)="rakestrupopup()">close</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- pop start************************************************************************************************ -->
+<div class="black_cover" *ngIf="RakestrutureDatapop">
+    <div class="popup_1 pop_sm" *ngIf="RakestrutureDatapop">
+        <div class="PopupHead">
+            <h5 class="text-center"> Edit Rake Structure: {{RakestrutureData.name}} </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="../../../../assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <app-create-poker-rake-structure [RakestrutureData] ="RakestrutureData"></app-create-poker-rake-structure>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="numofplayers()"> number of players </button>
+            <button class="btn_grade_1" (click)="updatedrake()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+        
+    </div>
+</div>
+<!-- pop end************************************************************************************************ -->
+
+<div class="fd" *ngIf="objList">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || objList==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||objList==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="objList">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="objList==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="objList==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+  </div>
+
+

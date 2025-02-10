@@ -1,0 +1,70 @@
+<div>
+    <h3>Bonus Adjustment</h3>
+</div>
+<div class="popup_4 pop_sm fd">
+
+    <div class=" PopupHead1">
+        <h5 class="text-center"> Bonus Adjustment :</h5>
+        <!-- <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span> -->
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+        <div class="fd p_5 ">
+            <div class="df m_3">
+                <label class="col-6">Player </label>
+                <span>{{PlayerName}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-6">Date </label>
+                <span class="col-6">{{currentGMTTime}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-6">Wallet </label>
+                <span class="col-6">
+                    <select class="seclectopt " [(ngModel)]="selectedCurrency">
+                        <option [ngValue]="list.guid" *ngFor="let list of WalletList">{{list.description}}</option>
+                    </select>
+                </span>
+            </div>
+            <div class="df m_3">
+                <label class="col-6">Avaliable Bonus Balance </label>
+                <span class="col-6" *ngIf="PlayerBalnce">{{PlayerBalnce[0].bonus.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-6">Amount </label>
+                <span class="col-6">
+                    <input  class="w-100" [(ngModel)]="Amount" type="number" (change)="errorcheck()" />
+                </span>
+            </div>
+            <div>
+                <span class="text-center text-danger" *ngIf="submitted">
+                    You Can't Withdraw more than blance={{PlayerBalnce[0].bonus.value}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="bottomFix">
+        <button class="btn_grade_1" (click)="onFormSubmit()" [disabled]="Amount==0 ||Amount==undefined ||submitted">
+            Save
+        </button>
+    </div>
+</div>
+
+
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="BonussuccessPopUp">
+    <div class="popup_1 pop_sm" *ngIf="BonussuccessPopUp">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <b class="p_5 text-success">Bonus Successfully added </b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->

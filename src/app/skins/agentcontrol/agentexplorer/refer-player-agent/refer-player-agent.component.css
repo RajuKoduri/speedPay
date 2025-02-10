@@ -1,0 +1,16 @@
+button[disabled]{
+    border: none;
+    background: #cccccc;
+    color: #666666;
+    cursor: default
+  }
+  select, input{
+    border: 1px solid #ddd;
+    outline: none;
+  }
+  button[class*="btn_grade"] {
+    padding:8px 20px !important;
+  }
+  table input[type="number"] {
+  width: 100px !important;
+  }

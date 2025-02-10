@@ -1,0 +1,1220 @@
+<div class="container">
+    <div *ngIf="!createTournamentPopup&&EditPokerTourneyData==null" class=" PopupHead">
+        <h5 class="text-center"> Create Poker Tournament </h5>
+    </div>
+    <!-- <div *ngIf="createTournamentPopup" class=" PopupHead">
+        <h5 class="text-center"> Create Poker Satellite Tournament </h5>
+        <span class="closetop" (click)="cancelSatellitePopup()"> <img
+            src="assets/icons/closePop.svg">
+    </span>
+    </div> -->
+    <div class="p_5">
+        <!-- <button class="btn btn-success">General</button>
+        <button class="btn btn-success">Advanced</button>
+        <button class="btn btn-success">Schedule</button> -->
+
+        <button class="json_button" [ngClass]="{'activeTab' : tabName == 'First' }" (click)="getTab('First',0)">
+            General</button>
+        <button class="json_button" [ngClass]="{'activeTab' : tabName == 'Second' }"
+            (click)="getTab('Second',1)">Advanced</button>
+        <button class="json_button" [ngClass]="{'activeTab' : tabName == 'Third' }"
+            (click)="getTab('Third',2)">Schedule</button>
+    </div>
+
+
+    <div [formGroup]="CreatePokerTouranamentForm">
+        <section class="container selectTag fd " *ngIf="tabName == 'First'">
+            <div class="fd row margin-bottom">
+                <!-- <div class="fd row" style="height: 80vh; border: 2px solid sandybrown;"> -->
+                <div class="col-12 col-xl-6 ">
+                    <div class="fd SettingsTab">
+                        <div class="headTitle">General Settings</div>
+                        <div class="fd  p_5">
+                            <div>
+                                <label class="col-sm-4 ">Name</label>
+                                <input class="col-sm-6 " type=" text" formControlName="Name" />
+                            </div>
+                            <div class="labelalign">
+                                <label class="col-sm-4">Description</label>
+                                <textarea class="col-sm-6" formControlName="Description"></textarea>
+                            </div>
+                            <div>
+                                <label class="col-sm-4">Password</label>
+                                <input class="col-sm-6 " type="text" formControlName="Password" maxlength="11" />
+                            </div>
+                            <div>
+                                <label class="col-sm-4">Game Type</label>
+                                <!-- <input class="col-sm-6" type="text" formControlName="GameType" /> -->
+                                <select class="col-sm-6" formControlName="GameType" [(ngModel)]="defaultSelectedOption">
+                                    <option [ngValue]="gamenames" *ngFor="let gamenames of Onlygamescaption">
+                                        {{gamenames}}</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="col-sm-4">Seats</label>
+                                <input class="col-sm-6" oninput="this.value = Math.abs(this.value)" type="number"
+                                    formControlName="Seats" appMaximimNumbersLengthValidation [digitCount]=2 />
+                            </div>
+                            <div>
+                                <label class="col-sm-4">Min Players:</label>
+                                <input class="col-sm-6" oninput="this.value = Math.abs(this.value)" type="number"
+                                    formControlName="MinPlayers" appMaximimNumbersLengthValidation [digitCount]=5 />
+                            </div>
+                            <div>
+                                <label class="col-sm-4">Max Players:</label>
+                                <input class="col-sm-6" oninput="this.value = Math.abs(this.value)" type="number"
+                                    formControlName="MaxPlayers" appMaximimNumbersLengthValidation [digitCount]=5 />
+                            </div>
+                            <div>
+                                <label class="col-sm-4">Chips per Player:</label>
+                                <input class="col-sm-6" oninput="this.value = Math.abs(this.value)" type="number"
+                                    formControlName="ChipsperPlayer" appMaximimNumbersLengthValidation [digitCount]=9 />
+                            </div>
+                            <!-- <div><button class="view_button" (click)="onFormSubmit()">Submit</button></div> -->
+                        </div>
+                    </div>
+                    <div class="fd SettingsTab">
+                        <div class="headTitle">accessibility Settings</div>
+                        <div class="p_5">
+                            <div>
+                                <label class="col-sm-4">Chat accessibility</label>
+                                <select class="col-sm-6" [(ngModel)]="ChatAccessvalue"
+                                    formControlName="ChatAccesability">
+                                    <option *ngFor="let ChatAccessList of ChatAccessibilityList"
+                                        [ngValue]="ChatAccessList.guid">
+                                        {{ChatAccessList.value}}</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="col-sm-4">Access Rule Name</label>
+                                <select class="col-sm-6" [(ngModel)]="UserAccessValue" formControlName="AccessRuleName">
+                                    <option *ngFor="let list of UserAccessRulesResData" [ngValue]="list.guid">
+                                        {{list.name}}</option>
+                                </select>
+                            </div>
+                            <div>
+                                <input type="checkbox" formControlName="EnableNow" class="m_3" />
+                                <label>Enable Now</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Just For Testing Purpose Only -->
+                    <!-- <div class="fd text-center">
+                        <button class="btn_grade_1" (click)="onFormSubmit()"> Save </button>
+                    </div> -->
+                    <!-- Just For Testing Purpose Only -->
+                </div>
+                <div class="col-12 col-xl-6">
+                    <div class="fd SettingsTab">
+                        <div class="headTitle">prizes Settings</div>
+                        <div class="fd p_5">
+                            <div>
+                                <label class="col-sm-4">Currency:</label>
+                                <select id="currency-element" class="col-sm-6 text_left" type="text"
+                                    [(ngModel)]="selectedCurrency" formControlName="Currency"
+                                    (change)="onSelected($event)">
+                                    <option [ngValue]="Currency.guid" *ngFor="let Currency of currencyList ">
+                                        {{Currency.description}}</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="col-sm-4">Guaranteed Prize</label>
+                                <input class="col-sm-6 text_left" type="number" formControlName="GuaranteedPrize"
+                                    appMaxLengthValidation [maxNumber]=9>
+                                <span>{{chip}}</span>
+                            </div>
+                            <div>
+                                <input class="" type="checkbox" formControlName="ManualPoolPrize">
+                                <label style="text-indent: 5px;">Manual Pool Prize</label>
+                            </div>
+
+                            <div class="fluid-container">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <input type="checkbox" formControlName="EqualPrize"
+                                            (change)="changeCheckBoxsUserActions('Equal')">
+                                        <label for="">Equal Prize</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="checkbox" formControlName="StackBased"
+                                            (change)="changeCheckBoxsUserActions('Stack')">
+                                        <label for="">Stack Based</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="checkbox" formControlName="ICM"
+                                            (change)="changeCheckBoxsUserActions('ICM')">
+                                        <label for="">ICM</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                            <div>
+                                <label class="col-sm-4">Payout Table:</label>
+                                <ng-container
+                                    *ngIf="!this.createTournamentPopup&&!this.EditPokerTourneyData?.satelliteEdit">
+                                    <select class="col-sm-6" [(ngModel)]="pokerPayoutValue"
+                                        formControlName="PayoutTable" (change)="ViewPayoutTable($event)">
+                                        <option [ngValue]="Payoutlist.guid"
+                                            *ngFor="let Payoutlist of OnlyFloatPayoutTables">(Float) {{Payoutlist.name}}
+                                        </option>
+                                    </select>
+                                    <!-- <button [disabled]="PayoutButton"   class="view_button" (click)="clickToViewPayoutTable()">View</button> -->
+                                </ng-container>
+                                <ng-container
+                                    *ngIf="this.createTournamentPopup || this.EditPokerTourneyData?.satelliteEdit">
+                                    <select class="col-sm-6" [(ngModel)]="pokerPayoutValue"
+                                        formControlName="PayoutTable" (change)="ViewPayoutTable($event)">
+                                        <option [ngValue]="Payoutlist.guid"
+                                            *ngFor="let Payoutlist of pokerPayoutStructureRes">
+                                            ({{Payoutlist?.structureType}}) {{Payoutlist.name}}
+                                        </option>
+                                    </select>
+                                </ng-container>
+                                <button [disabled]="PayoutButton" class="view_button"
+                                    (click)="clickToViewPayoutTable()">View</button>
+                            </div>
+
+                            <!-- <div >
+                                <label class="col-sm-4">Payout Table:</label>
+
+                                <select class="col-sm-6" [(ngModel)]="pokerPayoutValue" formControlName="PayoutTable"
+                                    (change)="ViewPayoutTable($event)">
+                                    <option [ngValue]="Payoutlist.guid"
+                                        *ngFor="let Payoutlist of pokerPayoutStructureRes">({{Payoutlist?.structureType}}) {{Payoutlist.name}}
+                                    </option>
+                                </select>
+
+                                <button [disabled]="PayoutButton"   class="view_button" (click)="clickToViewPayoutTable()">View</button>
+                            </div> -->
+
+
+                            <!--*********************************************************  ViewPayoutTable POPUP *********************************************************-->
+
+
+                            <div *ngIf="viewPayOutTablePopup" class="black_cover"></div>
+                            <div *ngIf="viewPayOutTablePopup" class="popup_view">
+                                <div class="PopupHeads">
+                                    <h5 class="text-center">View Payout Table: {{selectedViewItem?.name}} </h5>
+                                    <span class="closetop" (click)="ViewPayoutTableclosepopup()"> <img
+                                            src="assets/icons/closePop.svg">
+                                    </span>
+                                </div>
+
+
+                                <div class="p_5" *ngIf="selectedViewItem?.structureType=='Float'">
+                                    <table class="tablCode Blindtable p_lr_15">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <ng-container
+                                                    *ngFor="let i=index;let range of selectedViewItem.playersCountIndices">
+                                                    <th>{{range.from}}
+                                                        <span
+                                                            *ngIf="i < (selectedViewItem.playersCountIndices?.length-1)">
+                                                            - {{range.to}}</span>
+                                                        <span
+                                                            *ngIf="i  ==(selectedViewItem.playersCountIndices?.length-1)">and
+                                                            more</span>
+                                                    </th>
+                                                </ng-container>
+                                            </tr>
+
+                                        </thead>
+
+                                        <tbody>
+                                            <tr *ngFor="let list of selectedViewItem.placesIndices;let j=index">
+                                                <td> {{list.from}}-{{list.to}} </td>
+                                                <td
+                                                    *ngFor="let i=index;let range of  selectedViewItem.playersCountIndices">
+                                                    <!-- {{listOne[i]}}
+                                                    {{percents[i].percents[j]}} -->
+                                                    {{selectedViewItem.percents[i].percents[j] ||0}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                                <div class="p_5" *ngIf="selectedViewItem?.structureType=='Fixed'">
+                                    <table class="tablCode Blindtable">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Prize</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let ticket of  selectedViewItem?.ticketTypes;let i=index">
+                                                <td>{{i+1}}</td>
+                                                <td>{{selectedViewItem?.ticketTypes?.[i]}}</td>
+
+                                                <!-- <ng-container *ngFor="let ticketType of Fixed.ticketTypes;j=index">
+                                                    <td>{{j+1}}</td>
+                                                    <td>{{ticketType[j]}}</td>
+                                                </ng-container> -->
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="bottomFixs">
+                                    <button class="closeBTN" (click)="ViewPayoutTableclosepopup()">close</button>
+                                </div>
+                            </div>
+                            <!--*********************************************************  ViewPayoutTable POPUP END *********************************************************-->
+
+                            <div>
+                                <input class="Knockoutlabel" type="checkbox" formControlName="NotifyPlayers"
+                                    (change)="checkBoxChangestus($event)" />
+                                <label style="text-indent: 20px;" class="col-sm-4">Notify Players</label>
+                                <!-- <input  />Places -->
+                                <select class="col-sm-4" [(ngModel)]="ResultNotificationValue"
+                                    formControlName="NotifyPlayersType" (change)="Rebuy($event, 'NotifyPlayers')"
+                                    [disabled]="!CreatePokerTouranamentForm.get('NotifyPlayers')?.value">
+                                    <option [ngValue]="list.guid" *ngFor="let list of ResultNotificationTypeList">
+                                        {{list.value}} </option>
+                                </select>
+                                <span [class.my_class]="checkedStatus == false">
+                                    <input type=text formControlName="NotifyPlayersPlaces" style="width: 30px;"
+                                        [hidden]="placesVarible == false"
+                                        [disabled]="CreatePokerTouranamentForm.get('NotifyPlayers')?.value" />places</span>
+                                <!-- <span [ngClass]="{'DisableDiv' : Rebuycheck === false }"><input type=text
+                                        formControlName="NotifyPlayersPlaces" style="width: 30px;" />places</span> -->
+                            </div>
+                            <div>
+                                <label class="col-sm-4" [class.my_class]="checkedStatus == false">using</label>
+                                <!-- <input class="col-sm-6" type="text" formControlName="usingtemplate" />template -->
+                                <select class="col-sm-6" [(ngModel)]="getMailTemplateValue"
+                                    formControlName="usingtemplate"
+                                    [disabled]="!CreatePokerTouranamentForm.get('NotifyPlayers')?.value">
+                                    <option *ngFor="let template of getMailTemplatesResData">{{template.name}}</option>
+                                </select><span [class.my_class]="checkedStatus == false"> template</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fd SettingsTab">
+                        <div class="headTitle">Buy In Settings</div>
+                        <div class="p_5">
+                            <!-- <div class="df">
+                                <div class="col-4">
+                                    <input type="checkbox" formControlName="Freeroll"
+                                        (change)="BuyInSettings($event)" />Freeroll
+                                </div>
+                                <div class="col-4">
+                                    <input type="checkbox" formControlName="Chips"
+                                        (change)="unchekFreeroll($event)" />Chips
+                                </div>
+                                <div class="col-4">
+                                    <input type="checkbox" formControlName="CompPoints"
+                                        (change)="unchekFreeroll($event)" />Comp Points
+                                </div>
+                            </div>
+                            <div class="df">
+                                <div class="col-4">
+                                    <input type="checkbox" formControlName="brandedTournament" />brandedTournament
+                                </div>
+                                <div class="col-4">
+                                    <input type="checkbox" formControlName="TournamentMoney"
+                                        (change)="unchekFreeroll($event)" />Tournament Money
+                                </div>
+                                <div class="col-4">
+                                    <input type="checkbox" formControlName="Tickets"
+                                        (change)="unchekFreeroll($event)" />Tickets
+                                </div>
+                            </div> -->
+
+
+
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-xl-4">
+                                        <input type="checkbox" formControlName="Freeroll"
+                                            (change)="BuyInSettings($event)" />Freeroll
+                                    </div>
+                                    <div class="col-12 col-md-6 col-xl-4">
+                                        <input type="checkbox" formControlName="Chips"
+                                            (change)="unchekFreeroll($event)" />
+
+                                        <!-- Chips -->
+                                        {{chip}}
+                                    </div>
+                                    <div *ngIf="!currencyPlaymoney" class="col-12 col-md-6 col-xl-4">
+                                        <input type="checkbox" formControlName="CompPoints"
+                                            (change)="unchekFreeroll($event)" />Comp Points
+                                    </div>
+
+
+                                    <div class="col-12 col-md-6 col-xl-4">
+                                        <input type="checkbox" formControlName="brandedTournament" />branded Tournament
+                                    </div>
+                                    <div *ngIf="!currencyPlaymoney" class="col-12 col-md-6 col-xl-4">
+                                        <input type="checkbox" formControlName="TournamentMoney"
+                                            (change)="unchekFreeroll($event)" />Tournament Money
+                                    </div>
+                                    <div *ngIf="!currencyPlaymoney" class="col-12 col-md-6 col-xl-4"
+                                        [class.my_class]="createTournamentPopup == true || EditPokerTourneyData != null">
+                                        <input type="checkbox" formControlName="Tickets"
+                                            (change)="unchekFreeroll($event)"  />Tickets
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div>
+                                <label class="col-sm-4" [class.my_class]="brandedURl == false">Branded URl</label>
+                                <input class="col-sm-6" type="text" formControlName="BrandedURl"
+                                    [disabled]="!CreatePokerTouranamentForm.get('BrandedURl')?.value" />
+                                <span [class.my_class]="brandedURl == false">{{chip}}</span>
+                            </div>
+                            <div>
+                                <label class="col-sm-4"
+                                    [class.my_class]="freeRollCheckBoxStatus == true">Buy-In:</label>
+                                <input class="col-sm-6 text_left" type="number" formControlName="BuyIn"
+                                    (change)="totalCost($event,'buyin')" min="0" appMaxLengthValidation [maxNumber]=9
+                                    [disabled]="!CreatePokerTouranamentForm.get('Freeroll')?.value" />
+                                <span>{{chip}}</span>
+                            </div>
+                            <div>
+                                <label class="col-sm-4" [class.my_class]="freeRollCheckBoxStatus == true">Fee:</label>
+                                <input class="col-sm-6 text_left" type="number" formControlName="Fee"
+                                    (change)="totalCost($event,'Fee')" min="0" appMaxLengthValidation [maxNumber]=9
+                                    [disabled]="!CreatePokerTouranamentForm.get('Freeroll')?.value" />
+                                <span>{{chip}}</span>
+                            </div>
+                            <div>
+                                <label class="col-sm-4" [class.my_class]="freeRollCheckBoxStatus == true">Marketing
+                                    Fee:</label>
+                                <input class="col-sm-6 text_left" type="number" formControlName="MarketingFee"
+                                    (change)="totalCost($event,'Fee')" min="0" appMaxLengthValidation [maxNumber]=9
+                                    [disabled]="!CreatePokerTouranamentForm.get('Freeroll')?.value" />
+                                <span>{{chip}}</span>
+                            </div>
+                            <div class="df">
+                                <input class="Knockoutlabel" type="checkbox" formControlName="KnockoutBountyCheck"
+                                    (change)="KnockoutBounty($event)"
+                                    [disabled]="!CreatePokerTouranamentForm.get('Freeroll')?.value" />
+                                <label style="text-indent: 20px;" type="checkbox" class="col-sm-4"
+                                    [class.my_class]="freeRollCheckBoxStatus == true">Knockout Bounty</label>
+                                <input class="col-sm-6 text_left" type="number" formControlName="KnockoutBounty"
+                                    (change)="totalCost($event,'KnockoutBounty')" min="0"
+                                    [disabled]="!CreatePokerTouranamentForm.get('Freeroll')?.value || !CreatePokerTouranamentForm.get('KnockoutBountyCheck')?.value"
+                                    appMaxLengthValidation [maxNumber]=9 />
+                                <span
+                                    [class.my_class]="freeRollCheckBoxStatus == true || freeRollCheckBoxStatus2 == false">{{chip}}</span>
+                            </div>
+
+                            <div class="df" style="align-items: center;">
+                                <input class="Knockoutlabel" type="checkbox" formControlName="ProgressiveKnockoutCheck"
+                                    [disabled]="!CreatePokerTouranamentForm.get('Freeroll')?.value" />
+                                <label style="text-indent: 20px;" class="col-sm-8"
+                                    [class.my_class]="freeRollCheckBoxStatus == true">Progressive Knockout</label>
+
+                            </div>
+
+
+
+                            <div>
+                                <label class="col-sm-4">Total Cost</label>
+                                <!-- <input class="col-sm-6" type="text" formControlName="totalCost" /> -->
+                                <!-- {{CreatePokerTouranamentForm.value.BuyIn }}+{{CreatePokerTouranamentForm.value.Fee}}+{{CreatePokerTouranamentForm.value.KnockoutBounty}} -->
+
+                                <b class="col-sm-6"> {{totalCostValue}}</b>
+                                <span>{{" "}}{{chip}}</span>
+                            </div>
+
+                            <div class="df" style="align-items: center;">
+                                <label class="col-sm-6" [class.my_class]="freeRollCheckBoxStatus == true">Knockout
+                                    Percentage</label>
+                                <input style="text-indent: 50px;" class="col-sm-4 text_left" type="text"
+                                    formControlName="KnockoutPercentage"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) >=1 ? Math.abs(this.value):0"
+                                    maxlength="3" />
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class=" container fd selectTag " *ngIf="tabName == 'Second'">
+            <div class="fd row margin-bottom">
+                <div class="col-12 col-xl-6 ">
+                    <div class="fd SettingsTab">
+                        <div class="headTitle"> Level Settings</div>
+                        <div class="fd p_5">
+                            <div>
+                                <label class="col-sm-4">Level Length, min:</label>
+                                <input class="col-sm-6" type="text" formControlName="LevelLengthmin"
+                                    oninput="this.value = !!this.value && Math.abs(this.value)>=1&&Math.abs(this.value)<100 ? Math.abs(thiss.value):''" />
+                            </div>
+                            <div>
+                                <label class="col-sm-4">Levels before Addon Break:</label>
+                                <input class="col-sm-6" type="text" formControlName="LevelsbeforeBreak"
+                                    oninput="this.value = !!this.value && Math.abs(this.value)>=1&&Math.abs(this.value)<100 ? Math.abs(thiss.value):''" />
+                            </div>
+                            <div>
+                                <label class="col-sm-4">Levels Length After Addon Break, Min:</label>
+                                <input class="col-sm-6" type="number" formControlName="LevelsLengthAfterAddonBreak"
+                                    oninput="this.value = !!this.value && Math.abs(this.value)>=1&&Math.abs(this.value)<100 ? Math.abs(thiss.value):''" />
+                            </div>
+                            <div>
+                                <label class="col-sm-4">Break Length, Min:</label>
+                                <input class="col-sm-3" type="text" formControlName="BreakLengthMin"
+                                    oninput="this.value = !!this.value && Math.abs(this.value)>=1&&Math.abs(this.value)<100 ? Math.abs(thiss.value):''" />
+                                <select class="col-sm-3" [(ngModel)]="BreakLengthMinTypeDefaultOption"
+                                    formControlName="BreakLengthMinType">
+                                    <option *ngFor="let list of selectedTimeBreak" [ngValue]="list.value">{{list.value}}
+                                    </option>
+                                </select>
+
+                            </div>
+                            <div>
+                                <label class="col-sm-4"> Blind Structure:</label>
+                                <select class="col-sm-6" formControlName="BlindStructure"
+                                    [(ngModel)]="defaultBlindStuctureOption">
+                                    <option [ngValue]="BlindStructure.guid"
+                                        *ngFor="let BlindStructure of pokerBlindStructureResData, let i=index">
+                                        <!-- {{i+1}} {{BlindStructure.name}}</option> -->
+                                        {{BlindStructure.name}}
+                                    </option>
+                                </select>
+                                <button [disabled]="BlindStructurButton" class="view_button"
+                                    (click)="showpopupBlindStructure()">View</button>
+                            </div>
+                            <!---------------------------------------------------- BlindStructureViewPopup --------------------------->
+
+                            <div *ngIf="BlindStructureshow" class="black_cover"></div>
+                            <div *ngIf="BlindStructureshow" class="popup_view">
+                                <div class="PopupHeads">
+                                    <h5 class="text-center">View Blind Structure: {{selectedBlindStructureView?.name}}
+                                    </h5>
+                                    <span class="closetop" (click)="BlindStructureclosepopup()"> <img
+                                            src="assets/icons/closePop.svg">
+                                    </span>
+                                </div>
+
+
+                                <div class="p_5">
+                                    <table class="tablCode Blindtable p_lr_15">
+                                        <thead>
+                                            <tr>
+                                                <th>Level</th>
+                                                <th>Low Stake</th>
+                                                <th>High Stake </th>
+                                                <th>Ante</th>
+
+                                            </tr>
+
+                                        </thead>
+
+                                        <tbody>
+                                            <tr *ngFor="let list of selectedBlindStructureView?.levels;let j=index">
+                                                <td>{{j+1}}</td>
+                                                <td>{{list.lowStake.value}} </td>
+                                                <td>{{list.highStake.value}} </td>
+                                                <td>{{list.ante.value}} </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="bottomFixs">
+                                    <button class="closeBTN" (click)="BlindStructureclosepopup()">close</button>
+                                </div>
+                            </div>
+                            <!---------------------------------------------------- BlindStructureViewPopupEnd --------------------------->
+
+
+
+
+                            <div>
+                                <input type="checkbox" formControlName="SynchronizedBreak" />
+                                <label>Synchronized Break</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" formControlName="PauseTournament" />
+                                <label> Pause Tournament on Final Table</label>
+                            </div>
+                            <div [class.my_class]="PauseTournamentClass == false">
+                                <label class="col-sm-4">Message to Players:</label>
+                                <input class="col-sm-6" type="text" formControlName="MessagetoPlayers" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fd SettingsTab">
+                        <div class="headTitle">Timeout Settings</div>
+                        <div class="fd p_5">
+                            <div>
+                                <label class="col-sm-4">Action Timeout,sec</label>
+                                <input class="col-sm-6" type="text" formControlName="ActionTimeout"
+                                    oninput="this.value = !!this.value && Math.abs(this.value)>=1&&Math.abs(this.value)<1000 ? Math.abs(thiss.value):''" />
+                            </div>
+                            <div>
+                                <label class="col-sm-4">Time Bank, sec</label>
+                                <input class="col-sm-6" type="text" formControlName="TimeBank"
+                                    oninput="this.value = !!this.value && Math.abs(this.value)>=1&&Math.abs(this.value)<1000 ? Math.abs(thiss.value):''" />
+                            </div>
+                            <div class="df labelalign">
+                                <label class="col-sm-4 ">Time Bank Autoincrement Amount, sec(every 10 minutes):</label>
+                                <input class="col-sm-6" type="text" formControlName="TimeBankAutoincrementAmount"
+                                    oninput="this.value = !!this.value && Math.abs(this.value)>=1&&Math.abs(this.value)<1000 ? Math.abs(thiss.value):''" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fd SettingsTab">
+                        <div class="headTitle">Hand-to-Hand Settings</div>
+                        <!-- <div class="fd p_5">
+                            <div>
+                                
+                                <input type="radio" name="BubbleFinalTable" value="Bubble & Final"
+                                    formControlName="BubbleFinalTable" />
+                                <label>Bubble & Final Table Only</label>
+                            </div>
+                            <div>
+                                
+                                <input type="radio" name="BubbleFinalTable" value="Any Changes in Prize"
+                                    formControlName="BubbleFinalTable" />
+                                <label>Any Changes in Prize</label>
+                            </div>
+                        </div> -->
+                        <div>
+                            <!-- <option *ngFor="let list of TourneySynchroModeTypeList">{{list.value}}</option> -->
+                            <!-- <input name="BubbleFinalTable" formControlName="BubbleFinalTable" *ngFor="let list of TourneySynchroModeTypeList"><span>{{list.value}}</span> -->
+                        </div>
+
+                        <div *ngFor="let list of TourneySynchroModeTypeList, let i = index">
+                            <input type="radio" [value]="list.guid" name="BubbleFinalTable"
+                                [(ngModel)]="defaultTournamentMoneyCheck" formControlName="BubbleFinalTable" />
+                            <label>{{list.value}}</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-12 col-xl-6">
+                    <div class="fd SettingsTab">
+                        <div class="headTitle">Rebuy Settings</div>
+                        <div class="fd p_5">
+                            <div>
+                                <input type="checkbox" formControlName="Rebuys" (change)="Rebuy($event, 'Rebuys')" />
+                                <label>Rebuys</label>
+                            </div>
+                            <!-- <div [ngClass]="{'DisableDiv' : Rebuycheck === false }"> -->
+                            <div>
+                                <div [class.my_class]="rebuysCheckbox == false">
+                                    <label class="col-sm-4">Rebuy Cost:</label>
+                                    <input class="col-sm-6 text_left" type="number" formControlName="RebuyCost"
+                                        appMaxLengthValidation [maxNumber]=9 min="0" /> <span>{{chip}}</span>
+                                    <!-- [disabled]="isDisabled" />  <span>{{chip}}</span> -->
+                                </div>
+
+                                <div [class.my_class]="rebuysCheckbox == false">
+                                    <label class="col-sm-4">Rebuy Fee:</label>
+                                    <input class="col-sm-6 text_left" type="number" formControlName="RebuyFee"
+                                        oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                                        min="0" appMaximimNumbersLengthValidation [digitCount]=9 />
+                                    <span>{{chip}}</span>
+                                </div>
+
+                                <div [class.my_class]="rebuysCheckbox == false">
+                                    <label class="col-sm-4">Marketing Fee :</label>
+                                    <input class="col-sm-6 text_left" type="number" formControlName="MarketingFeeRebuy"
+                                        oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                                        min="0" appMaximimNumbersLengthValidation [digitCount]=9 />
+                                    <span>{{chip}}</span>
+                                </div>
+
+
+                                <div [class.my_class]="rebuysCheckbox == false">
+                                    <label class="col-sm-4">Rebuy Amount:</label>
+                                    <input class="col-sm-6 text_left" type="number" formControlName="RebuyAmount"
+                                        oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                                        min="0" appMaximimNumbersLengthValidation [digitCount]=9 />chips
+                                </div>
+
+                                <div [class.my_class]="rebuysCheckbox == false">
+                                    <label class="col-sm-4">Max. Rebuys per Player:</label>
+                                    <input class="col-sm-6 text_left" type="number" formControlName="MaxRebuysperPlayer"
+                                        oninput="validity.valid||(value='')" min="0" max="99" />
+                                </div>
+                                <div [class.my_class]="rebuysCheckbox == false">
+                                    <label class="col-sm-4">Addon Cost:</label>
+                                    <input class="col-sm-6 text_left" type="number" formControlName="AddonCost"
+                                        appMaxLengthValidation [maxNumber]=9 min="0" />
+                                    <span>{{chip}}</span>
+                                </div>
+
+                                <div [class.my_class]="rebuysCheckbox == false">
+                                    <label class="col-sm-4">Addon Fee:</label>
+                                    <input class="col-sm-6 text_left" type="number" formControlName="AddonFee"
+                                        oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                                        min="0" appMaximimNumbersLengthValidation [digitCount]=9 /><span>{{chip}}</span>
+                                </div>
+
+                                <div [class.my_class]="rebuysCheckbox == false">
+                                    <label class="col-sm-4">Marketing Fee :</label>
+                                    <input class="col-sm-6 text_left" type="number" formControlName="MarketingFeeAddon"
+                                        oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                                        min="0" appMaximimNumbersLengthValidation [digitCount]=9 />
+                                    <span>{{chip}}</span>
+                                </div>
+
+
+
+                                <div [class.my_class]="rebuysCheckbox == false">
+                                    <label class="col-sm-4">Addon Amount:</label>
+                                    <input class="col-sm-6 text_left" type="number" formControlName="AddonAmount"
+                                        min="0"
+                                        oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : 0"
+                                        appMaximimNumbersLengthValidation [digitCount]=9 />
+                                    <span>chips</span>
+                                    <!-- <span>{{chip}}</span> -->
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fd SettingsTab">
+                        <div class="headTitle">Late Registration Settings</div>
+                        <div class="fd p_5">
+                            <div>
+                                <input type="checkbox" formControlName="LateRegistrantion"
+                                    (change)="Rebuy($event, 'RegistrantionSettings')" />
+                                <label>Late Registration</label>
+                            </div>
+                            <!-- <div [ngClass]="{'DisableDiv' : RegistrantionSettings === false }"> -->
+                            <div>
+                                <div *ngFor="let regi of LateRegistrationTypeList, let i = index"
+                                    [class.my_class]="LateRegistrationclass == false">
+                                    <div *ngIf="i ==1">
+                                        <input type="radio" name="LateRegistrantionRadio" value="Level"
+                                            [(ngModel)]="defaultlateRegistationChange"
+                                            (click)="lateRegistationChange($event)"
+                                            formControlName="LateRegistrantionRadio" />
+                                        <label class="col-sm-9">Level (included)</label>
+                                        <input class="col-sm-2 text_left" type="number"
+                                            formControlName="LateRegistrantionLevel" appMaximimNumbersLengthValidation
+                                            [digitCount]=2 />
+                                    </div>
+                                    <div *ngIf="i==2">
+                                        <input type="radio" name="LateRegistrantionRadio" value="Break"
+                                            [(ngModel)]="defaultlateRegistationChange"
+                                            (click)="lateRegistationChange($event)"
+                                            formControlName="LateRegistrantionRadio" />
+                                        <label>First Break (included)</label>
+                                    </div>
+                                    <div *ngIf="i==3">
+                                        <input type="radio" name="LateRegistrantionRadio" value="Elimination"
+                                            [(ngModel)]="defaultlateRegistationChange"
+                                            (click)="lateRegistationChange($event)"
+                                            formControlName="LateRegistrantionRadio" />
+                                        <label>First Elimination</label>
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- <input [disabled] = "CreatePokerTouranamentForm.get('LateRegistrantionRadio')?.value !== 'Level (included)'" class="col-sm-2" type="number" formControlName ="LateRegistrantionLevel"/> -->
+                                <!-- <div [class.my_class]="LateRegistrationclass == false">
+                                    <input type="radio" name="LateRegistrantionRadio" value="Level (included)"
+                                        [(ngModel)]="defaultlateRegistationChange"
+                                        (click)="lateRegistationChange($event)"
+                                        formControlName="LateRegistrantionRadio" />
+                                    <label class="col-sm-9">Level (included)</label>
+                                    <input class="col-sm-2" type="number" formControlName="LateRegistrantionLevel" />
+                                </div>
+                                <div [class.my_class]="LateRegistrationclass == false">
+                                    <input type="radio" name="LateRegistrantionRadio" value="First Break (included)"
+                                        (click)="lateRegistationChange($event)"
+                                        formControlName="LateRegistrantionRadio" />
+                                    <label>First Break (included)</label>
+                                </div>
+                                <div [class.my_class]="LateRegistrationclass == false">
+                                    <input type="radio" name="LateRegistrantionRadio" value="First Elimination"
+                                        (click)="lateRegistationChange($event)"
+                                        formControlName="LateRegistrantionRadio" />
+                                    <label>First Elimination</label>
+                                </div> -->
+                                <!-- <div *ngFor="let RegistrationType of LateRegistrationTypeList">
+                                    <input type="radio" name="LateRegistrantionRadio" value="RegistrationType.value"
+                                    formControlName="LateRegistrantionRadio" /> {{RegistrationType.value}}
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="container fd selectTag" *ngIf="tabName == 'Third'">
+            <div class="fd row margin-bottom">
+                <div class="col-12 col-xl-6">
+                    <div class=" fd SettingsTab">
+                        <div class="headTitle  ">Schedule</div>
+
+                        <div class="row">
+                            <div class="col-4 ">
+                                <div class="fd  p_5 SettingsTab">
+                                    <div class="fd" *ngFor=" let List of ScheduleTypeList">
+                                        <input type="radio" name="Schedule" (change)="onSelectedRadio(isChecked)"
+                                            [(ngModel)]="isChecked" [value]="List.value" formControlName="Schedule" />
+                                        <label>{{List.value}}</label>
+
+                                    </div>
+                                </div>
+
+
+                                <!-- <div class="fd  p_5 SettingsTab">
+                                    <div class="fd">
+
+                                        
+                                        <input type="radio" name="Schedule" (change)="onSelectedRadio(isChecked)"
+                                            [(ngModel)]="isChecked" id="raju" value="OnlyOnce"
+                                            formControlName="Schedule" />
+                                        <label>Only Once</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="Schedule" (change)="onSelectedRadio(isChecked)"
+                                            [(ngModel)]="isChecked" value="Hourly" formControlName="Schedule" />
+                                        <label>Hourly</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="Schedule" (change)="onSelectedRadio(isChecked)"
+                                            [(ngModel)]="isChecked" value="Daily" formControlName="Schedule" />
+                                        <label>Daily</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="Schedule" (change)="onSelectedRadio(isChecked)"
+                                            [(ngModel)]="isChecked" value="Weekly" formControlName="Schedule" />
+                                        <label>Weekly</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="Schedule" (change)="onSelectedRadio(isChecked)"
+                                            [(ngModel)]="isChecked" value="Monthly" formControlName="Schedule" />
+                                        <label>Monthly</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="Yearly" (change)="onSelectedRadio(isChecked)"
+                                            [(ngModel)]="isChecked" value="Yearly" formControlName="Yearly" />
+                                        <label>Yearly</label>
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="col-8">
+                                <p class="text-danger">Please use GMT time zone!</p>
+                                <div *ngIf="isChecked=='Once'">
+                                    <label class="col-sm-4">Start Date:</label>
+                                    <!-- <input class="col-sm-6" (ngModelChange)="startDate = $event" [ngModel]="startDate | date:'yyyy-MM-dd'" -->
+                                    <input class="col-sm-6" type="date" formControlName="StartDate"
+                                        (ngModelChange)="onSelectedDate(startDate)"
+                                        [ngModel]="startDate | date:'yyyy-MM-dd'"
+                                        (change)=tournamentStartValidation() />
+                                    <!-- <input class="col-sm-6" (ngModelChange)="onSelectedDate(startDate)"
+                                        [ngModel]="startDate | date:'yyyy-MM-dd'" formControlName="StartDate"
+                                        type="datetime-local" step="1" /> -->
+                                </div>
+                                <div>
+                                    <label class="col-sm-4">Start Time</label>
+                                    <!-- <input type="time" class="col-sm-6" step="1" formControlName="StartTime" /> -->
+                                    <!-- <input type="time" [ngModel]="time"  formControlName="StartTime"/> -->
+                                    <input type="time" formControlName="StartTime"
+                                        (change)="tournamentStartValidation()" />
+                                </div>
+                                <div *ngIf="isChecked=='Hourly'">
+                                    <label class="col-sm-4">Repeat every</label>
+                                    <input type="number" class="col-sm-3" formControlName="HourlyStartTime"
+                                        (change)="tournamentStartValidation()"
+                                        oninput="this.value = !!this.value && Math.abs(this.value) >= 0 &&Math.abs(this.value) <= 99 ? Math.abs(this.value) : 0" />
+                                    <input type="number" class="col-sm-3" formControlName="HourlyStartMinute"
+                                        (change)="tournamentStartValidation()"
+                                        oninput="this.value = !!this.value && Math.abs(this.value) >= 0 &&Math.abs(this.value) <= 59 ? Math.abs(this.value) : 0" />
+                                    <div *ngIf="HourlyPopupDefault">
+                                        <span class="text-success fd">{{HourlyStartedHeadingText}}</span>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="isChecked=='Once'" class="m_3">
+                                    <span
+                                        [ngClass]="onlyOnceTextCss? 'text-success fd': 'text-danger fd'">{{onlyOnceHeading}}</span>
+                                    <span
+                                        [ngClass]="onlyOnceTextCss? 'text-success fd': 'text-danger fd'">{{onlyOnceTextString}}</span>
+
+                                </div>
+                                <div *ngIf="isChecked=='Daily'">
+                                    <div>
+                                        <input type="radio" name="DailyButtonRadio" value="Every"
+                                            formControlName="DailyButtonRadio" (change)="tournamentStartValidation()" />
+                                        <label class="col-sm-4">Every</label>
+                                        <!-- [disabled] = "SelectedDaysInDailyButtonRadioCss=false" -->
+                                        <input class="col-sm-2" type="number"
+                                            formControlName="SelectedDaysInDailyButtonRadio"
+                                            (change)="tournamentStartValidation()"
+                                            oninput="this.value = !!this.value && Math.abs(this.value) >= 1 &&Math.abs(this.value) <= 365 ? Math.abs(this.value) : null" />Days
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="DailyButtonRadio" value="Weekdays"
+                                            formControlName="DailyButtonRadio" (change)="tournamentStartValidation()" />
+                                        <label class="col-sm-4">Weekdays</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="DailyButtonRadio" value="Weekend"
+                                            formControlName="DailyButtonRadio" (change)="tournamentStartValidation()" />
+                                        <label class="col-sm-4">Weekend</label>
+                                    </div>
+
+                                    <div *ngIf="isChecked=='Daily'" class="m_3">
+                                        <span class="text-success fd">{{DailyStartedHeadingText}}</span>
+                                    </div>
+                                </div>
+                                <div *ngIf="isChecked=='Weekly'">
+                                    <div>
+                                        <label class="col-sm-4">Every</label>
+                                        <input class="col-sm-2" type="number" formControlName="SelectedDaysInWeek"
+                                            oninput="this.value = !!this.value && Math.abs(this.value) >= 1 &&Math.abs(this.value) <= 52 ? Math.abs(this.value) : 1" />Week
+                                    </div>
+                                    <div>
+                                        <span>Select The Days Of the Week Below:</span>
+                                        <div class="fd selectHabame ">
+                                            <!-- <div class="fd p_10"> -->
+                                            <div class="fd p_5">
+                                                <!-- <div class="weekly_Cl row"> -->
+                                                <div class="weekly_Cl row">
+                                                    <div class="col-sm-6"> <input type="checkbox" value="1"
+                                                            formControlName="WeeklyMonday"
+                                                            (change)="tournamentStartValidation()" />Monday</div>
+                                                    <div class="col-sm-6"> <input type="checkbox" value="2"
+                                                            formControlName="WeeklyTuesday"
+                                                            (change)="tournamentStartValidation()" />Tuesday</div>
+                                                    <div class="col-sm-8"> <input type="checkbox" value="3"
+                                                            formControlName="WeeklyWednesday"
+                                                            (change)="tournamentStartValidation()" />Wednesday</div>
+                                                    <div class="col-sm-6"> <input type="checkbox" value="4"
+                                                            formControlName="WeeklyThursday"
+                                                            (change)="tournamentStartValidation()" />Thursday</div>
+                                                    <div class="col-sm-6"> <input type="checkbox" value="5"
+                                                            formControlName="WeeklyFriday"
+                                                            (change)="tournamentStartValidation()" />Friday</div>
+                                                    <div class="col-sm-6"> <input type="checkbox" value="6"
+                                                            formControlName="WeeklySaturday"
+                                                            (change)="tournamentStartValidation()" />Saturday</div>
+                                                    <div class="col-sm-6"> <input type="checkbox" value="0"
+                                                            formControlName="WeeklySunday"
+                                                            (change)="tournamentStartValidation()" />Sunday</div>
+                                                    <!-- <input type="checkbox" />Tuesday
+                                                    <input type="checkbox" />Wednesday
+                                                    <input type="checkbox" />Thursday
+                                                    <input type="checkbox" />Friday
+                                                    <input type="checkbox" />Saturday
+                                                    <input type="checkbox" />Sunday -->
+                                                </div>
+                                                <div>
+                                                    <span
+                                                        class="text-success fd">{{getWeeklyAddSpecifiedDaysText}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="isChecked=='Monthly'">
+                                    <div class="fd df">
+                                        <div class="col-sm-4">
+                                            <input type="radio" name="MonthlyButtonRadio" value="Days"
+                                                formControlName="MonthlyButtonRadio"
+                                                (change)="tournamentStartValidation()" />Day
+                                        </div>
+                                        <input class="col-sm-4" [disabled]="MonthlyButtonRadiodisEnText == false"
+                                            formControlName="MonthlySelectedInputDays"
+                                            (change)="tournamentStartValidation()" type="number"
+                                            oninput="this.value = !!this.value && Math.abs(this.value) >= 1 &&Math.abs(this.value) <= 28 ? Math.abs(this.value) :1" />
+                                    </div>
+                                    <div class="fd df">
+                                        <div class="col-sm-4">
+                                            <input type="radio" name="MonthlyButtonRadio" value="The"
+                                                formControlName="MonthlyButtonRadio"
+                                                (change)="tournamentStartValidation()" />The
+                                        </div>
+                                        <select class="col-sm-3" formControlName="MonthlyButtonSelectedWeek"
+                                            (change)="tournamentStartValidation()"
+                                            [disabled]="CreatePokerTouranamentForm.get('MonthlyButtonSelectedWeek')?.value">
+                                            <option [ngValue]="list.value" *ngFor="let list of TypeDayOfMonthList">
+                                                {{list.value}}</option>
+                                        </select>
+                                        <select class="col-sm-3" formControlName="MonthlyButtonSelectedWeekDay"
+                                            (change)="tournamentStartValidation()"
+                                            [disabled]="CreatePokerTouranamentForm.get('MonthlyButtonSelectedWeekDay')?.value">
+                                            <option>Monday</option>
+                                            <option>Tuesday</option>
+                                            <option>Wednesday</option>
+                                            <option>Thursday</option>
+                                            <option>Firday</option>
+                                            <option>Saturday</option>
+                                            <option>Sunday</option>
+                                        </select>
+                                    </div>
+                                    <div class="fd m_t_5 selectHabame">
+                                        <p>Of the Month(s):</p>
+                                        <div class="fd p_5">
+                                            <div class="chkBoxHabmes row"
+                                                *ngFor="let months of MonthsList; let i = index">
+                                                <!-- <div class="col-sm-5 df"> <input type="checkbox" [(ngModel)] = "checkedMonths[i]" formControlName = "SelectedMonth[i]"/> <span> -->
+                                                <div class="col-sm-5 df"> <input type="checkbox"
+                                                        [checked]="MonthlyMonthIndexes[i]"
+                                                        (change)="changeSelectedMonths($event,i)" /> <span>
+                                                        {{months.value}}</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="MonthlyTextDisorInable">
+                                        <span class="text-success fd">{{getWeeklyAddSpecifiedDaysText}}</span>
+                                    </div>
+                                </div>
+                                <!-- <div><button class="view_button" (click)="onFormSubmit()">Submit</button></div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl-6 ">
+                    <div class="fd SettingsTab">
+                        <div class="headTitle">Announcement</div>
+                        <div class="fd p_5">
+                            <div>
+                                <label class="col-sm-3">Announce Period:</label>
+                                <input class="col-sm-4" type="text" [(ngModel)]="AnnouncePeriodValue"
+                                    formControlName="AnnouncePeriodValue" (change)="tournamentStartValidation()"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                                    appMaximimNumbersLengthValidation [digitCount]=3 />
+                                <select class="col-sm-4" [(ngModel)]="AnnouncePeriodDefaultValue"
+                                    formControlName="AnnouncePeriodType" (change)="tournamentStartValidation()">
+                                    <option [ngValue]="list.guid" *ngFor="let list of SeletedPeriodTypes">{{list.value}}
+                                    </option>
+                                </select>
+                                <div *ngIf="isChecked=='Once'" class="m_3">
+                                    <span
+                                        [ngClass]="AnnouncePeriodTextCss? 'text-success fd': 'text-danger fd'">{{AnnouncePeriodHeading}}</span>
+                                    <span
+                                        [ngClass]="AnnouncePeriodTextCss? 'text-success fd': 'text-danger fd'">{{AnnounceTextString}}</span>
+                                </div>
+
+                                <div *ngIf="HourlyPopupDefault" class="m_3">
+                                    <span
+                                        [ngClass]="AnnouncePeriodTextCss? 'text-success fd': 'text-danger fd'">{{AnnouncePeriodHeading}}</span>
+                                    <span
+                                        [ngClass]="AnnouncePeriodTextCss? 'text-success fd': 'text-danger fd'">{{AnnounceTextString}}</span>
+                                </div>
+                                <div *ngIf="isChecked=='Daily'" class="m_3">
+                                    <span
+                                        [ngClass]="AnnouncePeriodTextCss? 'text-success fd': 'text-danger fd'">{{AnnouncePeriodHeading}}</span>
+                                    <span
+                                        [ngClass]="AnnouncePeriodTextCss? 'text-success fd': 'text-danger fd'">{{AnnounceTextString}}</span>
+                                </div>
+                                <div *ngIf="isChecked=='Weekly' && WeeklyDaysPresent" class="m_3">
+                                    <span
+                                        [ngClass]="AnnouncePeriodTextCss? 'text-success fd': 'text-danger fd'">{{AnnouncePeriodHeading}}</span>
+                                    <span
+                                        [ngClass]="AnnouncePeriodTextCss? 'text-success fd': 'text-danger fd'">{{AnnounceTextString}}</span>
+                                </div>
+                                <div *ngIf="isChecked=='Monthly'&&MonthlyTextDisorInable" class="m_3">
+                                    <span
+                                        [ngClass]="AnnouncePeriodTextCss? 'text-success fd': 'text-danger fd'">{{AnnouncePeriodHeading}}</span>
+                                    <span
+                                        [ngClass]="AnnouncePeriodTextCss? 'text-success fd': 'text-danger fd'">{{AnnounceTextString}}</span>
+                                </div>
+
+                            </div>
+
+                            <div class="df fd labelalign">
+                                <label class="col-sm-3">Registration Period</label>
+                                <input class="col-sm-4" type="text" [(ngModel)]="RegistrantionPeriodValue"
+                                    formControlName="RegistrantionPeriodValue"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                                    (change)="tournamentStartValidation()" appMaximimNumbersLengthValidation
+                                    [digitCount]=3 />
+                                <select class="col-sm-4" [(ngModel)]="RegistrantionPeriodDefaultValue"
+                                    formControlName="RegistrantionPeriodType" (change)="tournamentStartValidation()">
+                                    <option [ngValue]="list.guid" *ngFor="let list of SeletedPeriodTypes">{{list.value}}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div *ngIf="isChecked=='Once'" class="m_3">
+                                <span
+                                    [ngClass]="registrationPeriodTextCss? 'text-success fd': 'text-danger fd'">{{registrationPeriodHeading}}</span>
+                                <span
+                                    [ngClass]="registrationPeriodTextCss? 'text-success fd': 'text-danger fd'">{{registrationPeriodText}}</span>
+                            </div>
+                            <div *ngIf="HourlyPopupDefault" class="m_3">
+                                <span
+                                    [ngClass]="registrationPeriodTextCss? 'text-success fd': 'text-danger fd'">{{registrationPeriodHeading}}</span>
+                                <span
+                                    [ngClass]="registrationPeriodTextCss? 'text-success fd': 'text-danger fd'">{{registrationPeriodText}}</span>
+                            </div>
+                            <div *ngIf="isChecked=='Daily'" class="m_3">
+                                <span
+                                    [ngClass]="registrationPeriodTextCss? 'text-success fd': 'text-danger fd'">{{registrationPeriodHeading}}</span>
+                                <span
+                                    [ngClass]="registrationPeriodTextCss? 'text-success fd': 'text-danger fd'">{{registrationPeriodText}}</span>
+                            </div>
+
+                            <div *ngIf="isChecked=='Weekly' && WeeklyDaysPresent" class="m_3">
+                                <span
+                                    [ngClass]="registrationPeriodTextCss? 'text-success fd': 'text-danger fd'">{{registrationPeriodHeading}}</span>
+                                <span
+                                    [ngClass]="registrationPeriodTextCss? 'text-success fd': 'text-danger fd'">{{registrationPeriodText}}</span>
+                            </div>
+                            <div *ngIf="isChecked=='Monthly'&&MonthlyTextDisorInable" class="m_3">
+                                <span
+                                    [ngClass]="registrationPeriodTextCss? 'text-success fd': 'text-danger fd'">{{registrationPeriodHeading}}</span>
+                                <span
+                                    [ngClass]="registrationPeriodTextCss? 'text-success fd': 'text-danger fd'">{{registrationPeriodText}}</span>
+                            </div>
+                            <div class="df fd">
+                                <label class="col-sm-3">Completed Period</label>
+                                <input class="col-sm-4" type="text" [(ngModel)]="CompletedPeriodValue"
+                                    formControlName="CompletedPeriodValue"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                                    appMaximimNumbersLengthValidation [digitCount]=3 />
+                                <select class="col-sm-4" [(ngModel)]="CompletedPeriodDefaultValue"
+                                    formControlName="CompletedPeriodType">
+                                    <option *ngFor="let list of SeletedPeriodTypes" [ngValue]="list.guid">{{list.value}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="col-sm-3">Seating Period</label>
+                                <input (change)="tournamentStartValidation()" [(ngModel)]="SeatingPeriodValue"
+                                    class="col-sm-4" type="text" formControlName="SeatingPeriodValue"
+                                    appMaximimNumbersLengthValidation [digitCount]=3
+                                    oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" />
+                                <select (change)="tournamentStartValidation()" class="col-sm-4"
+                                    [(ngModel)]="SeatingPeriodDefaultValue" formControlName="SeatingPeriodType">
+                                    <option [ngValue]="Timelist.guid" *ngFor="let Timelist of SeletedTimePeriods">
+                                        {{Timelist.value}}</option>
+                                </select>
+                                <div *ngIf="isChecked=='Once'" class="m_3">
+                                    <span
+                                        [ngClass]="SeatingPeriodTextCss?'text-danger fd': 'text-success fd'">{{SeatingPeriodText}}</span>
+
+                                </div>
+                                <div *ngIf="HourlyPopupDefault" class="m_3">
+                                    <span
+                                        [ngClass]="SeatingPeriodTextCss?'text-danger fd': 'text-success fd'">{{SeatingPeriodText}}</span>
+                                </div>
+                                <div *ngIf="isChecked=='Daily'" class="m_3">
+                                    <span
+                                        [ngClass]="SeatingPeriodTextCss?'text-danger fd': 'text-success fd'">{{SeatingPeriodText}}</span>
+
+                                </div>
+                                <div *ngIf="isChecked=='Weekly'&&WeeklyDaysPresent" class="m_3">
+                                    <span
+                                        [ngClass]="SeatingPeriodTextCss?'text-danger fd': 'text-success fd'">{{SeatingPeriodText}}</span>
+
+                                </div>
+                                <div *ngIf="isChecked=='Monthly'&&MonthlyTextDisorInable" class="m_3">
+                                    <span
+                                        [ngClass]="SeatingPeriodTextCss?'text-danger fd': 'text-success fd'">{{SeatingPeriodText}}</span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="fd text-center">
+                    <button class="btn_grade_1" (click)="onFormSubmit()"> Save </button>
+                </div> -->
+            </div>
+        </section>
+        <!-- this.prevButtonCss = true;
+        this.nextButtonCss = true; -->
+        <!-- <div class="schedule-error-popUp"></div> -->
+        <div *ngIf="tournamentErrorTextBoolValue" class="black_cover"></div>
+        <div *ngIf="tournamentErrorTextBoolValue" class="error-pop">
+            <div class="PopupHeads">
+                <h5 class="text-center">Error-popUp </h5>
+                <span class="closetop" (click)="tournamentErrorclosepopup()"> <img src="assets/icons/closePop.svg">
+                </span>
+            </div>
+
+            <div>
+                <pre class="error-apply-margin">{{tournamentErrorTextPopup}}</pre>
+            </div>
+
+            <div class="bottomFixs">
+                <button class="closeBTN" (click)="tournamentErrorclosepopup()">close</button>
+            </div>
+        </div>
+
+
+
+        <!-- ********************************************************* -->
+        <!-- ************************SuccessPopUp*********************************** -->
+        <div class="black_cover" *ngIf="CreateSuccessPop">
+            <div class="popup_1 pop_sm" *ngIf="CreateSuccessPop">
+                <div class="PopupHead">
+                    <h5 class="text-center">Alert</h5>
+                    <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+                </div>
+                <div class="soon font_13 fd p_lr_15">
+                    <div class="fd p_10 text-center ">
+                        <!-- <b class="p_5 text-success">Successfully Created </b> -->
+                        <b class="p_5 text-success">{{successPopup}}</b>
+                    </div>
+                </div>
+                <div class="bottomFix text-center df m_3">
+                    <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+                </div>
+            </div>
+        </div>
+        <!-- ************************SuccessPopUpClose*********************************** -->
+
+        <!-- ************************ErrorPopUp*********************************** -->
+        <div class="black_cover" *ngIf="ErrorPopup">
+            <div class="popup_1 pop_sm" *ngIf="ErrorPopup">
+                <div class="PopupHead">
+                    <h5 class="text-center">Alert</h5>
+                    <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+                </div>
+                <div class="soon font_13 fd p_lr_15">
+                    <div class="fd p_10 text-center ">
+                        <i class="p_5 text-danger">Technical Error... </i>
+                    </div>
+                </div>
+                <div class="bottomFix text-center df m_3">
+                    <button class="btn_grade_1" (click)="TechnicalError()"> Okay </button>
+                </div>
+            </div>
+        </div>
+        <!-- ************************ErrorPopUpClose*********************************** -->
+
+
+
+
+
+
+
+
+    </div>
+    <div class="p_5 pre-next-save-container po_f" *ngIf="!createTournamentPopup&&EditPokerTourneyData==null">
+        <!-- <button class = "btn_grade" [ngStyle]="prevButtonCss ? btn_grade_1 : btn_grade" (click)="changeToPreviousTabs()"> Prev </button> -->
+        <button [ngClass]="prevButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!prevButtonCss"
+            (click)="changeToPreviousTabs()"> Prev
+        </button>
+        <button [ngClass]="nextButtonCss ? 'btn_grade_1' : 'btn_grade'" (click)="changeToNextTabs()"
+            [disabled]="!nextButtonCss"> Next </button>
+        <!-- <button class = "btn_grade" ngStyle]="nextButtonCss ? btn_grade_1 : btn_grade"  (click)="changeToNextTabs()"> Next </button> -->
+        <button [disabled]="!saveButton" [ngClass]="saveButton ? 'btn_grade_1' : 'btn_grade'" (click)="onFormSubmit()">
+            Save </button>
+        <ng-comtainer *ngIf="createTournamentPopup">
+            <button [disabled]="!createTournamentPopup" [ngClass]="createTournamentPopup ? 'btn_grade_1' : 'btn_grade'"
+                (click)="cancelSatellitePopup()"> Cancel </button>
+        </ng-comtainer>
+    </div>
+</div>

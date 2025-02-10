@@ -1,0 +1,103 @@
+<div>
+    <h2>Game Bank Adjustments </h2>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="margin-right:85px; float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+</div>
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+
+                    <div class="df">
+                        <label>Date Period</label>
+                        <input class="Birthdayinputs" format="yyyy-MM-dd HH:mm:ss" type="datetime-local" step="1"
+                            formControlName="DatePeriodfrom">
+                        <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                            formControlName="DatePeriodto">
+                    </div>
+                    <div>
+                        <label>currency</label>
+                        <select class="seclectopt" formControlName="currency">
+                            <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlist">
+                                {{CURRENCY.value}}
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Admin</label>
+                        <input type="text" formControlName="Admin" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div>
+                        <label>Bank Owner Type</label>
+                        <select class="seclectopt" formControlName="BankOwnerType">
+                            <option [ngValue]="List.guid" *ngFor="let List Of OwnerTypeList">
+                                {{List.value}}
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Bank Owner Name</label>
+                        <input type="text" formControlName="BankOwnerName" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div>
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <div>
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="margin-right:85px; float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers">
+        <div style="margin-right:20px;" *ngIf="GameBankAdjust">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+
+</div>
+
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="table_1 table_2" id="excel-table">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Admin </th>
+                <th>Date </th>
+                <th>Bank Owner Type</th>
+                <th>Bank Owner Name</th>
+                <th>Amount </th>
+            </tr>
+        </thead>
+        <tbody *ngIf="GameBankAdjust">
+            <tr *ngFor="let list of GameBankAdjust; let i=index">
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

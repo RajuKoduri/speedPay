@@ -1,0 +1,11 @@
+
+.common_head{
+        box-shadow: 0px 2px 3px 1px #3b6586;
+        margin: 16px 0px 10px 7px;
+        padding: 5px;
+        border-radius: 6px;
+    }
+    .popup_1{
+        top: 100px;
+    }
+

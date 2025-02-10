@@ -1,0 +1,176 @@
+<div>
+    <h3>Pending Cashouts</h3>
+</div>
+<div class="dropdown fd fil_export">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <div>
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportExcel()"> Export Excel</button>
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    </div>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Cashout ID</label>
+                        <input type="text" />
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <!-- <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <select class="seclectopt" formControlName="Currency">
+                            <option></option> 
+                        </select>
+                    </div> -->
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencyList"
+                                [(ngModel)]="selectedCurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Status</label>
+                        <!-- <select class="seclectopt" formControlName="Status">
+                            <option [ngValue]="Status.guid" *ngFor="let Status of CashOutStatusList">{{Status.value}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingStatuS" [data]="CashOutStatusList"
+                                [(ngModel)]="selectStatus" (onSelect)="onItemSelectStatus($event)"
+                                (onDeSelect)="OnItemDeSelectStatus($event)" (onSelectAll)="onSelectAllStatus($event)"
+                                (onDeSelectAll)="onDeSelectAllStatus($event)" formControlName="Status">
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-xl-4">
+
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="fd">
+    <div class="text-centers div_sub">
+        <div class="fd df m_3">
+            <div style="margin-right:20px;" *ngIf="PlayerCashouts">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+            <div> Result Count: <b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the
+                    filters</b></div>
+        </div>
+        <button class="fillterbtn btn_sub12" (click)="onFormSubmit()" [disabled]="steddate || timeerror">Submit</button>
+    </div>
+</div>
+<div class="fd">
+    <div class="table_2">
+        <div *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <table class="tablCode" id="excel_table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Player Group </th>
+                    <th>Face </th>
+                    <th>Cashout Date </th>
+                    <th>Amount</th>
+                    <th>Status </th>
+                    <th>Pending Amount</th>
+                    <th>Paid Amount</th>
+                    <th>Cancelled Amount</th>
+                    <th>Cashout Id</th>
+                    <th>By Admin</th>
+                    <th>Initiator</th>
+                    <th>Registation</th>
+                    <th>Suspicious</th>
+                    <th>Black List</th>
+                    <th>User Comment</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="PlayerCashouts">
+                <tr *ngFor="let list of PlayerCashouts ">
+                    <td>{{list.player.login}}</td>
+                    <td>{{list.playerGroup}}</td>
+                    <td>{{list.network}}</td>
+                    <td>{{list.dateCashout}}</td>
+                    <td>{{list.amount.value}}</td>
+                    <td>{{list.status}}</td>
+                    <td>{{list.pendingAmount.value}}</td>
+                    <td>{{list.paidAmount.value}}</td>
+                    <td>{{list.canceledAmount.value}}</td>
+                    <td>{{list.cashoutId}}</td>
+                    <td class="inputCheck"><input type="checkbox" [(ngModel)]="list.admin">  </td>
+                    <td>{{list.initiator.login}}</td>
+                    <td>{{list.initiator.regDate}}</td>
+                    <td class="inputCheck"> <input type="checkbox" [(ngModel)]="list.playerSuspicious"> </td>
+                    <td class="inputCheck"><input type="checkbox" [(ngModel)]="list.playerSuspiciousByBlackList"></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="fd" *ngIf="PlayerCashouts">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || PlayerCashouts==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||PlayerCashouts==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="PlayerCashouts">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="PlayerCashouts==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PlayerCashouts==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>

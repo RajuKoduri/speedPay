@@ -1,0 +1,371 @@
+<div>
+    <h1>Player list</h1>
+<button class="fillterbtn" (click)="fillermenu()">Filters</button>
+<button class="fillterbtn m_l_5" (click)="onFormSubmit()">Apply</button>
+<button class="fillterbtn m_l_5" (click)="exportexcel()"> Export Excel</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm" (ngSubmit)="onFormSubmit()">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div>
+                        <label>currency</label>
+                        <!-- <input type="text"> -->
+                        <select class="seclectopt" formControlName="wallet" #tb2 (input)="input()"
+                            (ngModelChange)="counterfunc(tb2)">
+                            <option value="" disabled> Real Money </option>
+                            <option> User Preferred</option>
+                            <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlists">{{CURRENCY.value}}
+                            </option>
+                            <!-- <option>Chips</option> -->
+                        </select>
+                    </div>
+                    <div>
+                        <label>player Login</label>
+                        <input type="text" formControlName="accountMask" (ngModelChange)="counterfunc(tb2)">
+                    </div>
+                    <div>
+                        <label>Nickname</label>
+                        <input type="text" formControlName="nickName" #tb3 (ngModelChange)="counterfunc(tb3)">
+                    </div>
+                    <div>
+                        <label>Short Id</label>
+                        <input type="text" formControlName="shortId" (ngModelChange)="counterfunc(tb2)">
+                    </div>
+                    <div>
+                        <label>Alias</label>
+                        <input type="text" formControlName="alias" (ngModelChange)="counterfunc(tb2)">
+                    </div>
+                    <div>
+                        <label>E-mail</label>
+                        <input type="text" formControlName="email" #tb4 (ngModelChange)="counterfunc(tb4)">
+                    </div>
+                    <div>
+                        <label>First Name </label>
+                        <input type="text" formControlName="firstName" #tb5 (ngModelChange)="counterfunc(tb5)">
+                    </div>
+                    <div>
+                        <label>Last Name</label>
+                        <!-- <input type="text" formControlName="Lastname" #tb6 (ngModelChange)="counterfunc(tb6)"> -->
+                        <input type="text" formControlName="lastName" placeholder="(none)">
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div>
+                        <label>Face</label>
+                        <!-- <input type="text"> -->
+                        <select class="seclectopt" formControlName="networkNames">
+                            <option [ngValue]="Status.name" *ngFor="let  Status of faceParameterslist">{{Status.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="df ">
+                        <label>Birthday Day</label>
+                        <!-- <form [formGroup]="filterFormtwo"> -->
+
+                        <input formControlName="birthDayOfMonthFrom" (keypress)="keyPressNumbers($event)"
+                            class="Birthdayinputs" type="text">
+                        <input formControlName="birthDayOfMonthTo" (keypress)="keyPressNumbers($event)"
+                            class="Birthdayinputs" type="text">
+                        <!-- </form> -->
+                    </div>
+                    <div>
+                        <label>Birthday Month</label>
+                        <select class="seclectopt" formControlName="birthMonths">
+                            <!-- <option >Select All </option> -->
+                            <!-- <option  [(ngModel)]="monthlist.guid" >Select All </option> -->
+                            <option [ngValue]="monthlist.guid" *ngFor="let  monthlist of BirthdatMonths">
+                                {{monthlist.value}}</option>
+                            <!-- <ng-select *ngFor="let  monthlist of BirthdatMonths" [items]="monthlist.value" bindLabel="name" placeholder="Select Category" appendTo="body"
+                                [multiple]="true" [(ngModel)]="selected">
+                            </ng-select> -->
+                        </select>
+                    </div>
+                    <div class="df ">
+                        <label>Balance Amount</label>
+                        <input class="Birthdayinputs" type="text" formControlName="balanceAmountlow">
+                        <input class="Birthdayinputs" type="text" formControlName="balanceAmounthigh">
+                    </div>
+                    <div class="df ">
+                        <label>Debt Amount</label>
+                        <input class="Birthdayinputs" type="text" formControlName="debtAmountlow">
+                        <input class="Birthdayinputs" type="text" formControlName="debtAmounthigh">
+                    </div>
+                    <div class="df">
+                        <label>Registration</label>
+                        <input class="Birthdayinputs" format="yyyy-MM-dd HH:mm:ss" type="datetime-local" step="1"
+                            formControlName="RegistrationStart">
+                        <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                            formControlName="RegistrationEnd">
+                    </div>
+                    <!-- <div>
+                        <label for="meeting-time">Choose a time for your appointment:</label>
+
+                        <input type="datetime-local" id="meeting-time" name="meeting-time" value="2018-06-12T19:30"
+                            min="2018-06-07T00:00" max="2018-06-14T00:00">
+                    </div> -->
+                    <div>
+                        <label>IP Adress</label>
+                        <input type="text" formControlName="ipAddress">
+                    </div>
+                    <div>
+                        <label>Status</label>
+                        <select class="seclectopt" formControlName="statusesIdList" #tb7
+                            (ngModelChange)="dropdowncounterfunc(tb7)">
+                            <option [ngValue]="Status.guid" *ngFor="let  Status of playerStatusList">{{Status.value}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div>
+                        <label>Country</label>
+                        <!-- <select class="seclectopt" [(ngModel)]='all || country.title' formControlName="countryValue" #tb8 (ngModelChange)="dropdowncounterfunc(tb8)"> -->
+                        <select class="seclectopt" formControlName="country" #tb8
+                            (ngModelChange)="dropdowncounterfunc(tb8)">
+                            <option [ngValue]="all || countrieslist.CID">All</option>
+                            <option *ngFor="let  country of countrieslist" [ngValue]=" country.CID "> {{country.title}}
+                                <!-- <option *ngFor="let  country of countrieslist" [ngValue]="country.CID  || country.title "> {{country.title}} -->
+                            </option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Receive News</label>
+                        <select class="seclectopt" formControlName="ReceiveNews" #tb9
+                            (ngModelChange)="dropdowncounterfunc(tb9)">
+                            <option [ngValue]="Status.guid" *ngFor="let  Status of ReceiveNewsList"> {{Status.value}}
+                            </option>
+                        </select>
+                        <!-- <div class="fd" *ngFor="let  Status of ReceiveNewsList">
+                        <input type="checkbox" formControlName="ReceiveNews" (change)="ReceiveNewsguid($event,Status.guid)" [value]="Status.guid" name="Status.guid"> {{Status.value}} 
+                        </div> -->
+                    </div>
+                    <div>
+                        <label>Player level</label>
+                        <select class="seclectopt" formControlName="Playerlevel">
+                            <option [ngValue]="playerlevelname.guid"
+                                *ngFor="let  playerlevelname of getPlayerLevelsNameslists">
+                                {{playerlevelname.name}}</option>
+                            <!-- <option [ngValue]="levelnames.guid" *ngFor="let  levelnames of getPlayerLevelsNames">{{levelnames.name }} -->
+                            <!-- <option>iron</option>
+                            <option>Bronze</option>
+                            <option>Platinum1</option>
+                            <option>Platinum2</option>
+                            <option>RIVER ELITE</option>
+                            <option>Sliver</option>
+                            <option>Shark</option>
+                            <option>Elite</option> -->
+                        </select>
+                    </div>
+                    <div>
+                        <label>Permission Group</label>
+                        <input type="text" formControlName="permissionsGroup">
+                    </div>
+                    <div>
+                        <label>Referred By</label>
+                        <input type="text" formControlName="referringPlayerLogin">
+                    </div>
+                    <div>
+                        <label>Affiliate Login</label>
+                        <input type="text" formControlName="affiliateLogin">
+                    </div>
+                    <div>
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord">
+                    </div>
+                    <div>
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord">
+                    </div>
+                </div>
+
+                <div>
+
+                    <!-- <input type="submit"> -->
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </form>
+</div>
+<!-- <div class="text-center">
+    <div>Rows On the Page: {{rowsOnthePage}}</div>
+
+    <div> ResultCount: {{ResultCount}}</div>
+</div> -->
+
+<!-- <div class="fd display">
+    <div>
+        <input class="abc" type="date" />
+    </div>
+    <div>
+        <input type="date" />
+    </div>
+</div> -->
+<div class="fd">
+    <div class="text-center">
+        <div>Rows On the Page: {{rowsOnthePage}}</div>
+
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+
+        <div> Applied Filters: {{counter}}</div>
+        <!-- <div class="paginationdiv" *ngIf="PlayerList"> -->
+        <div class="paginationdiv">
+            <!-- <pagination-controls (pageChange)="p = $event" class="pagination"></pagination-controls> -->
+
+            <button class="nextprev" (click)="prev()">
+                 Previous</button>
+
+                    <button class="nextprev" (click)="next()"> Next > </button>
+
+                    <!-- <a href="#" class="previous">&laquo; Previous</a>
+            <a href="#" class="next">Next &raquo;</a> -->
+
+        </div>
+    </div>
+    <div>
+
+        <table class="fd  table_2" id="excel-table">
+            <thead>
+                <tr>
+                    <th>Player Login</th>
+                    <th>Nick Name</th>
+                    <th>shortId</th>
+                    <th>ALias</th>
+                    <th>Email</th>
+                    <th>Full Name</th>
+                    <th>Network</th>
+                    <th>Status</th>
+                    <th>Receive News</th>
+                    <th>Dcline Deposits</th>
+                    <th>Trusted</th>
+                    <th>suspicious</th>
+                    <th>BlackList</th>
+                    <th>Allow Chat</th>
+                    <th>Docs</th>
+                    <th>ipAddress</th>
+                    <th>Registation date</th>
+                    <th>Matches</th>
+                    <th>Balance</th>
+                    <th>Cash</th>
+                    <th>Bonus</th>
+                    <th>TM</th>
+                    <th>Debt</th>
+                    <th>CompPoints</th>
+                    <th>CP Level</th>
+                    <th>Deposits</th>
+                    <th>Withdrawals</th>
+                    <th>Transfers From Agents </th>
+                    <th>Transfers ToAgents </th>
+                    <th>Country</th>
+                    <!-- <th>Referred by</th> -->
+                    <th>Affiliate</th>
+                    <th>Group</th>
+                </tr>
+            </thead>
+            <!-- <tbody class="loader">  -->
+            <!-- <tbody > -->
+
+            <div clas='fd' *ngIf="loader">
+                <div class="loaderWraper">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            <tbody *ngIf="PlayerList">
+                <tr
+                    *ngFor="let List of PlayerList | paginate: { itemsPerPage: selectnum, currentPage: p }; let i=index">
+                    <td>{{List.player.account}}</td>
+                    <td>{{List.player.nickName}}</td>
+                    <td>{{List.player.shortId}}</td>
+                    <td>{{List.player.alias}}</td>
+                    <td>{{List.player.email}}</td>
+                    <td>{{List.player.fullName}}</td>
+                    <td>{{List.player.network}}</td>
+                    <td>{{List.player.status}}</td>
+                    <td>{{List.receiveNews}}</td>
+                    <td>{{List.declineDeposits}}</td>
+                    <td>{{List.trust}}</td>
+                    <td>{{List.suspicious}}</td>
+                    <td>{{List.suspiciousByBlackList}}</td>
+                    <td>{{List.chatAllowed}}</td>
+                    <td>{{List.storedDoc}}</td>
+                    <td>{{List.ipAddress}}</td>
+                    <!-- <td>{{dates}}</td> -->
+                    <td>{{List.regDate}}</td>
+                    <!-- <td *ngFor="let item of array_1">{{item.regDate}}</td> -->
+                    <td>{{List.gameCount}}</td>
+                    <td>{{List.balance.value}}</td>
+                    <td>{{List.cash.value}}</td>
+                    <td>{{List.bonus.value}}</td>
+                    <td>{{List.tournamentMoney.value}}</td>
+                    <td>{{List.debts.value}}</td>
+                    <td>{{List.compPoints.value}}</td>
+                    <td>{{List.levelInfo.compPointsLevelName}}</td>
+                    <td>{{List.deposits.value}}</td>
+                    <td>{{List.debts.value}}</td>
+                    <td>{{List.transfersFromAgents.value}}</td>
+                    <td>{{List.transfersToAgents.value}}</td>
+                    <!-- <td (input)="currentCountry = setCountryValue(List.country)">{{currentCountry}}</td> -->
+                    <!-- <td *ngFor="let  country of countrieslist"> {{country.title}}</td> -->
+                    <td>{{List.country}}</td>
+                    <td> {{List.affiliate.alias}} </td>
+                    <!-- <td *ngIf="List.affiliate.alias == undefined " >{{List.affiliate.alias}}</td> -->
+                    <td>{{List.permissionsGroupName}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- <select class="selt_bkp slct_wid float-left" (change)="onChange(selectnum)">
+        <option *ngFor="let count of itemsperpagecount" [selected]="selectnum == count.num">{{count.num}}
+        </option>
+      </select> -->
+
+        <!-- <select class="selt_bkp slct_wid float-left" (change)="onChange($event.target.value)">
+        <option *ngFor="let count of itemsperpagecount" [selected]="selectnum == count.num">{{count.num}}
+        </option>
+      </select>  -->
+        <div class="paginationdiv" *ngIf="PlayerList">
+            <pagination-controls (pageChange)="p = $event" class="pagination"></pagination-controls>
+
+            <!-- </pagination-controls> -->
+        </div>
+
+        <!-- <table>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>UserName</th>
+            <th>Phone</th>
+            
+        </tr>
+            <tr *ngFor="let List of namesLists">
+                <td> {{List.id}}</td>
+                <td>{{List.name}}</td>
+                <td>{{List.username}}</td>
+                <td>{{List.phone}}</td>
+            </tr>
+    </table> -->
+    </div>
+    <!-- <div class="loader"></div> -->
+</div>
+<div>
+    <!-- <div class="fd"> 
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div> -->
+</div>
+
+<div clas='fd' *ngIf="loader">
+    <!-- <td colspan="20"> -->
+    <!-- <div class="loaderWraper">
+            <div class="loader"></div>
+        </div> -->
+    <!-- </td> -->
+</div>

@@ -1,0 +1,265 @@
+<div>
+    <h4>Referred Players</h4>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="RefferedPlayersForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="df">
+                        <label>Currency</label>
+                        <select class="seclectopt" formControlName="Currency" [ngModel]="selectedCurrency">
+                            <option [ngValue]="list.guid" *ngFor="let list of currencys">{{list.description}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <div style="margin-right:20px;" *ngIf="AgentRevenueFromPlayersData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div *ngIf="ResultCount">Result Count: {{ResultCount}}</div>
+        <!-- <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div> -->
+    </div>
+</div>
+
+<div class="fd">
+    <table class="tablCode table_2" id="excel_table">
+        <thead>
+            <tr>
+                <th>Agent</th>
+                <th>Compaign Type</th>
+                <th>Registation Date</th>
+                <th>Activity</th>
+                <th>Actions</th>
+                <th>Initiator</th>
+                <th>Player Login</th>
+                <th>Nick Name</th>
+                <th>Current Balance</th>
+                <th>Reffering Date</th>
+                <th>Revenue</th>
+                <th>Proceeds</th>
+                <th>CP Level</th>
+            </tr>
+        </thead>
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <tbody *ngIf="AgentRevenueFromPlayersData">
+            <tr *ngFor="let List of AgentRevenueFromPlayersData,let i =index" (dblclick)="onDblClick(List)">
+                <td>{{List.initiator.login}}</td>
+                <td>{{List.campaign.name}}</td>
+                <td>{{changeSelect(List.initiator.regDate) }}</td>
+                <td>{{List.linkStatus}}</td>
+                <td>
+                    <div class="fd">
+                        <div class="trigger" *ngIf="List.linkStatus!=='Moved'">
+                            <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,List.guid)"></i>
+                            </a>
+
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                    <!-- <div class="fd"> -->
+                                    <div class="popup1 btnGrp">
+                                        <button *ngIf="List.linkStatus=='Disabled'"
+                                            (click)="setPlayerActions('ActiveLink',i)">Active Link</button>
+                                        <button *ngIf="List.linkStatus=='Enabled'"
+                                            (click)="setPlayerActions('DeactiveLink',i)">Deactive Link</button>
+                                        <button [disabled]="List.linkStatus=='Disabled'"
+                                            (click)="setPlayerActions('Transfer',i)">Transfer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{List.initiator.login}}</td>
+                <td class="hyperLink" (click)="PlayerExplore(List.player.account, List.player.guid, List)">{{List.player.account}}</td>
+                <td>{{List.player.nickName}}</td>
+                <td class="text-end">{{List.balance.wallet}} {{List.balance.value | numberFormat}}</td>
+                <td>{{changeSelect(List.referringDate)}}</td>
+                <td class="text-end">{{List.balance.wallet}} {{List.revenue.value | numberFormat}}</td>
+                <td class="text-end">{{List.balance.wallet}} {{List.unpaidReferredRevenue.value | numberFormat}}</td>
+                <td>{{List.player.compPointsLevel.name }}</td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="AgentRevenueFromPlayersData && AgentRevenueFromPlayersData.length>0">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-end text-nowrap">SUM ={{currencySymbol}} {{currentBalanceSum | numberFormat}}</td>
+                <td></td>
+                <td class="text-end text-nowrap">SUM ={{currencySymbol}} {{revenueSum | numberFormat}}</td>
+                <td class="text-end text-nowrap">SUM ={{currencySymbol}} {{ProceedsSum | numberFormat}}</td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="TransferPopup">
+    <div class="popup_1 pop_sm" *ngIf="TransferPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Transfer</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 ">
+                <!-- <b [ngClass]="Msg=='Technical error'? 'text-danger p_5':'text-success p_5'" class="p_5">{{Msg}} </b> -->
+                <div class="m_3">
+                    <label class="col-sm-6">Agent</label>
+                  <span>{{Actiondataforplayer.initiator.login}}</span>
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-6">Transfer Type</label>
+                    <select class="col-sm-6" [(ngModel)]="TransferType" >
+                        <option [ngValue]="type.guid" *ngFor="let type of TransferDirectionTypesList">{{type.value}} </option>
+                    </select>
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-6">wallet</label>
+                    <select class="col-sm-6" [(ngModel)]="VisibleselectedCurrency">
+                        <option [ngValue]="list.guid" *ngFor="let list of VisibleWalletList">{{list.description}}
+                        </option>
+                    </select>
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-6">Agent Balance</label>
+                    <span class="col-sm-6" *ngIf="this.AgentBalance">{{AgentBalance[0]?.balance.value}}</span>
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-6">Player </label>
+                    <span class="col-sm-6">{{Actiondataforplayer.player.account}}</span>
+
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-6">Player Balance</label>
+                    <span class="col-sm-6" *ngIf="this.PlayerBalance">{{PlayerBalance[0]?.cash?.value}}</span>
+                    <div class="df m_3">
+                        <p class="col-sm-6">including Cash(in Play):</p>
+                        <span class="col-sm-6" *ngIf="this.PlayerBalance">{{PlayerBalance[0]?.cash?.value}}</span>
+                    </div>
+                    <div class="df">
+                        <p class="col-sm-6">including Bonush(in Play):</p>
+                        <span class="col-sm-6" *ngIf="this.PlayerBalance">{{PlayerBalance[0]?.bonus?.value}}</span>
+                    </div>
+                </div>
+                <div class="m_3">
+
+                    <label class="col-sm-6">Avaliable Player's Cash Balance</label>
+                    <span class="col-sm-6" *ngIf="this.PlayerBalance">{{PlayerBalance[0]?.cash?.value}}</span>
+                </div>
+                <div class="m_3">
+
+                    <label class="col-sm-6">Amount</label>
+                    <input class="col-sm-6" [(ngModel)]="Amount" type="number" min="0"
+                        oninput="this.value = Math.abs(this.value)" />
+                </div>
+                <div class="m_3">
+
+                    <label class="col-sm-6">Comment</label>
+                    <textarea class="col-sm-6" [(ngModel)]="TransferComment"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1"  [disabled]="Amount==0" (click)="Transfer()"> Okay </button>
+            <button class="btn_grade_2" (click)="SuccessPop()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->
+
+<!-- ########################## Referred player popup ###################################### -->
+
+<div class="black_cover" *ngIf="isPopup"></div>
+<div class="popup_1 pop_sm text-black" *ngIf="isPopup">
+    <div class="PopupHead">
+        <h5 class="text-center">Referred Player</h5>
+        <span class="closetop" (click)="close_popup()"> <img src="assets/icons/closePop.svg">
+        </span>
+    </div>
+    <div class="p-3">
+        <div class="df mb-2">
+            <label class="col-sm-6">Agent</label>
+            <label>{{selectedRowData.initiator.login}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Campaingn Type</label>
+            <label>{{selectedRowData.campaign.name}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Registation Date</label>
+            <label>{{changeSelect(selectedRowData.initiator.regDate)}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Activity</label>
+            <label> {{selectedRowData.linkStatus}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Initiator</label>
+            <label> {{selectedRowData.initiator.login}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Player Login</label>
+            <label> {{selectedRowData.player.account}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">NickName</label>
+            <label> {{selectedRowData.player.nickName}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Current Balance</label>
+            <label>{{selectedRowData.balance.wallet}} {{selectedRowData.balance.value | numberFormat}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">referring Date</label>
+            <label>{{changeSelect(selectedRowData.referringDate)}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Revenue</label>
+            <label>{{selectedRowData.balance.wallet}} {{selectedRowData.revenue.value | numberFormat}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">Proceeds</label>
+            <label>{{selectedRowData.balance.wallet}} {{selectedRowData.unpaidReferredRevenue.value | numberFormat}}</label>
+        </div>
+        <div class="df mb-2">
+            <label class="col-sm-6">CP Level</label>
+            <label>{{selectedRowData.player.compPointsLevel.name }}</label>
+        </div>
+    </div>
+
+    <div class="bottomFix">
+        <button class="btn_grade_2" (click)="close_popup()"> OK </button>
+    </div>
+</div>

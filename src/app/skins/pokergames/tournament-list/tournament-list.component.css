@@ -1,0 +1,78 @@
+.tablCoderow th{
+    position: sticky;
+    top:0
+}
+.div_flex{
+    align-items: center;
+}
+
+.tournet-explorer{
+    cursor: pointer;
+    text-decoration: underline;
+    color: rgb(62, 10, 248);
+  }
+
+  .trigger {
+    margin: auto;
+    position: relative;
+    text-align: center;
+    border: none;
+    padding: 5px 8px;
+    background: #4aab4e;
+    border-radius: 50px;
+    color: #fff;
+    width: 30px;
+    cursor: pointer;
+  }
+
+  .popup1 {
+    position: absolute;
+    left: -175px;
+    top: 25px;
+    transform: translate3d(0, -50%, 0);
+    background: none;
+    color: #000;
+    max-width: 256px;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19) !important;
+    z-index: 1;
+  }
+
+
+
+  .popup1.btnGrp button:hover {
+    background: #dd6c0c;
+    color: #fff;
+  }
+  
+  .popup1.btnGrp button {
+    margin: 0px;
+    border: none;
+    padding: 7px 10px;
+    border-bottom: 1px solid #b0adad;
+  } 
+  
+  .popup1.btnGrp {
+    display: grid;
+  }
+  button[disabled] {
+    /* border: 1px solid #999999; */
+    border: none;
+    background: #cccccc;
+    color: #666666;
+    cursor:no-drop
+  }
+  button[disabled]:hover {
+    background:  #cccccc !important;
+    color: #666666 !important;
+  }
+
+  .spinnerTrue {
+    position: fixed;
+    z-index: 999;
+    left: 45%;
+    right: 0;
+    top: 40%;
+    margin: auto;
+  }
+
+  

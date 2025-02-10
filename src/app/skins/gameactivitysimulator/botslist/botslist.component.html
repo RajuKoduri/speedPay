@@ -1,0 +1,103 @@
+<div>
+    <h4>Bots List </h4>
+</div>
+    
+    <!-- filter button -->
+    <div class="fd">
+        <button class="fillterbtn font_16" (click)="fillterMenu()">Filters
+            <i *ngIf="!FillterList" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+            <i *ngIf="FillterList" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+        </button>
+        <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportExcel()"> Export Excel</button>
+        <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export CSV</button>
+    </div>
+    <!-- filter button end -->
+    
+    <!-- filtermenu start -->
+    <div class="fd filterDiv" *ngIf="FillterList">
+        <form [formGroup]="filterForm">
+            <div class="p_25">
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xl-4">
+                       
+                        <div class="div_flex p_5_10">
+                            <label>Nick Name</label>
+                            <input type="text" formControlName="nickName">
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Opened Sessions</label>
+                            <input  class="Birthdayinputs" type="text"> : <input  class="Birthdayinputs" type="text">
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Status</label>
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="statusDropdownSetting" [data]="botSettingStatusList"
+                                    [(ngModel)]="selectedBotSettingStatusList" formControlName="status">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>First Record</label>
+                            <div *ngIf="f['firstRecord']" class="first-record">
+                                <h5 *ngIf="f['firstRecord']?.hasError('required')"><b class="bi bi-x-circle-fill p-1"
+                                    title="Value should not be empty"></b> </h5>
+                                <h5 *ngIf="f['firstRecord']?.hasError('min') || f['firstRecord']?.hasError('max')">
+                                    <b class="bi bi-x-circle-fill p-1"
+                                    title="Value must be between 1 and 999999999."></b></h5>
+                            </div>
+                            <input type="text" formControlName="firstRecord"> 
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Page Size</label>
+                            <div *ngIf="f['maxCountRecord']" class="first-record">
+                                <h5 *ngIf="f['maxCountRecord']?.hasError('required')"><b class="bi bi-x-circle-fill p-1"
+                                    title="Value should not be empty"></b> </h5>
+                                <h5 *ngIf="f['maxCountRecord']?.hasError('min') || f['maxCountRecord']?.hasError('max')">
+                                    <b class="bi bi-x-circle-fill p-1"
+                                    title="Value must be between 1 and 999999999."></b></h5>
+                            </div>
+                            <input type="text" formControlName="maxCountRecord"> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- filtermenu end  -->
+    
+    <div class="fd">
+        <button class="fillterbtn m_l_5" style="float: right;" (click)="onFormSubmit()">Submit</button>
+        <div class="df">
+            <div style="margin-right:20px;" *ngIf="botsList">Rows On the Page: {{rowsOnthePage}}</div>
+            <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                    the filters</b></div>
+        </div>
+    </div>
+    <!-- table -->
+    <div class="fd table_2">
+        <div>
+            <table class="tablCode" id="excel_table">
+                <div *ngIf="loader">
+                    <div class="loaderWraper">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+                <thead>
+                    <tr>
+                        <th>Nickname</th>
+                        <th>Personal Data</th>
+                        <th>Opened Sessions</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="botsList">
+                    <tr>
+    
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

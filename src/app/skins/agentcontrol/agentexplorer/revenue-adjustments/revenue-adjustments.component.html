@@ -1,0 +1,105 @@
+<div>
+    <h4> Revenue Adjustments</h4>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+  <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="AgentRevenueAdjustmentForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reporting Period Start</label>
+                        <input class="Birthdayinputs" format="yyyy-MM-dd" step="1" type="date"
+                            formControlName="ReportingPeriodFrom">
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Reporting Period End</label>
+                        <input class="Birthdayinputs" format="yyyy-MM-dd" step="1" type="date"
+                            formControlName="ReportingPeriodTo">
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Admin</label>
+                        <input type="text" formControlName="Admin">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Adjustment Amount</label>
+                        <input class="Birthdayinputs" type="number" formControlName="AdjustmentAmountFrom">
+                        <input class="Birthdayinputs" type="number" formControlName="AdjustmentAmountTo">
+                    </div>
+                </div>
+                
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <div style="margin-right:20px;" *ngIf="AgentRevenueAdjustmentData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div *ngIf="ResultCount">Result Count: {{ResultCount}}</div>
+        <!-- <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div> -->
+    </div>
+</div>
+<div class="fd">
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="fd table_2">
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Agent</th>
+                <th>Admin</th>
+                <th>Amount</th>
+                <th>Comment</th>
+                <th>Face</th>
+            </tr>
+        </thead>
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <tbody *ngIf="AgentRevenueAdjustmentData">
+            <tr *ngFor="let List of AgentRevenueAdjustmentData,let i =index">
+                <td>{{changeSelect(List.date)}}</td>
+                <td>{{List.agent.login}}</td>
+                <td>{{List.admin.login}}</td>
+                <td class="text-end">{{List.amount.value | numberFormat}}</td>
+                <td>{{List.comment}}</td>
+                <td>{{List.agent.network}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>

@@ -1,0 +1,215 @@
+<div>
+    <h1>Black List</h1>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<!-- <div>
+    <input type="file" accept="image/*"
+    capture="user">
+    <input type="file" accept="image/*"
+    capture="environment">
+</div> -->
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <!-- <div class="df div_flex p_5_10">
+                        <label>Date</label>
+                        <input class="Birthdayinputs" format="yyyy-MM-dd HH:mm:ss" type="datetime-local" step="1"
+                            formControlName="Datefrom">
+                        <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                            formControlName="Dateto">
+                    </div> -->
+                    <div class="div_flex p_5_10">
+                        <label>Start Date</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            formControlName="startTime" [(ngModel)]="selectedTime" name="selectedTime"
+                            [ngModelOptions]="{standalone: true}" (change)="timechnage($event)" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>End Date</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1" formControlName="endTime"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Value</label>
+                        <input type="text" formControlName="Value">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Types</label>
+                        <!-- <select class="seclectopt" formControlName="Types">
+                            <option [ngValue]="Blist.guid" *ngFor="let  Blist of Blacklistmenu">{{Blist.value}}
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingsUserTypes" [data]="Blacklistmenu"
+                                [(ngModel)]="selectBlacklist" (onSelect)="onItemSelectUsertypes($event)"
+                                (onDeSelect)="OnItemDeSelectUsertypes($event)"
+                                (onSelectAll)="onSelectAllUsertypes($event)"
+                                (onDeSelectAll)="onDeSelectAllUsertypes($event)" formControlName="Types">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-12 col-lg-6 col-xl-4">
+                </div> -->
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="fd">
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="onFormSubmit()"
+        [disabled]="steddate || timeerror">Submit</button>
+    <div class="df">
+        <!-- <button class="fillterbtn m_l_5" style="float:right;margin-left: 1px;" (click)="onFormSubmit()">Submit</button> -->
+        <div style="margin-right:20px;" *ngIf="Playerbalcklist">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd table_2">
+    <div>
+        <table class="tablCode" id="excel_table">
+            <div *ngIf="loader">
+                <div class="loaderWraper">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            <thead>
+                <tr>
+                    <th>S.no</th>
+                    <th *ngIf="playerExplorer">Player</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <!-- <th>Actions</th> -->
+                </tr>
+            </thead>
+            <tbody *ngIf="Playerbalcklist">
+                <tr (dblclick)=" onClick(i)" *ngFor="let List of Playerbalcklist, let i =index">
+                    <td>{{i+1}}</td>
+                    <td *ngIf="playerExplorer"></td>
+                    <td>{{List.DateFormat }} </td>
+                    <!-- <td>{{List.date | date:'medium':'IST +9:30 / +10:30'}} (IST)</td> -->
+                    <!-- <td> {{List.currentDateTime| date:'yyyy-MM-dd'}}</td> -->
+                    <td>
+                        <div class="fd">
+                            <div class="trigger">
+                                <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,List.guid)"></i>
+                                </a>
+                                <div *ngIf="popupArrow" class="fd">
+                                    <div class="popup1 " *ngIf="SeletedIconIndex==i">
+                                        <button (click)="setPlayerActions(List,i)">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{List.type}}</td>
+                    <td>{{List.value}}</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- pagination-controls -->
+<div class="fd" *ngIf="Playerbalcklist && Playerbalcklist.length > 0">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || Playerbalcklist==null" (click)="fastbackforward()">
+            <i class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||Playerbalcklist==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="Playerbalcklist">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="Playerbalcklist==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="Playerbalcklist==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- **************************POPUP************************************ -->
+<div class="black_cover" *ngIf="PlayerbalcklistPopup" (click)="closepopup()"></div>
+<div class="popup_1 pop_sm" *ngIf="PlayerbalcklistPopup">
+    <div class="PopupHead">
+        <h5 class="text-center">Black List Entry</h5>
+        <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13">
+        <div class="fd p_5 ">
+
+            <div class="df m_3">
+                <label class="col-sm-6"> Date </label>
+                <span class="col-sm-6">{{onePlayerbalcklist.DateFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Type </label>
+                <span class="col-sm-6">{{onePlayerbalcklist.type}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Value </label>
+                <span class="col-sm-6">{{onePlayerbalcklist.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6"> Group </label>
+                <span class="col-sm-6">{{onePlayerbalcklist.group}}</span>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Okay </button>
+            <!-- <button class="btn_grade_2" (click)="closepopup()"> Cancel </button> -->
+        </div>
+    </div>
+</div>
+
+<!-- &&&&&&&&&&&&&&&&&&&&&&&&&&& Delete conformation popup &&&&&&&&&&&&&&&&&&&&&&&&&&&&& -->
+
+<div class="black_cover " *ngIf="conformationPopup">
+    <div class="popup_1 pop_sm">
+        <div class="PopupHead" *ngIf="conformationPopup">
+            <h5 class="text-center">Warning</h5>
+            <span class="closetop" (click)="conformation('No')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <!-- <i class="p_5 text-danger">{{errorMessageText}}  Technical Error... </i> -->
+                <i class="p_5 text-danger">Do you want to delete the selected record ?</i>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1 " (click)="conformation('Yes')"> Yes </button>
+            <button class="btn_grade_2 " (click)="conformation('No')"> No </button>
+        </div>
+    </div>
+</div>

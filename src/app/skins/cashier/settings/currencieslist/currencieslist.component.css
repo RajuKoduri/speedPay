@@ -1,0 +1,16 @@
+.checkclick{
+  pointer-events: none;
+}
+.spinnerTrue {
+  position: fixed;
+  z-index: 999;
+  left: 50%;
+  right: 0;
+  top: 50%;
+  margin: auto;
+}
+.fd.showErorr, .fd.showErorr p {
+  padding: 5px;
+  font-size: 14px;
+  margin: 0px;
+}

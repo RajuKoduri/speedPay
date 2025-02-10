@@ -1,0 +1,711 @@
+<div>
+    <h3> Tournament List </h3>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <!-- <div class="div_flex p_5_10">
+                        <label>Date Period</label>
+                        <input class="Birthdayinputs" format="yyyy-MM-dd HH:mm:ss" type="datetime-local" step="1"
+                            formControlName="Datefrom" [(ngModel)]="startdate" [max]="startdate">
+                        <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                            formControlName="Dateto">
+                    </div> -->
+                    <div class="div_flex p_5_10">
+                        <label>StartDate </label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                <div class="div_flex p_5_10">
+                    <label>Name</label>
+                    <input type="text" formControlName="Name" />
+                </div>
+                <div class="div_flex p_5_10">
+                    <label>Status</label>
+                    <!-- <select class="seclectopt" formControlName="Status">
+                        <option [ngValue]="StatusList.guid" *ngFor="let StatusList of TournamentStatusList">
+                            {{StatusList.value}}
+                        </option>
+                    </select> -->
+
+                    <div class="multi_dropdown">
+                        <ng-multiselect-dropdown [settings]="dropdownSettingStatus" [data]="TournamentStatusList"
+                            [(ngModel)]="selecttournamnetSTATUS" (onSelect)="onItemSelectStatus($event)"
+                            (onDeSelect)="OnItemDeSelectStatus($event)"
+                            (onSelectAll)="onSelectAllStatus($event)"
+                            (onDeSelectAll)="onDeSelectAllStatus($event)" formControlName="Status">
+                        </ng-multiselect-dropdown>
+                    </div>
+                </div>
+            </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                  
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <!-- </div> -->
+                    <!-- <div class="col-12 col-sm-4 col-md-4 col-lg-4"> -->
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+                </div>
+
+    
+
+                <!-- <div>
+                        <label>Tournament Setting Id</label>
+                        <input type="text" formControlName="TournamentSettingId" />
+                    </div>
+                   
+                    <div>
+                        <label>Make a Deal</label>
+                        <input type="checkbox" formControlName="MakeaDeal" checked />
+                    </div>
+                    <div>
+                        <label>Manual Prize Pool</label>
+                        <input type="checkbox" formControlName="ManualPrizePool" />
+                    </div>
+                    <div>
+                        <label>Branded Tournament</label>
+                        <input type="checkbox" formControlName="BrandedTournament" />
+                    </div>
+
+                    <div>
+                        <label>Synchronized Break</label>
+                        <input type="checkbox" formControlName="SynchronizedBreak" />
+                    </div> 
+            </div>-->
+                <!-- <div class="col-sm-4">
+                <div>
+                        <label>Currency </label>
+                        <select class="seclectopt" formControlName="Currency">
+                            <option [ngValue]="Wallet.currency" *ngFor="let  Wallet of walletlists">
+                                {{Wallet.description}}
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Game </label>
+                        <input type="text" formConrolName="Game" />
+                    </div>
+
+                    <div>
+                        <label>Total Cost </label>
+                        <input class="Birthdayinputs" type="text" formControlName="TotalCostfrom" />
+                        <input class="Birthdayinputs" type="text" formControlName="TotalCostto" />
+                    </div>
+                    <div>
+                        <label>BuyIn</label>
+                        <input class="Birthdayinputs" type="text" formControlName="BuyInfrom" />
+                        <input class="Birthdayinputs" type="text" formControlName="BuyInto" />
+                    </div>
+                    <div>
+                        <label>Fee</label>
+                        <input class="Birthdayinputs" type="text" formControlName="Feefrom" />
+                        <input class="Birthdayinputs" type="text" formControlName="Feeto" />
+                    </div>
+                    <div>
+                        <label>Knockout Bounty</label>
+                        <input class="Birthdayinputs" type="text" formControlName="KnockoutBountyfrom" />
+                        <input class="Birthdayinputs" type="text" formControlName="KnockoutBountyto" />
+                    </div> 
+            </div>-->
+                <!-- <div class="col-sm-4">
+                 <div>
+                        <label>Registered</label>
+                        <input class="Birthdayinputs" type="text" formControlName="Registeredfrom" />
+                        <input class="Birthdayinputs" type="text" formControlName="Registeredto" />
+                    </div>
+                    <div>
+                        <label>Min Players</label>
+                        <input class="Birthdayinputs" type="text" formControlName="MinPlayersfrom" />
+                        <input class="Birthdayinputs" type="text" formControlName="MinPlayersto" />
+                    </div>
+                    <div>
+                        <label>Schedule Type</label>
+                        <select class="seclectopt" formControlName="ScheduleType">
+                            <option [ngValue]="Schedulelist.guid" *ngFor="let  Schedulelist of ScheduleTypeList">
+                                {{Schedulelist.value}}
+                            </option>
+                        </select> 
+                    </div>
+                    <div>
+                        <label>Status</label>
+                        <select class="seclectopt" formControlName="Status">
+                            <option [ngValue]="StatusList.guid" *ngFor="let StatusList of TournamentStatusList">
+                                {{StatusList.value}}
+                            </option>
+                        </select> 
+                    </div> 
+                    <div>
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <div>
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+            </div>-->
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style=" margin-top:4px; float: right;" (click)="onFormSubmit()"
+        [disabled]="steddate || timeerror">Submit</button>
+    <div class="df m_5">
+        <div style="margin-right:20px;" *ngIf="pokerTournamentData">Rows On the Page: {{rowsOnthePage}} </div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="fd table_2">
+        <table class=" tablCode" id="excel_table" *ngIf="!playerExporer">
+            <!-- <div class="fd">
+    <div class="table_2">
+
+        <table class="tablCode fd "> -->
+            <thead>
+                <tr class="tablCoderow">
+                    <!-- <th>Tournament Setting Id</th>
+                    <th>Creation Date</th>
+                    <th>Start Date </th>
+                    <th>Name</th>
+                    <th>Currency</th>
+                    <th>Game</th>
+                    <th>Total Cost</th>
+                    <th>-Buy-In</th>
+                    <th>-Fee</th>
+                    <th>-Knockout Bounty</th>
+                    <th>Guaranteed Prize</th>
+                    <th>Total Buy-Ins</th>
+                    <th>Total Fee</th>
+                    <th>Registered/Min players</th>
+                    <th>Comp Points</th>
+                    <th>Payout Table</th>
+                    <th>Level Length, Min</th>
+                    <th>Seats</th>
+                    <th>Status</th>
+                    <th>Rule Name</th>
+                    <th>ManualPrizePoolTourney </th> -->
+
+
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>State</th>
+                    <th>StartDate</th>
+                    <th>Actions</th>
+                    <th>Tot. Entries</th>
+                    <th>BuyIn Amt</th>
+                    <th>Entry Fee</th>
+                    <th>Tot. Prize Pool</th>
+                    <th>No. of R&A</th>
+                    <!-- <th>Revenue</th> -->
+                    <th>Expenses</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="pokerTournamentData">
+                <tr *ngFor="let list of pokerTournamentData;let i=index " (dblclick)="PlayerPopup(i)">
+                    <!-- <td></td>
+                    <td>{{list.createDate}} </td>
+                    <td>{{list.startDate}}</td>
+                    <td>{{list.caption}}</td>
+                    <td>{{list.buyIn.wallet}}</td>
+                    <td>{{list.gameName}}</td>
+                    <td>{{list.totalCost.value}}</td>
+                    <td>{{list.buyIn.value}}</td>
+                    <td>{{list.fee.value}}</td>
+                    <td>{{list.knockoutBounty.value}}</td>
+                    <td>{{list.guarantedPrize.value}}</td>
+                    <td>{{list.totalBuyIn.value}}</td>
+                    <td>{{list.totalFee.value}}</td>
+                    <td>{{list.registered}}/{{list.minPlayers}}</td>
+                    <td></td>
+                    <td>{{list.payoutTable}}</td>
+                    <td></td>
+                    <td>{{list.seats}}</td>
+                    <td>{{list.status}}</td>
+                    <td>{{list.accessRuleName}}</td>
+                    <td>
+                        <input *ngIf="list.manualPrizePoolTourney==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="list.manualPrizePoolTourney==false" type="checkbox" class="checkclick" />
+                    </td> -->
+
+                    <td>{{i+1}}</td>
+                    <td class="tournet-explorer" (click)="tournamentExplore(list?.guid,list?.caption,list.status)">{{list.caption}}
+                    </td>
+                    <td>{{list.status}}</td>
+                    <td>{{ changeSelect(list.startDate)}}</td>
+
+                    <td>
+                        <div class="fd">
+                            <div class="trigger">
+                                <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,list.guid)">
+                                    </i>
+                                </a>
+                                <div *ngIf="popupArrow" class="fd">
+                                    <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                        <!-- <button [disabled]="list.active==true" (click)="setSitngoActions('Enabled',i)">Enable Table</button>
+                                        <button [disabled]="list.active==false" (click)="setSitngoActions('disabled',i)">Disable Table</button> -->
+                                        <button [disabled]="list.status!=='Running'"
+                                            (click)="setSitngoActions('Pause',i)">Pause Tournament</button>
+                                        <button [disabled]="list.status!=='Paused'"
+                                            (click)="setSitngoActions('Continue',i)">Continue Tournament</button>
+                                        <button
+                                            [disabled]="list.status=='Completed'||list.status=='Canceled (After start)'||list.status=='Canceled (Before start)'||list.status=='Cancelling'"
+                                            (click)="setSitngoActions('Cancel',i)">Cancel Tournament</button>
+                                        <button [disabled]="checkRegisterPlayerAction(list.status)"
+                                            (click)="getRegisterPlayerAction(list?.guid)">Register Player</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+
+                    <td>{{list.registered}}</td>
+                    <td class="text-end">{{list.buyIn.value |numberFormat}}</td>
+                    <td class="text-end">{{list.fee.value |numberFormat}}</td>
+                    <td>{{list.buyIn.value*list.registered}}</td>
+                    <td>{{list.totalRebuyCount+list.totalAddonCount}}</td>
+                    <!-- <td></td> -->
+                    <td>{{list.buyIn.value*list.registered*0.1}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+        <table class=" tablCode" id="excel_table" *ngIf="playerExporer">
+            <!-- <div class="fd">
+    <div class="table_2">
+
+        <table class="tablCode fd "> -->
+            <thead>
+                <tr class="tablCoderow">
+                    <th>Player</th>
+                    <th>Creation Date</th>
+                    <th>Registration Date</th>
+                    <th>Start Date </th>
+                    <th>Finish Date</th>
+                    <th>Tournament Setting Id</th>
+                    <th>Name</th>
+                    <th>Game</th>
+                    <th>Initial Balance</th>
+                    <th>Total Cost</th>
+                    <th>-Buy-In</th>
+                    <th>-Fee</th>
+                    <th>-Marketing Fee</th>
+                    <th>-Knockout Bounty</th>
+                    <th>Buy-In Type</th>
+                    <th>Rebuy</th>
+                    <th>Comp Points</th>
+                    <th>Guaranteed Prize</th>
+                    <th>Registered/Min players</th>
+                    <th>Payout Table</th>
+                    <th>Level Length, Min</th>
+                    <th>Seats</th>
+                    <th>Status</th>
+                    <th> Place</th>
+                    <th> Prize</th>
+                    <th> Closining Balance</th>
+                    <th>Actions</th>
+
+
+
+
+
+
+
+
+
+
+                    <!--                    
+                    <th>Currency</th>
+                    <th>Total Buy-Ins</th>
+                    <th>Total Fee</th>
+                    <th>Rule Name</th>
+                    <th>ManualPrizePoolTourney </th>
+                    
+
+
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>State</th>
+                    <th>StartDate</th>
+                    
+                    <th>Tot. Entries</th>
+                    <th>BuyIn Amt</th>
+                    <th>Entry Fee</th>
+                   
+                    <th>No. of R&A</th> -->
+                    <!-- <th>Revenue</th> -->
+                    <!-- <th>Expenses</th> -->
+                </tr>
+            </thead>
+            <tbody *ngIf="pokerTournamentData">
+                <tr *ngFor="let list of pokerTournamentData;let i=index " (dblclick)="PlayerPopup(i)">
+                    <td>{{list?.player?.login}}</td>
+                    <td>{{changeSelect(list?.history.createDate)}} </td>
+                    <td>{{changeSelect(list?.history?.registrationStartDate)}}</td>
+                    <td>{{changeSelect(list?.history?.startDate)}}</td>
+                    <td>{{changeSelect(list?.history?.finishDate)}}</td>
+                    <td></td>
+                    <td class="tournet-explorer"
+                        (click)="tournamentExplore(list?.history?.guid,list?.history?.caption,list?.history.status)">
+                        {{list?.history?.caption}}</td>
+                    <td>{{list?.history?.gameName}}</td>
+                    <td class="text-end">{{list?.initialBalance?.value | numberFormat}}</td>
+                    <td class="text-end">{{list?.totalCost.value | numberFormat}}</td>
+                    <td class="text-end">{{list?.buyIn.value | numberFormat}}</td>
+                    <td class="text-end">{{list?.fee.value | numberFormat}}</td>
+                    <td class="text-end">{{list?.history?.maintenanceFee?.value | numberFormat}}</td>
+                    <td class="text-end">{{list?.knockoutBounty.value | numberFormat}}</td>
+                    <td>{{list?.registrationType}}</td>
+                    <td class="text-end">{{list?.rebuy?.value | numberFormat}} </td>
+                    <td class="text-end">{{list?.compPoints?.value | numberFormat}}</td>
+                    <td class="text-end">{{list?.history?.guarantedPrize.value | numberFormat}}</td>
+                    <td>{{list?.history?.registered}}/{{list?.history?.minPlayers}}</td>
+                    <td>{{list?.history?.payoutTable}}</td>
+                    <td> {{list?.history?.levelLength}} </td>
+                    <td>{{list?.history?.seats}}</td>
+                    <td>{{list?.history?.status}}</td>
+                    <td>{{list?.place?.from}}-{{list?.place?.to}}</td>
+                    <td class="text-end">{{list?.prize?.value | numberFormat}}</td>
+                    <td class="text-end">{{list?.closingBalance?.value | numberFormat}}</td>
+
+                    <td>
+                        <div class="fd">
+                            <div class="trigger">
+                                <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,list.guid)">
+                                    </i>
+                                </a>
+                                <div *ngIf="popupArrow" class="fd">
+                                    <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                        <!-- <button [disabled]="list.active==true" (click)="setSitngoActions('Enabled',i)">Enable Table</button>
+                                        <button [disabled]="list.active==false" (click)="setSitngoActions('disabled',i)">Disable Table</button> -->
+                                        <button [disabled]="list.status!=='Running'"
+                                            (click)="setSitngoActions('Pause',i)">Pause Tournament</button>
+                                        <button [disabled]="list.status!=='Paused'"
+                                            (click)="setSitngoActions('Continue',i)">Continue Tournament</button>
+                                        <button
+                                            [disabled]="list.status=='Completed'||list.status=='Canceled (After start)'||list.status=='Canceled (Before start)'||list.status=='Cancelling'"
+                                            (click)="setSitngoActions('Cancel',i)">Cancel Tournament</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+
+
+
+
+                    <!-- <td>{{list.buyIn.wallet}}</td>
+                    <td>{{list.totalBuyIn.value}}</td>
+                    <td>{{list.totalFee.value}}</td>
+                    <td>{{list.accessRuleName}}</td>
+                    <td>
+                        <input *ngIf="list.manualPrizePoolTourney==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="list.manualPrizePoolTourney==false" type="checkbox" class="checkclick" />
+                    </td>
+
+                    <td>{{i+1}}</td>
+                    <td class="tournet-explorer" (click)="tournamentExplore(list?.guid,list?.caption)">{{list.caption}}</td>
+                    <td>{{list.status}}</td>
+                    <td>{{ changeSelect(list.startDate)}}</td> -->
+
+
+
+
+                    <!-- <td>{{list.registered}}</td>
+                    <td class="text-end">{{list.buyIn.value |numberFormat}}</td>
+                    <td class="text-end">{{list.fee.value |numberFormat}}</td>
+                    <td>{{list.buyIn.value*list.registered}}</td>
+                    <td>{{list.totalRebuyCount+list.totalAddonCount}}</td> -->
+                    <!-- <td></td> -->
+                    <!-- <td>{{list.buyIn.value*list.registered*0.1}}</td> -->
+                </tr>
+                
+            </tbody>
+        </table>
+
+
+
+
+
+    </div>
+    <div class="fd" *ngIf="pokerTournamentData">
+        <div class="pagecount">
+            <button class="Pagebtns" [disabled]="PageCount==1 || pokerTournamentData==null"
+                (click)="fastbackforward()"><i class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||pokerTournamentData==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="pokerTournamentData">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="pokerTournamentData==null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="pokerTournamentData==null || pagecontrolbtn" (click)="fastforward()">
+                <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- **************************** Register Player ********************************** -->
+
+<div class="black_cover" *ngIf="RegisterPlayerAction">
+    <div class="popup_1" *ngIf="RegisterPlayerAction">
+        <div class="PopupHead">
+            <h5 class="text-center">Register Player </h5>
+            <span class="closetop" (click)="registerPlayerclosepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="p_5">
+                <app-registerPlayer [registerPlayerData]="pokerPlayerData"
+                    (registerPlayerButton)="updateRegisterPlayerButton()"
+                    (registerclosepopUp)="registrationApiStatus($event)"
+                    ></app-registerPlayer>
+            </div>
+        </div>
+
+        <!-- <div clas='fd' *ngIf="registerLoader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div> -->
+
+        <div class="black_cover" *ngIf="registerLoader"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="registerLoader">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+
+
+
+
+        <div class="bottomFix"> 
+            <button class='btn_grade_1' [disabled]="registerDisabledButton" (click)="registerPlayerepopup()">
+                Register </button>
+            <button class="btn_grade_2" (click)="registerPlayerclosepopup()"> close </button>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<!-- **************************** Register Player ********************************** -->
+
+
+
+<!-- **************************** Register Success and Error popup ********************************** -->
+
+<div class="black_cover" *ngIf="registerSuccessFailurePopup">
+    <div class="popup_1 pop_sm" *ngIf="registerSuccessFailurePopup">
+        <div class="PopupHead">
+            <h5 class="text-center" *ngIf="registerSuccessFailurePopup">Alert</h5>
+            <span class="closetop" (click)="registerSuccessFailurePopupClose()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15 text-center">
+            <div class="p_5" *ngIf="registerSuccessFailurePopup">
+               <h4>{{registerSuccessFailurePopup}}</h4>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_2" (click)="registerSuccessFailurePopupClose()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- **************************** Register Success and Error popup ********************************** -->
+
+
+
+
+
+
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="pokerTournamentDatapopup">
+    <div class="popup_1 pop_sm" *ngIf="pokerTournamentDatapopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Poker Tournament History </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df">
+                    <label class="col-sm-6"> Tournament Setting Id </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Creation Date </label>
+                    <span class="col-sm-6">{{changeSelect(pokerPlayerData.createDate)}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Start Date </label>
+                    <span class="col-sm-6">{{changeSelect(pokerPlayerData.startDate)}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Name </label>
+                    <span class="col-sm-6">{{pokerPlayerData.caption}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Currency </label>
+                    <span class="col-sm-6">{{pokerPlayerData.buyIn.wallet}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Game </label>
+                    <span class="col-sm-6">{{pokerPlayerData.gameName}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Total Cost </label>
+                    <span class="col-sm-6">{{pokerPlayerData.totalCost.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">-Buy-In </label>
+                    <span class="col-sm-6">{{pokerPlayerData.buyIn.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> -Fee </label>
+                    <span class="col-sm-6">{{pokerPlayerData.fee.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> -Knockout Bounty </label>
+                    <span class="col-sm-6">{{pokerPlayerData.knockoutBounty.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Guaranteed Prize </label>
+                    <span class="col-sm-6">{{pokerPlayerData.guarantedPrize.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Total Buy-Ins </label>
+                    <span class="col-sm-6">{{pokerPlayerData.totalBuyIn.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Total Fee </label>
+                    <span class="col-sm-6">{{pokerPlayerData.totalFee.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Registered/Min Players </label>
+                    <span class="col-sm-6">{{pokerPlayerData.registered}}/{{pokerPlayerData.minPlayers}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Comp Points </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Payout Table </label>
+                    <span class="col-sm-6">{{pokerPlayerData.payoutTable}}</span>
+                </div>
+
+                <div class="df m_3">
+                    <label class="col-sm-6">Level Length, Min </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Seats </label>
+                    <span class="col-sm-6">{{pokerPlayerData.seats}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Status </label>
+                    <span class="col-sm-6">{{pokerPlayerData.status}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Rule Name </label>
+                    <span class="col-sm-6">{{pokerPlayerData.accessRuleName}}</span>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->
+
+<!-- ****************************CancelSitNgoPopup*********************************** -->
+<div class="black_cover" *ngIf="CancelSitNgoPopup">
+    <div class="popup_1 pop_sm" *ngIf="CancelSitNgoPopup">
+        <div class="PopupHead">
+            <h5 class="text-center" *ngIf="CancelSitNgo">Cancel Sit'n'Go: {{pokerPlayerData?.caption}} </h5>
+            <h5 class="text-center" *ngIf="AlertMessage">Alert</h5>
+            <span class="closetop" (click)="cancelTourny('no')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="p_5" *ngIf="CancelSitNgo">
+                <textarea class="col-sm-12"
+                    [(ngModel)]="pokerPlayerData.description">{{pokerPlayerData?.description}}</textarea>
+            </div>
+            <div class="p_20" *ngIf="AlertMessage">
+                <b class="p_5 text-success text-center">{{AlertMessage}} </b>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="cancelTourny('yes')"> Save </button>
+            <button class="btn_grade_2" (click)="cancelTourny('no')"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ****************************CancelSitNgoPopup_end*********************************** -->
+
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>

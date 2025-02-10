@@ -1,0 +1,62 @@
+<div>
+    <button class="fillterbtn font_14" style=" float: right;" (click)="permissionList()">Requery</button>
+    <h2>Agent Permission Groups</h2>
+</div>
+<div class="table_2">
+    <table class="tablCode">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Group Name</th>
+                <th>Players</th>
+                <th>Default</th>
+                <th>Last Change Date</th>
+                <th>Actions</th>
+                <th>Last Change Admin</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="AgentPermissionsData">
+            <tr *ngFor="let list of AgentPermissionsData, let i=index" >
+            <!-- <tr *ngFor="let list of AgentPermissionsData, let i=index" (click)="onClick(i)"> -->
+                <td>{{i+1}}</td>
+                <td>{{list.name}}</td>
+                <!-- <td><a href="#">{{list.usersNumber}}</a></td> -->
+                <td><a >{{list.usersNumber}}</a></td>
+                <!-- <td>{{list.defaultGroup}}</td> -->
+                <td>
+                    <input *ngIf="list.defaultGroup==true" type="checkbox" class="checkclick" checked />
+                    <input *ngIf="list.defaultGroup==false" type="checkbox" class="checkclick" />
+                </td>
+                <td>{{changeDateFormat(list.changeDate)}}</td>
+                <td>
+                    <div class="fd">
+                        <div class="trigger">
+                            <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmenu(list,i)"></i>
+                            </a>
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="selectinmdex == i" class="popup1 btnGrp">
+                                    <button (click)="makedefault(list)">Make A Default</button>
+                                    <button (click)="deleteset(list)">Delete</button>
+                                    <button (click)="permissionchange(i,list)">Edit</button>                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{list.changerLogin}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="black_cover" *ngIf="AgentPermissionspopup" >
+    <div class="popup_1 pop_sm" *ngIf="AgentPermissionspopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Edit Agent Permissions Group </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+            <div>
+                <app-add-agent-permission-group [AgentpermissionData]="AgentpermissionData" ></app-add-agent-permission-group>                
+            </div>
+        </div>
+    </div>
+</div>
+ 

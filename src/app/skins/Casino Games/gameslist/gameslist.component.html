@@ -1,0 +1,192 @@
+<!-- topnav -->
+<!-- <div class="topnav">
+    <div class="dropdown">
+      <button class="dropbtn">Actions</button>
+      <div class="dropdown-content">
+        <a (click)="openGamesPop()">Edit Game Parameter</a>
+      </div>
+    </div>
+   <a (click)="openGamesPop()">Open</a>
+   <a >Explore</a>
+   <a (click)="ignoreContext()">Ignore Context</a>
+   <div class="dropdown">
+      <button class="dropbtn">View</button>
+      <div class="dropdown-content">
+        <a (click)="onRequery()">Normal</a>
+        <a>Autosize</a>
+        <a>Card</a>
+      </div>
+    </div>
+   <a (click)="onRequery()">Requery</a>
+   <a (click)="exportExcel()">Export to XSL</a>
+   <a (click)="onPrint()">Print</a>
+</div> -->
+<!-- topnav End -->
+<div class="fd">
+  <!-- <div class="dropdown fd"> -->
+  <button class="fillterbtn m_l_5" style=" float: right;" (click)="onRequery()"> Requery</button>
+  <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportExcel()"> Export Excel</button>
+  <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+  <!-- </div> -->
+  <h4>Games List</h4>
+</div>
+<div class="fd df m_3">
+  <div style="margin-right:20px;" *ngIf="gameslist">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+  <div *ngIf="gameslist"> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the
+      filters</b></div>
+</div>
+<!-- table start -->
+<div class="fd" id="tablerecords">
+  <div *ngIf="dataLoader">
+    <div class="loaderWraper">
+      <div class="loader"></div>
+    </div>
+  </div>
+  <div class="table_2">
+    <table class="fd tablCode" id="excel_table">
+
+      <thead>
+        <tr>
+          <th>Game Name</th>
+          <th>Currency</th>
+          <th>Sessions</th>
+          <th>Payout %</th>
+          <th>Casino Gain %</th>
+          <th>Game Bank </th>
+          <th>Bet</th>
+          <th>Win</th>
+          <th>Gain/Loss Amount</th>
+          <th>Real Payout % </th>
+          <th>Game Jackpots Sum </th>
+        </tr>
+      </thead>
+
+      <tbody *ngIf="gameslist">
+        <tr (dblclick)="onClick(i)" *ngFor="let i = index; let list of gameslist">
+          <td>{{list.gameCaption}}</td>
+          <!-- <td>{{list.gameName}}</td> -->
+          <td>{{list.currency}}</td>
+          <td *ngIf="list.sessionsCount">
+            <a [routerLink]="['/Casinogamesessoins']"  [queryParams]='{ data:stringifyData(list) }'>{{list.sessionsCount}}</a>
+          </td>
+          <td *ngIf="!list.sessionsCount">{{list.sessionsCount}}</td>
+          <td>{{list.payoutPercent }}</td>
+          <td>{{list.casinoGainPercent}} </td>
+          <td class="text-end">{{list.symbol}} {{list.gameBank.value |numberFormat}}</td>
+          <td class="text-end">{{list.bet.value |numberFormat}}</td>
+          <td class="text-end">{{list.win.value |numberFormat}}</td>
+          <td class="text-end">{{list.gainLossAmount.value |numberFormat}}</td>
+          <td class="text-end">{{list.realPayoutPercent}}</td>
+          <td class="text-end">{{list.symbol}} {{list.gameJackpotSum.value |numberFormat}}</td>
+        </tr>
+      <tfoot class="shadow-lg" *ngIf="gameslist && gameslist.length>0 ">
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-end">
+            <span class="mx-1 text-nowrap" *ngFor="let key of sumsArray,let i=index">SUM=<b>{{key.symbol}}</b>
+              {{(key.gameBankSum).toFixed(2)}}</span>
+          </td>
+          <td class="text-end">
+            <span class="mx-1"
+              *ngFor="let key of sumsArray,let i=index">SUM=<b>{{key.symbol}}</b>{{(key.betsum).toFixed(2)}}</span>
+          </td>
+          <td class="text-end">
+            <span class="mx-1"
+              *ngFor="let key of sumsArray,let i=index">SUM=<b>{{key.symbol}}</b>{{(key.winSum).toFixed(2)}}</span>
+          </td>
+          <td class="text-end">
+            <span class="mx-1"
+              *ngFor="let key of sumsArray,let i=index">SUM=<b>{{key.symbol}}</b>{{(key.gainLossAmountSum).toFixed(2)}}</span>
+          </td>
+          <td class="text-end">AVG={{payoutAvg}}</td>
+          <td class="text-end">
+            <span class="mx-1"
+              *ngFor="let key of sumsArray,let i=index">SUM=<b>{{key.symbol}}</b>{{(key.cumulativeJackpotSum).toFixed(2)}}</span>
+          </td>
+        </tr>
+      </tfoot>
+
+    </table>
+
+  </div>
+</div>
+<!-- table data end -->
+
+<!-- <div> -->
+<!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+      class="pt-2 page-item float-right">
+    </pagination-controls> -->
+
+<!-- <div class="page_count">
+      <div style="margin-right:20px;" *ngIf="gameslist">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+      <div> Result Count:<b>{{ResultCount}}</b>  <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+  </div> -->
+<!-- </div> -->
+
+<!-- onclick row popup -->
+<div class="black_cover" *ngIf="gamespopup">
+  <div class="popup_1 pop_sm" *ngIf="gamespopup">
+    <div class="PopupHead">
+      <h5 class="text-center">Games List</h5>
+      <span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+
+    <div class="sub_popup">
+      <table>
+        <tr>
+          <th>Game Name</th>
+          <td>:{{subGame.gameName}}</td>
+        </tr>
+        <tr>
+          <th>Currency</th>
+          <td>:{{subGame.wallet}}</td>
+        </tr>
+        <tr>
+          <th>Sessions</th>
+          <td>:{{subGame.sessionsCount}}</td>
+        </tr>
+        <tr>
+          <th>Payout %</th>
+          <td>:{{subGame.payoutPercent}}</td>
+        </tr>
+        <tr>
+          <th>Casino Gain %</th>
+          <td>:{{subGame.casinoGainPercent}}</td>
+        </tr>
+        <tr>
+          <th>Game Bank</th>
+          <td>:{{subGame.gameBank.value}}</td>
+        </tr>
+        <tr>
+          <th>Bet</th>
+          <td>:{{subGame.bet.value}}</td>
+        </tr>
+        <tr>
+          <th>Win</th>
+          <td>:{{subGame.win.value}}</td>
+        </tr>
+        <tr>
+          <th>Gain/Loss Amount</th>
+          <td>:{{subGame.gainLossAmount.value}}</td>
+        </tr>
+        <tr>
+          <th>Real Payout % </th>
+          <td>:{{subGame.realPayoutPercent}}</td>
+        </tr>
+        <tr>
+          <th>Game Jackpots Sum</th>
+          <td>:{{subGame.gameJackpotSum.value}}</td>
+        </tr>
+
+      </table>
+    </div>
+    <div class="bottomFix">
+      <button class="btn_grade_1" (click)="closePopup()"> Save </button>
+      <button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,166 @@
+.popup_4 {
+  background: #fff;
+  max-width: 800px;
+  margin: auto;
+  /* top: 80px; */
+  /* position: fixed; */
+  /* z-index: 1000; */
+  /* left: 15px; */
+  /* right: 15px; */
+  border-radius: 5px;
+  overflow: auto;
+  max-height: 85vh;
+  box-shadow: 7px 11px 39px 5px rgb(0 0 0 / 20%);
+}
+
+.popup_4 input:focus,
+.popup_4 select:focus {
+  outline: none;
+}
+
+.popup_4 input,
+.popup_4 select {
+  border: solid 1px #ddd;
+  padding: 2px;
+  margin: 2px;
+}
+
+.soon .col-sm-6 label {
+  padding: 2px;
+  margin: 2px;
+}
+
+.soon .col-sm-6 select,
+.soon .col-sm-6 input {
+  margin: 2px;
+}
+
+.popup_4 textarea:focus {
+  outline: none;
+}
+.textarea {
+  height: 150px;
+  /* border: solid 1px #ddd; */
+  overflow: auto;
+}
+textarea {
+  height: 100px;
+  border: solid 1px #ddd;
+  overflow: auto;
+}
+.border {
+  border: solid 1px #ddd;
+
+}
+.deletebtn {
+  padding: 2px 10px;
+  margin: 2px 4px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.PopupHead{
+  z-index: 99 !important;
+}
+
+.operation-list-class{
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: rgb(235 203 144);
+  margin-right: 4px;
+  width: 60px;
+  height: 25px;
+  margin: 2px 2px;
+  border-radius: 5px;
+}
+
+.operation-list-class:hover{
+  background-color: rgb(242 137 22);
+}
+
+
+.dropdown-content-option {
+  display: block;
+  background-color: #f1f1f1;
+  width: 120px;
+  height: 170px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.452);
+  position: relative;
+  z-index: 1000;
+  border-radius: 10px;
+  overflow: auto;
+}
+
+.dropdown-content-option a {
+  color: black;
+  padding:5px 10px;
+  text-decoration: none;
+  font-size: 12px;
+  display: block;
+  line-height: 1;
+  
+  
+}
+
+.dropdown-content-option a:hover{
+  background-color: rgb(240, 213, 95);
+
+}
+
+
+
+.font-size-bot-icon{
+  color: #0e0000;
+  font-size: 15px;
+}
+
+.extend-add-class{
+  display: flex;
+  align-items: center;
+}
+
+
+.onselect-ruleslist{
+  width:70px;
+  margin-right: 8px;
+}
+
+.Condition-class{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.onselect-country-option{
+  display: flex;
+  align-items: center;
+}
+
+.onselect-drop-down{
+  width: 70px;
+
+}
+
+.checkbox-elemtnt{
+ 
+    border: 1px solid rgba(156, 151, 151, 0.719);
+    /* width: 55%; */
+    width: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25px;
+    margin-right: 4px;
+}
+
+.checkbox-elemtnt input{
+  padding: 2px;
+    margin: 2px;
+    width: 100%;
+} 
+

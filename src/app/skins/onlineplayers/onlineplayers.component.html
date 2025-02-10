@@ -1,0 +1,169 @@
+<div>
+  <h1>Online Playersss</h1>
+</div>
+<div class="dropdown fd">
+  <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+    <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+      style="font-size:14px;  transition:all 0.5s ;"></i>
+    <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+      style="font-size:14px; transition:all 0.5s"></i>
+  </button>
+
+  <button class="fillterbtn m_l_5" style="margin-right:15px; float: right;" (click)="exportexcel()"> Export
+    Excel</button>
+  <!-- <button class="fillterbtn btn btn-default dropdown-toggle" (click)="fillermenu()">Filters </button> -->
+</div>
+
+
+<!-- <div class="fd filterDiv " *ngIf="FillterMenu">
+  <h1>hello</h1>
+  <span class="glyphicon glyphicon-forward"></span>
+  <a href="#" class="btn btn-info btn-lg">
+    <span class="glyphicon glyphicon-fast-backward"></span> Fast Backward
+  </a>
+  <i class="bi bi-arrow-down"></i>
+</div> -->
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+  <form [formGroup]="filterForm">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+
+          <div>
+            <label>User Login</label>
+            <input type="text" formControlName="accountMask">
+          </div>
+          <div>
+            <label>Nick Name</label>
+            <input type="text" formControlName="nickName">
+          </div>
+          <div>
+            <label>Short Id</label>
+            <input type="text" formControlName="shortid">
+          </div>
+          <div>
+            <label>Email</label>
+            <input type="text" formControlName="email">
+          </div>
+          <div>
+            <label>Player Ful Name</label>
+            <input type="text" formControlName="fullName">
+          </div>
+          <div>
+            <label>Face</label>
+            <select class="seclectopt" formControlName="networkNames">
+              <option [ngValue]="Status.name" *ngFor="let  Status of faceParameterslist">{{Status.name}}
+              </option>
+            </select>
+          </div>
+
+
+        </div>
+        <div class="col-sm-4">
+
+          <div>
+            <label>Player Ip Adress</label>
+            <input type="text" formControlName="ipAddress">
+          </div>
+          <div>
+            <label>Player Status</label>
+            <select class="seclectopt" formControlName="statusesIdList">
+              <option [ngValue]="Status.guid" *ngFor="let  Status of playerStatusList">{{Status.value}}
+              </option>
+            </select>
+          </div>
+          <div>
+            <label>Session Type</label>
+            <select class="seclectopt" formControlName="SessionType">
+              <option [ngValue]="Session.guid" *ngFor="let  Session of SessionType">{{Session.value}}
+              </option>
+            </select>
+          </div>
+          <div>
+            <label>Currency</label>
+            <select class="seclectopt" formControlName="wallet">
+              <option value="" disabled> Real Money </option>
+              <option [ngValue]="wallet.guid" *ngFor="let  wallet of walletlist">{{wallet.value}}
+              </option>
+            </select>
+          </div>
+          <div>
+            <label>Poker Game</label>
+            <input type="text" formControlName="pokerGame">
+          </div>
+        </div>
+        <div class="col-sm-4">
+
+          <div>
+            <label>Casino Game</label>
+            <input type="text" formControlName="casinoGame">
+          </div>
+          <div>
+            <label>Remote Game</label>
+            <input type="text" formControlName="remoteGame">
+          </div>
+          <div>
+            <label>Table Name</label>
+            <input type="text" formControlName="tableName">
+          </div>
+          <div>
+            <label>Tournament Name</label>
+            <input type="text" formControlName="tournamentName">
+          </div>
+          <div>
+            <label>Permission Group</label>
+            <input type="text" formControlName="permissionsGroup">
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="fd">
+  <div class="text-center ">
+    <!-- <button class="fillterbtn m_l_5" style="float: left;margin-left: 1px;" (click)="onFormSubmit()">Submit</button> -->
+    <button class="fillterbtn m_l_5" style="margin-right:15px; float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers">
+      <div style="margin-right:20px;">Rows On the Page: </div>
+      <div> Result Count:<b> To get data set and apply
+          the filters</b></div>
+    </div>
+  </div>
+</div>
+
+<div class="fd">
+  <tr *ngFor="let mins of minuts">
+    <td>{{mins}}</td>
+  </tr>
+  <div>
+    <table class="table_1 " id="excel-table">
+      <thead>
+        <tr>
+          <th>player login</th>
+          <th>nick name</th>
+          <th>Short Id</th>
+          <th>Email</th>
+          <th>Ip Address</th>
+          <th>Face</th>
+          <th>Start Time</th>
+          <th>Elapsed Time</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let List of onlinePlayerList">
+          <td>{{List.player.login}}</td>
+          <td>{{List.player.nickname}}</td>
+          <td>{{List.player.shortId}}</td>
+          <td>{{List.email}}</td>
+          <td>{{List.ipAddress}}</td>
+          <td>{{List.player.network}}</td>
+          <td>{{List.gameStartTime}}</td>
+          <td>{{test(List.estimatedTime)}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

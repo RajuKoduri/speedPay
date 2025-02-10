@@ -1,0 +1,247 @@
+<div>
+    <h3>Transfer To Players </h3>
+</div>
+<div>
+    <button class="fillterbtn font_16" (click)="fillermenu()">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10" *ngIf="!agentExplorer">
+                        <label>Reporting Period Start</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" step="1" formControlName="startTime"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            (change)="timechnage($event)" />
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!agentExplorer">
+                        <label>Reporting Period End</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" step="1" formControlName="endTime"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="wallet" #tb2>
+                            <option value="" disabled> Real Money </option>
+                            <option> User Preferred</option>
+                            <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlists">
+                                {{CURRENCY.value}}
+                            </option> 
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencyList"
+                                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="wallet">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Initiator Login</label>
+                        <input type="text" formControlName="InitiatorLogin" />
+                    </div>
+                   
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10" *ngIf="!agentExplorer">
+                        <label>Agent Login</label>
+                        <input type="text" formControlName="AgentLogin" />
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer">
+                        <label>Player Login</label>
+                        <input type="text" formControlName="PlayerLogin" />
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer && !agentExplorer">
+                        <label>Face</label>
+                        <!-- <select class="seclectopt" formControlName="Face">
+                            <option [ngValue]="Status.name" *ngFor="let  Status of faceParameterslist">
+                                {{Status.name}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList12"
+                                [(ngModel)]="selectedItems12" (onSelect)="onItemSelectnew($event)"
+                                (onDeSelect)="OnItemDeSelectnew($event)" (onSelectAll)="onSelectAllnew($event)"
+                                (onDeSelectAll)="onDeSelectAllnew($event)" formControlName="Face">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Type</label>
+                        <!-- <select class="seclectopt" formControlName="Type" #tb2>
+                            <option [ngValue]="Transfertype.guid" *ngFor="let  Transfertype of TransferDirectionType">
+                                {{Transfertype.value}}
+                            </option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownsettingtypes" [data]="TransferDirectionType"
+                                [(ngModel)]="convertedtypes" (onSelect)="onItemSelectTYPES($event)"
+                                (onDeSelect)="OnItemDeSelectTYPES($event)" (onSelectAll)="onSelectAllTYPES($event)"
+                                (onDeSelectAll)="onDeSelectAllTYPES($event)"
+                                formControlName="Type"></ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10" *ngIf="!agentExplorer">
+                        <label>Amount </label>
+                        <input class="Birthdayinputs" type="text" formControlName="AmountFrom">
+                        <input class="Birthdayinputs" type="text" formControlName="AmountTo">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df">
+
+        <div style="margin-right:20px;" *ngIf="TransferData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Initiator</th>
+                <th>Date</th>
+                <th>Agent </th>
+                <th>Player</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Comment</th>
+                <th *ngIf="!playerExplorer && !agentExplorer">Face</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="TransferData">
+            <tr *ngFor="let list of  TransferData, let i = index" (dblclick)="viewdata(list,i)">
+                <td>{{i+1}}</td>              
+                <td class="hyperLink" (click)="AgentExplore(list.initiator?.alias, list.initiator.guid, list)">{{list.initiator?.login}}</td>
+                <td>{{changeSelect(list.date)}}</td>
+                <td class="hyperLink" (click)="AgentExplore(list.agent?.alias, list.agent.guid, list)">{{list.agent?.login}}</td>
+                <td class="hyperLink" (click)="PlayerExplore(list.player.account, list.player.guid, list)">{{list.player.account}}</td>
+                <td>{{list.directionType}}</td>
+                <td class="text-end">{{list.amount.value |numberFormat}}</td>
+                <td>{{list.comment}}</td>
+                <td *ngIf="!playerExplorer && !agentExplorer">{{list.player.network}}</td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="TransferData && TransferData.length > 0">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-end text-nowrap">SUM = {{totalAmountSum | numberFormat}}</td>
+                <td></td>
+                <td *ngIf="!playerExplorer && !agentExplorer"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="fd" *ngIf="TransferData">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || TransferData==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||TransferData==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="TransferData">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="TransferData==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="TransferData==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% popup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+<div class="black_cover" *ngIf="popupview">
+    <div class="popup_1 pop_sm" *ngIf="popupview">
+        <div class="PopupHead">
+            <h5 class="text-center">Transfers to Players </h5>
+            <span class="closetop" (click)="closepop()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                    <div class="row py-2">
+                        <div class="col-sm-5">Initiator</div>
+                        <div class="col-sm-7">{{selectedRowData.initiator.login}}</div>
+                    </div>
+                    <div class="row pb-2">
+                        <div  class="col-sm-5">Date</div>
+                        <div class="col-sm-7">{{changeSelect(selectedRowData.date)}}</div>
+                    </div>
+                    <div class="row pb-2">
+                        <div  class="col-sm-5">Type</div>
+                        <div class="col-sm-7">{{selectedRowData.directionType}}</div>
+                    </div>
+                    <div class="row pb-2">
+                        <div  class="col-sm-5">Agent</div>
+                        <div class="col-sm-7">{{selectedRowData.agent?.login}}</div>
+                    </div>
+                    <div class="row pb-2">
+                        <div  class="col-sm-5">Player</div>
+                        <div class="col-sm-7">{{selectedRowData.player.account}}</div>
+                    </div>
+                    
+                    <div class="row pb-2">
+                        <div  class="col-sm-5">Amount</div>
+                        <div class="col-sm-7">{{selectedRowData.amount.value}}</div>
+                    </div>
+                    <div class="row pb-2">
+                        <div  class="col-sm-5">comment</div>
+                        <div class="col-sm-7">{{selectedRowData?.comment}}</div>
+                    </div>
+                    <div class="row pb-2" *ngIf="!agentExplorer">
+                        <div  class="col-sm-5">Face</div>
+                        <div class="col-sm-7">{{selectedRowData?.player.network}}</div>
+                    </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_2" (click)="closepop()"> Close </button>
+            <!-- <button class="btn_grade_2" (click)="cashoutReversel('no')"> Cancel </button> -->
+        </div>
+    </div>
+</div>

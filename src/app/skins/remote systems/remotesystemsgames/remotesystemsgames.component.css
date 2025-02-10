@@ -1,0 +1,84 @@
+.GAArrow {
+    transition: all 0.5s ease;
+    float: right;
+    /* margin-top: 5px; */
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* text-align: center; */
+    float: right;
+    right: 0;
+    left: 0;
+    margin-left: 10px;
+    top: 0;
+}
+  .LABregi{
+    font-size: 15px;
+    margin-right: 5px;
+    font-weight: 500;
+}
+.fillterbtnna {
+    width: 88px;
+    height: 30px;
+    border: 1px solid;
+    /* margin-bottom: 5px; */
+    padding: 5px;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    /* float: left; */
+}
+.df {
+    display: flex;
+ 
+  }
+ 
+  .df label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center
+  }
+  .back_Lable{
+    margin-top: 10px;
+  }
+  #myTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+  
+  #myTable th, #myTable td {
+    text-align: left;
+    padding: 12px;
+  }
+  
+  #myTable tr {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  #myTable tr.header, #myTable tr:hover {
+    background-color: #caeddd;
+  }
+  #myTable tr:hover {
+    background-color: #eddbc5;
+
+  }
+  #myInput {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+  .mainSystem{
+    margin-top: 15px;
+  }
+  .table_2 thead{
+    position: sticky;
+    top: 0;
+  }

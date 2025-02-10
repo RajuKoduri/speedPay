@@ -1,0 +1,508 @@
+<ul class="menuSide fd">
+  <div class="df justify-content-between align-items-center p-2 pb-3 m-0 shadow border-bottom  border-secondary">
+    <div class=" p_5">
+      <h5>Actions</h5>
+    </div>
+    <div class="text-end" title="Actions">
+      <img src="assets/Logos/right-click(1).png" width="30px" (click)="openSideP()" class="right_image">
+    </div>
+    <div *ngIf="popupList" class="black_cover" (click)="closePopup()">
+      <div class="popup1" *ngIf="popupList">
+        <button (click)="addBlackListRecordPopup()">Add BlackList Record</button>
+        <button (click)="geoIPListPopup()">Geo IP List</button>
+        <button (click)="checkUserAccessPopup()">Check User Access</button>
+        <button (click)="createSimulatorPopup()">Create Simulator Strategy</button>
+        <button (click)="importBotsPopup()">Import Bots</button>
+        <button (click)="reportActivityPopup()">Report Activity</button>
+        <button (click)="addEmailtempPopup()">Add E-mail Template </button>
+        <button (click)="requestReportPopup()">Request Report</button>
+        <button (click)="addFaqCategoryPopup()">Add FAQ Category</button>
+        <button (click)="addNewsRecordPopup()">Add News Record</button>
+        <button (click)="createPeriodicalProPopup()">Create Periodical Promotion</button>
+      </div>
+    </div>
+  </div>
+  <!-- <li> <button type="button" (click)="openLogin('OPEN_LOGIN')"> open login </button>
+  </li> -->
+  <!-- <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/serverDetails" class="p_10 fd">Server Details </li> -->
+  <!-- Administrator Control -->
+  <li>
+    <!-- <div class="p_10 fd" (click)="adminControl()" (contextmenu)="onRightClick($event)"> <span
+       *ngIf="!adminList">+</span> <span *ngIf="adminList">-</span>
+      Administrator Control</div> -->
+
+    <!-- <div class="fd " >
+        <div id="rightMouse_list" >
+        <span >Create New Administrator </span>
+        <span > Create New Player </span>
+        </div>
+      </div> -->
+    <div class="fd">
+      <ul *ngIf="adminList">
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/adminControl"> Administrator
+          List </li>
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreateNewAdministrator">
+          Create New Administrator </li>
+        <!--  <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreatePokerTableGroup">Create Poker Table Group </li>
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreatePokerTournament">Create Poker Tournament </li>
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreatePokerSitngo">Create Poker Sit'n'Go </li> -->
+      </ul>
+    </div>
+  </li>
+  <!-- Player Control -->
+  <li>
+    <div class="p_10 fd icon_i" (click)="playerControl()"> Player Control <span *ngIf="!playerList"><i
+          class="fa fa-angle-right font_ss"></i> </span> <span *ngIf="playerList"><i
+          class="fa fa-angle-down font_ss"></i></span>
+    </div>
+    <!-- <div class="p_10 fd" (click)="playerControl()"> <span *ngIf="!playerList">+</span> <span *ngIf="playerList">-</span>
+      Player Control </div> -->
+    <div class="fd">
+      <ul *ngIf="playerList">
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playerslist"> Players List </li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/onlineplayers"> Online Players </li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/lockedbonuses"> Locked Bonuses</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/visitstatistics"> Visit Statistics </li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/suspiciousplayers"> Suspicious Players </li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/blacklist"> Black List</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/fraudplayers"> Fraud Players </li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreateNewplayer"> Create New Players </li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playerpermissiongroups">Player Permission Groups</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playerregistrationsettings">Player Registration Settings</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/disconnectionprotectionsettings">Disconnection Protection Settings</li>
+        <!-- <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreateNewAgent"> Create New Agent </li> -->
+        <!-- <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playersaccessrules"> Player Access Rules</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/winnerslist">Winners List</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/loserlist">Losers List</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playeravatars">Players Avatars</li>
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreateAccessRule">Create Access Rule </li>
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreateNewplayer">Create New Player </li> -->
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/NewPlayerPremissions">Add Player Permissions Group </li>
+      </ul>
+    </div>
+  </li>
+  <!-- Casino Games -->
+   <li>
+    <div class="p_10 fd icon_i" (click)="casinoGames()"> Casino Games
+       <span *ngIf="!casinoList"> <i class="fa fa-angle-right font_ss"></i> </span>
+      <span *ngIf="casinoList"> <i class="fa fa-angle-down font_ss"></i> </span>
+       </div>
+    <div class="fd">
+      <ul *ngIf="casinoList">
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/Casinogamesessoins"
+          (click)="casinoGameSessions()"> <span *ngIf="!casinoGameList">+</span> <span *ngIf="casinoGameList">-</span>
+          Casino game Sessions </li>
+        <ul *ngIf="casinoGameList">
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/Gameroundlist">Game Round List</li>
+        </ul>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/Gameslist"> Games list</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/freemoneygames"> Free money Games </li>
+      </ul>
+    </div>
+  </li>
+
+  <!-- Poker Games -->
+  <li>
+    <!-- <div class="p_10 fd" (click)="pokerGames()"> <span *ngIf="!pokerList">+</span> <span *ngIf="pokerList">-</span>
+      Poker Games </div> -->
+      <div class="p_10 fd icon_i" (click)="pokerGames()">  Poker Games <span *ngIf="!pokerList"> <i
+        class="fa fa-angle-right font_ss"></i> </span> <span *ngIf="pokerList"><i
+        class="fa fa-angle-down font_ss"></i> </span>
+     </div>
+    <div class="fd">
+      <ul  *ngIf="pokerList">
+        <li class="sidebtns" (click)="settings()"><span  *ngIf="!settingsList">+</span> <span
+             *ngIf="settingsList">-</span> Settings</li>
+        <ul  *ngIf="settingsList">
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokertablegroups">Poker Table Groups</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokerrakestructure">Poker Rake Structures</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokersitandgos">Poker Sit 'n' Go</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokertournaments">Poker Tournaments</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokerblindstructures">Poker Blind Structures</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokerpayouttables">Poker Payout Tables</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokersatelliteseries">Poker Satellite Series</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/tournamenttickets">Tournaments Tickets</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/timeoutsettings">Timeout Settings</li>
+        </ul>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokergamesessions" (click)="pokergamesessions()"> <span
+           *ngIf="!pokergameList">+</span> <span *ngIf="pokergameList">-</span> Poker game Sessions</li>
+        <ul  *ngIf="pokergameList">
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/PokergamesessionHandshistory">Poker Hands History</li>
+        </ul>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokertableshistory" (click)="pokertableshistory()"> <span
+           *ngIf="!pokertablesList">+</span> <span *ngIf="pokertablesList">-</span> Poker Tables History</li>
+        <ul  *ngIf="pokertablesList">
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokertablespokerhandshistory">Poker Hands History</li>
+        </ul>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokersitngoHistory"> Poker Sit 'n' Go History</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokertournamenthistory">Poker Tournaments History</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/pokertournamenthistory"> Tournaments Statistics</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/TournamentsMonitoring"> Tournaments Monitoring</li>
+
+
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreatePokerTableGroup">Create Poker Table Group </li>
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreatePokerTournament">Create Poker Tournament </li>
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreatePokerSitngo">Create Poker Sit'n'Go </li>
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreatePokerBlindStructure">Create Poker BlindStructure </li>
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreatePokerRakeStructure">Create Poker Rake Structure </li>
+        <li class="sidebtns" class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreatePokerPayoutTable">Create Poker Payout Table </li>
+      </ul>
+    </div>
+  </li>
+
+  <!-- Remote System -->
+  <li>
+    <div class="p_10 fd icon_i" (click)="remotesystem()"> Remote System <span *ngIf="!remoteList"> <i
+          class="fa fa-angle-right font_ss"></i> </span> <span *ngIf="remoteList"><i
+          class="fa fa-angle-down font_ss"></i> </span>
+    </div>
+    <!-- <div class="p_10 fd" (click)="remotesystem()"> <span *ngIf="!remoteList">+</span> <span *ngIf="remoteList">-</span>
+      Remote System</div> -->
+    <div class="fd">
+      <ul *ngIf="remoteList">
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/remotesystems">Remote Systems</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/remotesystemsgames">Remote games</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/remotegamesessions">Remote Games Session</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/transfersummary">Transfer Activities &
+          Summary</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/transferhistory">Transfer Activities &
+          History</li>
+      </ul>
+    </div>
+  </li>
+  <!-- Jackpots -->
+  <!-- <li>
+    <div class="p_10 fd" (click)="Jackpots()"> <span *ngIf="!jackpotsList">+</span> <span *ngIf="jackpotsList">-</span>
+      Jackpots</div>
+    <div class="fd">
+      <ul  *ngIf="jackpotsList">
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/jackpotslist">Jackpots List</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/jackpotwinningsandadjustments">Jackpot Winnings and Adjustments</li>
+      </ul>
+    </div>
+  </li> -->
+
+  <!-- Game Activity Simulator -->
+  <!-- <li>
+    <div class="p_10 fd icon_i" (click)="gameactivitysimulator()">Game Activity Simulator
+      <span *ngIf="!gameList"> <i class="fa fa-angle-right font_ss"></i> </span>
+      <span *ngIf="gameList"> <i class="fa fa-angle-down font_ss"></i> </span>
+    </div>
+    <div class="fd">
+      <ul *ngIf="gameList">
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/simulatorstrategieslist">Simulator Strategies
+          List</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/botslist">Bots List</li>
+      </ul>
+    </div>
+  </li> -->
+  <!-- Promotions -->
+  <li>
+    <div class="p_10 fd icon_i" (click)="Promotions()"> Promotions <span *ngIf="!promoList"><i
+          class="fa fa-angle-right font_ss"></i></span> <span *ngIf="promoList"><i
+          class="fa fa-angle-down font_ss"></i></span></div>
+    <!-- <div class="p_10 fd" (click)="Promotions()"> <span  *ngIf="!promoList">+</span> <span
+         *ngIf="promoList">-</span>Promotions</div> -->
+    <div class="fd">
+      <ul *ngIf="promoList">
+        <!-- <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/periodicalpromotionsettings">Periodical Promotion Settings</li>
+        <li (click)="periodical()" routerLinkActive="active_link_1" routerLink ="periodicalpromotionsList"> <span *ngIf="!perList">+</span><span *ngIf="perList">-</span> Periodical Promotions
+          List</li>
+        <ul  *ngIf="perList">
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/promotionsparticipantsranks">Participants Ranks</li>
+        </ul> -->
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/promotinalcodes">Promotional Codes</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/addpromtionalcode">Add Promotional Codes</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/depositbonussettings">Diposit Bonus Settings
+        </li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/bonusabuse">Bonus Abuse</li>
+      </ul>
+    </div>
+  </li>
+  <!-- Comp points  -->
+  <li>
+    <div class="p_10 fd icon_i" (click)="Comppoints()">Comp points <span *ngIf="!compList"> <i
+          class="fa fa-angle-right font_ss"></i></span><span *ngIf="compList"><i
+          class="fa fa-angle-down font_ss"></i></span>
+    </div>
+    <!-- <div class="p_10 fd" (click)="Comppoints()"> <span *ngIf="!compList">+</span><span *ngIf="compList">-</span> Comp
+      points </div> -->
+    <div class="fd">
+      <ul *ngIf="compList">
+       <!-- <li (click)="CompsettingsList()"> <span *ngIf="!Comp_settingsList">+</span><span *ngIf="Comp_settingsList">-</span> Settings</li>-->
+          <li class="p_10 fd icon_i" (click)="CompsettingsList()">Settings
+          <span *ngIf="!Comp_settingsList"><i class="fa fa-angle-right font_ss"></i> </span>
+          <span *ngIf="Comp_settingsList"><i class="fa fa-angle-down font_ss"></i></span>
+        </li>
+        <ul *ngIf="Comp_settingsList">
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/comppointssettings">Comp Point Settings
+          </li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/earnsettings">Earn Settings</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/exchangerates">Exchange Rates</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/comppointslevels">Comp Points Levels</li>
+        </ul>
+        <!-- <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/comppointssummary">Summary</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playercomppointsbalance">Player Comp Points Balance</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playercomppointsadjustments">Player Comp Points Adjustments</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playercomppointsexchange">Player Comp Points Exchange</li> -->
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/levelchangeshistory">Levels Changes History
+        </li>
+      </ul>
+    </div>
+  </li>
+
+  <!-- Accounting -->
+
+  <li>
+    <div class="p_10 fd icon_i" (click)="Accounting()">Accounting <span *ngIf="!accountList"> <i
+          class="fa fa-angle-right font_ss"></i></span><span *ngIf="accountList"><i
+          class="fa fa-angle-down font_ss"></i></span>
+    </div>
+    <!-- <div class="p_10 fd" (click)="Accounting()"> <span  *ngIf="!accountList">+</span> <span
+         *ngIf="accountList">-</span>Accounting</div> -->
+    <div class="fd">
+      <ul *ngIf="accountList">
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/accountingsummary">summary</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/housebalance">House Balance</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/acplayerbalance">Players Balance</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/accasinogamesbalance">Casino Games Balance
+        </li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/acclubgamesbalance">Club Games Balance</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/acaffiliatebalance">Affiliate Balance</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/acaffiliateexpenses">Affiliate Expenses</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/acagentsbalance">Agent's Balance</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/acagentsnestedbalance">Agent's Nested Balance
+        </li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/acagentexpenses">Agents Expenses</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/simulatorstrategiesexpenses">Simulator
+          Strategies Expenses</li>
+      </ul>
+    </div>
+  </li>
+
+  <!-- Cashier -->
+
+  <li>
+    <div class="p_10 fd icon_i" (click)="Cashier()">Cashier <span *ngIf="!cashierList"> <i
+          class="fa fa-angle-right font_ss"></i></span><span *ngIf="cashierList"><i
+          class="fa fa-angle-down font_ss"></i></span>
+    </div>
+    <!-- <div class="p_10 fd" (click)="Cashier()"><span *ngIf="!cashierList">+</span> <span *ngIf="cashierList">-</span>
+      Cashier
+    </div> -->
+    <div class="fd">
+      <ul *ngIf="cashierList">
+        <li (click)="cashiersettings()"><span *ngIf="!CashsettingsList">+</span><span *ngIf="CashsettingsList">-</span> Settings</li>
+        <ul *ngIf="CashsettingsList">
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/p2pReferringSettings">P2P Referring Settings</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/fraudcontrol">Fraud Control</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/merchantsettings">Merchant Settings</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/currencieslist">Currencies List</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/currencyexchangerates">Currency Exchange
+            Rates</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/walletexchangesettings">Wallet Exchanges
+            Settings</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/depositlimitssettings">Deposit Limits
+            Settings</li>
+            <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/P2pTransferLimits">P2P Transfers Limits </li>
+        </ul>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/cashout">Cashouts</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/cashdeposits">Deposits</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/withdrawals">Withdrawals</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/chargebacks">Charge Backs</li>
+        <!-- <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/p2pTransfers">P2P Transfers</li> -->
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playercashadjustments">Player Cash
+          Adjustments</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playerbonusadjustments">Player Bonus Adjustments</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/tmadjustments">TM Adjustments</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/transfertoplayers">Transfers to Players</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/transfertoagents">Transfers to Agents</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/agentcashadjustments">Agent Cash Adjustments
+        </li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/agentrevenuepayments">Agent Revenue Payments
+        </li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/agentrevenueadjustments">Agent Revenue
+          Adjustments</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/affiliatepayments">Affiliate Payments</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/affiliaterevenueadjustments">Affiliate
+          Revenue Adjustments</li>
+        <!-- <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/simulatorstrategyadjustmets">Simulator Strategy Adjustments</li> -->
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/promotinolcodeusages">Promotional Codes
+          Usages</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/transactions">Transactions</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/fraudtransactions">Fraud Transactions</li>
+        <!-- <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/gamebankadjustments">Game Bank Adjustments</li> -->
+        <!-- <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/cashoutstothebank">Cashouts To The Bank</li> -->
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/currencyexchanges">Currency Exchanges</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/promotionprizepayments">Promotion Prize Payments</li>
+      </ul>
+    </div>
+  </li>
+
+  <!-- Agent Control -->
+
+  <li>
+    <div class="p_10 fd icon_i" (click)="agentControl()">Agent Control <span *ngIf="!agentList"> <i
+          class="fa fa-angle-right font_ss"></i></span><span *ngIf="agentList"><i
+          class="fa fa-angle-down font_ss"></i></span>
+    </div>
+    <!-- <div class="p_10 fd" (click)="agentControl()"><span *ngIf="!agentList">+</span> <span *ngIf="agentList">-</span>
+      Agent Control</div> -->
+    <div class="fd">
+      <ul *ngIf="agentList">
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/agentlist">Agent List</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/agentstatistics">Agents Statistics</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/agentpermissiongroups">Agent Permission
+          Groups</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/CreateNewAgent"> Create New Agent </li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/addAgentPemissiongroup"> Add Agent Permissions Group </li>
+        <!-- <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/agentaccessrules">Agent Access Rules</li> -->
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/agentregistrationsettings">Agent Registration Settings</li>
+      </ul>
+    </div>
+  </li>
+
+  <li>
+    <div class="p_10 fd icon_i" (click)="affiliateControl()">Affiliate Control <span *ngIf="!affiliateList"> <i
+          class="fa fa-angle-right font_ss"></i></span><span *ngIf="affiliateList"><i
+          class="fa fa-angle-down font_ss"></i></span>
+    </div>
+    <!-- <div class="p_10 fd" (click)="affiliateControl()"><span  *ngIf="!affiliateList">+</span> <span
+         *ngIf="affiliateList">-</span>
+      Affiliate Control</div> -->
+    <div class="fd">
+      <ul *ngIf="affiliateList">
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/affiliateslist">Affiliates List</li>
+        <!-- <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/defaultpercents">Default Percents</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/affiliatestatistics">Affiliates Statistics</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/affiliateaccessrules">Affiliates Access Rules</li> -->
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/affiliatesregistationsettings">Affiliates Registration Settings</li> 
+      </ul>
+    </div>
+  </li>
+
+  <!-- Tools -->
+
+  <li>
+    <div class="p_10 fd icon_i" (click)="Tools()">Tools <span *ngIf="!toolsList"> <i
+          class="fa fa-angle-right font_ss"></i></span><span *ngIf="toolsList"><i
+          class="fa fa-angle-down font_ss"></i></span>
+    </div>
+    <!-- <div class="p_10 fd" (click)="Tools()"><span *ngIf="!toolsList">+</span> <span *ngIf="toolsList">-</span> Tools
+    </div> -->
+    <div class="fd">
+      <ul *ngIf="toolsList">
+	   <li (click)="Emailing()" class="p_10 fd icon_i"> Emailing
+	    <span *ngIf="!emailList"><i class="fa fa-angle-right font_ss"></i> </span>
+          <span *ngIf="emailList"><i class="fa fa-angle-down font_ss"></i></span>
+        </li>
+        <ul *ngIf="emailList">
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playermailinglist">Player Mailing List</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/massbonuslist">Mass Bonus List</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/affiliatemailinglist">Affiliate Mailing List</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/messagetemplates">Message Templates</li>
+          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/toolsettings">Settings</li>
+        </ul>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/faq">FAQ</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/news">News</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/activetasks">Active Tasks</li>
+      </ul>
+    </div>
+  </li>
+
+  <!-- Requested Reports -->
+
+  <li>
+      <div class="p_10 fd icon_i" (click)="Requested()"> Requested Reports <span *ngIf="!requestList"> <i
+        class="fa fa-angle-right font_ss"></i></span><span *ngIf="requestList"><i
+        class="fa fa-angle-down font_ss"></i></span>
+  </div>
+    <div class="fd">
+      <ul  *ngIf="requestList">
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/requestedreportslist">Requested Reports List</li>
+      </ul>
+    </div>
+  </li>
+  <li>
+    <div class="p_10 fd icon_i" (click)="Reports()">Reports <span *ngIf="!ReportsList"> <i
+          class="fa fa-angle-right font_ss"></i></span><span *ngIf="ReportsList"><i
+          class="fa fa-angle-down font_ss"></i></span>
+    </div>
+    <!-- <div class="p_10 fd" (click)="Reports()"><span *ngIf="!ReportsList">+</span> <span *ngIf="ReportsList">-</span>
+      Reports</div> -->
+    <div class="fd">
+      <ul *ngIf="ReportsList">
+        <!-- <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/requestedreportslist">Skins</li> -->
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/Skins">Skin's Money Report</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/SkinsReportBySessions">Skin's Money Report By
+          Sessions</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/Summary">Summary Report</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/RakeRace">Rake Race Report</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/PlayerActivity">Player's Activities</li>
+        <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/Leaderboard">LeaderBoard</li>
+      </ul>
+    </div>
+  </li>
+</ul>
+<!-- ************************************************************************************** -->
+
+
+<!-- ************************************************************************************** -->
+<div *ngIf="logpop" class="popupcont">
+  <span (click)="closeoppup()"> X </span>
+  popup
+</div>
+
+<div class="black_cover" *ngIf="logpop">
+  <div class="popup_1 pop_sm" *ngIf="logpop">
+    <div class="PopupHead">
+      <h5 class="text-center">Adminss: </h5>
+      <span class="closetop" (click)="closeoppup()"> <img src="../../../../assets/icons/closePop.svg"> </span>
+    </div>
+  </div>
+</div>
+
+<!-- &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Right click functionality &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& -->
+
+<div *ngIf="isAddBlackListRecordPop">
+  <add-black-list-record (notifyParent)="addBlackListRecordPopup()"></add-black-list-record>
+</div>
+
+<div *ngIf="isGeoIPList">
+  <geo-ip-list (notifyParent)="geoIPListPopup()"></geo-ip-list>
+</div>
+
+<div *ngIf="checkUserAccess" class="">
+  <check-user-access (notifyParent)="checkUserAccessPopup()"></check-user-access>
+</div>
+
+<div *ngIf="isCreateSimulator">
+  <create-simulator-strategy (notifyParent)="createSimulatorPopup()"></create-simulator-strategy>
+</div>
+
+<div *ngIf="isImportBots">
+  <import-bots (notifyParent)="importBotsPopup()"></import-bots>
+</div>
+
+<div *ngIf="isReportActivity">
+  <report-activity (notifyParent)="reportActivityPopup()" [userInfo]="" [userType]="'rightClick'"></report-activity>
+</div>
+
+<div *ngIf="isAddEmailtemp">
+  <add-email-template (notifyParent)="addEmailtempPopup()"></add-email-template>
+</div>
+
+<div *ngIf="isRequestReport">
+  <request-report (notifyParent)="requestReportPopup()"></request-report>
+</div>
+
+<div *ngIf="isFAQCategory">
+  <add-faq-category (notifyParent)="addFaqCategoryPopup()"></add-faq-category>
+</div>
+
+<div *ngIf="isNewsRecord">
+  <add-news-record (notifyParent)="addNewsRecordPopup()"></add-news-record>
+</div>
+
+<div *ngIf="isPeriodicalPro">
+  <app-createperiodicalpromotion (notifyParent)="createPeriodicalProPopup()"></app-createperiodicalpromotion>

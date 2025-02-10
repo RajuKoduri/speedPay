@@ -1,0 +1,116 @@
+<!-- <ul class="menuSide fd" *ngIf="!sidemenidata">
+  <li class="nav-item bg_2" *ngFor="let menu of sidemenidata.menu; let i=index"  [ngClass]="{'dropdown' : menu.children?.length > 0}">
+    <div class="p_10 fd icon_i" [ngClass]="menu.name ? 'main-text fd' : 'blue-text fd'" *ngIf="menu.expanded"
+      [routerLink]="menu.children && menu.children.length > 0 ? null  : menu.url" routerDirection="root"
+      [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" (click)="dropdownD(i)">    
+      <span class="first_lvl">{{menu.name}}</span>
+      <i class="font_ss fa fa-angle-right" *ngIf=" currentParentIndex !== i && menu.children?.length > 0"></i>  
+      <i class="font_ss fa fa-angle-down " *ngIf="currentParentIndex  === i && menu.children?.length > 0"  
+        id="javaicon"></i> 
+    </div> 
+    <div *ngIf="!disablemenu" >
+    <div *ngIf="currentParentIndex === i" >       
+      <ul class="" *ngIf="menu.children?.length > 0" id="drop1" >
+        <ng-container  *ngFor="let childMenu of menu.children;let k=index" >
+          <li *ngIf="childMenu.status" [ngClass]="childMenu.name?  'hover_text fd': 'blue-text fd'" routerLinkActive="active_link_1" (click)="submenuList(i,k)">
+            <div   [routerLink]="childMenu.subchildren && childMenu.subchildren.length > 0 ? childMenu.url  : childMenu.url"  class="dropdown-itemm pad_right"
+              routerDirection="root"  >
+              <span class="snap_color">{{childMenu.name}}</span> 
+              <i class="font_ss fa fa-angle-right" *ngIf="childMenu.subchildren && childMenu.subchildren.length > 0 && subIndex != k"></i>
+              <i class="font_ss fa fa-angle-down" *ngIf="childMenu.subchildren && childMenu.subchildren.length > 0  && subIndex == k"></i>
+            </div>
+          </li> 
+          <ul *ngIf="childMenu.subchildren && childMenu.subchildren.length > 0 && subIndex == k" id="drop111">
+            <li *ngFor="let subchild of childMenu.subchildren"  routerLinkActive="sub_active" class="pad_right sub_active12">
+              <div class="sub_childb pr-2"  [routerLink]="subchild.subchildren && subchild.subchildren.length > 0 ? null  : subchild.url"
+                [ngClass]="childMenu.name? 'grey-text fd': 'blue-text fd'"  >
+                {{subchild.name}} </div>
+            </li>
+          </ul>    
+        </ng-container>
+      </ul>
+    </div>       
+    </div>   
+
+    <div *ngIf="disablemenu">
+    <div *ngIf="currentParentIndex === i" >       
+      <ul class="" *ngIf="menu.children?.length > 0" id="drop1" >  
+        <ng-container  *ngFor="let childMenu of menu.children;let k=index"  >
+          <li *ngIf="childMenu.status" [ngClass]="childMenu.name?  'hover_text fd': 'blue-text fd'" routerLinkActive="active_link_1" (click)="submenuList(i,k)">
+            <div   [routerLink]="childMenu.subchildren && childMenu.subchildren.length > 0 ? childMenu.url  : childMenu.url"  class="dropdown-itemm pad_right"
+              routerDirection="root"  >
+              <span class="snap_color">{{childMenu.name}}</span> 
+              <i class="font_ss fa fa-angle-right" *ngIf="childMenu.subchildren && childMenu.subchildren.length > 0 && subIndex != k"></i>
+              <i class="font_ss fa fa-angle-down" *ngIf="childMenu.subchildren && childMenu.subchildren.length > 0  && subIndex == k"></i>
+            </div>
+          </li> 
+          <li routerLinkActive="active_link_1" *ngIf="!childMenu.status" (click)="contactAdmon()">
+            <div class="dropdown-itemm pad_right red-text" routerDirection="root">
+              <span  class="snap_color">{{childMenu.name}}</span> 
+              <i class="font_ss fa fa-angle-right" *ngIf="childMenu.subchildren && childMenu.subchildren.length > 0 && subIndex != k"></i>
+              <i class="font_ss fa fa-angle-down" *ngIf="childMenu.subchildren && childMenu.subchildren.length > 0  && subIndex == k"></i>
+            </div>
+          </li>
+          <ul *ngIf="childMenu.subchildren && childMenu.subchildren.length > 0 && subIndex == k" id="drop111">
+            <li *ngFor="let subchild of childMenu.subchildren"  routerLinkActive="sub_active" class="pad_right sub_active12">
+              <div class="sub_childb pr-2"  [routerLink]="subchild.subchildren && subchild.subchildren.length > 0 ? null  : subchild.url"  
+                [ngClass]="childMenu.name? 'grey-text fd': 'blue-text fd'"  >
+                {{subchild.name}} </div>
+            </li>
+          </ul> 
+        </ng-container>  
+      </ul>
+    </div>       
+    </div> 
+  </li>
+</ul>  -->
+<!-- ************************************************************************************** -->
+<div class="mainli fd">
+  <app-treeSidemenu [treeData]="newSidemenu"></app-treeSidemenu> 
+</div>
+<!-- ************************************************************************************** -->
+<div *ngIf="logpop" class="popupcont">
+  <span (click)="closeoppup()"> X </span>  
+  popup
+</div>   
+
+<div class="black_cover" *ngIf="logpop">
+  <div class="popup_1 pop_sm" *ngIf="logpop">
+    <div class="PopupHead">
+      <h5 class="text-center">Adminss: </h5>
+      <span class="closetop" (click)="closeoppup()"> <img src="../../../../assets/icons/closePop.svg"> </span>
+    </div>
+  </div>
+</div>
+
+
+
+          <!-- <li [disabled]="`childMenu.status" routerLinkActive="active_link_1" (click)="submenuList(i,k)"> -->  
+
+<!-- //////////////////////////////////////////////// -->
+
+
+<div class="black_cover" *ngIf="adminerror">
+  <div class="popup_1 pop_sm mar_top">
+      <div class="PopupHead" *ngIf="adminerror">
+          <h5 class="text-center">Alert</h5>
+          <span class="closetop" (click)="closeadminpop()"> <img src="assets/icons/closePop.svg"> </span>
+      </div>
+      <div class="soon font_13 fd p_lr_15">
+          <div class="fd p_10 text-center ">
+              <i class="p_5 text-danger errormag">Please Contact Admin</i>
+          </div>
+      </div>
+      <div class="bottomFix text-center df m_3">
+          <button class="btn_grade_1 " (click)="closeadminpop()"> Ok</button>   
+      </div>   
+  </div>  
+</div>   
+<!-- //////////////////////////////////////////////// -->
+ 
+
+
+
+<!-- ((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((())))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) -->
+
+<!-- ((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((())))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) -->

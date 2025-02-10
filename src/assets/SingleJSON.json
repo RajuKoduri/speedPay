@@ -1,0 +1,1135 @@
+{
+    "SingleJs" : [
+      
+        {
+            "name": "Administator Control",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Player Control",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Casino Games",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Poker",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Remote System",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Promotions",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Comp points",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Accounting",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Cashier",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Agent Control",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Affiliate Control",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Tools",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Reports",
+            "url": "#",
+            "parent": "#",
+            "parentName" : true,
+            "expanded": false
+        },
+        {
+            "name": "Administators List",
+            "url": "/adminControl",
+            "Id": "ADMIN_VIEW",
+            "status": false,
+            "parent" : "Administator Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Players List",
+            "url": "/playerslist",
+            "Id": "PLAYER_VIEW",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Online Players",
+            "url": "/onlineplayers",
+            "Id": "PLAYER_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Locked Bonuses",
+            "url": "/lockedbonuses",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Visit Statistics",
+            "url": "/visitstatistics",
+            "Id": "PLAYER_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Suspicious Players",
+            "url": "/suspiciousplayers",
+            "Id": "SETTINGS_FRAUDCONTROL_VIEW",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Black List",
+            "url": "/blacklist",
+            "Id": "SETTINGS_FRAUDCONTROL_VIEW",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Fraud Players",
+            "url": "/fraudplayers",
+            "Id": "SETTINGS_FRAUDCONTROL_VIEW",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Winner List",
+            "url": "/winnerslist",
+            "Id": "PLAYER_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Losers List",
+            "url": "/loserlist",
+            "Id": "PLAYER_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Players Avatars",
+            "url": "/playeravatars",
+            "Id": "PLAYER_VIEW",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Player Access Rules",
+            "url": "/playersaccessrules",
+            "Id": "GAMES_SETTINGS_VIEW",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Disconnection Protection Settings",
+            "url": "/disconnectionprotectionsettings",
+            "Id": "GAMES_SETTINGS_VIEW",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Create New Players",
+            "url": "/CreateNewplayer",
+            "Id": "",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Player Permission Groups",
+            "url": "/playerpermissiongroups",
+            "Id": "PLAYER_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Player Registration Settings",
+            "url": "/playerregistrationsettings",
+            "Id": "PLAYER_MANAGE",
+            "status": false,
+            "parent" : "Player Control",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Casino Game Sessions",
+            "url": "/Casinogamesessoins",
+            "Id": "GAMES_INFO_VIEW",
+            "status": false,
+            "parent" : "Casino Games",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Games List",
+            "url": "/Gameslist",
+            "Id": "GAMES_INFO_VIEW",
+            "status": false,
+            "parent" : "Casino Games",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Free Money Games",
+            "url": "/freemoneygames",
+            "Id": "GAMES_INFO_VIEW",
+            "status": false,
+            "parent" : "Casino Games",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Games Rounded List",
+            "url": "/Gameroundlist",
+            "Id": "GAMES_INFO_VIEW",
+            "status": false,
+            "parent" : "Casino Game Sessions",
+            "color" :"pokersetting"
+        },
+        {
+            "name": "Settings",
+            "status": true,
+            "parent" : "Poker",
+             "color" :"playercontrol",
+             "parentName" : true
+        } ,
+        {
+            "name": "Poker Game Sessions",
+            "url": "/pokergamesessions",
+            "Id": "GAMES_INFO_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Poker",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Poker Table History",
+            "url": "/pokertableshistory",
+            "Id": "GAMES_INFO_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Poker",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Poker SNG History",
+            "url": "/pokersitngoHistory",
+            "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+            "status" : false,
+            "parent" : "Poker",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Tournament Statistics",
+            "url": "/pokertournamenthistory",
+            "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+            "status" : false,
+            "parent" : "Poker",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Add Table",
+            "url": "/CreatePokerTableGroup",  
+            "Id" : "GAMES_CONTROL" ,
+            "status" : false,
+            "parent" : "Poker",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Create Poker Rake Structur",
+            "url": "/CreatePokerRakeStructure",
+            "Id" : "GAMES_CONTROL" ,
+            "status" : false,
+            "parent" : "Poker",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Add SnG",
+            "url": "/CreatePokerSitngo",
+            "Id" : "GAMES_CONTROL" ,
+            "status" : false,
+            "parent" : "Poker",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Add Tournament",
+            "url": "/CreatePokerTournament",
+            "Id" : "GAMES_CONTROL" ,
+            "status" : false,
+            "parent" : "Poker",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Add Blind Structure",
+            "url": "/CreatePokerBlindStructure",
+            "Id" : "GAMES_CONTROL" ,
+            "status" : false,
+            "parent" : "Poker",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Create Payout Table",
+            "url": "/CreatePokerPayoutTable",
+            "Id" : "GAMES_CONTROL" ,
+            "status" : false,
+            "parent" : "Poker",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Create Access Rules",   
+            "url": "/CreateAccessRule",
+            "Id" : "GAMES_CONTROL" ,
+            "status" : false,
+            "parent" : "Poker",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Poker Table Group",
+            "url": "/pokertablegroups",
+            "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+            "status" : false,
+            "parent" : "Settings",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Poker Rake Structures",
+            "url": "/pokerrakestructure",
+            "Id" : "GAMES_SETTINGS_VIEW" ,
+            "status" : false,
+            "parent" : "Settings",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "SnG",
+            "url": "/pokersitandgos",
+            "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+            "status" : false,
+            "parent" : "Settings",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Poker Tournaments",
+            "url": "/pokertournaments",
+            "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+            "status" : false,
+            "parent" : "Settings",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Poker Blind Structure",
+            "url": "/pokerblindstructures",
+            "Id" : "GAMES_SETTINGS_VIEW" ,
+            "status" : false,
+            "parent" : "Settings",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "POker Payout Table",
+            "url": "/pokerpayouttables",
+            "Id" : "GAMES_SETTINGS_VIEW" ,
+            "status" : false,
+            "parent" : "Settings",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Poker Satellite Series",
+            "url": "/pokersatelliteseries",
+            "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+            "status" : false,
+            "parent" : "Settings",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Tournament Tickets List",
+            "url": "/tournamenttickets",
+            "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+            "status" : false,
+            "parent" : "Settings",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "TimeOut Settings",
+            "url": "/timeoutsettings",
+            "Id" : "GAMES_SETTINGS_VIEW" ,
+            "status" : false,
+            "parent" : "Settings",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Poker Hands History",
+            "url": "/PokergamesessionHandshistory",
+            "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+            "status" : false,
+            "parent" : "Poker Game Sessions",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Poker Hands History",
+            "url": "/pokertablespokerhandshistory",
+            "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+            "status" : false,
+            "parent" : "Poker Table History",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Remote Systems",
+            "url": "/remotesystems",
+            "Id": "INTEGRATION_VIEW",
+            "status": false,
+            "parent" : "Remote System",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Remote games",
+            "url": "/remotesystemsgames",
+            "Id": "REMOTE_SYSTEMS_INFO_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Remote System",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Remote Games Session",
+            "url": "/remotegamesessions",
+            "Id": "REMOTE_SYSTEMS_INFO_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Remote System",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Transfer Activities & Summary",
+            "url": "/transfersummary",
+            "Id": "REMOTE_SYSTEMS_INFO_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Remote System",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Transfers & Activities History",
+            "url": "/transferhistory",
+            "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Remote System",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Promotional Codes",
+            "url": "/promotinalcodes",
+            "Id": "CASHIER_BONUSCODES_VIEW",
+            "status": false,
+            "parent" : "Promotions",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Deposit Bonus Settings",
+            "url": "/depositbonussettings",
+            "Id": "PLAYER_PERSONAL_VIEW",
+            "status": false,
+            "parent" : "Promotions",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Bonus Abuse",
+            "url": "/bonusabuse",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Promotions",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Add Periodical Promotions",
+            "url": "/addperiodicpromotion",
+            "Id": "GAMES_INFO_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Promotions",
+            "color" :"playercontrol"
+        },
+        {
+            "name": "Periodical Promotions List",
+            "url": "/periodicalpromotionsettings",
+            "Id": "GAMES_INFO_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Promotions",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Promotion Participants Ranks",
+            "url": "/promotionsparticipantsranks",
+            "Id": "GAMES_INFO_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Promotions",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Periodical Promotion Settings",
+            "url": "/periodicalpromotionsettings",
+            "Id": "GAMES_SETTINGS_VIEW",
+            "status": false,
+            "parent" : "Promotions",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Comp Point Settings",
+            "url": "/comppointssettings",
+            "Id": "COMP_POINTS_SETTINGS_VIEW",
+            "status": false,
+            "parent" : "Comp points",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Earn Settings",
+            "url": "/earnsettings",
+            "Id": "COMP_POINTS_SETTINGS_VIEW",
+            "status": false,
+            "parent" : "Comp points",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Exchange Rates",
+            "url": "/exchangerates",
+            "Id": "COMP_POINTS_SETTINGS_VIEW",
+            "status": false,
+            "parent" : "Comp points",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Comp Points Levels",
+            "url": "/comppointslevels",
+            "Id": "COMP_POINTS_SETTINGS_VIEW",
+            "status": false,
+            "parent" : "Comp points",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Levels Changes History",
+            "url": "/levelchangeshistory",
+            "Id": "COMP_POINTS_INFO_VIEW",
+            "status": false,
+            "parent" : "Comp points",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Player Comp Points Adjustments",
+            "url": "/playercomppointsadjustments",
+            "Id": "COMP_POINTS_INFO_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Comp points",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Player Comp Points Balance",
+            "url": "/playercomppointsbalance",
+            "Id": "COMP_POINTS_INFO_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Comp points",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Player Comp Points Exchange",
+            "url": "/playercomppointsexchange",
+            "Id": "COMP_POINTS_INFO_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Comp points",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "summary",
+            "url": "/accountingsummary",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Accounting",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "House Balance",
+            "url": "/housebalance",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Accounting",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Players Balance",
+            "url": "/acplayerbalance",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Accounting",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Casino Games Balance",
+            "url": "/accasinogamesbalance",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Accounting",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Club Games Balance",
+            "url": "/acclubgamesbalance",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Accounting",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Affiliate Balance",
+            "url": "/acaffiliatebalance",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Accounting",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Affiliate Expenses",
+            "url": "/acaffiliateexpenses",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Accounting",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Agents Balance",
+            "url": "/acagentsbalance",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Accounting",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Agent's Nested Balance",
+            "url": "/acagentsnestedbalance",
+            "Id": "AFFILIATES_VIEW",
+            "status": false,
+            "parent" : "Accounting",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Agents Expenses",
+            "url": "/acagentexpenses",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Accounting",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Simulator Strategies Expenses",
+            "url": "/simulatorstrategiesexpenses",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Accounting",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Fraud Control",
+            "url": "/fraudcontrol",
+            "Id": "SETTINGS_FRAUDCONTROL_VIEW",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Merchant Settings",
+            "url": "/merchantsettings",
+            "Id": "CASHIER_CURRENCIES_MANAGE",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Currencies List",
+            "url": "/currencieslist",
+            "Id": "CASHIER_CURRENCIES_MANAGE",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Currency Exchange Rates",
+            "url": "/currencyexchangerates",
+            "Id": "CASHIER_CURRENCIES_MANAGE",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Wallet Exchanges Settings",
+            "url": "/walletexchangesettings",
+            "Id": "PLAYER_FINANCE_VIEW",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Deposit Limits Settings",
+            "url": "/depositlimitssettings",
+            "Id": "PLAYER_FINANCE_VIEW",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Cashouts",
+            "url": "/cashout",
+            "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Deposits",
+            "url": "/cashdeposits",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Withdrawals",
+            "url": "/withdrawals",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Charge Backs",
+            "url": "/chargebacks",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Player Cash Adjustments",
+            "url": "/playercashadjustments",
+            "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Player Bonus Adjustments",
+            "url": "/playerbonusadjustments",
+            "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Transfers to Players",
+            "url": "/transfertoplayers",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "TM Adjustments",
+            "url": "/tmadjustments",
+            "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Transfers to Agents",
+            "url": "/transfertoagents",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Agent Cash Adjustments",
+            "url": "/agentcashadjustments",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Agent Revenue Payments",
+            "url": "/agentrevenuepayments",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Simulator Strategy Adjustments",
+            "url": "/simulatorstrategyadjustmets",
+            "Id": "GAMES_CONTROL",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "agentrevenueadjustments",
+            "url": "/agentrevenueadjustments",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Affiliate Payments",
+            "url": "/affiliatepayments",
+            "Id": "AFFILIATES_VIEW",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Affiliate Revenue Adjustments",
+            "url": "/affiliaterevenueadjustments",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Promotional Codes Usages",
+            "url": "/promotinolcodeusages",
+            "Id": "CASHIER_BONUSCODES_VIEW",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Transactions",
+            "url": "/transactions",
+            "Id": "CASHIER_TRANSACTION_VIEW",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Fraud Transactions",
+            "url": "/fraudtransactions",
+            "Id": "ACCOUNTING",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": " Currency Exchanges",
+            "url": "/currencyexchanges",
+            "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Promotion Prize Payments",
+            "url": "/promotiomprizepayments",
+            "Id": "GAMES_INFO_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Cashouts To The Bank",
+            "url": "/cashoutstothebank",
+            "Id": "CASHIER_TRANSACTION_VIEW",
+            "status": false,
+            "parent" : "Cashier",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Agent List",
+            "url": "/agentlist",
+            "Id": "AFFILIATES_VIEW",
+            "status": false,
+            "parent" : "Agent Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Agents Statistics",
+            "url": "/agentstatistics",
+            "Id": "AFFILIATES_VIEW",
+            "status": false,
+            "parent" : "Agent Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Agent Permission Groups",
+            "url": "/agentpermissiongroups",
+            "Id": "GAMES_CONTROL",
+            "status": false,
+            "parent" : "Agent Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Create New Agent",
+            "url": "/CreateNewAgent",
+            "Id": "GAMES_CONTROL",
+            "status": false,
+            "parent" : "Agent Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Add Agent Permissions Group",
+            "url": "/addAgentPemissiongroup",
+            "Id": "GAMES_SETTINGS_VIEW",
+            "status": false,
+            "parent" : "Agent Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Agent Registration Settings",
+            "url": "/agentregistrationsettings",
+            "Id": "PLAYER_MANAGE",
+            "status": false,
+            "parent" : "Agent Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Agent Access Rules",
+            "url": "/agentaccessrules",
+            "Id": "PLAYER_MANAGE",
+            "status": false,
+            "parent" : "Agent Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Affiliates List",
+            "url": "/affiliateslist",
+            "Id": "AFFILIATES_VIEW",
+            "status": false,
+            "parent" : "Affiliate Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Affiliate Access Rules",
+            "url": "/affiliateaccessrules",
+            "Id": "PLAYER_MANAGE",
+            "status": false,
+            "parent" : "Affiliate Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Affiliate Registration Settings",
+            "url": "/affiliatesregistationsettings",
+            "Id": "PLAYER_MANAGE",
+            "status": false,
+            "parent" : "Affiliate Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Default Percents",
+            "url": "/defaultpercents",
+            "Id": "AFFILIATES_VIEW",
+            "status": false,
+            "parent" : "Affiliate Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Affiliates Statistics",
+            "url": "/affiliatestatistics",
+            "Id": "AFFILIATES_VIEW",
+            "status": false,
+            "parent" : "Affiliate Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Affiliates Access Rules",
+            "url": "/affiliateaccessrules",
+            "Id": "AFFILIATES_VIEW",
+            "status": false,
+            "parent" : "Affiliate Control",
+             "color" :"playercontrol"
+        },
+        {
+            "name": "Emailing",
+            "status": false,
+            "parent" : "Tools",
+             "color" :"playercontrol",
+             "parentName" : true
+        },
+        {
+            "name": "Player Mailing List",
+            "url": "/playermailinglist",
+            "Id": "TOOLS_EMAIL_NOTIFI",
+            "status": false,
+            "parent" : "Emailing",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Mass Bonus List",
+            "url": "/massbonuslist",
+            "Id": "PLAYER_FINANCE_CONTROL",
+            "status": false,
+            "parent" : "Emailing",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Affiliate Mailing List",
+            "url": "/affiliatemailinglist",
+            "Id": "TOOLS_EMAIL_NOTIFI",
+            "status": false,
+            "parent" : "Emailing",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Message Templates",
+            "url": "/messagetemplates",
+            "Id": "TOOLS_EMAIL_NOTIFI",
+            "status": false,
+            "parent" : "Emailing",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Setting",
+            "url": "/toolsettings",
+            "Id": "TOOLS_EMAIL_NOTIFI",
+            "status": false,
+            "parent" : "Emailing",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "FAQ",
+            "url": "/faq",
+            "Id": "TOOLS_HELP_VIEW",
+            "status": false,
+            "parent" : "Emailing",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "News",
+            "url": "/news",
+            "Id": "TOOLS_HELP_MANAGE",
+            "status": false,
+            "parent" : "Emailing",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Active Tasks",
+            "url": "/activetasks",
+            "Id": "TOOLS_MAINTENANCE",
+            "status": false,
+            "parent" : "Emailing",
+             "color" :"pokersetting"
+        },
+        {
+            "name": "Requested Reports List,",
+            "url": "/requestedreportslist",
+            "Id": "PLAYER_VIEW_GLOBAL",
+            "status": false,
+            "parent" : "Reports",
+              "color" :"playercontrol"
+        },
+        {
+            "name": "Skin's Money Report",
+            "url": "/Skins",
+            "Id": "",
+            "status": false,
+            "parent" : "Reports",
+              "color" :"playercontrol"
+        },
+        {
+            "name": "Skin's Money Report By Sessions",
+            "url": "/SkinsReportBySessions",
+            "Id": "",
+            "status": false,
+            "parent" : "Reports",
+              "color" :"playercontrol"
+        },
+        {
+            "name": "Summary Report",
+            "url": "/Summary",
+            "Id": "",
+            "status": false,
+            "parent" : "Reports",
+              "color" :"playercontrol"
+        },
+        {
+            "name": "Rake Race Report",
+            "url": "/RakeRace",
+            "Id": "",
+            "status": false,
+            "parent" : "Reports",
+              "color" :"playercontrol"
+        },
+        {
+            "name": "Player's Activities",
+            "url": "/PlayerActivity",
+            "Id": "",
+            "status": false,
+            "parent" : "Reports",
+              "color" :"playercontrol"
+        },
+        {
+            "name": "LeaderBoard",
+            "url": "/Leaderboard",
+            "Id": "",
+            "status": false,
+            "parent" : "Reports",
+              "color" :"playercontrol"
+        }
+       
+    ]
+}

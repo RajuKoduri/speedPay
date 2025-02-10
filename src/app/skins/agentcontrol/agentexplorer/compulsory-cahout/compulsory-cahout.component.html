@@ -1,0 +1,120 @@
+<!-- <p>agent-compulsory-cahout works!</p> -->
+
+<div class="black_cover" *ngIf="CompulsoryCashout">
+    <div class="popup_1 pop_sm" *ngIf="CompulsoryCashout">
+        <div class="PopupHead">
+            <h5 class="text-center">Compulsory Cashout from {{AgentName}}</h5>
+            <span class="closetop" (click)="CompulsoryCashoutPopClose('no')"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div>
+                    <h4>Cashout info</h4>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="m_3 m-2">
+                            <label class="col-sm-6">{{userType}} : </label>
+                            <span class="col-sm-6">{{AgentName}}</span>
+                            <!-- <span *ngIf="ActionPlayerdata">
+                                <b>{{ActionPlayerdata.player.login}}</b>
+                            </span> -->
+                        </div>
+                        <div class="m_3 m-2">
+                            <label class="col-sm-6">Wallet: </label>
+                            <select class="col-sm-6" [(ngModel)]="selectedCurrency" (change)="walletChange()">
+                                <option [ngValue]="List.guid" *ngFor="let List of WalletList">{{List.description}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="m_3 m-2">
+                            <label class="col-sm-6">Avaliable Cash balance : </label>
+                            <span *ngIf="AgentBalance">
+                                <b > {{ userType == "Agent" ? (AgentBalance[0]?.balance?.value |numberFormat) : (AgentBalance[0]?.cash?.value |numberFormat)}}</b>                                
+                            </span>
+                            <!-- <span *ngIf="PlayerBalance">
+                                <b>{{ActionPlayerdata.amount.walletsymbol}} {{PlayerBalance[0].cash?.value}}</b>
+                            </span> -->
+                        </div>
+                        <div class="m_3 m-2">
+                            <label class="col-sm-6"> <b>Compulsory Cashout Amount :</b> </label>
+                            <span class="col-sm-6">
+                                <input type="number" [(ngModel)]="compulsoryCashoutAmount" (input)="onInputChange()" appMaxLengthValidation />
+                                <!-- <b>{{ActionPlayerdata.amount.walletsymbol}} {{ActionPlayerdata.amount.value}}</b> -->
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="mx-3">
+            <h6>Distribute Cashout</h6>
+        </div>
+
+        <div class="mx-3" style="overflow-x: scroll">
+            <div class='fd' *ngIf="loader">
+                <div class="loaderWraper">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            <table class="tablCode ">
+                <thead>
+                    <tr>
+                        <th>Payment System</th>
+                        <th>Currency </th>
+                        <th>Status </th>
+                        <th>Account</th>
+                        <th>Deposits</th>
+                        <th>Lock</th>
+                        <th>Charge Amount</th>
+                        <th>Order Amount</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="PlayerAvailableCashoutsData">
+                    <tr *ngFor="let list of PlayerAvailableCashoutsData, let i=index">
+                        <td>{{list.paymentSystemName}}</td>
+                        <!-- <td>{{list.withdrawalCurrency}}</td> -->
+                        <td>{{list.withdrawalCurrencyName}}</td>
+                        <!-- <td>{{list.paymentMeanStatus}}</td> -->
+                        <td>{{list.paymentMeanStatusName}}</td>
+                        <td>{{list.accountId}}</td>
+                        <td>{{list.approvedDepositsCount}}</td>
+                        <td><input type="checkbox" (change)="lockInputcheck($event)" [(ngModel)]="list.lockInput"></td>
+                        <!-- <td><input type="text" [(ngModel)]="list.OrderAmount" value="{{i === 0 ? ActionPlayerdata.amount.value: 0}}"/></td> -->
+                        <td>{{walletSymbol}} <input type="number" (change)="exchangeValues(list)" [(ngModel)]="list.ChargeAmount" /></td>
+                        <td class="text-nowrap">{{list?.symbol}} {{list.OrderAmount }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bottomFix justify-content-between">
+            <div class="w-25 ms-4 text-info">
+                <p>You can use "Distribute" button for automatical distribution of cashout amount</p>
+            </div>
+            <div>
+                <button class="btn_grade_3" (click)="cashoutDistribution()">Distribute</button>
+            <button class="btn_grade_1" (click)="CompulsoryCashoutPopClose('yes')"> Withdraw </button>
+            <button class="btn_grade_2" (click)="CompulsoryCashoutPopClose('no')"> Cancel </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Error popup &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& -->
+ <div class="black_cover" *ngIf="alertMsg">
+    <div class="popup_1 pop_sm error-popup " *ngIf="alertMsg">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="alertPopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="py-3">
+            <h6 class="text-center">{{alertMsg}}</h6>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_2" (click)="alertPopup()"> Cancel </button>
+        </div>
+
+    </div>
+ </div>

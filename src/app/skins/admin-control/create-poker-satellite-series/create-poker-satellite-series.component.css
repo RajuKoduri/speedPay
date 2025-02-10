@@ -1,0 +1,264 @@
+.headTitle{
+    background: navajowhite;
+    padding: 4px;
+    margin: 4px 0px;
+}
+
+.Satellite-tree-container{
+    overflow: auto;
+    border: 1px solid #73ca59;
+    height: 340px;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+/* button[class*="btn_grade_satelite"] { */
+    .button_satelite{
+    /* text-transform: uppercase; */
+    font-weight: bold;
+    /* transition: all 0.5s; */
+    /* margin: 5px; */
+    padding: 4px;
+    border-radius: 5px;
+    border: solid 1px #ddd;
+    color: #000;
+    font-size: 12px;
+    width: 140px;
+    height: 30px;
+  }
+
+  @media screen and (max-width:768px){
+    .button_satelite{
+          padding: 4px;
+        border-radius: 5px;
+        border: solid 1px #ddd;
+        color: #000;
+        font-size: 12px;
+        width: 140px;
+        height: 35px;
+      }
+    
+    
+  }
+  
+   /* .btn_grade_2 {
+    background: linear-gradient(45deg, #ffae00, #dd3d00);
+  
+  } */
+  
+  .button-satelite-1 {
+    background: linear-gradient(45deg, #00b782, #006b9f);
+    color: #f8f2f2;
+    cursor: pointer;
+  } 
+
+  .button-satelite-1:disabled{
+    background:transparent;
+    border:1px solid #00b782;
+    cursor: no-drop;
+    color: #000;
+  }
+  
+  .satellite_input-name {
+    width: 120px;
+    height: 26px;
+    outline: none;
+    padding: 2px; 
+    /* border: snow; */
+ }
+ /* .input-name:hover{
+    border-color: rgba(0, 255, 255, 0.226)
+ } */
+
+ .satellite_input-dropdown{
+    width: 120px;
+    height: 26px;
+    outline: none;
+    padding: 2px; 
+
+ }
+
+ .popup_1.pop_sm_1{
+    max-width: 800px;
+    overflow: auto;
+    max-height: 80vh;
+}
+
+.tournament-info{
+    overflow: auto;
+    border: 1px solid #73ca59;
+    height: 445px;
+    border-radius: 6px;
+    padding: 4px;
+    position: relative;
+
+}
+.satellite-edit-button{
+    height: 25px;
+    width: 60px;
+    border-radius: 4px;
+    background: linear-gradient(45deg, #1ee1a9e0, #006b9fde);
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: #f8f2f2;
+}
+.satellite-edit-button:disabled{
+  background: #fff;
+  color: #000;
+  border: 1px solid  #31c2b1;
+}
+
+.edit-satellite-name{
+    width: 150px;
+}
+
+.highlightedrow{
+  background: #55c7c2 !important;
+  border-radius: 10px;
+  margin-bottom: 3px;
+  cursor: pointer;
+  padding:3px 10px; 
+
+}
+.nonhlightetext{
+  margin-bottom: 5px;
+  cursor: pointer;
+  padding-left: 10px;
+
+}
+
+.elements{
+  display: flex;
+  align-items: center;
+}
+
+button:disabled{
+  cursor: no-drop;
+}
+
+.popup_view {
+  background:#fff;
+  max-width: 600px;
+  margin: auto;
+  top: 50px;
+  position: fixed;
+  z-index: 1000;
+  left: 15px;
+  right: 15px;
+  border-radius: 5px;
+  overflow: auto;
+  max-height: 80vh;
+}
+
+.tablCode thead tr th {
+  position: sticky;
+  white-space: nowrap;
+  top: -10px;
+}
+
+.Blindtable thead tr th {
+  position: sticky;
+  top: 40px;
+}
+
+.error-pops{
+  background: #fff;
+  max-width: 460px;
+  margin: auto;
+  top: 200px;
+  position: fixed;
+  z-index: 1000;
+  left: 15px;
+  right: 15px;
+  border-radius: 5px;
+  overflow: auto;
+  /* max-height: 80vh; */
+  font-size:16px;
+}
+
+.error-pop{
+  min-width: 300px; 
+  max-width: 800px;
+  background: #fff;
+  margin: auto;
+  top: 200px;
+  position: fixed;
+  z-index: 1000;
+  left: 15px;
+  right: 15px;
+  border-radius: 5px;
+  overflow: auto;
+ /* max-height: 80vh; */
+ font-size:16px;
+
+}
+
+.error-apply-margin{
+  margin:5px;
+  }
+
+  .dropdown-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* height: 0px; */
+    margin: 10px 0px;
+  }
+
+  .dropdown-container select{
+    padding: 4px;
+    font-size: 14px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    width: 80%;
+    cursor: pointer;
+    margin-bottom: 5px;
+  }
+
+  .dropdown-container select::after {
+    content: '\25BC'; /* Unicode character for a down arrow */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+  }
+
+  
+
+  .btn_grade{
+  
+    padding: 10px 40px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.5s;
+    margin: 5px;
+    border: solid 1px #ddd;
+    color: #000;
+    cursor: no-drop;
+}
+  
+.ticket-text{
+  color: red !important;
+  font-weight: 500;
+  font-size: 13px;
+  margin-bottom: 0px;
+
+}
+.PopupHead {
+  top: -7px;
+}
+
+.text-warning-error{
+  position: absolute;
+  bottom: 0px;
+  color: orange;
+  font-weight: 500;
+  margin-bottom: 10px;
+  
+}
+.text-warning-error p{
+margin: 0px;
+}

@@ -1,0 +1,88 @@
+<!-- <div class="topnav">
+    <a >Actions</a>
+    <a (click)="openWalletPop()">Open</a>
+    <a >Explore</a>
+    <a (click)="ignoreContext()">Ignore Context</a>
+    <div class="dropdown">
+       <button class="dropbtn">View</button>
+       <div class="dropdown-content">
+           <a (click)="onRequery()">Normal</a>
+           <a>Autosize</a>
+           <a>Card</a>
+       </div>
+   </div>
+    <a (click)="onRequery()">Requery</a>
+    <a (click)="exportExcel()">Export to XSL</a>
+    <a (click)="onPrint()">Print</a>
+</div> -->
+
+
+
+
+
+<div>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportExcel()"> Export
+        Excel</button>
+    <h4>Wallet Exchanges Settings:</h4>
+</div>
+
+
+<div class="popup_4 pop_sm fd" *ngIf="WalletList" (dblclick)="openWalletPop();">
+    <div class=" PopupHead1">
+        <h6 class="text-center">Wallet Exchanges Settings</h6>
+    </div>
+    <div class="soon font_13 fd p_lr_15" id="excel_table">
+        <div class="fd p_5 ">
+            <div class="df m_3">
+                <label class="col-sm-8">Allow Wallet Exchanges for user</label>
+                <span>
+                    <input *ngIf="WalletList.allowWalletExchanges==true" type="checkbox" class="pointer" checked />
+                    <input *ngIf="WalletList.allowWalletExchanges==false" type="checkbox" class="pointer" />
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="fd over_tbl" id="tablerecords" >
+    <div class="df">
+        <div style="margin-right:20px;" *ngIf="WalletList">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+        <div> Result Count:<b>{{ResultCount}}</b><b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div>
+</div> -->
+
+
+<!--  popup -->
+<div class="black_cover" *ngIf="walletpopup">
+    <div class="popup_1 pop_sm" *ngIf="walletpopup">
+        <div class="PopupHead">
+            <h5 class="text-center"> Wallet Exchanges Settings </h5>
+            <span class="closetop" (click)="ChangeSettings('no')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-6"> Allow Wallet Exchanges for user</label>
+                    <span class="col-sm-6">
+                        <td>
+                            <input [(ngModel)]="subWallet.allowWalletExchanges" type="checkbox" class="checkclicked" />
+                        </td>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="ChangeSettings('yes')"> Save </button>
+            <button class="btn_grade_2" (click)="ChangeSettings('no')"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- PopUp end -->
+
+<!-- ################################################### -->
+<div class="black_cover" *ngIf="Spinner"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="Spinner">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+<!-- ################################################### -->

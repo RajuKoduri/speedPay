@@ -1,0 +1,65 @@
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+input {
+  padding: 5px;
+  width: 200px;
+  margin: 2px;
+}
+
+.seclectopt {
+  padding: 5px;
+  width: 200px;
+  margin: 2px;
+}
+.Birthdayinputs {
+  width: 27.8%;
+}
+.df {
+  display: flex;
+
+}
+.reglabel{
+  display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.text-centers {
+  display: flex;
+  /* justify-content: space-around; */
+  margin: 5px;
+}
+.filterDiv input:focus,
+.filterDiv select:focus {
+  outline: none;
+}
+
+.table_1 thead th {
+    position: sticky;
+    top: -1px;
+    padding: 1px 46px;
+  }
+
+table tfoot {
+  inset-block-end: 0; /* "bottom" */
+}
+tfoot{
+  position: sticky;
+  bottom: -1px;
+}
+
+.popup_1.pop_sm table{
+  width: 95%;
+}
+
+
+.filterDiv label {
+    /* padding-right: 20px; */
+    width: 130px;
+    float: left;
+    text-align: left;
+    display: contents;
+}

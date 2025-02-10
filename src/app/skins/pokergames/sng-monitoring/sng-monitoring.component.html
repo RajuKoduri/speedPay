@@ -1,0 +1,77 @@
+<div>
+    <button class="fillterbtn m_l_5" style="margin-right:15px; float: right;" (click)="onFormSubmit()">
+        Requery</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    <button class="fillterbtn m_l_5" style="margin-right:0px; float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+    <h3>Sng Monitoring</h3>
+</div>
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class=" table_2">
+        <table class="fd tablCode" id="excel_table">
+            <thead>
+                <tr class="tablCoderow">
+                    <th>Game</th>
+                    <th>Name</th>
+                    <th>AddOns</th>
+                    <th>BuyIn </th>
+                    <th>Currency</th>
+                    <th>Entries </th>
+                    <th>Fee</th>
+                    <th>GuaranteedPrizePool</th>
+                    <th>ID</th>
+                    <th>PlayersRemaining </th>
+                    <th>Rebuys</th>
+                    <th>Satellite</th>
+                    <th>StartTime</th>
+                    <th>Status</th>
+                    <th>Structure</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="sngData">
+                <tr *ngFor="let list of sngData;let i=index ">
+                    <td>{{list.Game}}</td>
+                    <td>{{list.Name}}</td>
+                    <td>{{list.AddOns}}</td>
+                    <td class="text-end">{{list.BuyIn | numberFormat}}</td>
+                    <td>{{list.Currency}}</td>
+                    <td>{{list.Entries}}</td>
+                    <td class="text-end">{{list.Fee | numberFormat}}</td>
+                    <td class="text-end">{{list.GuaranteedPrizePool | numberFormat}}</td>
+                    <td>{{list.ID}}</td>
+                    <td>{{list.PlayersRemaining}}</td>
+                    <td>{{list.Rebuys}}</td>
+                    <td>{{list.Satelite}}</td>
+                    <td>{{list.StartTime}}</td>
+                    <td>{{list.Status}}</td>
+                    <td>{{list.Structure}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- pagination-controls -->
+<div class="fd" *ngIf="sngData">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || sngData==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||sngData==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="sngData">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="sngData==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="sngData==null || pagecontrolbtn" (click)="fastforward()"><i
+                class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+<div class="black_cover">
+    <div class="popup_1 pop_sm text-black">
+            <div class="PopupHead">
+                <h5 class="text-center">Geo IP List</h5>
+                <span class="closetop" (click)="geoIpListPopup()"> <img src="assets/icons/closePop.svg">
+                </span>
+            </div>
+        <form [formGroup]="geoIpListForm">
+            <div class="soon font_13 fd p_lr_15">
+                <div class="row fd p-2 d-flex mt-2 align-items-center">
+                    <div class="col-sm-4 p-0">
+                        Provider:
+                    </div>
+                    <div class="col-sm-5">
+                        <select name="" id="" class="form-select" (change)="onProviderTypeChange($event)"
+                            formControlName="type">
+                            <option [ngValue]="list.guid" *ngFor="let list of geoIpProviderTypeList">{{list.value}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <ng-container *ngIf="getGeoIpProviderList">
+                            <button class="bgc1" [disabled]="getGeoIpProviderList[0]?.active">Activate</button>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="row fd p-2 d-flex ">
+                    <div class="col-sm-4 p-0">
+                        Release Date:
+                    </div>
+                   
+                </div>
+                <div class="row fd p-2 d-flex ">
+                    <div class="col-sm-4 p-0">
+                        Last Update:
+                    </div>
+                    <div *ngIf="getGeoIpProviderList" class="col-sm-8">
+                        {{getGeoIpProviderList[0]?.lastUpdateDate | slice : 0:10}}
+                    </div>
+                </div>
+                <div class="row fd p-2 d-flex align-items-center mb-2">
+                    <div class="col-sm-4 p-0">
+                        Update Period:
+                    </div>
+                    <div class="col-sm-4 d-flex align-items-center">
+                        <ng-container *ngIf="getGeoIpProviderList">
+                            <input type="number" class="form-control"
+                                [(ngModel)]="getGeoIpProviderList[0].updatePeriodDays"
+                                [ngModelOptions]="{standalone: true}">
+                        </ng-container>
+                        <label class="ms-1">days</label>
+                    </div>
+                </div>
+                <div class="fd p-2 d-flex justify-content-end ">
+                    <button class="bgc2 me-1" (click)="setGeoIpProvider()" >Save Settings</button>
+                    <button class="bgc1" (click)="onUpdateDB()">Update DB</button>
+                </div>
+            </div>
+            <div class="soon font_13 fd p_lr_15" [ngClass]="{'disable': getGeoIpProviderList ? !getGeoIpProviderList[0]?.active:''}">
+                <div class="PopupHead">
+                    <h6>Check IP</h6>
+                </div>
+                <div class="fd p-2 d-flex align-items-center mt-3 ps-0">
+                    <div class="col-sm-4 p-0">
+                        Check:
+                    </div>
+                    <span *ngIf="f['check'].touched && f['check'].invalid">
+                        <span
+                            *ngIf="f['check'].errors && (f['check'].errors['pattern'] || f['check'].errors['required'] )"
+                            class="text-danger">
+                            <b class="bi bi-x-circle-fill p-1" title="enter valid ip address"></b>
+                        </span>
+                    </span>
+                    <!-- <input class="form-control mx-1" formControlName="check" type="text" (input)="input($event)"> -->
+                    <input class="form-control mx-1" formControlName="check" type="text" (input)="formatIpAddress()"
+                        maxlength="15" />
+                    <button class="bgc1" (click)="getIpLocation()">Check</button>
+                </div>
+                <div class="row fd p-2 d-flex ">
+                    Country:
+                </div>
+                <div class="row fd p-2 d-flex ">
+                    Region:
+                </div>
+                <div class="row fd p-2 d-flex ">
+                    City:
+                </div>
+            </div>
+        </form>
+
+        <div class="bottomFix">
+            <!-- <button class="btn_grade_1" [disabled]="" (click)="onSubmit()"> Save </button> -->
+            <button class="btn_grade_2" (click)="geoIpListPopup()"> Close </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div>
+    <h3>Broadcast Message</h3>
+</div>
+<div class="container">
+    <div class="shadow rounded p-3 w-75  m-auto">
+        <label>Message :</label>
+      <div class="m-3">
+        <textarea class="form-control" rows="5" [(ngModel)]="message" (input)="onInputChar()" maxlength="257" required></textarea>
+        <div *ngIf="errorMsg" class="mt-2 text-danger">
+            {{errorMsg}}
+        </div>
+      </div>
+        <div class="df justify-content-end">
+            <button class="btn_grade_1" [disabled]="!message" (click)="onSubmit()">Submit</button>
+        </div>
+    </div>
+</div>

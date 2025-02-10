@@ -1,0 +1,13 @@
+.heading{
+    background-color: #72d5b4;
+    padding: 3px 2px;
+    border-radius: 5px;
+}
+
+.table_21 {
+    overflow-y: auto;
+    display: block;
+    height: 41vh !important;
+    /* background: #e8eeef; */
+    background-color: rgb(225 225 219);
+  }

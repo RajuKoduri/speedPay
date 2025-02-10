@@ -1,0 +1,7 @@
+tfoot {
+    position: sticky;
+    bottom: -1px; 
+  }
+  tfoot td{
+    background-color: #a6bfc5;
+  }

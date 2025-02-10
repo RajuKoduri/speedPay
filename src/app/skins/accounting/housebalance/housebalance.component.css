@@ -1,0 +1,9 @@
+tfoot{
+  padding: sticky;
+  bottom: -1px;
+}
+.table_1 tr th {
+  color: #000;
+  /* background: #d3e2e5; */
+  padding: 5px 50px;
+}

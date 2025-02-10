@@ -1,0 +1,185 @@
+<div class="d-flex">
+    <h3>Exchanges Rates</h3>
+    <button class="fillterbtn m_l_5 ms-auto" (click)="onFormSubmit()">Requery</button>
+
+</div>
+
+<!-- <div class="fd">
+    <h5 (click)="changbouns()" class="rateTotal">
+        <p *ngIf="showstandgo" class="rateicon p-1">-</p>
+        <p *ngIf="!showstandgo" class="rateicon p-1">+</p> Type:Bouns
+    </h5>
+    <div class="subleft" *ngIf="showstandgo">
+        <div class="cuurCHP" (click)="changbounsSub()">
+            <p *ngIf="showstandgosub" class="rateicon">-</p>
+            <p *ngIf="!showstandgosub" class="rateicon">+</p>
+            <b>Currency:</b> {{currencySymbol}}
+        </div>
+        <div class="twotable" *ngIf="showstandgosub">
+            <table class="  tablCode">
+                <tr class=" tablCoderow">
+                    <th> Comp Points </th>
+                </tr>
+                <tr *ngFor='let data of bounsdatas' (dblclick)="exchangeRatePopup()">
+                    <td>{{data.value |numberFormat}}</td>
+                </tr>
+            </table>
+            <table class="  tablCode">
+                <tr class="tablCoderow">
+                    <th> Amount </th>
+                </tr>
+                <tr *ngFor='let data of bounsdata'>
+                    <td>{{data.value |numberFormat}}</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+    <h5 class="rateTotal" (click)="changcash()">
+        <p *ngIf="showcash" class="rateicon">-</p>
+        <p *ngIf="!showcash" class="rateicon">+</p> Type:Cash
+    </h5>
+    <div class="subleft" *ngIf="showcash">
+        <div class="cuurCHP" (click)="changecashSub()">
+            <p *ngIf="showcashsub" class="rateicon">-</p>
+            <p *ngIf="!showcashsub" class="rateicon">+</p>
+            <b>Currency:</b> {{currencySymbol}}
+        </div>
+        <div class="twotable" *ngIf="showcashsub">
+            <table class="  tablCode">
+                <tr class="tablCoderow">
+                    <th>Comp Points</th>
+                </tr>
+                <tr *ngFor="let data of cashdatas">
+                    <td>{{data.value}}</td>
+                </tr>
+            </table>
+            <table class="  tablCode">
+                <tr class="tablCoderow">
+                    <th> Amount </th>
+                </tr>
+                <tr *ngFor="let data of cashdata">
+                    <td>{{data.value |numberFormat}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <h5 class="rateTotal" (click)="changtourna()">
+        <p *ngIf="showtour" class="rateicon">-</p>
+        <p *ngIf="!showtour" class="rateicon">+</p> Type: Tournament Buy-In
+    </h5>
+    <div *ngIf="showtour">
+        <div class="cuurCHP" (click)="changetournSub()">
+            <p *ngIf="showtoursub" class="rateicon">-</p>
+            <p *ngIf="!showtoursub" class="rateicon">+</p>
+            <b>Currency:</b> {{currencySymbol}}
+        </div>
+        <table class="  tablCode" *ngIf="showtoursub">
+            <tr class="tablCoderow">
+                <th> Comp Points</th>
+                <th> Amount </th>
+            </tr>
+            <tr>
+                <td>{{tourdata?.value |numberFormat}}</td>
+                <td>{{tourdatas?.value |numberFormat}}</td>
+            </tr>
+
+        </table>
+    </div>
+</div> -->
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="fd table_2">
+        <table class=" tablCode fd " id="excel-table">
+            <thead>
+                <tr>
+                    <th>Currency</th>
+                    <th>Type</th>
+                    <th>Comp point</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="ratesEX">
+                <tr *ngFor="let rate of ratesEX; let i = index" (dblclick)="exchangeRatePopup(i,rate)">
+                    <td>{{rate.symbol}}</td>
+                    <td>{{rate.exchangeTypeName}}</td>
+                    <td class="text-end">{{rate.compPoints.value}}</td>
+                    <td class="text-end">{{rate.symbol}} {{rate.moneyValue.value}}</td>
+                </tr>
+            </tbody>
+            <tfoot *ngIf="ratesEX && ratesEX.length>0">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="text-end">SUM = {{compPointsSum}}</td>
+                    <td class="text-end">SUM = {{currencySymbol +" "+ amountSum}}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<!-- &&&&&&&&&&&&&&&&&&&&&&&&&& popup &&&&&&&&&&&&&&&&&&&&&&&&&&&&&& -->
+
+<div class="black_cover" *ngIf="bonuspopup && exchangeRatePopupData">
+    <div class="popup_1 pop" *ngIf="bonuspopup && exchangeRatePopupData">
+        <div class="PopupHead">
+            <h5 class="text-center">Exchange Rates Settings</h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15 d-flex">
+            <table class="tablCode">
+                <thead>
+                    <tr>
+                        <th>Currency</th>
+                        <th>Type</th>
+                        <th>Comp points</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let data of exchangeRatePopupData;let i = index'
+                        [ngClass]="{'active': i=== selectedIndex  }" (click)="click(i)">
+                        <td>{{data.symbol}}</td>
+                        <td>{{data.exchangeTypeName}}</td>
+                        <td class="text-center">
+                            <input type="text" value="{{data.compPoints.value}}" [(ngModel)]="data.compPoints.value"
+                                appMaxLengthValidation maxlength="10">
+                        </td>
+                        <td>
+                            <input class="ms-5" type="text" value="{{data.moneyValue.value}}" [(ngModel)]="data.moneyValue.value"
+                                appMaxLengthValidation [maxNumber]="10">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="newExchangeRate()">New exchange rate</button>
+            <button class="btn_grade_2" (click)="deleteSelectedRate()">Delete selected rate</button>
+            <button class="btn_grade_1" (click)="updateData()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- &&&&&&&&&&&&&&&&&&&&&&&&&& popup end &&&&&&&&&&&&&&&&&&&&&&&&&&&&&& -->
+<!-- &&&&&&&&&&&&&&&&&&&&&&&&&& Error popup start &&&&&&&&&&&&&&&&&&&&&&&&&&&&&& -->
+<div class="black_cover" *ngIf="errorpopup">
+    <div class="popup_20 " *ngIf="errorpopup" >
+        <div class="PopupHead">
+            <h5 class="text-center text-danger">Error</h5>
+            <span class="closetop" (click)="closeErrorpopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15 p-3 text-danger">
+            <p class="text-center">{{errorMessage}}</p>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_2" (click)="closeErrorpopup()"> Ok </button>
+        </div>
+    </div>
+</div>
+<!-- &&&&&&&&&&&&&&&&&&&&&&&&&& Error popup End &&&&&&&&&&&&&&&&&&&&&&&&&&&&&& -->

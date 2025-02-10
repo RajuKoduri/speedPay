@@ -1,0 +1,190 @@
+<div>
+    <h4>Referred Agents</h4>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <!-- <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button> -->
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="RefferedPlayersForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="df">
+                        <label>Currency</label>
+                        <select class="seclectopt" formControlName="Currency" [ngModel]="selectedCurrency">
+                            <option [ngValue]="list.guid" *ngFor="let list of currencys">{{list.description}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <div style="margin-right:20px;" *ngIf="AgentRevenueFromAgentsData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div *ngIf="ResultCount">Result Count: {{ResultCount}}</div>
+        <!-- <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div> -->
+    </div>
+</div>
+
+<div class="fd">
+    <table class="tablCode table_2" id="excel-table">
+        <thead>
+            <tr>
+                <th>Agent</th>
+                <th>Compaign Type</th>
+                <th>Registation Date</th>
+                <th>Activity</th>
+                <th>Action</th>
+                <th>Initiator</th>
+                <th>Reffered Agent</th>
+                <th>Current Balance</th>
+                <th>Reffering Date</th>
+                <th>Revenue %</th>
+                <th>Reffered Revenue </th>
+                <th>Revenue</th>
+            </tr>
+        </thead>
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <tbody *ngIf="AgentRevenueFromAgentsData">
+            <tr *ngFor="let List of AgentRevenueFromAgentsData,let i =index">
+                <!-- <td>{{List.initiator.login}}</td> -->
+                <td>{{List.campaign.agent.login}}</td>
+                <td>{{List.campaign.name}}</td>
+                <td>{{changeSelect(List.initiator.regDate)}}</td>
+                <td>{{List.linkStatus}}</td>
+                <td>
+                    <div class="fd">
+                        <div class="trigger" *ngIf="List.linkStatus!=='Moved'">
+                            <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,List.guid)"></i>
+                            </a>
+
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                    <!-- <div class="fd"> -->
+                                    <div class="popup1 btnGrp">
+                                        <!-- <button [disabled]="List.linkStatus=='Disabled'||List.linkStatus=='Moved'"(click)="setPlayerActions('DeactiveLink',i)">Deactive Link</button>
+                                        <button [disabled]="List.linkStatus=='Enabled'||List.linkStatus=='Moved'" (click)="setPlayerActions('ActiveLink',i)">Active Link</button> -->
+                                        <button *ngIf="List.linkStatus=='Disabled'"
+                                            (click)="setPlayerActions('ActiveLink',i)">Active Link</button>
+                                        <button *ngIf="List.linkStatus=='Enabled'"
+                                            (click)="setPlayerActions('DeactiveLink',i)">Deactive Link</button>
+                                        <button [disabled]="List.linkStatus=='Moved' "
+                                            (click)="setPlayerActions('Transfer',i)">Transfer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{List.initiator.login}}</td>
+                <td class="hyperLink" (click)="AgentExplore(List.referredAgent.login, List.referredAgent.guid, List)">{{List.referredAgent.login}}</td>
+                <!-- <td>{{List.balance.wallet}} {{List.balance.value}}</td> -->
+                <td class="text-end">{{currencySymbol}} {{List.balance.value | numberFormat}}</td>
+                <td>{{changeSelect(List.referringDate)}}</td>
+                <td class="text-end text-nowrap" [title]="revenuePercentage(List.grossRevenuePercents)">{{(List.grossRevenuePercents[0].parameter)}}: {{List.grossRevenuePercents[0].percent | numberFormat}}</td>
+                <td class="text-end">{{currencySymbol}} {{List.paidReferredRevenue.value | numberFormat}}</td>
+                <td class="text-end">{{currencySymbol}} {{List.revenue.value | numberFormat}}</td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="AgentRevenueFromAgentsData && AgentRevenueFromAgentsData.length>0">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-end text-nowrap">SUM = {{currencySymbol}} {{currentBalanceSum}}</td>
+                <td></td>
+                <td></td>
+                <td class="text-end text-nowrap">SUM = {{currencySymbol}} {{referredRevenueSum}}</td>
+                <td class="text-end text-nowrap">SUM = {{currencySymbol}} {{revenueSum}}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="TransferPopup">
+    <div class="popup_1 pop_sm" *ngIf="TransferPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Transfer</h5>
+            <span class="closetop" (click)="TransferPopClose()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 ">
+                <!-- <b [ngClass]="Msg=='Technical error'? 'text-danger p_5':'text-success p_5'" class="p_5">{{Msg}} </b> -->
+                <div class="m_3">
+                    <label class="col-sm-6">Agent</label>
+                    <span>{{Actiondataforplayer.initiator.login}}</span>
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-6">Transfer Type</label>
+                    <select class="col-sm-6" [(ngModel)]="TransferType">
+                        <option [ngValue]=list.guid *ngFor="let list of TransferDirectionTypesList">{{list.value}}
+                        </option>
+                    </select>
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-6">wallet</label>
+                    <select class="col-sm-6" [(ngModel)]="VisibleselectedCurrency" (ngModelChange)="onChangeCurrencyWallet()">
+                        <option [ngValue]="list.guid" *ngFor="let list of VisibleWalletList">{{list.description}}
+                        </option>
+                    </select>
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-6">Agent's {{selectedCurrencyCode}} Balance</label>
+                    <span *ngIf="AgentBalnce">{{selectedCurrencySymbol}} {{AgentBalnce[0]?.balance.value}}</span>
+                    <!-- <span *ngIf="AgentBalnce">{{selectedCurrencySymbol}} {{AgentBalnce[1]?.balance.value}}</span> -->
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-6">Reffered Agent:</label>
+                    <span class="col-sm-6">{{Actiondataforplayer.referredAgent.login}}</span>
+
+                </div>
+                <div class="m_3">
+                    <label class="col-sm-6">Reffered Agents {{selectedCurrencyCode}} Balance</label>
+                    <span *ngIf="AgentBalnce">{{selectedCurrencySymbol}} {{AgentBalnce[1]?.balance.value}}</span>
+                    <!-- <span *ngIf="AgentBalnce">{{selectedCurrencySymbol}} {{AgentBalnce[0]?.balance.value}}</span> -->
+                </div>
+
+                <div class="m_3">
+                    <label class="col-sm-6">Amount</label>
+                    <input class="col-sm-6" [(ngModel)]="Amount" type="number" min="0"
+                        oninput="this.value = Math.abs(this.value)" />
+                </div>
+                <div class="m_3">
+
+                    <label class="col-sm-6">Comment</label>
+                    <textarea [(ngModel)]="TransferComment" class="col-sm-6"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" [disabled]="Amount==0" (click)="Transfer()"> Okay </button>
+            <button class="btn_grade_2" (click)="TransferPopClose()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->

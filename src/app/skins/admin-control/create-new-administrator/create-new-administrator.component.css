@@ -1,0 +1,67 @@
+
+.popup_3 input:focus,
+.popup_3 select:focus {
+  outline: none;
+}
+
+.popup_3 input,
+.popup_3 select {
+  border: solid 1px #ddd;
+  padding: 2px;
+}
+
+.soon .col-sm-6 label {
+  padding: 2px;
+  margin: 2px;
+}
+
+.soon .col-sm-6 select,
+.soon .col-sm-6 input {
+  margin: 2px;
+}
+
+
+
+.popup_3.pop_sm {
+  max-width: 500px;
+  overflow: auto;
+  max-height: 80vh;
+}
+.popup_2 {
+  background: #fff;
+  max-width: 800px;
+  margin: auto;
+  /* top: 100px; */
+  position: fixed;
+  /* z-index: 1000; */
+  left: 15px;
+  right: 15px;
+  border-radius: 5px;
+  overflow: auto;
+  max-height: 80vh;
+}
+.popup_3 {
+  max-width: 500px;
+  position: fixed;
+  z-index: 250;
+  background: #fff;
+  height: -moz-fit-content;
+  height: fit-content;
+  /* padding: 5px; */
+  left: 15px;
+  right: 15px;
+  border-radius: 5px;
+  /* left: 0; */
+  transition: all 5s;
+  /* right: 0;
+  top: 0;
+  bottom: 0; */
+  margin: auto;
+  box-shadow: 7px 11px 39px 5px rgb(0 0 0 / 20%);
+}
+ button[disabled]{
+  /* border: 1px solid #999999; */
+  border: none;
+  background: #cccccc;
+  color: #666666;
+}

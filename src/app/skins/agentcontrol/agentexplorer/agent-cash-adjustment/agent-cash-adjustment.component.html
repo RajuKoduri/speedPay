@@ -1,0 +1,76 @@
+<div>
+    <h3>Cash Adjustment</h3>
+</div>
+<div class="popup_4 pop_sm fd">
+
+    <div class=" PopupHead1">
+        <h5 class="text-center"> Cash Adjustment :</h5>
+        <!-- <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span> -->
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+        <div class="fd p_5 ">
+            <div class="df m_3">
+                <label class="col-sm-6">Player </label>
+                <span>{{AgentName}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Date </label>
+                <span class="col-sm-6">{{currentGMTTime}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Wallet </label>
+                <span class="col-sm-6">
+                    <select class="seclectopt " [(ngModel)]="selectedCurrency" (ngModelChange)="modelChangeFn($event)">
+                        <option [ngValue]="list.guid" *ngFor="let list of WalletList">{{list.description}}</option>
+                    </select>
+                </span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Avaliable Cash Balance </label>
+                <span class="col-sm-6" *ngIf="AgentBalnce">{{AgentBalnce[0]?.balance.value | numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Amount </label>
+                <span class="col-sm-6">
+                    <input [(ngModel)]="Amount" type="number" (change)="errorcheck()" />
+                </span>
+            </div>
+            <div>
+                <label class="col-sm-6">Comment</label>
+                <span class="col-sm-6">
+                    <textarea [(ngModel)]="comment"></textarea>
+                </span>
+            </div>
+            <div>
+                <span class="text-center text-danger" *ngIf="submitted">
+                    <span *ngIf="AgentBalnce"> You Can't Withdraw more than blance =
+                        {{AgentBalnce[0].balance.value}}</span>
+                </span>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onFormSubmit()" [disabled]="Amount==0 ||Amount==undefined ||submitted">
+                Save </button>
+            <!-- <button class="btn_grade_1"> Save </button> -->
+        </div>
+    </div>
+</div>
+
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="AgentCashAdjustsuccessPopUp">
+    <div class="popup_1 pop_sm" *ngIf="AgentCashAdjustsuccessPopUp">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <b [ngClass]="Msg=='Technical error'? 'text-danger p_5':'text-success p_5'" class="p_5">{{Msg}} </b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->

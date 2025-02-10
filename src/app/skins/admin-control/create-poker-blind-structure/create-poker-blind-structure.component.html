@@ -1,0 +1,207 @@
+<div class="popup_4 pop_sm">
+    <div class=" PopupHead" *ngIf="!EditBlindData">
+        <h5 class="text-center">Create Poker Blind Structure </h5>
+    </div>
+    <form [formGroup]="BlindStructureform">
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-4"> Poker Blind Structure Name</label>
+                    <input class="col-sm-4" type=text formControlName="BlindStructureName" />
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="fd p_5">
+        <span class="p_b_5  p_5 ">Blind Structure</span>
+
+        <div class="fd tablCode">
+            <!-- <table class="fd table_2" id="excel-table">
+                        <thead>
+                            <tr>
+                                <th>level</th>
+                                <th>Low Stake</th>
+                                <th>High Stake</th>
+                                <th>Ante</th>
+                            </tr>
+                        </thead>
+
+                        <tbody *ngIf="show">
+                            <tr *ngFor="let list of BlindLevelsList,let i =index">
+                                <td>{{i+1}}</td>
+                                <td>{{list.lowStake.value}}</td>
+                                <td>{{list.highStake.value}}</td>
+                                <td>{{list.ante.value}}</td>
+                            </tr>
+
+
+                            <tr *ngFor="let row of BlindAddLevelsList; let i = index">
+                                <td> {{i+1}} </td>
+                                <td> {{row.ante}} </td>
+                                <td> {{row.lowStake}} </td>
+                                <td> {{row.highStake}} </td>
+                                 <td> <button (click)="addItem(i)">Add</button> </td>
+                                <button class="btn_grade_1" (click)="addItem(i)"> Add New Level </button>
+                            </tr>
+
+                        </tbody> 
+                    </table>-->
+            <div>
+                <table class="fd table_2">
+                    <thead>
+                        <tr>
+                            <th>level</th>
+                            <th>Low Stake</th>
+                            <th>High Stake</th>
+                            <th>Ante</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of BlindAddLevelsList; let i = index">
+                            <td>{{i+1}}</td>
+
+                            <td><input (change)="levelCompare($event)" [(ngModel)]="item.lowStake.value" type="number"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    name="{{item.lowStake.value}}" type="text"></td>
+                            <td><input [(ngModel)]="item.highStake.value" type="number"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    name="{{item.highStake.value}}" type="text"></td>
+                            <td><input [(ngModel)]="item.ante.value" type="number"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : 0"
+                                    name="{{item.ante.value}}" type="text"></td>
+
+                            <!-- <td><input  [(ngModel)]="BlindAddLevelsList.firstName" value="{{item?.ante.value}}" type="text"></td> -->
+                            <!-- <td><input value="{{item?.lowStake.value}}" type="text"></td>
+                                    <td><input value="{{item?.highStake.value}}" type="text"></td> -->
+                            <td> <button class="deletebtn" (click)="deleteRow(i)"><i class="fa fa-trash "></i></button>
+                            </td>
+                        </tr>
+                        <!-- <td *ngIf="show">
+                                <tr  *ngFor="let list of BlindLevelsList,let i =index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{list.lowStake.value}}</td>
+                                    <td>{{list.highStake.value}}</td>
+                                    <td>{{list.ante.value}}</td>
+                                </tr>
+                            </td> -->
+                        <!-- <div>{{BlindAddLevelsList | json}}</div> -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="fd" *ngIf="EditBlindData==null">
+            <div class="bottomFix">
+                <button class="btn_grade_1" (click)="addItems()"> Add New Level </button>
+                <button class="btn_grade_1" (click)="BlindStructureList()"> Copy form Existing </button>
+                <button class="btn_grade_1" (click)="onFormSubmit()"> Save </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ********************************************************* -->
+<table class="table border">
+    <!-- <tbody *ngFor="let row of BlindAddLevelsList; let i = index">
+        <tr>
+            <td>{{i+1}}</td>
+            <td> <input value="{{row.ante.value}}" type="text"> </td>
+            <td><input value="{{row.lowStake.value}}" type="text"> </td>
+            <td> {{row.highStake.value}} </td>
+            <td> <button (click)="addItem(i)">Add</button> </td>
+        </tr>
+    </tbody> -->
+</table>
+<!-- ********************************************************* -->
+
+
+
+<!-- ********************************************************* -->
+<div class="black_cover" *ngIf="BlindStructurePopup">
+    <div class="Blindpopup pop_sm" *ngIf="BlindStructurePopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Blind Structures </h5>
+            <span class="closetop" (click)="BlindPopClose()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="wh">
+                    <select class="col-sm-6" [(ngModel)]="ExistingBlindName">
+                        <option *ngFor="let list of BlindStructureResList">{{list.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="BlindStructureformExisting()"> Ok </button>
+            <button class="btn_grade_2" (click)="BlindPopClose()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ********************************************************* -->
+
+<!-- ************************Validation PopUp*********************************** -->
+
+
+
+<div class="black_cover" *ngIf="validationPopUp">
+    <div class="popup_1 pop_sm" *ngIf="validationPopUp">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="validation-class">
+            <div>
+                <pre class="error-apply-margin"
+                    style="white-space: pre-line;font-family: inherit">{{validationText}}</pre>
+            </div>
+        </div>
+
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="TechnicalError()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************Validation PopUp*********************************** -->
+
+
+
+
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="CreateSuccessPop">
+    <div class="popup_1 pop_sm" *ngIf="CreateSuccessPop">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <b class="p_5 text-success">{{SuccessMsg}}</b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->
+
+<!-- ************************ErrorPopUp*********************************** -->
+<div class="black_cover" *ngIf="ErrorPopup">
+    <div class="popup_1 pop_sm" *ngIf="ErrorPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <i class="p_5 text-danger">Technical Error... </i>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="TechnicalError()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************ErrorPopUpClose*********************************** -->

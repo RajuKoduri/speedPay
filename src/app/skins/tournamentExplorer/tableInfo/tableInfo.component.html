@@ -1,0 +1,88 @@
+<div class="popup_4 pop_sm fd" *ngIf="tableData">
+
+  <div class=" PopupHead">
+    <h5 class="text-center">{{PlayerName.name}}</h5>
+   
+</div>
+
+<div class="soon font_13 fd p_lr_15">
+  <div class="fd p_5 ">
+    <div class="df m_3">
+      <label class="col-sm-6">Registration Start</label>
+      <span>{{changeSelect(tableData[0]?.history?.registrationStartDate)}}</span>
+    </div>
+
+    <div class="df m_3">
+      <label class="col-sm-6">Tournament Start</label>
+      <span>{{changeSelect(tableData[0]?.history?.startDate)}}</span>
+  </div>
+
+  <div class="df m_3">
+    <label class="col-sm-6">Tournament End</label>
+    <span>{{changeSelect(tableData[0]?.history?.finishDate)}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">Sit'n'Go Name</label>
+  <span>{{tableData[0]?.history?.caption}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">Currency</label>
+  <span>{{currencyCode}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">Game</label>
+  <span>{{tableData[0]?.history?.gameName}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">Level Length,min</label>
+  <span>{{tableData[0]?.history?.levelLength/(10000*60)}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">Total Cost</label>
+  <span>{{currencyCode}} {{tableData[0]?.history?.totalCost?.value}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">-Buy-In</label>
+  <span>{{currencyCode}} {{tableData[0]?.history?.buyIn?.value}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">-Fee</label>
+  <span>{{currencyCode}} {{tableData[0]?.history?.fee?.value}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">-Knockout Bounty</label>
+  <span>{{currencyCode}} {{tableData[0]?.history?.knockoutBounty?.value}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">Total Buy-Ins</label>
+  <span>{{currencyCode}} {{tableData[0]?.history?.totalBuyIn?.value}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">Total Fee</label>
+  <span>{{currencyCode}} {{tableData[0]?.history?.totalFee?.value}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">Comp Points</label>
+  <span>{{tableData[0]?.history?.totalCompPoints?.value}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">Seats</label>
+  <span>{{tableData[0]?.history?.seats}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">Registered/Max Players</label>
+  <span>{{tableData[0]?.history?.maxPlayers}}</span>
+</div>
+<div class="df m_3">
+  <label class="col-sm-6">accessRuleName</label>
+  <span>{{tableData[0]?.history?.accessRuleName}}</span>
+</div>
+
+
+  </div>
+
+
+</div>
+
+
+</div>

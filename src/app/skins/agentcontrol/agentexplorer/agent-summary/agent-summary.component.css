@@ -1,0 +1,54 @@
+
+.selectopt{
+    padding:5px;
+    width:200px;
+    margin: 2px;
+  }
+  .table_2 thead th {
+    position: sticky;
+    top: 0;
+      /* text-wrap: nowrap */
+      white-space:nowrap
+  }
+ 
+  tfoot{
+    position: sticky;
+    bottom: -1px;
+  }
+
+  .Birthdayinputs{
+    width: 28.8%;
+  }
+ 
+  
+  .popup_4 {
+    background: #fff;
+    max-width: 800px;
+    margin: auto;
+    /* top: 80px; */
+    /* position: fixed; */
+    /* z-index: 1000; */
+    /* left: 15px; */
+    /* right: 15px; */
+    border-radius: 5px;
+    overflow: auto;
+    /* max-height: 85vh; */
+    box-shadow: 7px 11px 39px 5px rgb(0 0 0 / 20%);
+  }
+
+ .popup {
+   width: 350px;
+   height: auto;
+   margin: auto;
+   overflow: auto;
+   display: block;
+   border: 1px solid rgb(56, 58, 56);
+   position: relative;
+ }
+
+.checkclick{
+  pointer-events: none;
+}
+.PopupHead1{
+  z-index: 1 !important;
+}

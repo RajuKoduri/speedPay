@@ -1,0 +1,178 @@
+<div>
+    <h2>Affiliate Statistics </h2>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="margin-right:85px; float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+</div>
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+
+                    <div>
+                        <label>Currency </label>
+                        <select class="seclectopt" formControlName="Currency">
+                            <option [ngValue]="Wallet.guid" *ngFor="let  Wallet of walletlists">
+                                {{Wallet.description}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <button class="aplay" (click)="onFormSubmit()">Apply</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="margin-right:85px; float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <div style="margin-right:20px;" *ngIf="AffiliateStatisticsData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+
+</div>
+
+<div class="fd" (click)="totalAbuse()">
+    <!-- <tr class="tablCoderow">
+        <th>Bonus Abuse</th>
+    </tr> -->
+    <div class="abuse">
+        <table class="abuseTable ">
+            <thead>
+                <tr>
+                    <th colspan="2">Affiliate Statistics
+                        <div class="arrow" (click)="Abusearrow()">
+                            <i *ngIf="showing" class="fa fa-chevron-up"></i>
+                            <i *ngIf="!showing" class="fa fa-chevron-down"></i>
+                        </div>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody *ngIf="showing">
+                <tr>
+                    <td class="headtd">Server :</td>
+                    <td></td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Total Number Of Affiliates</td>
+                    <td>{{list.totalWebmastersNumber}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Unique Hits</td>
+                    <td>{{list.uniqueHits}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Reffered Players</td>
+                    <td>{{list.referredPlayers}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Reffered Affiliates</td>
+                    <td>{{list.referredWebmasters}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Deposits Count</td>
+                    <td>{{list.depositsCount}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Deposits Amount</td>
+                    <td>{{list.depositsAmount.value}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Revenue From players </td>
+                    <td>{{list.revenueFromPlayers.value}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">-Including Chargebacks</td>
+                    <td>{{list.chargebacksFromPlayers.value}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Revenue From Affiliates </td>
+                    <td>{{list.revenueFromWebmasters.value}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Revenue On CPA</td>
+                    <td>{{list.revenueOnCPA.value}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">-Including Chargebacks</td>
+                    <td>{{list.chargebacksOnCPA.value}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Revenue On Revenue Share </td>
+                    <td>{{list.revenueOnRevenueShare.value}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">-Including Chargebacks</td>
+                    <td>{{list.chargebacksOnRevenueShare.value}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Revenue On Sub Affiliate</td>
+                    <td>{{list.revenueOnSubAffiliate.value}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Total Revenue</td>
+                    <td>{{list.totalRevenue.value}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Revenue Adjustments</td>               
+                    <td>{{list.revenueAdjustments.value}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Canceled Payments</td>
+                    <td>{{list.cancelledPayments.value}}</td>
+                </tr>
+                <tr *ngFor="let list of AffiliateStatisticsData">
+                    <td class="headtd">Net Revenue</td>
+                    <td>{{list.netRevenue.value}}</td>
+                </tr>
+                <!--  <tr *ngFor="let list of summary">6
+                    <td class="headtd">Enable Comp Points :</td>
+                    <td>
+                        <input *ngIf="list.compPointsEnabled==true" type="checkbox" class="pointer" checked />
+                        <input *ngIf="list.compPointsEnabled==false" type="checkbox" class="pointer">
+                    </td>
+                </tr> -->
+                <!-- <tr *ngFor="let list of summary">
+
+                    <td class="headtd">Allow Exchange to Cash :</td>
+                    <td>
+                        <input *ngIf="list.conversionToCashEnabled==true" type="checkbox" class="pointer" checked />
+                        <input *ngIf="list.conversionToCashEnabled==false" type="checkbox" class="pointer">
+                    </td>
+                </tr> -->
+                <!-- <tr *ngFor="let list of summary">
+
+                    <td class="headtd">Allow Exchange to Bonus:</td>
+                    <td>
+                        <input *ngIf="list.conversionToTournamentBuyInEnabled==true" type="checkbox" class="pointer"
+                            checked />
+                        <input *ngIf="list.conversionToTournamentBuyInEnabled==false" type="checkbox" class="pointer">
+                    </td>
+                </tr> -->
+                <!-- <tr *ngFor="let list of summary">
+                    <td class="headtd">Allow Tournament Buy-In For Comp Points: </td>
+                    <td>
+                        <input *ngIf="list.conversionToWithdrawRestrictedEnabled==true" type="checkbox" class="pointer"
+                            checked />
+                        <input *ngIf="list.conversionToWithdrawRestrictedEnabled==false" type="checkbox"
+                            class="pointer">
+                    </td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+</div>

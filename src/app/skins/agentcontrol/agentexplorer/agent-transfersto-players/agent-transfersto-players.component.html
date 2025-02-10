@@ -1,0 +1,154 @@
+<div>
+    <h4>Tansfer to Players</h4>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="TransferstoPlayersForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <select class="seclectopt" formControlName="Currency" [ngModel]="selectedCurrency">
+                            <option [ngValue]="list.guid" *ngFor="let list of currencys">{{list.description}}</option>
+                        </select>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>player Login</label>
+                        <input type="text" formControlName="InitiatorLogin">
+
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reffered Agent Login</label>
+                        <input type="text" formControlName="RefferedAgent">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Type</label>
+                        <!-- <select class="seclectopt" formControlName="Type">
+                            <option [ngValue]="type.guid" *ngFor="let type of TransferDirectionTypesList">
+                                {{type.value}}</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownsettingsTYpes" [data]="TransferDirectionTypesList"
+                                [(ngModel)]="selectedtypes" (onSelect)="onItemSelectTYpes($event)"
+                                (onDeSelect)="OnItemDeSelectTYpes($event)"
+                                (onSelectAll)="onSelectAllTYpes($event)"
+                                (onDeSelectAll)="onDeSelectAllTYpes($event)" formControlName="Type">
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <div style="margin-right:20px;" *ngIf="TransferstoPlayersData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div *ngIf="ResultCount">Result Count: {{ResultCount}}</div>
+        <!-- <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div> -->
+    </div>
+</div>
+<div class="fd">
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+</div>
+	<div class="black_cover" (click)="closepop()" *ngIf="popupview"></div> 
+<div class="popmini" *ngIf="popupview">
+    <span class="closetop" (click)="closepop()">
+       <img src="assets/icons/closePop.svg" > 
+    </span>
+    <h4 class="mt-2">Transfers to Player</h4>
+    <hr>
+    <table style="width:100%">
+        <tr>
+         <td>Sever</td>
+         <td>rapoker_demo</td>
+        </tr>
+       <tr class="headcommon"> Common</tr>
+       <tr>
+        <td>Initiator</td>
+        <td>{{agentlogin}}</td>
+       </tr>
+
+       <tr>
+        <td>Date</td>
+        <td>{{changeSelect(dateform)}}</td>
+       </tr>
+       <tr>
+           <td>Agent</td>
+           <td>{{agentname}}</td>
+       </tr>
+       <tr>
+        <td>Player</td>
+        <td>{{palyername}}</td>   
+       </tr>
+       <tr>
+        <td>Type</td>
+        <td>{{cashtype}}</td>
+       </tr>
+       <tr>   
+        <td>Amount</td>
+        <td>{{amount}}</td>
+       </tr>
+    </table>
+    <button class="btn btn-danger pt-2" (click)="closepop()">Close</button>
+</div>
+    <div class="fd table_2">
+        <table class="tablCode" id="excel_table">
+            <thead>
+                <tr>
+                    <th>Initiator</th>
+                    <th>Date</th>
+                    <th>Agent</th>
+                    <th>Player</th>
+                    <th>Type </th>
+                    <th>Amount</th>
+                    <th>Comment</th>
+                </tr>
+            </thead>
+            <div clas='fd' *ngIf="loader">
+                <div class="loaderWraper">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            <tbody *ngIf="TransferstoPlayersData">
+            <tr *ngFor="let List of TransferstoPlayersData,let i =index" (dblclick)="viewdata(List,i)">  
+                    <td>{{List.initiator.login}}</td>
+                    <td>{{changeSelect(List.date)}}</td>
+                     <td  (click)="AgentExplore(List.agent.login,List.agent.guid)" > <a class="playeranchor">{{List.agent.login}}</a> </td>
+                    <td (click)="playername12(List.player.account,List.player.guid,List)"> <a class="playeranchor" >{{List.player.account}}</a> </td>
+                    <td>{{List.direction}}</td>
+                    <td class="text-end">{{List.amount.value | numberFormat}}</td>
+                    <td>{{List.comment}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>

@@ -1,0 +1,17 @@
+.aplay{
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    background: #91bdd3;
+    margin-top: 5px;
+    color: black;
+}
+.df{
+    display: flex;
+    margin-top: 10px;
+}
+.table_1 thead th {
+    position: sticky;
+    top: 0;
+    padding: 1px 69.5px;
+}

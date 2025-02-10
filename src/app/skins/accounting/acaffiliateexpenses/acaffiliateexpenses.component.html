@@ -1,0 +1,238 @@
+<!-- <div class="topnav">
+    <a (click)="fillterMenu()">Filter</a>
+    <a >Actions</a>
+    <a (click)="openAffiliatePop()">Open</a>
+    <a >Explore</a>
+    <a (click)="ignoreContext()">Ignore Context</a>
+    <div class="dropdown">
+       <button class="dropbtn">View</button>
+       <div class="dropdown-content">
+           <a (click)="onRequery()">Normal</a>
+           <a>Autosize</a>
+           <a>Card</a>
+       </div>
+   </div>
+    <a (click)="onRequery()">Requery</a>
+    <a (click)="exportExcel()">Export to XSL</a>
+    <a (click)="onPrint()">Print</a>
+</div> -->
+
+
+<div>
+    <h3>Affiliate Expenses</h3>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillterMenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterList" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterList" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportExcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export CSV</button>
+</div>
+<!-- filter menu -->
+<div class="fd filterDiv" *ngIf="FillterList">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <select class="seclectopt" formControlName="currency" [(ngModel)]="selectedCurrency">
+                            <option *ngFor="let curreny of currencys" [ngValue]="curreny.guid">{{curreny.description}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodStart</label> 
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            (change)="timechnage($event)" />
+                    </div>
+                   
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodEnd</label> 
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="number" formControlName="firstRecord" />
+                    </div>
+                    
+                </div>
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>Affiliate Login</label>
+                            <input type="text" formControlName="affiliateLogin" placeholder="(none)">
+                        </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="number" formControlName="pageSize" />
+                    </div>
+                    <!-- <button class="fillterbtn"(click)="onRequery()">Apply</button>
+                <button class="fillterbtn" (click)="FormReset()">Reset</button> -->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="fd ">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df m_3">
+        <div style="margin-right:20px;" *ngIf="affiliateExpenses">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+
+</div>
+
+<!-- table start -->
+<div class="fd table_2 over_tb1" id="tablerecords" style="overflow-x:auto;">
+    <div clas='fd' *ngIf="dataLoader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr>
+                <th>Affiliate account</th>
+                <th>Payable to affiliate by the beginning of the period</th>
+                <th>Payable in the "Revenue Share" program for the period</th>
+                <th>including chargebacks</th>
+                <th>Payable in the "CPA" program for the period</th>
+                <th>Including chargebacks</th>
+                <th>Payable in the "Sub Affiliate" program for the period</th>
+                <th>Revenue adjustments</th>
+                <th>Increase/Decrease of payable amount for the period</th>
+                <th>Paid out for the period</th>
+                <th>payable to affiliates by the end of the period</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="affiliateExpenses">
+            <tr
+                *ngFor="let i = index; let list of affiliateExpenses ">
+                <td>{{list.webmaster.account}}</td>
+                <td class="text-end">{{list.payableToWmByBegPeriod.value |numberFormat}}</td>
+                <td class="text-end">{{list.payableRevenueShareForPeriod.value |numberFormat}}</td>
+                <td class="text-end">{{list.includingRevenueShareChargebacks.value |numberFormat}}</td>
+                <td class="text-end">{{list.includingCPAChargebacks.value |numberFormat}}</td>
+                <td class="text-end">{{list.payableSubAffiliateForPeriod.value |numberFormat}}</td>
+                <td class="text-end">{{list.includingCPAChargebacks.value |numberFormat}}</td>
+                <td class="text-end">{{list.revenueAdjustments.value |numberFormat}}</td>
+                <td class="text-end">{{list.incDecAmountForPeriod.value |numberFormat}}</td>
+                <td class="text-end">{{list.paidOutByEndPeriod.value |numberFormat}}</td>
+                <td class="text-end">{{list.payableToWmByBegPeriod.value |numberFormat}}</td>
+
+            </tr>
+        </tbody>
+        <!-- <tfoot *ngIf="affiliateExpenses">
+            <tr>
+                <td><b>{{rowsOnthePage}}</b></td>
+                <td></td>
+                <td>SUM=</td>
+                <td>SUM=</td>
+                <td>SUM=</td>
+                <td>SUM=</td>
+                <td>SUM=</td>
+                <td>SUM=</td>
+                <td>SUM=</td>
+                <td>SUM=</td>
+                <td>SUM=</td>
+            </tr>
+        </tfoot> -->
+    </table>
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+         class="pt-2 page-item float-right">
+    </pagination-controls>
+
+    <div class="page_count">
+        <div style="margin-right:20px;" *ngIf="affiliateExpenses">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+        <div> Result Count:<b>{{ResultCount}}</b>  <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div> -->
+</div>
+
+<!-- onclick row popup -->
+<div class="main_popup" *ngIf="affiliateBalpopup">
+    <div class="fd popup">
+        <div class="head_popup">
+            <p class="text-center"><b> affiliate Expenses</b></p>
+            <span (click)="closePopup()">X</span>
+        </div>
+        <div class="sub_popup">
+            <table>
+                <tr>
+                    <th>Affiliate account:</th>
+                    <td>{{subAffiliate.null}}</td>
+                </tr>
+                <tr>
+                    <th>Payable to affiliate by the beginning of the period:</th>
+                    <td>{{subAffiliate.null}}</td>
+                </tr>
+                <tr>
+                    <th>Payable in the "Revenue Share" program for the period:</th>
+                    <td>{{subAffiliate.null}}</td>
+                </tr>
+                <tr>
+                    <th>including chargebacks:</th>
+                    <td>{{subAffiliate.null}}</td>
+                </tr>
+                <tr>
+                    <th>Payable in the "CPA" program for the period:</th>
+                    <td>{{subAffiliate.null}}</td>
+                </tr>
+                <tr>
+                    <th>Including chargebacks:</th>
+                    <td>{{subAffiliate.null}}</td>
+                </tr>
+                <tr>
+                    <th>Payable in the "Sub Affiliate" program for the period:</th>
+                    <td>{{subAffiliate.null}}</td>
+                </tr>
+                <tr>
+                    <th>Revenue adjustments:</th>
+                    <td>{{subAffiliate.null}}</td>
+                </tr>
+                <tr>
+                    <th>Increase/Decrease of payable amount for the period</th>
+                    <td>{{subAffiliate.null}}</td>
+                </tr>
+                <tr>
+                    <th>Paid out for the period</th>
+                    <td>{{subAffiliate.null}}</td>
+                </tr>
+                <tr>
+                    <th>payable to affiliates by the end of the period</th>
+                    <td>{{subAffiliate.null}}</td>
+                </tr>
+                <div class="btn_row">
+                    <button class="savebtn" (click)="closePopup()">Save</button>
+                    <button class="closebtn" (click)="closePopup()">Close</button>
+                </div>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- filter menu -->
+<!-- <div class="fd">
+    <div class="text-center">
+    <div>Rows On the Page: {{rowsOnthePage}}</div>
+    <div> Result Count: {{ResultCount}} <b>To get data set and apply the filters</b></div>
+    <div> Applied Filters: {{counter}}</div>
+    <div class="paginationdiv">
+        <button class="backbutton" (click)="prev()"> < Previous</button>
+        <button class="backbutton" (click)="next()"> Next > </button>
+    </div>
+    </div>
+</div> -->

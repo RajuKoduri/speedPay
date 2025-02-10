@@ -1,0 +1,246 @@
+<div>
+    <h2>currency Exchanges </h2>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodStart</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" step="1" formControlName="startTime"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            (change)="timechnage($event)" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodEnd</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" step="1" formControlName="endTime"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Wallet</label>
+                        <!-- <select class="seclectopt" formControlName="currency">
+                            <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlist">
+                                {{CURRENCY.value}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="WalletSettings" [data]="walletlist"
+                                [(ngModel)]="walletlistsCopy" formControlName="currency"
+                                (onSelect)="onSelectCurrency($event)" (onDeSelect)="onDeSelectCurrency($event)"
+                                (onSelectAll)="onSelectAllCurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllCurrency($event)">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Wallet Type</label>
+                        <select class="seclectopt" formControlName="WalletType">
+                            <option [ngValue]="WalletType.guid" *ngFor="let WalletType of CurrncyExchangeWalletList">
+                                {{WalletType.value}}</option>
+                        </select>
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer && !agentExplorer">
+                        <label>User Login</label>
+                        <input type="text" formControlName="UserLogin" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Money Type</label>
+                        <!-- <select class="seclectopt" formControlName="MoneyType">
+                            <option [ngValue]="moneyType.guid" *ngFor="let moneyType of CurrencyExchangPocketTypeList">
+                                {{moneyType.value}}</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="MoneyTypeSettings"
+                                [data]="CurrencyExchangPocketTypeList" [(ngModel)]="ExchangPocketTypeCopy"
+                                formControlName="MoneyType">
+                            </ng-multiselect-dropdown>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df m-1">
+        <div style="margin-right:20px;" *ngIf="CurrencyExchangData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+
+</div>
+
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="table_2">
+        <table class="tablCode " id="excel-table">
+            <thead>
+                <tr>
+                    <th>S.no</th>
+                    <th *ngIf="playerExplorer">Player</th>
+                    <th *ngIf="agentExplorer">Agent</th>
+                    <th>Date </th>
+                    <th *ngIf="!playerExplorer && !agentExplorer">User Type</th>
+                    <th *ngIf="!playerExplorer && !agentExplorer">User Login </th>
+                    <th>Money Type</th>
+                    <th>Source Wallet </th>
+                    <th>Source Amount </th>
+                    <th>Target Wallet </th>
+                    <th>Target Amount </th>
+                </tr>
+            </thead>
+            <tbody *ngIf="CurrencyExchangData">
+                <tr *ngFor="let list of CurrencyExchangData; let i=index" (dblclick)="viewdata(list,i)">
+                    <td>{{i+1}}</td>
+                    <td *ngIf="playerExplorer">{{list.user.login}}</td>
+                    <td *ngIf="agentExplorer">{{list.user.account}}</td>
+                    <td>{{transformDate(list.date)}}</td>
+                    <td *ngIf="!playerExplorer && !agentExplorer">{{userTypeName(list.user.type)}}</td>
+                    <td class="hyperLink" *ngIf="!playerExplorer && !agentExplorer"
+                        (click)="userTypeName(list.user.type) == 'Player' ? PlayerExplore(list.user.login, list.guid, list) : AgentExplore(list.user.login, list.guid, list) ">
+                        {{list.user.login}}</td>
+                    <td>{{moneyType(list.exchangeType)}}</td>
+                    <td>{{sourcetargetWallet(list.sourceAmount,'r')}}</td>
+                    <td class="text-end">{{sourcetargetWallet(list.sourceAmount,'symbol') }}</td>
+                    <td>{{sourcetargetWallet(list.targetAmount,'r')}}</td>
+                    <td class="text-end">{{sourcetargetWallet(list.targetAmount,'symbol') }}</td>
+                </tr>
+            </tbody>
+            <tfoot *ngIf="CurrencyExchangData && CurrencyExchangData.length > 0">
+                <tr>
+                    <td></td>
+                    <td *ngIf="playerExplorer"></td>
+                    <td *ngIf="agentExplorer"></td>
+                    <td></td>
+                    <td *ngIf="!playerExplorer && !agentExplorer"></td>
+                    <td *ngIf="!playerExplorer && !agentExplorer"></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(sourceTotalSum)">
+                            {{sourceTotalSum[key]}} ; </span> </td>
+                    <td></td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(targetTotalSum)">
+                            {{targetTotalSum[key]}} ; </span></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="fd" *ngIf="CurrencyExchangData && CurrencyExchangData.length>0">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || CurrencyExchangData==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||CurrencyExchangData==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="CurrencyExchangData">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="CurrencyExchangData==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="CurrencyExchangData==null || pagecontrolbtn" (click)="fastforward()"><i
+                class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% popup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+<div class="black_cover" *ngIf="popupview">
+    <div class="popup_1 pop_sm" *ngIf="popupview">
+        <div class="PopupHead">
+            <h5 class="text-center">Currency Exchanges </h5>
+            <span class="closetop" (click)="closepop()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="row pb-2">
+                    <div class="col-sm-5">Date</div>
+                    <div class="col-sm-7">{{changeSelect(selectedRowData.date)}}</div>
+                </div>
+                <div class="row pb-2" *ngIf="playerExplorer">
+                    <div class="col-sm-5">Player</div>
+                    <div class="col-sm-7">{{selectedRowData.user.login}}</div>
+                </div>
+                <div class="row pb-2" *ngIf="agentExplorer">
+                    <div class="col-sm-5">Agent</div>
+                    <div class="col-sm-7">{{selectedRowData.user.account}}</div>
+                </div>
+                <div class="row pb-2">
+                    <div class="col-sm-5" *ngIf="!playerExplorer && !agentExplorer">User Type</div>
+                    <div class="col-sm-7">{{userTypeName(selectedRowData.user.type)}}</div>
+                </div>
+                <div class="row pb-2">
+                    <div class="col-sm-5" *ngIf="!playerExplorer && !agentExplorer">User Login</div>
+                    <div class="col-sm-7">{{selectedRowData.user.login}}</div>
+                </div>
+                <div class="row pb-2">
+                    <div class="col-sm-5">Money Type</div>
+                    <div class="col-sm-7">{{moneyType(selectedRowData.exchangeType)}}</div>
+                </div>
+                <div class="row pb-2">
+                    <div class="col-sm-5">Source Wallet</div>
+                    <div class="col-sm-7">{{sourcetargetWallet(selectedRowData.sourceAmount, 'r')}}</div>
+                </div>
+
+                <div class="row pb-2">
+                    <div class="col-sm-5">Source Amount</div>
+                    <div class="col-sm-7">{{sourcetargetWallet(selectedRowData.sourceAmount, 'symbol')}}</div>
+                </div>
+                <div class="row pb-2">
+                    <div class="col-sm-5">Target Wallet</div>
+                    <div class="col-sm-7">{{sourcetargetWallet(selectedRowData.targetAmount, 'r')}}</div>
+                </div>
+                <div class="row pb-2">
+                    <div class="col-sm-5">Target Amount</div>
+                    <div class="col-sm-7">{{sourcetargetWallet(selectedRowData.targetAmount, 'symbol')}}</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_2" (click)="closepop()"> Close </button>
+            <!-- <button class="btn_grade_2" (click)="cashoutReversel('no')"> Cancel </button> -->
+        </div>
+    </div>
+</div>

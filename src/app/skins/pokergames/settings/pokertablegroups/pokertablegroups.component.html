@@ -1,0 +1,622 @@
+<div class="fd">
+    <h2>Tables</h2>
+</div>
+<div class="fd fil_export">
+    <button class="fillterbtn font-size-16" (click)="filterbtn()">Filters
+        <i *ngIf="!Fillterdata" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="Fillterdata" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+   
+    <div class="df">
+        <button class=" fillterbtn m_l_5 btn_sub12 " routerLink="/CreatePokerTableGroup" title="Add Table">
+            <!-- <img class="Addicon" src="assets/icons/Pluse.png" /> -->
+            Add Table</button>
+        <button class="fillterbtn m_l_5 btn_sub12" (click)="exportexcel()">Export Excel</button>
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    </div>
+   
+
+</div>
+
+<div class="fd">
+    <!-- <div class="filters" *ngIf="Fillterdata">
+        <form [formGroup]="pokertablegroup" (click)="OnSubmit()">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="m_t_10">
+                            <label>Reporting Period</label>
+                            <input class="Birthdayinputs" format="yyyy-MM-dd HH:mm:ss" type="datetime-local" step="1"
+                                formControlName="repotingstart">
+                            <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                                formControlName="repotingend">
+                        </div>
+                        <div class="m_t_10">
+                            <label>Currency</label>
+                            <select class="seclectopt">
+                                <option>U.S.Dollars</option>
+                                <option>Chips</option>
+                                <option>Play Money</option>
+                            </select>
+                        </div>
+                        <div class="m_t_10">
+                            <label>Name</label>
+                            <input type="text" formControlName="None">
+                        </div>
+                        <div class="m_t_10">
+                            <label>Games</label>
+                            <select class="selectdown">
+                                <option>All</option>
+                                <option>Active</option>
+                                <option>Locked</option>
+                                <option>Pending</option>
+                                <option>Restricted</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="m_t_10">
+                            <label>Enabled</label>
+                            <select class="selectdown">
+                                <option>All</option>
+                                <option>Enabled</option>
+                                <option>Desabled</option>
+                            </select>
+                        </div>
+                        <div class="m_t_10">
+                            <label>Tables</label>
+                            <select class="selectdown">
+                                <option>Any</option>
+                                <option>Jackpot</option>
+                                <option>Regular</option>
+                            </select>
+                        </div>
+                        <div class="m_t_10">
+                            <label>FirstRecord</label>
+                            <input type="text" formControlName="firstRecord">
+                        </div>
+                        <div class="m_t_10">
+                            <label>MaxCountRecord</label>
+                            <input type="text" formControlName="maxCountRecord">
+                        </div>
+                    </div>
+                </div>
+                <div class="m_t_10">
+                    <button type="submit" class="btn_1" (click)="filterPokerGroup()">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div> -->
+</div>
+
+
+<div class="fd filterDiv" *ngIf="Fillterdata">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-4">
+                   
+                    <!-- <div>
+                        <label>StartDate</label>
+                        <input class="flex_input" id="srartDate" (input)="clickToChangeDateInputStartDate()"
+                            type="datetime-local" [ngModel]="startDate | date:'yyyy-MM-dd'" formControlName="Datefrom"
+                            [max]="todaydate">
+                    </div>
+                    <div>
+                        <label>EndDate</label>
+                        <input id="endDate" (input)="clickToChangeDateInputEndtDate()" class="flex_input"
+                            type="datetime-local" [ngModel]="endDate | date:'yyyy-MM-dd'" formControlName="Dateto"
+                            [max]="todaydate">
+                    </div> -->
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date"  [max]="endDate" formControlName="startDate"
+                        [ngModel]="startDate" (ngModelChange)="startDate = $event"  (change)="showDate($event)"/>
+                        <input class="inp_agent_time mobile_view"  type="time" formControlName="startTime"  step="1" [ngModel]="startTime" (ngModelChange)="startTime = $event"  (change)="timechange($event)" [max]="endTime"/>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date"   [max]="todaydate" formControlName="endDate"
+                      [ngModel]="endDate" (ngModelChange)="endDate = $event"  (change)="showDate($event)"/>
+                      <input  class="inp_agent_time mobile_view" type="time" formControlName="endTime"  step="1" [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)"/>
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                      </div>
+                      <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time  
+                      </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="Currency">
+                            <option [ngValue]="Wallet.currency" *ngFor="let  Wallet of walletlists">
+                                {{Wallet.description}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                        <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList"
+                            [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)"
+                            (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                            (onDeSelectAll)="onDeSelectAll($event)" formControlName="skills">
+                        </ng-multiselect-dropdown>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label> Name</label>
+                        <input type="text" formControlName="Name" />
+                    </div>
+                        <div class="div_flex p_5_10">
+                                <label>Game</label>
+                            <!-- <input type="text" formControlName="Game" /> -->
+                            <div class="fd d-flex flex-row align-items-center games-list-container"
+                                (click)="filtergamesbtn()">
+                                <!-- <input class="games-input-container" type="text" formControlName="GameName"> -->
+                                <div class="games-input-container">
+                                    [{{gamesTobeSelected}}]
+                                </div>
+                                <button class="fillterbtn-games font-size-16">
+                                    <i *ngIf="!Filtergamesbtn" class="fa fa-chevron-down IcArrow-games" title="open"
+                                        style="font-size:14px;"></i>
+                                    <i *ngIf="Filtergamesbtn" class="fa fa-chevron-up IcArrow-games" title="close"
+                                        style="font-size:14px;"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="div_flex p_5_10">
+                                <label>Enabled </label>
+                            <div>
+                                <select class="seclectopt  games-list-container w-200" formControlName="Enabled">
+                                    <option [ngValue]="List.guid" *ngFor="let List of EnabledDisabledAll">
+                                        {{List.value}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                    <!-- <div>
+                        <label>Tables</label>
+                        <select class="seclectopt" formControlName="Tables">
+                            <option [ngValue]="tableType.guid" *ngFor="let tableType of PokerTableTypeList">
+                                {{tableType.value}}</option>
+                        </select>
+                    </div> -->
+
+                </div>
+
+
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record </label>
+                        <input type="text" formControlName="firstRecord" type="text" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" type="text" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                    <!-- <div>
+                        <label></label>
+                        <input type="reset" class="fillterbtn m_l_5" (click)="resetForm()" />
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="fd">
+    <!-- <button class="Addbutton"routerLink="/CreatePokerTableGroup" title="Add Table"><img class="Addicon" src="../../../../assets/icons/Pluse.png"/></button> -->
+<div class="text-centers div_sub">
+    <div class="df m_5">
+        <div style="margin-right:20px;" *ngIf="pokerGamesGroupList">Rows On the Page: {{rowsOnthePage}} </div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+
+    </div>
+    <button class="fillterbtn btn_sub12" (click)="onFormSubmit()" [disabled]="steddate || timeerror">Submit</button>
+</div>
+    
+</div>
+
+
+
+
+<!-- fillter games popup -->
+<div *ngIf="Filtergamesbtn" class="black_cover"></div>
+<!-- <div class="fd filterDiv-game-filter" *ngIf="Filtergamesbtn"> -->
+<!-- <div *ngIf="Filtergamesbtn" class="popup_view fd filterDiv-game-filter"> -->
+<div *ngIf="Filtergamesbtn" class="fd filterDiv-game-filter">
+    <div class="PopupHeads">
+        <h5 class="text-center">Poker games </h5>
+        <span class="closetop" (click)="filtergamesbtn()"> <img src="assets/icons/closePop.svg">
+        </span>
+    </div>
+    <div class="d-flex flex-row all-games">
+        <input class="" type="checkbox" id="checkboxForallgameCaption" [checked]="pokerGamesCheckbox"
+            (change)="clickonCheckboxForAllGames($event)">
+        <label for="">Poker Games</label>
+    </div>
+    <div class="poker-caption-container">
+        <div class="caption-checkbox" *ngFor="let game of filterItem let i = index">
+            <input class="" type="checkbox" [checked]="checkedList[i]" value="{{game.caption}}" id="checkboxId{{i}}"
+                (change)="clickonCheckboxIndivisualGames()">
+            <!-- (change) ="clickonCheckboxIndivisualGames($event,'checkboxId'+i)"> -->
+            <label for="checkboxId{{i}}">{{game.caption}}</label>
+        </div>
+
+    </div>
+
+
+    <div class="bottomFixs">
+        <button class="closeBTN" (click)="filtergamesbtn()">close</button>
+    </div>
+</div>
+
+<!-- fillter games popup -->
+
+
+
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+        <table class="tablCode" id="excel-table">
+            <thead>
+                <tr class="tablCoderow">
+                    <th>Currency</th>
+                    <th>Game Name</th>
+                    <th>Stakes</th>
+                    <th>Seats</th>
+                    <!-- <th>Action timeout, sec</th>
+                    <th>Time Bank,Sec</th>
+                    <th>Time Bank Autoincrement Amount,Sec</th> -->
+                    <th>Name</th>
+                    <th>Actions</th>
+                    <th>Enabled</th>
+                    <th>Pot</th>
+                    <th>Rake</th>
+                    <!-- <th>Total Jackpot Fee</th>
+                    <th>Disconnection Protection</th> -->
+                    <!-- <th>Access Rules</th> -->
+                    <th>Rake Structure</th>
+                    <!-- <th>Chat Accessibility</th> -->
+                    <th>RunItTwice</th>
+                    <!-- <th>RackBack</th> -->
+                    <!-- <th>Bounty</th> -->
+                    <th>ThirdBlind</th>
+                    <th>TimeForced</th>
+                    <th>Jackpot</th>
+                    <th>Bombpot At Hand</th>
+                    <th>RabbitHunting</th>
+                    <th>RitForced</th>
+                    <th>ThirdBlindFoldForcedStrDdl</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="pokerGamesGroupList">
+                <!-- <tr *ngFor="let pokerGroup of pokerGamesGroupList | paginate: {itemsPerPage:selectnum, currentPage:p};"> -->
+                <!-- <tr *ngFor="let pokerGroup of pokerGamesGroupList;let i=index" (dblclick)="PlayerPopup(i)"> -->
+                <tr *ngFor="let pokerGroup of pokerGamesGroupList;let i=index">
+                    <td>{{pokerGroup?.pot?.walletName}}</td>
+                    <td> {{pokerGroup?.gameName}} </td>
+                    <td>{{pokerGroup?.lowStake?.value}}/{{pokerGroup?.highStake?.value}}</td>
+                    <td>{{pokerGroup?.seats}}</td>
+                    <!-- <td>{{pokerGroup.actionTimeout/1000}}</td>
+                    <td>{{pokerGroup.initialTimeBank/1000}}</td>
+                    <td>{{pokerGroup.additionalTimeBank/1000}}</td> -->
+                    <td>{{pokerGroup?.name}}</td>
+                    <!-- <td>{{pokerGroup.active}}</td> -->
+                    <td>
+                        <div class="fd">
+                            <!-- <div class="trigger" *ngIf="List.status!=='Closed'"> -->
+                            <div class="trigger">
+                                <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,pokerGroup.guid)">
+                                    </i>
+                                </a>
+                                <div *ngIf="popupArrow" class="fd">
+                                    <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                        <!-- <div class="popup1 btnGrp"> -->
+                                        <button [disabled]="pokerGroup.active==true" (click)="setPlayerActions('Enabled',i)">Enable Table</button>
+                                        <button [disabled]="pokerGroup.active==false" (click)="setPlayerActions('disabled',i)">Disable Table</button>
+                                        <button  (click)="PlayerPopup(i)">Edit Table</button>
+                                        <!-- <button [disabled]="pokerGroup.active==false" (click)="setPlayerActions('disabled',i)">Disable Table</button> -->
+                                        <!-- <button [disabled]="pokerGroup.active==true" (click)="setPlayerActions('Enabled',i)">Enabled Table</button>
+                                        <button [disabled]="pokerGroup.active==false" (click)="setPlayerActions('disabled',i)">disabled Table</button> -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <input *ngIf="pokerGroup.active==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="pokerGroup.active==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <td class="text-end">{{pokerGroup?.pot?.value |numberFormat}}</td>
+                    <td class="text-end">{{pokerGroup?.rake?.value |numberFormat }}</td>
+                    <!-- <td class="text-end">{{pokerGroup.jackpotFee.value |numberFormat}}</td>
+                    <td>{{pokerGroup.disconnectionProtection}}</td>
+                    <td>{{pokerGroup.accessRuleName}}</td> -->
+                    <td>{{pokerGroup.rakeStructureName}}</td>
+                    <!-- <td>{{pokerGroup.chatAccessibility}}</td> -->
+                    <td>
+                        <!-- {{pokerGroup.runItTwice}} -->
+                        <input *ngIf="pokerGroup.runItTwice==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="pokerGroup.runItTwice==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <!-- <td> -->
+                        <!-- {{pokerGroup.rakeBack}} -->
+                        <!-- <input *ngIf="pokerGroup.rakeBack==true" type="checkbox" class="checkclick" checked /> -->
+                        <!-- <input *ngIf="pokerGroup.rakeBack==false" type="checkbox" class="checkclick" /> -->
+                    <!-- </td> -->
+                    <!-- <td> -->
+                        <!-- {{pokerGroup.bounty}} -->
+                        <!-- <input *ngIf="pokerGroup.bounty==true" type="checkbox" class="checkclick" checked /> -->
+                        <!-- <input *ngIf="pokerGroup.bounty==false" type="checkbox" class="checkclick" /> -->
+                    <!-- </td> -->
+                    <td>
+                        <!-- {{pokerGroup.thirdBlind}} -->
+                        <input *ngIf="pokerGroup.thirdBlind==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="pokerGroup.thirdBlind==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <td>
+                        <!-- {{pokerGroup.timeForced}} -->
+                        <input *ngIf="pokerGroup.timeForced==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="pokerGroup.timeForced==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <td>
+                        <!-- {{pokerGroup.timeForced}} -->
+                        <input *ngIf="pokerGroup.jackpot==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="pokerGroup.jackpot==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <td>{{pokerGroup?.bombPotNumberHand}}</td>
+                    <td>
+                        <!-- {{pokerGroup.timeForced}} -->
+                        <input *ngIf="pokerGroup.rabbitHunting==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="pokerGroup.rabbitHunting==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <td>
+                        <!-- {{pokerGroup.timeForced}} -->
+                        <input *ngIf="pokerGroup.ritForced==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="pokerGroup.ritForced==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <td>
+                        <!-- {{pokerGroup.timeForced}} -->
+                        <input *ngIf="pokerGroup.thirdBlindFoldForcedStrDdl==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="pokerGroup.thirdBlindFoldForcedStrDdl==false" type="checkbox" class="checkclick" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+        class="pt-2 page-item float-right">
+    </pagination-controls>
+    <div class="fd" *ngIf="pokerGamesLoader"> Loading... </div> -->
+</div>
+
+<div class="fd">
+    <div class="fd" *ngIf="pokerGamesGroupList">
+        <div class="pagecount">
+            <button class="Pagebtns" [disabled]="PageCount==1 || pokerGamesGroupList==null"
+                (click)="fastbackforward()"><i class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||pokerGamesGroupList==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="pokerGamesGroupList">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="pokerGamesGroupList==null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="pokerGamesGroupList==null || pagecontrolbtn" (click)="fastforward()">
+                <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="PlayerTableGroupDatapopup">
+    <div class="popup_1 pop_sm" *ngIf="PlayerTableGroupDatapopup">
+        <div class="PopupHead">
+            <h6 class="text-center">Poker Table </h6> 
+            <span>{{PlayerTableGroupData.name}}</span>  
+            <span  class="closetop" (click)="closepopupCancel()"> 
+                <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <!-- <div class="df">
+                    <label class="col-sm-6"> Currency </label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.pot.wallet}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Game Name</label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.gameName}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Stakes </label>
+                    <span
+                        class="col-sm-6">{{PlayerTableGroupData.lowStake.value}}/{{PlayerTableGroupData.highStake.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Seats </label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.seats}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Action timeout, sec </label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.actionTimeout/1000}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Time Bank,Sec </label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.initialTimeBank/1000}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Time Bank Autoincrement Amount,Sec </label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.additionalTimeBank/1000}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Table Group Name</label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.name}}</span>
+                </div> -->
+
+
+
+                <!-- <div class="df">
+                    <label class="col-sm-6"> Enabled</label>
+                    <span class="col-sm-6">
+                        <input *ngIf="PlayerTableGroupData.active==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="PlayerTableGroupData.active==false" type="checkbox" class="checkclick" /> -->
+
+
+                        <!-- {{PlayerTableGroupData.active}} -->
+
+
+                    <!-- </span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Total Pot </label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.pot.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Total Rake </label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.rake.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Total Jackpot Fee </label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.jackpotFee.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Disconnection Protection </label>
+                    <span class="col-sm-6"> -->
+
+
+
+                        <!-- {{PlayerTableGroupData.disconnectionProtection}} -->
+
+
+
+                        <!-- <input *ngIf="PlayerTableGroupData.disconnectionProtection==true" type="checkbox"
+                            class="checkclick" checked />
+                        <input *ngIf="PlayerTableGroupData.disconnectionProtection==false" type="checkbox"
+                            class="checkclick" />
+                    </span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Access Rules</label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.accessRuleName}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Rake Structure</label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.rakeStructureName}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Chat Accessibility</label>
+                    <span class="col-sm-6">{{PlayerTableGroupData.chatAccessibility}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> RunItTwice</label>
+                    <span class="col-sm-6"> -->
+
+
+                        <!-- {{PlayerTableGroupData.runItTwice}} -->
+
+
+                        <!-- <input *ngIf="PlayerTableGroupData.runItTwice==true" type="checkbox" class="checkclick"
+                            checked />
+                        <input *ngIf="PlayerTableGroupData.runItTwice==false" type="checkbox" class="checkclick" />
+                    </span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> RackBack</label>
+                    <span class="col-sm-6"> -->
+
+
+                        <!-- {{PlayerTableGroupData.rakeBack}} -->
+
+
+                        <!-- <input *ngIf="PlayerTableGroupData.rakeBack==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="PlayerTableGroupData.rakeBack==false" type="checkbox" class="checkclick" />
+                    </span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Bounty</label>
+                    <span class="col-sm-6"> -->
+
+
+                        <!-- {{PlayerTableGroupData.bounty}} -->
+
+
+                        <!-- <input *ngIf="PlayerTableGroupData.bounty==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="PlayerTableGroupData.bounty==false" type="checkbox" class="checkclick" />
+                    </span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> ThirdBlind</label>
+                    <span class="col-sm-6"> -->
+
+
+                        <!-- {{PlayerTableGroupData.thirdBlind}} -->
+
+
+                        <!-- <input *ngIf="PlayerTableGroupData.thirdBlind==true" type="checkbox" class="checkclick"
+                            checked />
+                        <input *ngIf="PlayerTableGroupData.thirdBlind==false" type="checkbox" class="checkclick" />
+                    </span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> TimeForced</label>
+                <span class="col-sm-6"> -->
+
+
+                        <!-- {{PlayerTableGroupData.timeForced}} -->
+
+
+                        <!-- <input *ngIf="PlayerTableGroupData.timeForced==true" type="checkbox" class="checkclick"
+                            checked />
+                        <input *ngIf="PlayerTableGroupData.timeForced==false" type="checkbox" class="checkclick" />
+                    </span>
+                </div> -->
+                <app-create-poker-table-group #treeComponent [PlayerTableGroupData] ="PlayerTableGroupData"></app-create-poker-table-group>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" [disabled]="PlayerTableGroupData.active==true" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopupCancel()"> Cancel </button>
+        </div>
+        
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+
+
+<!-- ****************************EnabledDisabledPopUpTable*********************************** -->
+<div class="black_cover" *ngIf="enableddisabledepop">
+    <div class="popup_1 pop_sm" *ngIf="enableddisabledepop">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert </h5>
+            <span class="closetop" (click)="enabledisabledTable('No')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_20 text-center ">
+              <b> Do you want to  {{enableddisbletext}}  the table group?</b>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="enabledisabledTable('Yes')"> Yes </button>
+            <button class="btn_grade_2" (click)="enabledisabledTable('No')"> No </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************EnabledDisabledPopUpTable*********************************** -->

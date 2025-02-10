@@ -1,0 +1,78 @@
+<div>
+    <h3>Agent Summary</h3>
+</div>
+<div class="popup_4 pop_sm fd" *ngIf="AgentSummaryData">
+
+    <div class=" PopupHead1">
+        <h5 class="text-center"> Agent : {{AgentSummaryData[0].agent.login}}</h5>
+        <!-- <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span> -->
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+        <div class="fd p_5 ">
+            <div class="df m_3">
+                <label class="col-sm-6">Player Login</label>
+                <span>{{AgentSummaryData[0].agent.login}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Email</label>
+                <span>{{AgentSummaryData[0].agent.email}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Full Name</label>
+                <span>{{AgentSummaryData[0].agent.firstName}} {{AgentSummaryData[0].agent.lastName}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Status</label>
+                <span>{{AgentSummaryData[0].agent.status}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Reffered Players</label>
+                <span>{{AgentSummaryData[0].referredPlayers}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Reffered Agents</label>
+                <span>{{AgentSummaryData[0].referredAgents}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Balance</label>
+                <span>{{AgentSummaryData[0].balance.value |numberFormat}}</span>
+            </div>
+            <!-- <div class="df m_3">
+                <label class="col-sm-6">Revenue from Players</label>
+                <span>{{AgentSummaryData[0].revenueFromPlayers.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Revenue from Agents</label>
+                <span>{{AgentSummaryData[0].revenueFromAgents.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Revenue Adjustments</label>
+                <span>{{AgentSummaryData[0].revenueAdjustments.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Net Revenue</label>
+                <span>{{AgentSummaryData[0].netRevenue.value |numberFormat}}</span>
+            </div> -->
+            <div class="df m_3">
+                <label class="col-sm-6">Registration Date</label>
+                <span>{{changeSelect(AgentSummaryData[0].signupDate)}}</span>
+            </div>
+            <div>
+                <label class="col-sm-6">Last Ip</label>
+                <span>{{AgentSummaryData[0].lastIp}}</span>
+            </div>
+            <div>
+                <label class="col-sm-6">Reffered By Agent</label>
+                <span></span>
+            </div>
+            <!-- <div class="df m_3">
+                <label class="col-sm-6">Face</label>
+                <span>{{AgentSummaryData[0].agent.network}}</span>
+            </div> -->
+            <div>
+                <label class="col-sm-6"> Group</label>
+                <span>{{AgentSummaryData[0].permissionsGroupName}}</span>
+            </div>
+        </div>
+    </div>
+</div>

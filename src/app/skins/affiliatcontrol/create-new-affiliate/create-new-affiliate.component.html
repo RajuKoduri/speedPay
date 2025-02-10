@@ -1,0 +1,231 @@
+<h3>Create new affiliate</h3>
+
+<form [formGroup]="createAffiliateForm">
+    <div class="df">
+        <div class="w-50 container">
+            <div class="sample">
+                <h5>Common</h5>
+            </div>
+            <div class="sampleBody">
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Login Name</label>
+                    </div>
+                    <div class="col-sm-8 df align-items-center">
+                        <span *ngIf="f['account'].touched && f['account'].invalid || submitted">
+                            <span *ngIf="f['account'].errors && f['account'].errors['required']"
+                                class="text-danger">
+                                <b class="bi bi-x-circle-fill p-1"
+                                    title="value can not be empty"></b>
+                            </span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="account">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Password</label>
+                    </div>
+                    <div class="col-sm-8 df align-items-center">
+                        <span *ngIf="f['password'].touched && f['password'].invalid || submitted">
+                            <span *ngIf="f['password'].errors && f['password'].errors['required']"
+                                class="text-danger">
+                                <b class="bi bi-x-circle-fill p-1"
+                                    title="value can not be empty"></b>
+                            </span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="password">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>E-mail</label>
+                    </div>
+                    <div class="col-sm-8 df align-items-center">
+                        <span *ngIf="f['email'].touched && f['email'].invalid || submitted">
+                            <span *ngIf="f['email'].errors && f['email'].errors['required']"
+                                class="text-danger">
+                                <b class="bi bi-x-circle-fill p-1"
+                                    title="value can not be empty"></b>
+                            </span>
+                        </span>
+                        <input type="email" class="form-control" placeholder="(none)" formControlName="email">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>First Name</label>
+                    </div>
+                    <div class="col-sm-8 df align-items-center">
+                        <span *ngIf="f['firstName'].touched && f['firstName'].invalid">
+                            <span *ngIf="f['firstName'].errors && f['firstName'].errors['pattern']"
+                                class="text-danger">
+                                <b class="bi bi-x-circle-fill p-1"
+                                    title="invalid value"></b>
+                            </span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="firstName">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Last Name</label>
+                    </div>
+                    <div class="col-sm-8 df align-items-center">
+                        <span *ngIf="f['lastName'].touched && f['lastName'].invalid">
+                            <span *ngIf="f['lastName'].errors && f['lastName'].errors['pattern']"
+                                class="text-danger">
+                                <b class="bi bi-x-circle-fill p-1"
+                                    title="invalid value"></b>
+                            </span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="lastName">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Address</label>
+                    </div>
+                    <div class="col-sm-8 df align-items-center">
+                        <span *ngIf="f['address'].touched && f['address'].invalid">
+                            <span *ngIf="f['address'].errors && f['address'].errors['minlength']"
+                                class="text-danger">
+                                <b class="bi bi-x-circle-fill p-1"
+                                    title="minimum 5 charecters required*"></b>
+                            </span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="address">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>City</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="city">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>State</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="state">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>ZIP/Postal Code</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="zipcode">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Country</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <select class="form-select" formControlName="country">
+                            <option [ngValue]="list.CID" *ngFor="let list of countrylistData">{{list.title}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Phone Number</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" placeholder="(none)" formControlName="phone">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Language</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <select class="form-select" formControlName="language">
+                            <option [ngValue]="list.guid" *ngFor="let list of LanguagesList">{{list.value}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="w-50 container">
+            <div class="sample">
+                <h5>Campaign info</h5>
+            </div>
+            <div class="sampleBody">
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Campaign Name</label>
+                    </div>
+                    <div class="col-sm-8 df align-items-center">
+                        <span *ngIf="f['name'].touched && f['name'].invalid || submitted">
+                            <span *ngIf="f['name'].errors && f['name'].errors['required']"
+                                class="text-danger">
+                                <b class="bi bi-x-circle-fill p-1"
+                                    title="value can not be empty"></b>
+                            </span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="name">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Campaign Type</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <select class="form-select" formControlName="type">
+                            <option [ngValue]="list.guid" *ngFor="let list of campaignProgramList">{{list.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Website URL</label>
+                    </div>
+                    <div class="col-sm-8 df align-items-center">
+                        <span *ngIf="f['url'].touched && f['url'].invalid">
+                            <span *ngIf="f['url'].errors && f['url'].errors['pattern']"
+                                class="text-danger">
+                                <b class="bi bi-x-circle-fill p-1"
+                                    title="invalid value"></b>
+                            </span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="url">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Reg Post URL</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="regPostUrl">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Deposite Post URL</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="depositPostUrl">
+                    </div>
+                </div>
+                <div class="df mb-2">
+                    <div class="col-sm-4">
+                        <label>Withdrawal Post URL</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="withdrawalPostUrl">
+                    </div>
+                </div>
+            </div>
+            <div class="PopupFooter">
+                <button class="me-2" (click)="createWMaster()">Save</button>
+                <!-- <button>Reset</button> -->
+            </div>
+        </div>
+    </div>
+</form>

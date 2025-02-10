@@ -1,0 +1,17 @@
+<div class="black_cover" *ngIf="  errorMessage.length>0"></div>
+<div *ngIf="  errorMessage.length>0">
+    <div [style.top.%]="25 + i * 2" [style.left.%]="25 + i * 0.5" *ngFor="let errormsg of   errorMessage; let i = index"
+        class="error-popup popup_1 pop_sm" [style.transform]="getTransform(i)">
+        <div class="PopupHead ">
+            <h4 class="text-center" [ngClass]="errormsg.status ? 'text-danger' : 'text-success'">{{ errormsg.status ? 'Error' : 'Info' }}</h4>
+             <span class="closetop" (click)="close(i)"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="error-message py-3 text-center font_14 text-danger">
+            <!-- {{ errormsg.Error }} -->
+            <b>{{errormsg?.status}}  {{errormsg?.statusText}}</b>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_2" (click)="close(i)">Close</button>
+        </div>   
+    </div>
+</div>

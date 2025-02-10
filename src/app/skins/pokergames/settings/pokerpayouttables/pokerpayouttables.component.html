@@ -1,0 +1,168 @@
+<div>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+    <button class=" fillterbtn Addbutton" style=" float: right;" routerLink="/CreatePokerPayoutTable"
+        title="Add Payout Table">
+        <!-- <img class="Addicon" src="../../../../assets/icons/Pluse.png"/> -->
+        Add Payout
+    </button>
+    <h2> Payout Tables</h2>
+</div>
+<div class="fd">
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr class="tablCoderow">
+                <th>Name</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let List of objList,let i=index">
+                <!-- <tr (click)="subclick(i)" *ngFor="let List of objList,let i=index"> -->
+                <td>{{List.name}}</td>
+                <td>{{List.structureTypename}}</td>
+                <td>{{List.activIN}}</td>
+                <td>
+                    <div class="fd">
+                        <div class="trigger">
+                            <a><i class="fa fa-reorder" style="color: #fff;" (click)="showpopactions(List,i)"></i>
+                            </a>
+                            <div *ngIf="actionoptons" class="fd">
+                                <div *ngIf="selectinmdex == i" class="popup1 btnGrp">
+                                    <button (click)="subclick(i)">view</button>
+                                    <button [disabled]="activetype" (click)="editedPayouttable(List,i)">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- <div class="popupCover"  *ngIf="playerpaypopup"></div> -->
+<div class="black_cover" *ngIf="playerpaypopup"></div>
+<div class="popup_1 heightpopup" *ngIf="playerpaypopup">
+    <!-- <div class="fd"> -->
+    <!-- <p class="blindpara ">Blind Structure </p>  -->
+    <div class="PopupHeads">
+        <h5 class="text-center">View Payout Table: {{objListsub.name}}</h5>
+        <span class="closetop" (click)="playerpayclosepopup()"> <img src="../../../../assets/icons/closePop.svg">
+        </span>
+    </div>
+    <!-- <div class="p_5" *ngIf="objListsub.structureType=='Float'"> -->
+    <div class="p_5" *ngIf="objListsub.structureTypename=='Float'">
+        <table class="tablCode Blindtable">
+            <thead>
+                <tr>
+                    <th></th>
+                    <ng-container *ngFor="let i=index;let range of objListsub.playersCountIndices">
+                        <th>{{range.from}}
+                            <span *ngIf="i  ==(objListsub.playersCountIndices?.length-1)"> and more</span>
+                            <span *ngIf="i < (objListsub.playersCountIndices?.length-1)"> -
+                                {{range.to}}</span>
+                        </th>
+                    </ng-container>
+                </tr>
+                <!-- <tr class="tablCoderow">
+                        <th></th>
+                        <th>{{objListsub.playersCountIndices[0].from}}- {{objListsub.playersCountIndices[0].to}}</th>
+                        <th>{{objListsub.playersCountIndices[1].from}}{{objListsub.playersCountIndices[1].to}}</th>
+                    </tr> -->
+            </thead>
+            <tbody>
+                <tr *ngFor="let list of objListsub.placesIndices;let j=index">
+                    <td> {{list.from}}-{{list.to}} </td>
+                    <td *ngFor="let i=index;let range of  objListsub.playersCountIndices">
+                        <!-- {{listOne[i]}} -->
+                        {{percents[i].percents[j]}}
+                    </td>
+                    <!-- <td>
+                            {{listTwo[i]}}
+                        </td> -->
+                </tr>
+                <!-- <tr *ngFor="let j=index;let wrange of WinnersRanges01">
+                        <td>{{wrange.from}}-{{wrange.to}}</td>
+                        <td *ngFor="let i=index;let range of ParticipantsRanges01">
+                            <input type=" text" [(ngModel)]="percents[i].percents[j]"
+                                [ngModelOptions]="{standalone: true}">
+                        </td>
+                    </tr> -->
+            </tbody>
+            <!-- <tr *ngFor="let listdata of objListsub">  -->
+            <!-- <td >{{listdata.playersCountIndices.from}}-{{listdata.playersCountIndices.to}}</td> -->
+            <!-- <td >{{listdata.lowStake.value}}</td> -->
+            <!-- <td>{{listdata.ante.value}}</td> -->
+            <!-- </tr>
+                <td>{{listdata.name}}</td> -->
+
+        </table>
+    </div>
+    <!-- <div class="p_5" *ngIf="objListsub.structureType=='Fixed'"> -->
+    <div class="p_5" *ngIf="objListsub.structureTypename=='Fixed'">
+        <table class="tablCode Blindtable">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Prize</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ticket of  ticketTypes;let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{ticket}}</td>
+
+                    <!-- <ng-container *ngFor="let ticketType of Fixed.ticketTypes;j=index">
+                        <td>{{j+1}}</td>
+                        <td>{{ticketType[j]}}</td>
+                    </ng-container> -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="bottomFixs">
+        <button class="closeBTN" (click)="playerpayclosepopup()">close</button>
+    </div>
+</div>
+
+<!-- pop start************************************************************************************************ -->
+<div class="black_cover" *ngIf="PokerpayoutDatapop">
+    <div class="popup_1 pop_sm" *ngIf="PokerpayoutDatapop">
+        <div class="PopupHead">
+            <h5 class="text-center"> Edit Payout Table : {{PokerpayoutData.name}} </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="../../../../assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <app-create-poker-payout-table [PokerpayoutData]="PokerpayoutData"></app-create-poker-payout-table>
+            </div>
+        </div>
+        <div class="bottomFix" *ngIf="fixednamebtns =='Fixed' ">
+            <button class="btn_grade_1 padding_25" (click)="numofplayers()"> number of players </button>
+            <button class="btn_grade_1 padding_25" (click)="updatedrake()"> Save </button>
+            <button class="btn_grade_2 padding_25" (click)="closepopup()"> Cancel </button>
+        </div>
+
+        <div class="bottomFix" *ngIf="fixednamebtns =='Float' ">
+            <!-- <button class="btn_grade_1 font-10" (click)="EditWinnersPopUp()">Edit Winner Ranges </button>
+            <button class="btn_grade_1 font-10" (click)="ParticipantPopUp()"> Edit Participants Ranges </button>
+            <button class="btn_grade_1 font-10" (click)="CopyfromExistingPop()">Copy from Existing </button>
+            <button class="btn_grade_1 save font-10" (click)="onFormSubmit()"> Save </button> -->
+            <div>
+                <button class="btn_grade_1 font-10" (click)="EditWinnersPopUp()">Edit Winner Ranges </button>
+                <button class="btn_grade_1 font-10" (click)="ParticipantPopUp()"> Edit Participants Ranges </button>
+            </div>
+            <div>
+                <button class="btn_grade_1 font-10" (click)="CopyfromExistingPop()">Copy from Existing </button>
+                <button class="btn_grade_1  font-10" (click)="onFormSubmit()"> Save </button>
+            </div>
+            <!-- <button class="btn_grade_2" (click)="closepopup()"> Cancel </button> -->
+        </div>
+
+    </div>
+</div>
+<!-- pop end************************************************************************************************ -->

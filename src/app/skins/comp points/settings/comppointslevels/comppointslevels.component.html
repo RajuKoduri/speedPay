@@ -1,0 +1,123 @@
+<div class="fd">
+    <button class="fillterbtn font_14 ml_25" style="float: right;" (click)="onFormSubmit()">Requery</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    <button class="fillterbtn m_l_5" style="margin-right:0px; float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+    <h3>Player Levels</h3>
+</div>
+<div class="fd table_2">
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel_table"> 
+        <tr class="tablCoderow">
+            <th>Level</th>
+            <th>Players</th>
+            <th>Comp Points</th>
+            <th>Obtain Period</th>
+            <th>Expiration Period</th>
+            <th>Multiplier</th>
+        </tr>
+        <tbody *ngIf="comppointlevel">
+            <tr *ngFor="let list of comppointlevel,let i=index" (dblclick)="GetManageLevel(list,i)">
+                <td>{{list.name}}</td>
+                <td *ngIf="list.playersCount <= 0 ;else withNavigate" class="with-out-navigate">{{list.playersCount}}
+                </td>
+                <ng-template #withNavigate>
+                    <td class="with-navigate" (click)="navigatePlayersListComponent(list)">{{list.playersCount}}</td>
+                </ng-template>
+                <td class="text-end">{{list.requirements.compPoints.value |numberFormat}}</td>
+                <td>{{list.requirements.period}}</td>
+                <td>{{list.expirations.periodsNumber}}</td>
+                <td>{{list.benefits.compPointsMultiplier}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<div class="black_cover" *ngIf="CompLevelpopup">
+    <div class="popup_1 pop_sm">
+        <div class="PopupHead">
+            <h5 class="text-center">Comp Points Level</h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15 container">
+            <div class="row">
+                <div class="col-5 mt-3 mb-4 menu_container">
+
+                    <h6 class="headlist form-control">Level lIst</h6>
+                    <div class="break_line"></div>
+                    <div>
+                       <table>
+                        <thead>
+                            <th>Number</th>
+                            <th>Name</th>
+                        </thead>
+                        <tbody *ngFor="let level of ComppointsLevelres,let i = index">
+                            <tr class="tr_color" id="{{level.name}}" (click)="leveldecription(level,i)">
+                                 <td>{{i}}</td>
+                                <td class="namewidth">{{level.name}}</td>
+                            </tr>
+                        </tbody>
+                       </table>
+                    </div>
+                </div>
+                <div  class="col-7 mt-3"  *ngIf="Comppointleveldefault">
+                    <h5> Default</h5>
+                </div>
+                <div class="col-7 mt-3" *ngIf="!Comppointleveldefault">
+                     <h6 class="form-control">level name: <input class="w-50" type="text" [(ngModel)]="levelname" (change)="levelchangevalue($event)"></h6>
+                     <div class="break_line"></div>
+                     <div  class="label_font"> 
+                        <h6 class="con_div">Obtain requirements</h6>
+                     <table>
+                        <tr>
+                            <td><label class="label_font" style="font-size: 15px;">Obtain peroid :</label></td>
+                            <td> <select class="period_drop" (click)="Obtainperiod($event)" [(ngModel)]="selectobtainedreq" [ngModelOptions]="{standalone: true}"> 
+                                    <option *ngFor="let period of DYIDPLAYERList" value="{{period.value}}">{{period.value}}</option>
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td><label class="label_font">Comp Point : </label></td>
+                            <td> <input type="number" min="0" class="period_drop w-60" [(ngModel)]="Compointvalue"  [ngModelOptions]="{standalone: true}" (change)="compointvalueinput($event)"></td>
+                        </tr>
+                     </table>
+                    </div>
+                    <div class="break_line"></div>
+                     <div  class="label_font"> 
+                        <h6 class="con_div">Expiration requirements</h6> 
+                     <table>
+                        <tr>
+                            <td><label class="label_font" >Expiration period: </label></td>
+                            <td> <input type="number" min="0" class="period_drop" style="width: 60px;" [(ngModel)]="Expirationperiodvalue" (change)="expirationvalue($event)"></td>
+                            <td> <select class="period_drop" [(ngModel)]="Expirationperiods" (change)="expirationdropdown($event)">
+                                <option *ngFor="let period of DYIDPLAYERList" value="{{period.value}}">{{period.value}}</option>
+                            </select></td>
+                        </tr>
+                     </table>
+                    </div>
+                    <div class="break_line"></div>
+                     <div  class="label_font"> 
+                        <h6 class="con_div"> Benefits</h6>
+                     <table>
+                        <tr>
+                            <td><label class="label_font">Multiplier for Comp Points : </label></td>
+                            <td> <input type="number" min="0" class="period_drop"[(ngModel)]="multipleperiodvalue" (change)="multiplevalue($event)"></td>
+                        </tr>
+                     </table>
+                    </div>
+                </div>
+            </div>
+            <div class="text-end" style="background-color: bisque;">
+                <button class="btn btn-primary mx-3" (click)="submit()"> Save</button>
+                <button class="btn btn-primary ml-3" (click)="closepopup()"> Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- </form> -->
+<!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->

@@ -1,0 +1,21 @@
+.disable{
+    opacity: 0.3;
+    cursor: no-drop;
+    pointer-events: none;
+    }
+.bgc1{
+    padding: 10px 15px;
+    margin: 5px;
+    background: linear-gradient(135deg, #58baea, #9bd9e3, #58baea);
+    border-radius: 10px 10px 10px 10px;
+    cursor: pointer;
+    border:  none;
+}
+.bgc2{
+    padding: 10px 15px;
+    margin: 5px;
+    background: linear-gradient(135deg, #eaa658, #d3e39b, #eab958);
+    border-radius: 10px 10px 10px 10px;
+    cursor: pointer;
+    border:  none;
+}

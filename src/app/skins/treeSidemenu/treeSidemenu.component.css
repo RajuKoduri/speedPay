@@ -1,0 +1,89 @@
+.treeform {
+    cursor: pointer;
+    color: #ffffff !important;
+    /* margin-left: 13px; */
+    
+  }
+  ul{
+      margin-left: -30px !important;
+  }
+ 
+  .active{
+    background: #20a8d8;
+    color: white !important;
+    /* padding: 1px 5px; */
+  
+    }
+  .active12{
+      transform: rotate(90deg) !important;
+    }
+    .font_ss {
+      font-size: 19px;
+      transform: rotate(0deg);
+      font-weight: 800;
+      /* margin-left:25px; */
+      cursor: pointer;
+      padding: 3px;
+  }
+    .highlighted {
+      background-color: yellow; 
+    }
+
+    .backgrnd{
+        background-image: linear-gradient(to right, #24acb3, #385e70); 
+    }
+
+
+.active_link_1  li  :hover {  
+    background-image: linear-gradient(to right, #c69911, #0b1216);
+    color: #fff !important;
+    cursor: pointer;
+}
+.active_link_1  {  
+    background-image: linear-gradient(to right, #c69911, #0b1216) !important;
+    color: #fff !important;
+    cursor: pointer;
+}
+.active_link_1:hover  {  
+    background-image: linear-gradient(to right, #c69911, #0b1216) !important;
+    color: #fff !important;
+    cursor: pointer;
+}
+  .first_lvl{
+    color: #ffff;
+    /* font-size: 15px; */
+}
+.d_flex12{
+    display: flex;
+    justify-content: space-between;
+
+}
+.hover_text{
+    color: #fff;
+}
+.hover_text:hover{
+    background-color: #24acb3;
+}
+.mainli{
+    background-image: linear-gradient(to right, #234859, #0b171c)
+}
+.mainli:active{
+     background-image: linear-gradient(to right, #c69911, #0b1216);
+}
+.mainli:hover{
+    background-image: linear-gradient(to right, #234859, #0b171c)
+}
+.pad_right{
+    padding: 10px;
+}
+.sideMenu{
+    background-color: #20a8d8;
+}
+
+.playercontrol{
+    background-image: linear-gradient(to right, #234859, #0b171c);
+}
+.pokersetting{
+    /* background-image: linear-gradient(to right, #24acb3, #385e70); */
+    background-image: linear-gradient(to right, #234859, #5299a2, #0b181e);
+}

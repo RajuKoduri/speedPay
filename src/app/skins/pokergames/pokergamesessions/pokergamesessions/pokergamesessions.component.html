@@ -1,0 +1,419 @@
+<div>
+    <h3> Game History</h3>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <!-- <div class="div_flex p_5_10">
+                        <label>Date</label>
+                        <input class="Birthdayinputs" format="yyyy-MM-dd HH:mm:ss" type="datetime-local" step="1"
+                            formControlName="Datefrom">
+                        <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                            formControlName="Dateto">
+                    </div> -->
+
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [(ngModel)]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+
+
+
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="Currency"> -->
+                        <!-- <option disabled>Real Money</option> -->
+                        <!-- <option [ngValue]="currency.guid" *ngFor="let currency of walletlists">
+                                {{currency.description}}</option> -->
+                        <!-- <option disabled>Special Currency</option>
+                            <option [ngValue]="walletFormatsList[2].guid">
+                                {{walletFormatsList[2].description}}</option> -->
+                        <!-- </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList"
+                                [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                                (onDeSelectAll)="onDeSelectAll($event)" formControlName="Currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Game</label>
+                        <!-- <input type="text" formControlName="Game" /> -->
+
+                        <div class="fd d-flex flex-row align-items-center games-list-container"
+                            (click)="filtergamesbtn()">
+                            <!-- <input class="games-input-container" type="text" formControlName="GameName"> -->
+                            <div class="games-input-container">
+                                [{{gamesTobeSelected}}]
+                            </div>
+                            <button class="fillterbtn-games font-size-16">
+                                <i *ngIf="!Filtergamesbtn" class="fa fa-chevron-down IcArrow-games" title="open"
+                                    style="font-size:14px;"></i>
+                                <i *ngIf="Filtergamesbtn" class="fa fa-chevron-up IcArrow-games" title="close"
+                                    style="font-size:14px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Player Login</label>
+                        <input type="text" formControlName="PlayerLogin" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Table Name</label>
+                        <input type="text" formControlName="TableName" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Face</label>
+                        <!-- <select class="seclectopt" formControlName="Face">
+                            <option [ngValue]="face.name" *ngFor="let face of faceParameterslist">{{face.name}}</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="faceParametersdropdown" [data]="faceParameterslist"
+                                [(ngModel)]="faceParameterSelectedItems" (onSelect)="onItemSelectfaceParameters($event)"
+                                (onDeSelect)="OnItemDeSelectfaceParameters($event)"
+                                (onSelectAll)="onSelectAllfaceParameters($event)"
+                                (onDeSelectAll)="onDeSelectAllfaceParameters($event)"
+                                formControlName="faceParametersName">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+
+                    <div class=" p_5_10 df">
+                        <label class="err_msg">Session Id</label>
+                        <span class="fd">
+                            <input type="text" formControlName="SessionId" maxlength="32" />
+                            <p class="text-danger" *ngIf="this.filterForm.controls['SessionId'].errors">Invalid Input*
+                            </p>
+                        </span>
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Player NickName</label>
+                        <input type="text" formControlName="PlayerNickname" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" type="text" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!-- fillter games popup -->
+<div *ngIf="Filtergamesbtn" class="black_cover"></div>
+<!-- <div class="fd filterDiv-game-filter" *ngIf="Filtergamesbtn"> -->
+<!-- <div *ngIf="Filtergamesbtn" class="popup_view fd filterDiv-game-filter"> -->
+<div *ngIf="Filtergamesbtn" class="fd filterDiv-game-filter">
+    <div class="PopupHeads">
+        <h5 class="text-center">Poker games </h5>
+        <span class="closetop" (click)="filtergamesbtn()"> <img src="assets/icons/closePop.svg">
+        </span>
+    </div>
+    <div class="d-flex flex-row all-games">
+        <input class="" type="checkbox" id="checkboxForallgameCaption" [checked]="pokerGamesCheckbox"
+            (change)="clickonCheckboxForAllGames($event)">
+        <label for="">Poker Games</label>
+    </div>
+    <div class="poker-caption-container">
+        <div class="caption-checkbox" *ngFor="let game of filterItem let i = index">
+            <input class="" type="checkbox" [checked]="checkedList[i]" value="{{game.caption}}" id="checkboxId{{i}}"
+                (change)="clickonCheckboxIndivisualGames()">
+            <!-- (change) ="clickonCheckboxIndivisualGames($event,'checkboxId'+i)"> -->
+            <label for="checkboxId{{i}}">{{game.caption}}</label>
+        </div>
+
+    </div>
+
+
+    <div class="bottomFixs">
+        <button class="closeBTN" (click)="filtergamesbtn()">close</button>
+    </div>
+</div>
+
+<!-- fillter games popup -->
+
+
+
+
+<div class="fd">
+    <button class="fillterbtn font_14" style=" float: right;" (click)="onFormSubmit()"
+        [disabled]="steddate || timeerror || this.filterForm.controls['SessionId'].errors">Submit</button>
+    <div class="df m_5">
+        <div style="margin-right:20px;" *ngIf="pokerGameSessiondata">Rows On the Page: {{rowsOnthePage}} </div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+<div class="fd">
+    <div class="table_2">
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <table class="tablCode fd" id="excel-table">
+            <thead>
+                <tr class="tablCoderow">
+                    <th>Session Id</th>
+                    <th>Player</th>
+                    <th>Start Date</th>
+                    <th>Finish Date</th>
+                    <th>Currency</th>
+                    <th>Game</th>
+                    <th>Stakes</th>
+                    <th>Table Name</th>
+                    <th>Hands</th>
+                    <th>Rake</th>
+                    <th>Jackpot Fee</th>
+                    <th>Comp Points</th>
+                    <th>Initial Balance</th>
+                    <th>Buy In</th>
+                    <th>Bets </th>
+                    <th>Wins </th>
+                    <th>Payout </th>
+                    <th>Closing Balance </th>
+                    <th>Face </th>
+                </tr>
+            </thead>
+            <tbody *ngIf="pokerGameSessiondata">
+                <tr *ngFor="let list of pokerGameSessiondata;let i=index " (dblclick)="onClick(i)">
+                    <td>{{list.hexadecimalValue}}</td>
+                    <td>{{list.gamer.login}}</td>
+                    <!-- <td>{{list.startDate}}</td> -->
+                    <td>{{changeSelect(list.startDate)}}</td>
+                    <td>{{changeSelect(list.finishDate)}}</td>
+                    <!-- <td>{{list.finishDate}}</td> -->
+                    <td>{{list.initialBalance.wallet}}</td>
+                    <td>{{list.gameName}}</td>
+                    <td>[{{list.lowStake.value}}/{{list.highStake.value}}]</td>
+                    <td>{{list.tableName}}</td>
+                    <td *ngIf="getGamepokergamesessionActiveHands(list.hands<=0); else withNavigate"
+                        class="with-out-navigate">{{list.hands}}</td>
+                    <ng-template #withNavigate>
+                        <td class="with-navigate" (click)="navigatePokerHandsHistory(list.guid)">{{list.hands}}</td>
+                    </ng-template>
+                    <td class="text-end">{{list.rake?.value | numberFormat}}</td>
+                    <td class="text-end">{{list.jackpotFee?.value | numberFormat}}</td>
+                    <td class="text-end">{{list.compPoints?.value | numberFormat}}</td>
+                    <td class="text-end">{{list.initialBalance?.value | numberFormat}}</td>
+                    <td class="text-end">{{list.buyIn?.value | numberFormat}}</td>
+                    <td class="text-end">{{list.bets?.value | numberFormat}}</td>
+                    <td class="text-end">{{list.win?.value | numberFormat}}</td>
+                    <td class="text-end">{{list.payOff?.value | numberFormat}}</td>
+                    <td class="text-end">{{list.closingBalance?.value | numberFormat}}</td>
+                    <td>{{list.remoteSystem}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- <div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="table_2">
+
+        <table class="tablCode fd ">
+            <thead>
+                <tr class="tablCoderow">
+                    <th>S.no</th>
+                    <th>Actions</th>
+                    <th>Player Nick Name</th>
+                    <th>Start Date</th>
+                    <th>Currency</th>
+                    <th>Type</th>
+                    <th>Stakes</th>
+                    <th>Rake</th>
+                    <th>User Id</th>
+                   
+                   
+                </tr>
+            </thead>
+            <tbody *ngIf="pokerGameSessiondata">
+                <tr *ngFor="let list of pokerGameSessiondata;let i=index " (click)="onClick(i)">
+            
+                    <td>{{i+1}}</td>
+                    <td></td>
+                    <td>{{list.gamer.nickname}}</td>
+                    <td>{{list.startDate}}</td>
+                    <td>{{list.initialBalance.wallet}}</td>
+                    <td>{{list.userType}}</td>
+                    <td>[{{list.lowStake.value}}/{{list.highStake.value}}]</td>
+                    <td>{{list.rake.value}}</td>
+                    <td>{{list.gamer.userId}}</td>
+                   
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div> -->
+<div class="fd">
+    <div class="fd" *ngIf="pokerGameSessiondata">
+        <div class="pagecount">
+            <button class="Pagebtns" [disabled]="PageCount==1 || pokerGameSessiondata==null"
+                (click)="fastbackforward()"><i class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||pokerGameSessiondata==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="pokerGameSessiondata">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="pokerGameSessiondata==null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="pokerGameSessiondata==null || pagecontrolbtn" (click)="fastforward()">
+                <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+
+</div>
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="PokerGameSessionsDetailsPopUp">
+    <div class="popup_1 pop_sm" *ngIf="PokerGameSessionsDetailsPopUp">
+        <div class="PopupHead">
+            <h5 class="text-center">Poker Game Sessions</h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-6"> Session Id </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Player </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.gamer.login}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Start Date </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.startDate}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Finish Date</label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.finishDate}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Currency </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Game </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.gameName}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Stakes </label>
+                    <span
+                        class="col-sm-6">[{{PokerGameSessionsDetails.lowStake.value}}/{{PokerGameSessionsDetails.highStake.value}}]</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Table Name </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.tableName}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Hands </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.hands}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Rake Fee </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.rake.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> jackpot Fee </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.jackpotFee.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Comp Points </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.compPoints.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> initial Balance</label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.initialBalance.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Buy In </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.buyIn.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Bets </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.bets.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Wins </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.win.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Payout </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.payOff.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Closing Balance </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.closingBalance.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Face </label>
+                    <span class="col-sm-6">{{PokerGameSessionsDetails.remoteSystem}}</span>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->

@@ -1,0 +1,198 @@
+<div>
+    <h3>Agent Cash Adjustments</h3>
+</div>
+<div>
+    <button class="fillterbtn font_16" (click)="fillermenu()">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel </button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodStart</label> 
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            (change)="timechnage($event)"/>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodEnd</label> 
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    
+                    <div class="div_flex p_5_10">
+                        <label>User</label>
+                        <input type="text" formControlName="User" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label> 
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencyList"
+                                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Type</label>
+                        <!-- <select class="seclectopt" formControlName="Type">
+                            <option [ngValue]="Types.guid" *ngFor="let  Types of CashAdjustmentOperationList">
+                                {{Types.value}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownsettingTypes" [data]="CashAdjustmentOperationList"
+                                [(ngModel)]="convertedtypes" (onSelect)="onItemSelectTYPES($event)"
+                                (onDeSelect)="OnItemDeSelectTYPES($event)" (onSelectAll)="onSelectAllTYPES($event)"
+                                (onDeSelectAll)="onDeSelectAllTYPES($event)"
+                                formControlName="Type"></ng-multiselect-dropdown>
+                        </div>
+
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Initiator Login </label>
+                        <input type="text" formControlName="InitiatorLogin" />
+                    </div>
+                  
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Face </label>
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList12"
+                                [(ngModel)]="selectedItems12" (onSelect)="onItemSelectnew($event)"
+                                (onDeSelect)="OnItemDeSelectnew($event)" (onSelectAll)="onSelectAllnew($event)"
+                                (onDeSelectAll)="onDeSelectAllnew($event)" formControlName="Face">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>First Record </label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <div class="div_flex p_5_10"> 
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df">
+        <div style="margin-right:20px;" *ngIf="AgentBalanceData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+<div class="fd table_2">
+    <div  *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode fd " id="excel_table">
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Agent Login</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Face</th>
+                <th>Comment</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="AgentBalanceData">
+            <tr (dblclick)="Transactionspopup(i)" *ngFor="let list of AgentBalanceData,  let i =index">
+                <td>{{i+ 1}}</td>
+                <!-- <td>{{list.agent?.login}}</td> -->
+                <td class="hyperLink" (click)="AgentExplore(list.agent?.login, list.agent.guid, list)">{{list.agent?.login}}</td>
+                <td>{{list.direction}}</td>
+                <td>{{changeSelect(list.date)}}</td>
+                <td class="text-end">{{list.amount.value |numberFormat}}</td>
+                <td>{{list?.agent?.network}}</td>
+                <td>{{list.comment}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="fd" *ngIf="AgentBalanceData">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || AgentBalanceData==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||AgentBalanceData==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="AgentBalanceData">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="AgentBalanceData==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="AgentBalanceData==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="TAgentashadjustDatapopup">
+    <div class="popup_1 pop_sm" *ngIf="TAgentashadjustDatapopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Agent Adjustment </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df">
+                    <label class="col-sm-6">Agent Login</label>
+                    <span class="col-sm-6">{{Agentashadjustmentfulldetails.agent.login}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Type </label>
+                    <span class="col-sm-6">{{Agentashadjustmentfulldetails.direction}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Date </label>
+                    <span class="col-sm-6">{{Agentashadjustmentfulldetails.date}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Amount </label>
+                    <span class="col-sm-6">{{Agentashadjustmentfulldetails.amount.value |numberFormat}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Face</label>
+                    <span class="col-sm-6">{{Agentashadjustmentfulldetails.network}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Comment</label>
+                    <span class="col-sm-6">{{Agentashadjustmentfulldetails.comment}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->

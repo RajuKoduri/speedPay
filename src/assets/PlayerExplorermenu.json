@@ -1,0 +1,234 @@
+{
+    "menu": [
+       
+        {
+            "name": "Personal Information",
+            "url": "/playerexplorer/Personalinfo",
+            "Id": "PLAYER_PERSONAL_VIEW",
+            "status": false
+        },
+        {
+            "name": "Bonus Adjustment",
+            "url": "/playerexplorer/PlayerBonusAdjustment",
+            "Id": "PLAYER_FINANCE_VIEW",
+            "status": false
+        },
+        {
+            "name": "Cash Adjustment",
+            "url": "/playerexplorer/PlayerCashAdjustment",
+            "Id": "PLAYER_FINANCE_VIEW",
+            "status": false
+        },
+        {
+            "name": "Manual Deposit",
+            "url": "/playerexplorer/PlayerManualDeposit",
+            "Id": "PLAYER_FINANCE_CONTROL",
+            "status": false
+        },
+        {
+            "name": "Summary",
+            "url": "/playerexplorer/PlayerCashWallets",
+            "Id": "PLAYER_FINANCE_VIEW",
+            "status": false
+        },
+        {
+            "name": "House Revenue",
+            "url": "/playerexplorer/playerHouseRevenue",
+            "Id": "PLAYER_FINANCE_VIEW_GLOBAL",
+            "status": false
+        },
+        {
+            "name": " Player Balance",
+            "url": "/playerexplorer/acplayerbalance",
+            "Id": "PLAYER_FINANCE_VIEW",
+            "status": false
+        },
+        {
+            "name": "Pending Cashout",
+            "url": "/playerexplorer/playerPendingCashouts",
+            "Id": "PLAYER_FINANCE_VIEW ",
+            "status": false
+        },
+        {
+            "name": "Casino Games",
+            "url": "#",
+            "title": "Casino Games",
+            "expanded": false,
+            "children": [
+                {
+                    "name": "Casino Game Sessions",
+                    "url": "/playerexplorer/Casinogamesessoins",
+                    "Id": "PLAYER_PERSONAL_VIEW",
+                    "status": false,
+                    "children": [
+                        {
+                            "name": "Game Rounds List",
+                            "url": "/playerexplorer/Gameroundlist",
+                            "Id": "PLAYER_PERSONAL_VIEW",
+                            "status": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Poker Games",
+            "url": "#",
+            "title": "Poker Games",
+            "expanded": false,
+            "children": [
+                {
+                    "name": "Poker Tables History",
+                    "url": "/playerexplorer/pokertableshistory",
+                    "Id": "GAMES_INFO_VIEW",
+                    "status": false,
+                    "children": [
+                        {
+                            "name": "Poker Hands History",
+                            "url": "/playerexplorer/pokertablespokerhandshistory",
+                            "Id": "GAMES_INFO_VIEW",
+                            "status": false
+                        }
+                    ]
+                },
+                {
+                    "name": "Poker Sit'n'Go History",
+                    "url": "/playerexplorer/pokersitngoHistory",
+                    "Id": "GAMES_INFO_VIEW",
+                    "status": false
+                },
+                {
+                    "name": "Poker Tournaments History",
+                    "url": "/playerexplorer/pokertournamenthistory",
+                    "Id": "GAMES_INFO_VIEW",
+                    "status": false
+                },
+                {
+                    "name": "Tournament Tickets",
+                    "url": "/playerexplorer/tournamenttickets",
+                    "Id": "GAMES_INFO_VIEW",
+                    "status": false
+                }
+            ]
+        },
+        {
+            "name": "Remote System",
+            "url": "#",
+            "title": "Remote System",
+            "expanded": false,
+            "children": [
+                {
+                    "name": "Remote Game Sessions",
+                    "url": "/playerexplorer/remotegamesessions",
+                    "Id": "PLAYER_FINANCE_VIEW",
+                    "status": false
+                },
+                {
+                    "name": "Transfers & Activities History",
+                    "url": "/playerexplorer/transferhistory",
+                    "Id": "PLAYER_FINANCE_VIEW",
+                    "status": false
+                }
+            ]
+        },
+        {
+            "name": "Comp points",
+            "url": "#",
+            "title": "Comp points",
+            "expanded": false,
+            "children": [
+                {
+                    "name": "Comp Points Balance",
+                    "url": "/playerexplorer/playercomppointsbalance",
+                    "Id": "COMP_POINTS_INFO_VIEW_GLOBAL",
+                    "status": false
+                },
+                {
+                    "name": "Comp Points Adjustments",
+                    "url": "/playerexplorer/playercomppointsadjustments",
+                    "Id": "COMP_POINTS_INFO_VIEW_GLOBAL",
+                    "status": false
+                },
+                {
+                    "name": "Comp Points Exchange",
+                    "url": "/playerexplorer/playercomppointsexchange",
+                    "Id": "COMP_POINTS_INFO_VIEW_GLOBAL",
+                    "status": false
+                },
+                {
+                    "name": "Levels Changes History",
+                    "url": "/playerexplorer/levelchangeshistory",
+                    "Id": "COMP_POINTS_INFO_VIEW",
+                    "status": false
+                }
+               
+            ]
+        },
+        {
+            "name": "Payment History",
+            "url": "#",
+            "title": "Payment History",
+            "expanded": false,
+            "children": [
+                {
+                    "name": "",
+                    "url": "/",
+                    "Id": "",
+                    "status": false
+                }
+            ]
+        },
+        {
+            "name": "Suspicious Info",
+            "url": "#",
+            "title": "Payment History",
+            "expanded": false,
+            "children": [
+                {
+                    "name": "Player Link",
+                    "url": "/",
+                    "Id": "",
+                    "status": false
+                }
+            ]
+        },
+        {
+            "name": "Additional",
+            "url": "#",
+            "title": "Additional",
+            "expanded": false,
+            "children": [
+                {
+                    "name": "Deposit limits settings",
+                    "url": "/playerexplorer/depositlimitssettings",
+                    "Id": "PLAYER_FINANCE_VIEW",
+                    "status": false
+                },
+                {
+                    "name": "P2p Transfer Limits",
+                    "url": "/playerexplorer/P2pTransferLimits",
+                    "Id": "PLAYER_VIEW",
+                    "status": false
+                },
+                {
+                    "name": "Deposit Bonus settings",
+                    "url": "/playerexplorer/depositbonussettings",
+                    "Id": "CASHIER_BONUSCODES_MANAGE",
+                    "status": false
+                },
+                {
+                    "name": "Email Settings",
+                    "url": "/playerexplorer/EmailSettings",
+                    "Id": "PLAYER_PER  SONAL_VIEW",
+                    "status": false
+                },
+                {
+                    "name": "Comments",
+                    "url": "/playerexplorer/comments",
+                    "Id": "PLAYER_VIEW",
+                    "status": false
+                }
+            ]
+        }
+    ]
+}

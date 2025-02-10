@@ -1,0 +1,542 @@
+<div class="d-flex flex-column">
+    <div *ngIf="!tournamentData" class="PopupHead">
+        <h5 class="text-center">Create Poker Satellite Series</h5>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12 col-lg-6">
+                <div class="headTitle">Satellite Series</div>
+                <div class="d-flex flex-row justify-content-between">
+                    <p>Satellite Series Name</p>
+                    <div>
+                        <input type="text" class="satellite_input-name" [(ngModel)]="satelliteSeriesName">
+                    </div>
+
+                </div>
+                <div class="d-flex flex-row justify-content-between">
+                    <p>Satellite Series Currency</p>
+                    <div>
+                        <select name="" id="" class="satellite_input-dropdown" [(ngModel)]="selectedLanguageGuid">
+                            <option *ngFor="let eachCurrency of currencyFormatsSymbol" [ngValue]="eachCurrency.guid">
+                                {{eachCurrency.currencyCode}}</option>
+                        </select>
+                    </div>
+
+                </div>
+                <p>Satellite Series Tree :</p>
+                <div class="Satellite-tree-container">
+                    <ng-container *ngIf="createdTournamentsCopy.length">
+                        <!-- <p [class]="{'highlightedrow':i==indexOfCreatedTournament,'nonhlightetext':i!=indexOfCreatedTournament}"
+                            *ngFor="let eachTournament of createdTournaments; let i=index" (click)="clickOnIndexbasedTournament(i)"> -->
+                        <div *ngFor="let eachTournament of createdTournamentsCopy; let i=index"
+                            style="margin-top: 5px;">
+                            <span (click)="clickOnIndexbasedTournament(eachTournament.id)"
+                                [class]="{'highlightedrow':eachTournament?.id==indexOfCreatedTournament,'nonhlightetext':eachTournament?.id!=indexOfCreatedTournament}">
+                                {{eachTournament?.tourn?.caption}}: {{eachTournament?.currency}}
+                                {{eachTournament?.tourn?.totalCost?.value}}.00
+                                (Buy-In+Knockout Bounty+ Fee)
+                            </span>
+
+                            <!-- (currentIndexchildToParent)="clickOnIndexbasedTournament($event)" -->
+                            <ul *ngIf="eachTournament?.childrenTourney?.length>=1">
+                                <app-create-poker-satellite-tree [childTourneys]="eachTournament?.childrenTourney"
+                                    [selectedTournamentCurrency]="selectedTournamentCurrency"
+                                    [indexOfCreatedTournament]="indexOfCreatedTournament"></app-create-poker-satellite-tree>
+                            </ul>
+
+                        </div>
+
+                    </ng-container>
+
+                </div>
+                <div class="d-flex flex-row justify-content-between mt-2">
+
+                    <button [disabled]="onlyViewpopUp" class="button_satelite button-satelite-1"
+                        (click)="clickOnCreateTournament()">Create Tournament</button>
+                    <button [disabled]="onlyViewpopUp" class="button_satelite button-satelite-1"
+                        (click)="clickOnCtrateSitg()">Create Sit'n'Go</button>
+                    <!-- <button [ngClass]="createdTournaments.length>0?:" class="button_satelite" (click)="clickOnDeleteTournament()">Delete Tournament</button> -->
+                    <button
+                        [ngClass]="createdTournamentsCopy.length>0?'button_satelite button-satelite-1':'button_satelite'"
+                        [disabled]="createdTournamentsCopy.length<=0 ||onlyViewpopUp"
+                        (click)="clickOnDeleteTournament()">Delete Tournament</button>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div *ngIf="lengthofGamenameTypes()==false" class="headTitle">Tournament Info</div>
+                <div *ngIf="lengthofGamenameTypes()" class="headTitle">{{gameNametypes?.type}}
+                </div>
+                <div class="tournament-info">
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row">
+                            <p class="edit-satellite-name">Name:</p>
+                            <!-- <p class="">test1221</p> -->
+                            <p class="">{{payLoadOfCreatedTournament?.tourn?.caption}}</p>
+                        </div>
+                        <button *ngIf="!onlyViewpopUp" [disabled]="!createdTournamentsCopy.length"
+                            (click)="clickOnEditSatelliteSitngoInfo()" class="satellite-edit-button">Edit</button>
+
+                        <button class="satellite-edit-button" *ngIf="onlyViewpopUp"
+                            (click)="clickOnEditSatelliteSitngoInfo()">View</button>
+
+                    </div>
+
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row">
+                            <p class="edit-satellite-name">Game Type:</p>
+                            <!-- <p class="">Texas Hold'em Nl</p> -->
+                            <p class="">{{gameNametypes?.caption}}</p>
+                        </div>
+                        <!-- <button class="satellite-edit-button">Edit</button> -->
+
+                    </div>
+
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row">
+                            <p class="edit-satellite-name">Buy-In+Knockout Bounty+Fee:</p>
+                            <!-- <p class="">0.00</p> -->
+                            <p *ngIf="payLoadOfCreatedTournament?.tourn?.totalCost?.value" class="">
+                                {{selectedTournamentCurrency}}{{payLoadOfCreatedTournament?.tourn?.totalCost?.value}}.00
+                            </p>
+                            <p *ngIf="!payLoadOfCreatedTournament?.tourn?.totalCost?.value" class="">
+                                {{selectedTournamentCurrency}}{{payLoadOfCreatedTournament?.tourn?.totalCost?.value}}
+                            </p>
+                        </div>
+                        <!-- <button class="satellite-edit-button">Edit</button> -->
+
+                    </div>
+
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row">
+                            <p class="edit-satellite-name">Payout Table:</p>
+                            <p class="" *ngIf="selectedViewItem?.structureType">({{selectedViewItem?.structureType}})
+                                {{selectedViewItem?.name}}</p>
+                            <!-- <p class="">(Fixed 1213)</p> -->
+                        </div>
+                        <button [disabled]="!createdTournamentsCopy.length" class="satellite-edit-button"
+                            (click)="showPayOutTable()">View</button>
+
+                    </div>
+
+                    <div *ngIf="ticketUpChange" class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row">
+                            <p class="edit-satellite-name">Ticket Up to:</p>
+                            <p *ngIf="TicketUptext=='None'" class="ticket-text">{{TicketUptext}}</p>
+                            <p *ngIf="TicketUptext!='None'" class="">{{TicketUptext}}</p>
+
+                            <!-- <p class="">None</p> -->
+                        </div>
+                        <button *ngIf="!onlyViewpopUp"
+                            [disabled]="createdTournamentsCopy.length<=1&&!createdTournamentsCopy[0]?.childrenTourney?.length"
+                            class="satellite-edit-button" (click)="clickOnTicketUp()">change</button>
+                        <button *ngIf="onlyViewpopUp" [disabled]="onlyViewpopUp"
+                            class="satellite-edit-button">change</button>
+
+                    </div>
+
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row">
+                            <p class="edit-satellite-name">Ticket to Oneself:</p>
+                            <p *ngIf="payLoadOfCreatedTournament?.tourn?.totalCost?.value" class="">
+                                {{selectedTournamentCurrency}}
+                                {{payLoadOfCreatedTournament?.tourn?.totalCost?.value}}.00 </p>
+                            <p *ngIf="!payLoadOfCreatedTournament?.tourn?.totalCost?.value" class="">
+                                {{selectedTournamentCurrency}} {{payLoadOfCreatedTournament?.tourn?.totalCost?.value}}
+                            </p>
+                        </div>
+                        <!-- <button class="satellite-edit-button">change</button> -->
+
+                    </div>
+
+                    <div *ngIf="ticketDownChange" class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row">
+                            <p class="edit-satellite-name">Ticket Down to:</p>
+                            <!-- <p class="">None</p> -->
+                            <p *ngIf="TicketDownText=='None'" class="ticket-text">{{TicketDownText}}</p>
+                            <p *ngIf="TicketDownText!='None'" class="">{{TicketDownText}}</p>
+                        </div>
+                        <button *ngIf="!onlyViewpopUp" [disabled]="" class="satellite-edit-button"
+                            (click)="clickOnTicketDown()">change</button>
+                        <!-- <button  [disabled]="tournamentsPayouts.length<2" class="satellite-edit-button">change</button> -->
+                        <button *ngIf="onlyViewpopUp" [disabled]="onlyViewpopUp"
+                            class="satellite-edit-button">change</button>
+
+                    </div>
+                    <div class="text-warning-error">
+                        <p *ngIf="warningtextForprizeandBuyin">Warning : The Guaranteed Prize is Lower Then Ticket UpPrize</p>
+                        <p *ngIf="activeFloatType">Note : Float Payout Table could be used ONLY for Root Tournament!</p>
+                    </div>
+
+                </div>
+
+                <div class="d-flex flex-row justify-content-end" style="margin-top: 10px;">
+                    <div class="d-flex align-items-center" style="margin-right: 20px;">
+                        <span style="margin-right: 4px;">Enable Satellite Series</span>
+                        <input type="checkbox" [(ngModel)]="enableSatelligeSeries">
+                    </div>
+                    <div class="d-flex align-items-center" style="margin-right: 20px;">
+                        <span style="margin-right: 4px;">Shared</span>
+                        <input type="checkbox" [(ngModel)]="shared">
+                    </div>
+
+                    <button *ngIf="tournamentData == ''" [disabled]="createdTournamentsCopy.length<1"
+                        [ngClass]="createdTournamentsCopy.length>=1?'button_satelite button-satelite-1':'button_satelite'"
+                        (click)="clickOnSubmitButton()">Finish</button>
+                    <!-- <button>Cancel</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ********************************************  createTournamentPopup ***************************************************** -->
+    <div *ngIf="createTournamentPopup">
+        <div class="black_cover" *ngIf="createTournamentPopup">
+            <div class="popup_1 pop_sm_1">
+                <div class=" PopupHead">
+                    <h5 class="text-center"> Create Poker Satellite Tournament </h5>
+                    <span class="closetop" (click)="editTournyPop('createTourney')"> <img
+                            src="assets/icons/closePop.svg">
+                    </span>
+                </div>
+                <div class="soon font_13 fd p_lr_15">
+                    <div class="fd p_10">
+                        <!-- <i class="p_5 text-danger">Technical Error... </i> -->
+                        <app-create-poker-touranament [createTournamentPopup]="createTournamentPopup"
+                            [selectedLanguageGuid]="selectedLanguageGuid"
+                            (exitSatellitePopup)="exitFromSatellitePopup($event)"
+                            (sendPayoutData)="getPayoutData($event)" (tournamentGameType)="getTournamentType($event)"
+                            (filterbodyData)="getFilterBodyData($event)" (previousButton)="prevButtonCss=$event"
+                            (nextButton)="nextButtonCss=$event"
+                            (saveButtonEdit)="saveButton=$event"></app-create-poker-touranament>
+                    </div>
+                </div>
+
+                <div class="bottomFix">
+                    <!-- <button class="btn_grade_1" [disabled]="PlayerTableGroupData.active==true" (click)="closepopup()"> Save </button> -->
+                    <button [ngClass]="prevButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!prevButtonCss"
+                        (click)="getTabTourneyPrev()">Prev </button>
+                    <button [ngClass]="nextButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!nextButtonCss"
+                        (click)="getTabTournetNxt()">Next </button>
+                    <button (click)="onFormSubmit('Tournamentcreate')" [disabled]="!saveButton"
+                        [ngClass]="saveButton ? 'btn_grade_1' : 'btn_grade'"> Save </button>
+                    <button class="btn_grade_2" (click)="editTournyPop('createTourney')"> Cancel </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- ********************************************  createTournamentPopup ***************************************************** -->
+
+
+    <!-- ********************************************  tournamentEditPopup ***************************************************** -->
+    <div *ngIf="tournamentEditPopup">
+        <div class="black_cover" *ngIf="tournamentEditPopup">
+            <div class="popup_1 pop_sm_1">
+                <div class=" PopupHead">
+                    <h5 class="text-center"> Edit Poker Satellite Tournament </h5>
+                    <span class="closetop" (click)="editTournyPop('createTourney')"> <img
+                            src="assets/icons/closePop.svg">
+                    </span>
+                </div>
+                <div class="soon font_13 fd p_lr_15">
+                    <div class="fd p_10">
+                        <app-create-poker-touranament [EditPokerTourneyData]="PlayerSitandGoData"
+                            [onlyViewpopFromParent]="onlyViewpopUp" [selectedViewItemViewOnly]="selectedViewItem"
+                            [selectedLanguageGuid]="selectedLanguageGuid" [editOptionMode]="editOptionMode"
+                            (sendPayoutData)="getPayoutData($event)" (tournamentGameType)="getTournamentType($event)"
+                            (filterbodyData)="getEditTournanentFilterBodyData($event)"></app-create-poker-touranament>
+                    </div>
+                </div>
+
+                <div class="bottomFix">
+                    <!-- <button class="btn_grade_1" [disabled]="PlayerTableGroupData.active==true" (click)="closepopup()"> Save </button> -->
+                    <button [ngClass]="prevButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!prevButtonCss"
+                        (click)="getTabTourneyPrev()">Prev </button>
+                    <button [ngClass]="nextButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!nextButtonCss"
+                        (click)="getTabTournetNxt()">Next </button>
+                    <button (click)="onFormSubmit('Tournamentcreate')" [disabled]="!saveButton"
+                        [ngClass]="saveButton ? 'btn_grade_1' : 'btn_grade'"> Save </button>
+                    <button class="btn_grade_2" (click)="editTournyPop('createTourney')"> Cancel </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ********************************************  tournamentEditPopup ***************************************************** -->
+
+
+
+    <!-- ********************************************  createSitngoPopup ***************************************************** -->
+    <div *ngIf="createSitngPopup">
+        <div class="black_cover" *ngIf="createSitngPopup">
+            <div class="popup_1 pop_sm_1">
+                <div class=" PopupHead">
+                    <h5 class="text-center"> Create Poker Satellite Sit'n'Go </h5>
+                    <span class="closetop" (click)="editTournyPop('no')"> <img src="assets/icons/closePop.svg">
+                    </span>
+                </div>
+
+
+                <div class="soon font_13 fd p_lr_15">
+                    <div class="fd p_10">
+                        <app-create-poker-sitn-go [createSitngoPopup]="createSitngPopup"
+                            (exitSatellitePopup)="exitFromSatellitePopupSitngo($event)"
+                            [selectedLanguageGuid]="selectedLanguageGuid"
+                            (tournamentGameType)="getTournamentType($event)" (sendPayoutData)="getPayoutData($event)"
+                            (filterbodyData)="getFilterBodyData($event)" (satellitePrevButton)="prevButtonCss=$event"
+                            (satelliteNxtButton)="nextButtonCss=$event"></app-create-poker-sitn-go>
+
+                    </div>
+                </div>
+
+                <div class="bottomFix">
+                    <!-- <button class="btn_grade_1" [disabled]="PlayerTableGroupData.active==true" (click)="closepopup()"> Save </button> -->
+                    <button [ngClass]="prevButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!prevButtonCss"
+                        (click)="getTab('First','sitngo')">Prev </button>
+                    <button [ngClass]="nextButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!nextButtonCss"
+                        (click)="getTab('Second','sitngo')">Next </button>
+                    <button class="btn_grade_1" (click)="onFormSubmit('sitngocreate')"> Save </button>
+                    <button class="btn_grade_2" (click)="editTournyPop('no')"> Cancel </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- ********************************************  createSitngoPopup ***************************************************** -->
+
+
+
+    <!-- **********************************************  Edit Sit'n'Go start  **********************************************-->
+    <div class="black_cover" *ngIf="sitngoEditPopup">
+        <div class="popup_1" *ngIf="sitngoEditPopup">
+            <div class="PopupHead">
+                <h5 class="text-center">Edit Sit'n'Go </h5>
+                <!-- <span>{{PlayerTableGroupData.name}}</span>   -->
+                <span class="closetop" (click)="editTournyPop('no')">
+                    <img src="assets/icons/closePop.svg"> </span>
+            </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="fd p_5 ">
+                    <!-- (sendPayoutData)="editSitPayoutData($event)" -->
+                    <app-create-poker-sitn-go [EditSitnGoData]="PlayerSitandGoData" [editOptionMode]="editOptionMode"
+                        (sendPayoutData)="getPayoutData($event)" (tournamentGameType)="getTournamentType($event)"
+                        [onlyViewpopFromParent]="onlyViewpopUp" [selectedViewItemViewOnly]="selectedViewItem"
+                        [selectedLanguageGuid]="selectedLanguageGuid"
+                        (filterbodyData)="getEditSitngoFilterBodyData($event)"
+                        (satellitePrevButton)="prevButtonCss=$event"
+                        (satelliteNxtButton)="nextButtonCss=$event"></app-create-poker-sitn-go>
+                </div>
+            </div>
+            <div class="bottomFix">
+                <!-- <button class="btn_grade_1" [disabled]="PlayerTableGroupData.active==true" (click)="closepopup()"> Save </button> -->
+                <button [ngClass]="prevButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!prevButtonCss"
+                    (click)="getTab('First','sitngo')">Prev </button>
+                <button [ngClass]="nextButtonCss ? 'btn_grade_1' : 'btn_grade'" [disabled]="!nextButtonCss"
+                    (click)="getTab('Second','sitngo')">Next </button>
+                <button class="btn_grade_1" (click)="editTournyPop('yes')"> Save </button>
+                <button class="btn_grade_2" (click)="editTournyPop('no')"> Cancel </button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- **********************************************Edit Sit'n'Go End **********************************************-->
+
+
+
+
+    <!--*********************************************************  ViewPayoutTable POPUP ********************************-->
+
+
+    <div *ngIf="showPayoutTable" class="black_cover"></div>
+    <div *ngIf="showPayoutTable" class="popup_view">
+        <div class="PopupHeads">
+            <h5 class="text-center">View Payout Table: {{selectedViewItem.name}} </h5>
+            <span class="closetop" (click)="ViewPayoutTableclosepopup()"> <img
+                    src="../../../../assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="p_5" *ngIf="selectedViewItem.structureType=='Float'">
+            <table class="tablCode Blindtable p_lr_15">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <ng-container *ngFor="let i=index;let range of selectedViewItem.playersCountIndices">
+                            <th>{{range.from}}
+                                <span *ngIf="i < (selectedViewItem.playersCountIndices?.length-1)">
+                                    - {{range.to}}</span>
+                                <span *ngIf="i  ==(selectedViewItem.playersCountIndices?.length-1)">and
+                                    more</span>
+                            </th>
+                        </ng-container>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let list of selectedViewItem.placesIndices;let j=index">
+                        <td> {{list.from}}-{{list.to}} </td>
+                        <td *ngFor="let i=index;let range of  selectedViewItem.playersCountIndices">
+                            <!-- {{listOne[i]}}
+                            {{percents[i].percents[j]}} -->
+                            {{selectedViewItem.percents[i].percents[j] ||0}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- <div class="p_5" *ngIf="selectedViewItem.structureTypename=='Fixed'">  -->
+        <div class="p_5" *ngIf="selectedViewItem.structureType=='Fixed'">
+            <table class="tablCode Blindtable">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Prize</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ticket of  selectedViewItem?.ticketTypes;let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{ticket}}</td>
+
+                        <!-- <ng-container *ngFor="let ticketType of Fixed.ticketTypes;j=index">
+                            <td>{{j+1}}</td>
+                            <td>{{ticketType[j]}}</td>
+                        </ng-container> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <div class="bottomFixs">
+            <button class="closeBTN" (click)="ViewPayoutTableclosepopup()">close</button>
+        </div>
+    </div>
+    <!--*********************************************************  ViewPayoutTable POPUP END *********************************************************-->
+
+
+    <!-- ***********************************    Error-Popup ********************************************* -->
+
+    <div *ngIf="satelliteErrorPopupBool" class="black_cover"></div>
+    <div *ngIf="satelliteErrorPopupBool" class="error-pop">
+        <div class="PopupHeads">
+            <h5 class="text-center">Error-popUp </h5>
+            <span class="closetop" (click)="tournamentErrorclosepopup()"> <img
+                    src="../../../../assets/icons/closePop.svg">
+            </span>
+        </div>
+
+        <div>
+            <pre class="error-apply-margin">{{satelliteErrorPopupTest}}</pre>
+            <!-- <div [innerHTML]="satelliteErrorPopupTest"></div> -->
+        </div>
+
+        <div class="bottomFixs">
+            <button class="closeBTN" (click)="tournamentErrorclosepopup()">close</button>
+        </div>
+    </div>
+
+
+    <!-- ***********************************  Error-Popup     ********************************************* -->
+
+    <!-- ***********************************  ticketUp-Popup-start  ********************************************* -->
+
+    <div *ngIf="ticketUpPopup" class="black_cover"></div>
+    <div *ngIf="ticketUpPopup" class="error-pops">
+        <div class="PopupHeads">
+            <h5 class="text-center">TicketUp-popUp </h5>
+            <span class="closetop" (click)="ticketUpErrorclosepopup()"> <img
+                    src="../../../../assets/icons/closePop.svg">
+            </span>
+        </div>
+
+        <div class="dropdown-container">
+            <select *ngIf="!errorMsgToshowFreeroll()" [(ngModel)]="ticketTokensection"
+                (change)="onchangeTicketUpstatus($event)">
+                <option *ngFor="let eachTourney of remaningTourneys"
+                    [ngValue]="eachTourney.tourn.caption + ': ' + eachTourney.currency + eachTourney.tourn.totalCost.value + '.00(Buy-In+Knockout Bounty+ Fee)'">
+                    {{eachTourney.tourn.caption}}: {{eachTourney.currency}}
+                    {{eachTourney.tourn.totalCost.value}}.00(Buy-In+Knockout Bounty+ Fee)
+                </option>
+            </select>
+            <p class="ticket-text" *ngIf="errorMsgToshowFreeroll()">You cannot
+                setup ticket for Freeroll tournament.</p>
+
+        </div>
+
+        <div class="bottomFixs">
+            <button class="closeBTN" (click)="ticketUpErrorclosepopup()">close</button>
+        </div>
+    </div>
+
+
+    <!-- *********************************** ticketUp-Popup-End ********************************************* -->
+
+
+
+
+
+    <!-- ***********************************  ticketDown-Popup-start  ********************************************* -->
+
+    <div *ngIf="ticketDownPopup" class="black_cover"></div>
+    <div *ngIf="ticketDownPopup" class="error-pops">
+        <div class="PopupHeads">
+            <h5 class="text-center">TicketDown-popUp </h5>
+            <span class="closetop" (click)="ticketDownErrorclosepopup()"> <img src="/assets/icons/closePop.svg">
+            </span>
+        </div>
+
+        <div class="dropdown-container">
+            <select *ngIf="!ticketdownEmty" [(ngModel)]="ticketTokenDownSection"
+                (change)="onchangeTicketDownstatus($event)">
+                <option *ngFor="let eachTourney of ticketDownCopy"
+                    [ngValue]="eachTourney.tourn.caption + ': ' + eachTourney.currency + eachTourney.tourn.totalCost.value + '.00(Buy-In+Knockout Bounty+ Fee)'">
+                    {{eachTourney.tourn.caption}}: {{eachTourney.currency}}
+                    {{eachTourney.tourn.totalCost.value}}.00(Buy-In+Knockout Bounty+ Fee)
+                </option>
+            </select>
+            <!-- <p class="ticket-text" *ngIf="!errorMsgToshowTicketdownSelectdropdown()">Available Ticket Down Tournaments doesn't exsists.</p> -->
+            <p class="ticket-text" *ngIf="ticketdownEmty">Available Ticket Down Tournaments doesn't exsists.</p>
+
+        </div>
+
+        <div class="bottomFixs">
+            <button class="closeBTN" (click)="ticketDownErrorclosepopup()">close</button>
+        </div>
+    </div>
+
+
+    <!-- *********************************** ticketDown-Popup-End ********************************************* -->
+
+
+    <!-- ************************serverResponsePopUp*********************************** -->
+    <div class="black_cover" *ngIf="subscribeResult">
+        <div class="popup_1 pop_sm" *ngIf="subscribeResult">
+            <div class="PopupHead">
+                <h5 class="text-center">Alert</h5>
+                <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+            </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="fd p_10 text-center ">
+                    <!-- <b class="p_5 text-success">Successfully Created </b> -->
+                    <b class="p_5 text-success">{{successPopupText}}</b>
+                </div>
+            </div>
+            <div class="bottomFix text-center df m_3">
+                <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+            </div>
+        </div>
+    </div>
+    <!-- ************************serverResponsePopUpClose*********************************** -->
+
+
+
+</div>

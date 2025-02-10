@@ -1,0 +1,87 @@
+<div *ngIf="!resetSettings">
+    <div>
+        <h2>DP Settings </h2>
+    </div>
+    <div>
+        <!-- <table (click)="popup()" class="table_1 "> -->
+        <table class=" fd  table_1 " (dblclick)="popup()">
+            <tr class="tablCoderow">
+                <th>Disconnection Protection Limit</th>
+                <td>{{disconnectsettingsResponse?.protectionsLeft}}</td>
+            </tr>
+            <tr class="tablCoderow">
+                <th>Disconnection Protection Resets</th>
+                <td>{{disconnectsettingsResponse?.resetsLeft}}</td>
+            </tr>
+            <tr class="tablCoderow">
+                <th>Disconnection Protection Period, days</th>
+                <td>{{disconnectsettingsResponse?.days}}</td>
+            </tr>
+        </table>
+    </div>
+    <!-- *************************Popup****************************************** -->
+    <div class="black_cover" *ngIf="DisconnectionPopup" (click)="closepopup()"></div>
+    <div class="popup_1 pop_sm" *ngIf="DisconnectionPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Disconnection Protection Settings </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13">
+            <!-- <form [formgGroup]=""0> -->
+            <div class="fd p_5 p_r_20 ">
+                <div class="df m_3">
+                    <label class="col-sm-8"> Disconnection Protection Limit </label>
+                    <span class="col-sm-4 d-flex">
+                        <span class="text-danger" *ngIf="isValidProtectionsLeft"><b class="bi bi-x-circle-fill p-1"
+                                title="Amount can not be empty"></b></span>
+                        <input type="text" [(ngModel)]="disconnectsettingsResponseCopy.protectionsLeft"
+                            appMaxLengthValidation [maxNumber]="2"
+                            (input)="protectionValidation($event,'protections')" /> </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-8"> Disconnection Protection Resets</label>
+                    <span class="col-sm-4 d-flex">
+                        <span class="text-danger" *ngIf="isValidResetsLeft"><b class="bi bi-x-circle-fill p-1"
+                                title="Amount can not be empty"></b></span>
+                        <input type="text" [(ngModel)]="disconnectsettingsResponseCopy.resetsLeft"
+                            appMaxLengthValidation [maxNumber]="2" (input)="protectionValidation($event,'resets')" />
+                    </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-8">Disconnection Protection Period, days </label>
+                    <span class="col-sm-4 d-flex">
+                        <span class="text-danger" *ngIf="isValidDays"><b class="bi bi-x-circle-fill p-1"
+                                title="Amount can not be empty"></b></span>
+                        <input type="number" min="1" [(ngModel)]="disconnectsettingsResponseCopy.days"
+                            appMaxLengthValidation [maxNumber]="3" (input)="protectionValidation($event,'days')" />
+                    </span>
+                </div>
+            </div>
+            <!-- </form> -->
+            <div class="bottomFix">
+                <button class="btn_grade_1" (click)="onSubmit()"> Save </button>
+                <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+<div class="black_cover" *ngIf="resetSettings">
+    <div class="popup_1 pop_sm" *ngIf="resetSettings">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert </h5>
+            <span class="closetop"  (click)="closepopUP()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10  ">
+                <b class="p_5  text-center">Do you want to reset Disconnection Settings?</b>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="resetDisconnectionSetting()"> Yes </button>
+            <button class="btn_grade_2" (click)="closepopUP()"> No </button>
+        </div>
+    </div>
+</div>
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->

@@ -1,0 +1,157 @@
+.popup_1.pop_sm {
+    max-width: 90%;
+}
+
+.headTitle {
+    background: navajowhite;
+    padding: 4px;
+}
+
+.highlightedrow {
+    background: #55c7c2 !important;
+    /* border: 2px solid red; */
+}
+
+.trigger {
+    margin: auto;
+    position: relative;
+    text-align: center;
+    border: none;
+    padding: 5px 8px;
+    background: #4aab4e;
+    border-radius: 50px;
+    color: #fff;
+    width: 30px;
+    cursor: pointer;
+}
+
+.popup1 {
+    position: absolute;
+    left: -205px;
+    top: -5px;
+    transform: translate3d(0, -50%, 0);
+    background: none;
+    color: #000;
+    max-width: 256px;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19) !important;
+    z-index: 1;
+}
+
+.groupBTN {
+    padding: 0px 10px;
+}
+.popup1.btnGrp {
+    display: grid;
+  }
+
+.popup1.btnGrp button:hover {
+    background: #dd6c0c;
+    color: #fff;
+}
+
+.popup1.btnGrp button {
+    margin: 0px;
+    border: none;
+    padding: 7px 10px;
+    border-bottom: 1px solid #b0adad;
+}
+
+.btn_grade {
+
+    padding: 10px 40px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.5s;
+    margin: 5px;
+    border: solid 1px #ddd;
+    color: #000;
+    cursor: no-drop;
+}
+
+button.json_button {
+    border: 3px solid #b1bad3;
+    background: #344049;
+    color: #fff;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    padding: 5px;
+    border: none;
+    margin: 3px;
+    transition: all 0.5s;
+    border-radius: 6px 6px 0 0;
+}
+
+button.json_button:focus {
+    outline: none;
+}
+
+button.json_button:hover {
+    border-bottom: 3px solid #55c7c2;
+    color: #55c7c2;
+}
+.activeTab {
+    color: #55c7c2 !important;
+    border-bottom: 3px solid #55c7c2 !important;
+    border-radius: 6px 6px 0 0;
+    padding: 5px;
+    /* display: flex; */
+    /* white-space: pre; */
+  }
+  .overFlow{
+    overflow-x: auto;
+  }
+  ::-webkit-scrollbar {
+    width: 4px !important;
+    height: 6px !important;
+  }
+
+  
+
+  .search-hero {
+    max-width: 70%;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .form-control {
+    box-shadow: 0 5px 5px 0 #B0C1D9;
+    margin-left: 10px;
+  }
+  .form-control::placeholder  {
+    font-family: FontAwesome;
+  }
+  p{
+    line-height: 0.5;
+  }
+
+  .highlight {
+    background-color: yellow;
+  }
+
+
+  .overFlow2{
+    overflow: auto;
+    height: 55vh;
+  }
+  
+.overFlow{
+  overflow: auto;
+  height: 23vh;
+    }
+
+.bottomFix{
+  z-index: inherit;
+}
+
+@media screen and (max-width:768px) {
+  .btn_grade{
+  
+    padding: 10px 20px !important;
+  }
+  button[class*="btn_grade"] {
+    padding: 10px 20px !important;
+  }
+  
+}

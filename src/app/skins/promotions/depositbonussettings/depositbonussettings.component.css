@@ -1,0 +1,39 @@
+
+
+
+
+
+
+
+
+.border{
+  border: none;
+}
+
+
+button.rightclick.m_l_5 {
+  background: #116638;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+button.rightclickprint.m_l_5 {
+  background: #3d89c4;
+  color: #fff;
+  padding: 5px;
+  width: 130px;
+  border-radius: 5px;
+}
+
+i.fa.fa-print.iconprint {
+  margin-right: 5px;
+}
+
+
+
+.all_button {
+  display: flex;
+}
+
+

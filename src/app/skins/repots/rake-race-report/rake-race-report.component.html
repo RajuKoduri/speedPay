@@ -1,0 +1,138 @@
+<div class="fd">
+    <h3>Rake Race Report</h3>
+</div>
+<div class="fd fil_export">
+    <button class="fillterbtn font-size-16" (click)="filterbtn()">Filters
+        <i *ngIf="!Fillterdata" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="Fillterdata" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+    <div>
+        <button class="fillterbtn m_l_5 btn_sub12" (click)="exportCsv()"> Export Csv</button>
+        <button class="fillterbtn m_l_5 btn_sub12" (click)="exportexcel()"> Export Excel</button>
+    </div>
+    <!-- <div style=" float: right;">
+
+        <button class="fillterbtn font_14" (click)="onFormSubmit()">Submit</button>
+    </div> -->
+</div>
+
+<div class="fd filterDiv" *ngIf="Fillterdata">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    
+                </div>
+                <div class="red_col text-center" *ngIf="steddate">
+                    Start date should be below or equal to end date
+                </div>
+                <div class="red_col text-center" *ngIf="timeerror">
+                    Start time should be below or equal to end time
+                </div>
+                <!-- <div class="col-sm-4">
+                <div>
+                    <label>Skins</label>
+                    <select class="seclectopt" formControlName="Skins">
+                        <option *ngFor="let face of faceParametersList">{{face.name}}</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Currency</label>
+                    <select class="seclectopt" formControlName="wallet">
+                        <option [ngValue]="currency.guid" *ngFor="let currency of walletlists">
+                            {{currency.description}}</option>
+                    </select>
+                </div>
+            </div> -->
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="fd">
+    <div class="text-centers div_sub">
+
+        <div class="df m_t_5">
+            <div class="df m_t_5" *ngIf="RakeReportResData">
+                <div style="margin-right:20px;" *ngIf="RakeReportResData">Rows On the Page: {{rowsOnthePage}}</div>
+                <div> Result Count: {{ResultCount}} </div>
+            </div>
+        </div>
+        <button class="fillterbtn  btn_sub12 " (click)="onFormSubmit()"
+            [disabled]="steddate || timeerror">Submit</button>
+
+
+    </div>
+</div>
+
+<div class="fd  table_2 over_tbl" id="tablerecords">
+    <div  *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="">
+        <table class="tablCode" id="excel-table">
+            <thead>
+                <tr>
+                    <th>Player Nickname</th>
+                    <th>Start Date</th>
+                    <th>Currency</th>
+                    <th>Type</th>
+                    <th>Stakes</th>
+                    <th>Rake</th>
+                    <th>shortId</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="RakeReportResData">
+                <tr *ngFor="let list of RakeReportResData">
+                    <td>{{list.playerNick}}</td>
+                    <td>{{list.startDate}}</td>
+                    <td>{{list.currency}}</td>
+                    <td>{{list.type}}</td>
+                    <td>{{list.stakes}}</td>
+                    <td class="text-end">{{list.rake | numberFormat}}</td>
+                    <td>{{list.shortId}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="fd" *ngIf="RakeReportResData">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || RakeReportResData==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||RakeReportResData==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="RakeReportResData">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="RakeReportResData == null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="RakeReportResData==null || pagecontrolbtn" (click)="fastforward()"><i
+                class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<div>
+    <h3>Countries</h3>
+</div>
+<div class="fd">
+    <div>
+        <table class="tablCode" id="excel-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Iso Code</th>
+                    <!-- <th>Iso Title</th> -->
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let Countries of countriesList">
+                    <td>{{Countries.code}}</td>
+                    <td>{{Countries.isoCode}}</td>
+                    <!-- <td>{{Countries.isoTitle}}</td> -->
+                    <td>{{Countries.title}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+
+.all-games {
+    background-color:#a9d4f5;
+    margin: 10px;
+    position: sticky;
+    padding: 4px;
+    top: 45px;
+    color: #000;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .filterDiv-game-filter-child{
+    background:#fff;
+    max-width: 80%;
+    margin: auto;
+    top: 100px;
+    position: fixed;
+    z-index: 1000;
+    left: 15px;
+    right: 15px;
+    border-radius: 5px;
+    overflow: auto;
+    max-height: 80vh;
+    
+  } 
+  .text-overflow-clip {
+    border-radius: 5px 0px 0px 5px;
+  
+    margin: 0px;
+    width: 90%;
+    white-space: nowrap;   /* Prevent text from wrapping to the next line */
+    overflow: hidden;      /* Hide the overflowing content */
+    text-overflow: ellipsis;
+    border-right: none;
+    font-size: 15px;
+  }
+  .fillterbtn-games {
+    width: 10%;
+    margin: 0px;
+    height: 37px;
+    border: 1px solid #b8975b;
+    border-left: none;
+    border-radius: 0px 5px 5px 0px;
+    background-color:#ffffff;
+    
+  }
+  .poker-caption-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 11px;
+    margin-left: 9%;
+  } 
+  .caption-checkbox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 250px;
+    padding-top: 5px;
+  }
+
+
+  .arrows {
+    display: inline-block;
+    margin-left: 10px;
+    /* background-color: #b3d2ec; */
+
+}
+
+.arrows.right::after {
+    content: '▶'; /* Right arrow */
+}
+
+.arrows.down::after {
+    content: '▼'; /* Down arrow */
+}
+
+
+
+
+.poker-caption-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0px 11px !important;
+  margin-left: 9%;
+}
+
+
+
+
+

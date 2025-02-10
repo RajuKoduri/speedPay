@@ -1,0 +1,76 @@
+<div>
+    <h4>Agent Cash Wallets</h4>
+</div>
+<div class="fd">
+    <table class="tablCode " id="excel-table">
+        <thead>
+            <tr>
+                <th>Agent</th>
+                <th>Wallet</th>
+                <th>Preferred </th>
+                <th>Balance</th>
+
+            </tr>
+        </thead>
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <tbody *ngIf="AgentCashWallets">
+            <tr *ngFor="let List of AgentCashWallets; let i =index" (dblclick)="onDblClick(List)">
+                <td>{{List.agentLogin}}</td>
+                <td>{{List.walletTypeName}}</td>
+                <td>
+                    <span *ngIf="List.preferred==true"> <input type="checkbox" class="pointer" checked /></span>
+                    <span *ngIf="List.preferred==false"><input type="checkbox" class="pointer" /></span>
+                    <button title="Currency Change" class="menu_Icon" (click)="open_popu(i)"
+                        [disabled]="List.preferred == true"><i class="fa fa-hand-o-up"
+                            style="font-size:16px"></i></button>
+                </td>
+                <td>{{List.balance.walletsymbol}} {{List.balance.value |numberFormat}}</td>
+                <div class="openP_cocer" *ngIf="openNewP" (click)="close_openP()"></div>
+                <div class="openP" *ngIf="openNewP">
+                    <p>Do you want to make preferred the selected wallet?</p>
+                    <div class="BTN_grp">
+                        <button class="Succ_G" (click)="summary()">Yes</button>
+                        <button class="Succ_C" (click)="close_openP()">No</button>
+                    </div>
+                </div>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div class="black_cover" *ngIf="isPopup"></div>
+<div class="popup_1 pop_sm text-black" *ngIf="isPopup">
+    <div class="PopupHead">
+        <h5 class="text-center">Summary</h5>
+        <span class="closetop" (click)="close_popup()"> <img src="assets/icons/closePop.svg">
+        </span>
+    </div>
+    <div class="p-3">
+        <div class="df m_3">
+            <label class="col-sm-6">Agent</label>
+            <label>{{selectedRowData.agentLogin}}</label>
+        </div>
+        <div class="df m_3">
+            <label class="col-sm-6">Wallet</label>
+            <label>{{selectedRowData.balance.walletsymbol}}</label>
+        </div>
+        <div class="df m_3">
+            <label class="col-sm-6">Preferred</label>
+            <input type="checkbox" [(ngModel)]="selectedRowData.preferred">
+        </div>
+        <div class="df m_3">
+            <label class="col-sm-6">Balance</label>
+            <label>{{selectedRowData.balance.walletsymbol}} {{selectedRowData.balance.value}}</label>
+        </div>
+    </div>
+
+    <div class="bottomFix">
+        <!-- <button class="btn_grade_1" [disabled]="" (click)="onSubmit()"> Save </button> -->
+        <button class="btn_grade_2" (click)="close_popup()"> OK </button>
+    </div>
+</div>

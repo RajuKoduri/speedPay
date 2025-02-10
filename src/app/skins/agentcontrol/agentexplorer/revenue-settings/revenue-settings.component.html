@@ -1,0 +1,106 @@
+<div>
+    <button class="fillterbtn font_14" style=" float: right;" (click)="getAgentGrossRevenuePercents()">Requery</button>
+    <h4>Revenue Settings</h4>
+    <div class="fd">
+        <!-- <div class="text-centers">
+            <div style="margin-right:20px;" *ngIf="PlayerList">Rows On the Page: {{rowsOnthePage}}</div>
+            <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                    the filters</b></div>
+        </div> -->
+    </div>
+</div>
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="table_2">
+        <table class="tablCode " id="excel_table">
+            <thead>
+                <tr>
+                    <th>Revenue Program</th>
+                    <th>Parameter</th>
+                    <th>Value </th>
+                    <th>Last Change</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="AgentGrossRevenuePercents">
+                <tr (dblclick)="ChangPercentPop()" *ngFor="let List of AgentGrossRevenuePercents,let i =index">
+                    <td>{{List.programName}}</td>
+                    <td>{{List.parameter}}</td>
+                    <td class="text-end">{{List.percent | numberFormat}} </td>
+                    <td>{{changeSelect(List.changeDate) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="fd df mt-2">
+    <div style="margin-right:20px;" *ngIf="AgentGrossRevenuePercents">Rows On the Page: {{rowsOnthePage}}</div>
+    <div *ngIf="ResultCount">Result Count: {{ResultCount}}</div>
+</div>
+
+
+<!-- ************************ChangePrecentPop*********************************** -->
+<div class="black_cover" *ngIf="ChangePrecentPop">
+    <div class="popup_1" *ngIf="ChangePrecentPop">
+        <div class="PopupHead">
+            <h5 class="text-center">Change Percent</h5>
+            <span class="closetop" (click)="PopupClose()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="fd p_5">
+            <table class="tablCode " id="excel-table">
+                <thead>
+                    <tr>
+                        <th>Revenue Program</th>
+                        <th>Parameter</th>
+                        <th>Value </th>
+                        <th>Last Change</th>
+                    </tr>
+                </thead>
+                <div clas='fd' *ngIf="loader">
+                    <div class="loaderWraper">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+                <tbody *ngIf="AgentGrossRevenuePercents">
+                    <tr *ngFor="let List of AgentGrossRevenuePercents,let i =index">
+                        <td>{{List.programName}}</td>
+                        <td>{{List.parameter}}</td>
+                        <td>
+                            <input type="number" value="{{List.percent}}" [(ngModel)]="List.percent"
+                                [ngModelOptions]="{standalone: true}" oninput="this.value = Math.abs(this.value)"
+                                type="number" min="0" />
+                        </td>
+                        <td>{{changeSelect(List.changeDate)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="ChangPercent()"> Change </button>
+            <button class="btn_grade_2" (click)="PopupClose()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ************************ChangePrecentPopClose*********************************** -->
+
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="ChangePrecentSuccessPop">
+    <div class="popup_1 pop_sm" *ngIf="ChangePrecentSuccessPop">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <b class="p_5 text-success"> Successfully Changed </b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->

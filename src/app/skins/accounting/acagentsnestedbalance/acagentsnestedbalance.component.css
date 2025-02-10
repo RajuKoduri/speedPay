@@ -1,0 +1,10 @@
+
+tfoot{
+  position: sticky;
+  bottom: -1px;
+}
+.table_1 thead th {
+  position: sticky;
+  top: 0;
+  padding: 4px 43.5px;
+}

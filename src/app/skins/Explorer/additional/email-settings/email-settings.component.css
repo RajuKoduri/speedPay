@@ -1,0 +1,8 @@
+.spinnerTrue {
+    position: fixed;
+    z-index: 999;
+    left: 50%;
+    right: 0;
+    top: 50%;
+    margin: auto;
+  }

@@ -1,0 +1,150 @@
+.table_2 thead tr th {
+    position: sticky;
+    top: 0;
+    z-index: 99;
+}
+
+input[type="checkbox"]{
+    width: 15px;
+    /* margin: 10px; */
+}
+
+.games-list-container{
+    border:1px solid #ddd;
+    background-color:#ffffff;
+    border-radius: 6px;
+    /* width: 205px; */
+    height:40px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.games-input-container{
+    background: transparent;
+    border: none;
+    outline: none;
+    height:18px;
+    display: flex;
+    flex-direction: row;
+
+    overflow: hidden;
+
+  
+}
+
+.IcArrow-games{
+    background-color:#ffffff;
+}
+
+.fillterbtn-games {
+    width: 25px;
+    height: 30px;
+    border: none;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    background-color:#ffffff;
+  }
+
+  .filterDiv-game-filter {
+    background:#fff;
+    max-width: 80%;
+    margin: auto;
+    top: 150px;
+    position: fixed;
+    z-index: 1000;
+    left: 15px;
+    right: 15px;
+    border-radius: 5px;
+    overflow: auto;
+    max-height: 80vh;
+    
+  }
+
+  .poker-caption-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 15px;
+    /* margin: 5px 5px 5px 0px;
+    width:100px; */
+  }
+  .caption-checkbox{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* justify-content: ; */
+    width: 200px;
+  }
+
+  .all-games{
+    background-color: aquamarine;
+    margin: 10px;
+    position: sticky;
+    top: 45px;
+  }
+  .trigger {
+    margin: auto;
+    position: relative;
+    text-align: center;
+    border: none;
+    padding: 5px 8px;
+    background: #4aab4e;
+    border-radius: 50px;
+    color: #fff;
+    width: 30px;
+    cursor: pointer;
+  }
+
+  .groupBTN {
+    padding: 0px 10px;
+  }
+  .div_flex{
+    align-items: center;
+  }
+  .popup1 {
+    position: absolute;
+    left: -160px;
+    top: 20px;
+    transform: translate3d(0, -50%, 0);
+    background: none;
+    color: #000;
+    max-width: 256px;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19) !important;
+    z-index: 1;
+  }
+  .popup1.btnGrp button:hover {
+    background: #dd6c0c;
+    color: #fff;
+  }
+  
+  .popup1.btnGrp button {
+    margin: 0px;
+    border: none;
+    padding: 7px 10px;
+    border-bottom: 1px solid #b0adad;
+  } 
+  
+  .popup1.btnGrp {
+    display: grid;
+  }
+  button[disabled] {
+    /* border: 1px solid #999999; */
+    border: none;
+    background: #cccccc;
+    color: #666666;
+    cursor:no-drop
+  }
+  button[disabled]:hover {
+    background:  #cccccc !important;
+    color: #666666 !important;
+  }
+  .spinnerTrue {
+    position: fixed;
+    z-index: 999;
+    left: 50%;
+    right: 0;
+    top: 50%;
+    margin: auto;
+  }

@@ -1,0 +1,396 @@
+<div>
+    <h3>Table Hand History</h3>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="margin-right:15px; float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>Player Nick Name</label>
+                        <input type="text" formControlName="PlayerNickNmae" />
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Table Name</label>
+                        <input type="text" formControlName="TableName" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Hand Number</label>
+                        <input type="text" formControlName="Hand" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record </label>
+                        <input formControlName="firstRecord" type="text" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input formControlName="maxCountRecord" type="text" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="fd">
+    <button class="fillterbtn font_14" style="margin-right:15px;margin-top:4px; float: right;" (click)="onFormSubmit()"
+        [disabled]="steddate || timeerror">Submit</button>
+    <div class="df m_5">
+        <div style="margin-right:20px;" *ngIf="PokerTableHistoryData">Rows On the Page: {{rowsOnthePage}} </div>
+        <div *ngIf="ResultCount"> Result Count: {{ResultCount}} </div>
+    </div>
+</div>
+
+
+
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="table_2">
+        <table class="tablCode fd" id="excel_table">
+            <thead>
+                <tr class="tablCoderow">
+                    <th>Game</th>
+                    <th>Stakes </th>
+                    <th>Table Name</th>
+                    <th>Hands Number</th>
+                    <th>Start Date</th>
+                    <th>Finish Date</th>
+                    <th>Num of players</th>
+                    <th>pot</th>
+                    <th>Rake</th>
+                    <th>jackpotFee </th>
+                    <th>comp points</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="PokerTableHistoryData">
+                <tr *ngFor="let list of PokerTableHistoryData;let i=index "
+                    [ngClass]="{'highlightedrow': SeletedIconIndex === i  }">
+                    <td class="text-nowrap">{{list.gameName}}</td>
+                    <td>[{{list.lowStake.value}}/{{list.highStake.value}}]</td>
+                    <td>{{list.name}}</td>
+                    <td>{{list.number}}</td>
+                    <td>{{changeSelect(list.startDate)}}</td>
+                    <td>{{changeSelect(list.endDate)}}</td>
+                    <td>{{list.playersCount}}</td>
+                    <td class="text-end">{{list.pot.value | numberFormat}}</td>
+                    <td class="text-end">{{list.rake.value | numberFormat}}</td>
+                    <td class="text-end">{{list.jackpotFee.value | numberFormat}}</td>
+                    <td class="text-end">{{list.compPoints.value | numberFormat}}</td>
+                    <td>
+                        <div class="fd">
+
+                            <div class="trigger">
+                                <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,list.guid)">
+                                    </i>
+                                </a>
+                                <div *ngIf="popupArrow" class="fd">
+                                    <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                        <button (click)="PokerActions(i, 'View Detailed')">View Detailed Hand
+                                            History</button>
+                                        <button (click)="PokerActions(i, 'View Chat')">View Chat History</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="fd" *ngIf="PokerTableHistoryData">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || PokerTableHistoryData==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||PokerTableHistoryData==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="PokerTableHistoryData">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="PokerTableHistoryData==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PokerTableHistoryData==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="pokerDetailedViewpopup">
+    <div class="popup_1 pop_sm" *ngIf="pokerDetailedViewpopup">
+        <div class="PopupHead">
+            <span class="p_lr_15">Detailed Hand History for Table <b>{{this.selctedObjet?.name}}</b></span>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 col-sm-4">
+                <div>
+                    <div class="headTitle">Hand List </div>
+                </div>
+                <div class="overFlow2">
+                    <div clas='fd' *ngIf="handloader">
+                        <div class="loaderWraper">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                    <table class="tablCode fd">
+                        <thead>
+                            <th>Hand Number</th>
+                            <th>Winner</th>
+                            <th>Pot</th>
+                        </thead>
+                        <tbody *ngIf="DetailedHistoryPopData">
+                            <tr (click)="SeletedRow(i)" *ngFor="let list of DetailedHistoryPopData;let i=index"
+                                [ngClass]="{'highlightedrow': DetailedSelctedIndex === i}">
+                                <td>{{list.number}}</td>
+                                <td>{{list.winners}}</td>
+                                <td class="text-end">{{list.pot.value | numberFormat}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="fd p_5 col-sm-8">
+                <div>
+                    <div class="headTitle">Summary </div>
+                    <div class="fd overFlow">
+                        <table class="tablCode fd">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Chips</th>
+                                    <th>Bet</th>
+                                    <th>Win</th>
+                                    <th>Rake</th>
+                                    <th>Jackpot Fee</th>
+                                    <th>Compoints</th>
+                                    <th>Card Combination</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let list  of summary">
+
+                                    <td class="text-nowrap">{{changeResult(list?.Player) }}</td>
+                                    <td class="text-nowrap">{{changeResult(list?.Chips)|numberFormat}}</td>
+                                    <td class="text-nowrap">{{changeResult(list?.Bet)|numberFormat}}</td>
+                                    <td class="text-nowrap"> {{changeResult(list?.Win) |numberFormat}}</td>
+                                    <td class="text-nowrap">{{changeResult(list?.Rake) |numberFormat}}</td>
+                                    <td class="text-nowrap">{{changeResult(list?.['Jackpot Fee'])|numberFormat}}</td>
+                                    <td class="text-nowrap">{{changeResult(list?.['Comp points'])|numberFormat}}</td>
+                                    <td class="text-nowrap">{{changeResult(list?.['Card Combination'])}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="fd m_t_5 ">
+                    <div>
+                        <div class="headTitle">Hand Details Info </div>
+                        <button class="json_button" [ngClass]="{'activeTab' : activeTabViewId == 'TableView' }"
+                            (click)="activeTabView('TableView')">Table View</button>
+                        <button class="json_button" [ngClass]="{'activeTab' : activeTabViewId == 'TextView' }"
+                            (click)="activeTabView('TextView')">Text View</button>
+                        <div class="fd overFlow">
+                            <table *ngIf="activeTabViewId =='TableView'" class="tablCode fd">
+                                <thead>
+                                    <tr>
+                                        <th>Player</th>
+                                        <th>Cards</th>
+                                        <th>Blind</th>
+                                        <!-- <th>Blind</th> -->
+                                        <th>PreFlop</th>
+                                        <th>Flop</th>
+                                        <th>Turn</th>
+                                        <th>River</th>
+                                    </tr>
+
+                                    <!-- <th>Card Combination</th> -->
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let list  of detailsData">
+                                        <td class="text-nowrap">{{changeResult(list?.Player)}}</td>
+                                        <td class="text-nowrap">{{changeResult(list?.Cards) }}</td>
+                                        <td class="text-nowrap">{{changeResult(list?.Blind)|numberFormat}}</td>
+                                        <!-- <td class="text-nowrap">{{changeResult(list?.Blind)}}</td> -->
+                                        <td class="text-nowrap">{{changeResult(list?.PreFlop)|numberFormat}}</td>
+                                        <td class="text-nowrap">{{changeResult(list?.Flop)|numberFormat}}</td>
+                                        <td class="text-nowrap">{{changeResult(list?.Turn)|numberFormat}}</td>
+                                        <td class="text-nowrap">{{changeResult(list?.River)|numberFormat}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <ng-container *ngIf="detailsTextData&&activeTabViewId =='TextView'">
+                                <pre>{{detailsTextData}}</pre>
+                            </ng-container>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button [ngClass]="prevtHandButton == true ? 'btn_grade_1' : 'btn_grade'"
+                [disabled]="prevtHandButton == false" (click)="clickOnPreviousFifty()"> Previous 50 </button>
+            <button [ngClass]="DetailedSelctedIndex>0 ? 'btn_grade_1' : 'btn_grade'"
+                [disabled]="DetailedSelctedIndex == 0" (click)="clickOnPreviousHandButton()"> Previous Hand</button>
+            <button [ngClass]="NextHandButton == true ? 'btn_grade_1' : 'btn_grade'"
+                [disabled]="NextHandButton == false" (click)="clickOnNextFifty()"> Next 50 </button>
+            <button [ngClass]="DetailedHistoryPopData?.length-1>DetailedSelctedIndex ? 'btn_grade_1' : 'btn_grade'"
+                [disabled]="DetailedHistoryPopData?.length-1==DetailedSelctedIndex"
+                (click)="clickOnNextHandButton()">Next Hand </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+            <!-- <button class="btn_grade_1" (click)="closepopup()"> Save </button> -->
+        </div>
+    </div>
+</div>
+
+
+
+<div class="black_cover" *ngIf="viewChatHistorypopUp">
+    <div class="popup_1 pop_sm" *ngIf="viewChatHistorypopUp">
+        <div class="PopupHead">
+            <span class="d-flex flex-row justify-content-center">Chat history for table
+                <b>"{{viewChatHistoryData?.[0]?.name}}"</b> </span>
+            <span class="closetop" (click)="viewChatHistoryTableclosepopup()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+
+        <div class="search-hero">
+            <b>Search:</b> <input class="form-control" type="text" name="search" [(ngModel)]="searchInputText"
+                autocomplete="off" placeholder="&#61442;" (input)="enterTheValuesInSearchInput()">
+            <!-- <button class="" (click)="navigate('next')">Next</button>
+            <button class="" (click)="navigate('previous')">Previous</button> -->
+        </div>
+
+        <div id="searchInput" class="p-1" *ngFor="let eachmessage of chartList">
+            <p><span>[{{changeSelect(eachmessage?.date)}}]</span> {{eachmessage?.text}}</p>
+        </div>
+
+        <!-- <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div id="searchInput" class="p-1" *ngFor="let eachmessage of viewChatHistoryData[0]?.messages">
+                    <p><span>[{{changeSelect(eachmessage?.date)}}]</span> {{eachmessage?.text}}</p>
+                </div>
+            </div>
+        </div> -->
+        <div class="bottomFix">
+            <button class="btn_grade_2" (click)="viewChatHistoryTableclosepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<div class="black_cover" *ngIf="viewChatHistorypopUp2">
+    <div class="popup_1 pop_sm" *ngIf="viewChatHistorypopUp2">
+        <div class="PopupHead">
+            <span class="d-flex flex-row justify-content-center">Chat history for table
+                <b>"{{viewChatHistoryData?.[0]?.name}}"</b> </span>
+            <span class="closetop" (click)="viewChatHistoryTableclosepopup2()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-2 p-3">
+                    <container class="d-flex flex-column">
+                        <span style="cursor: pointer;"
+                            *ngFor="let eachmessage of viewChatHistoryData?.[0]?.games;let i=index"
+                            [ngClass]="{'highlightedrow': tableSearchIndex == i}"
+                            (click)="clickOntableSearchIndex(i)">{{eachmessage?.name}}</span>
+
+                    </container>
+
+                </div>
+                <div class="col-10">
+
+                    <div class="search-hero">
+                        <b>Search:</b> <input class="form-control" type="text" name="search"
+                            [(ngModel)]="searchInputText" autocomplete="off" placeholder="&#61442;"
+                            (input)="enterTheValuesInSearchInput2()">
+                        <!-- <button class="" (click)="navigate('next')">Next</button>
+                        <button class="" (click)="navigate('previous')">Previous</button> -->
+                    </div>
+
+                    <div id="searchInput" class="p-1" *ngFor="let eachmessage of chartList;let i=index">
+                        <span>[{{changeSelect(eachmessage?.date)}}] {{eachmessage?.text}}</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div id="searchInput" class="p-1" *ngFor="let eachmessage of viewChatHistoryData[0]?.messages">
+                    <p><span>[{{changeSelect(eachmessage?.date)}}]</span> {{eachmessage?.text}}</p>
+                </div>
+            </div>
+        </div> -->
+        <div class="bottomFix">
+            <button class="btn_grade_2" (click)="viewChatHistoryTableclosepopup2()"> Cancel </button>
+        </div>
+    </div>
+</div>

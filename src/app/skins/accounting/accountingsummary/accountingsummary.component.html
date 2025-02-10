@@ -1,0 +1,567 @@
+<!-- topmenu -->
+<!-- <div class="topnav">
+   <a (click)="fillterMenu()">Filter</a>
+    <a >Actions</a>
+    <a (click)="openSummaryPop()">Open</a>
+    <a >Explore</a>
+    <a (click)="ignoreContext()">Ignore Context</a>
+    <div class="dropdown">
+        <button class="dropbtn">View</button>
+        <div class="dropdown-content">
+            <a (click)="onRequery()">Normal</a>
+            <a>Autosize</a>
+            <a>Card</a>
+        </div>
+    </div>
+    <a (click)="onRequery()">Requery</a>
+    <a (click)="exportExcel()">Export to XSL</a>
+    <a (click)="onPrint()">Print</a>
+</div> -->
+
+<div>
+    <h3>Summary</h3>
+</div>
+
+<!-- <button class="fillterbtn" (click)="fillterMenu()">Filter</button> -->
+<div class="dropdown fd">
+    <button (click)="fillterMenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterList" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterList" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportExcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export CSV</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterList">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <select class="seclectopt" formControlName="currency" [(ngModel)]="selectedCurrency">
+                            <option *ngFor="let curreny of currencys" [ngValue]="curreny.guid">{{curreny.description}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodStart</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            (change)="timechnage($event)" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reporting PeriodEnd</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                </div>
+                <!-- <button class="fillterbtn"(click)="onFormSubmit()">Apply</button>
+                <button class="fillterbtn" (click)="FormReset()">Reset</button> -->
+            </div>
+        </div>
+    </form>
+</div>
+<!-- filter menu -->
+<div class="fd ">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df m_3">
+        <div style="margin-right:20px;" *ngIf="accSummary">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+
+</div>
+
+<div clas='fd' *ngIf="dataLoader">
+    <div class="loaderWraper">
+        <div class="loader"></div>
+    </div>
+</div>
+<div class="popup_4 pop_sm fd" *ngIf="accSummary" id="excel_table">
+
+    <div class=" PopupHead">
+        <h5 class="text-center"> Summary</h5>
+        <!-- <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span> -->
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+        <!-- <div class="fd p_5 "  (click)="onClick()"> -->
+        <div class="fd p_5 ">
+            <div class="df m_3">
+                <label class="col-sm-8"> Funds that can be withdrawn from the house turnover</label>
+                <span class="col-sm-4">{{accSummary[0].fundsCanBeWithdrawn.value}}</span>
+            </div>
+            <div class="fd m_t_2">
+                <h6 class="col-sm-12">House data for the end of the period</h6>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-8">House balance</label>
+                <span class="col-sm-4">{{accSummary[0].casinoBalance.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Activity simulator balance</label>
+                <span class="col-sm-4">{{accSummary[0].cumulativeCasinoJackpotsAmount.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total number of players</label>
+                <span class="col-sm-4">{{accSummary[0].totalPlayers}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total players balance</label>
+                <span class="col-sm-4">{{accSummary[0].totalPlayersBalance.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Locked bonuses</label>
+                <span class="col-sm-4">{{accSummary[0].lockedBonuses.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Bad beat jackpot amount</label>
+                <span class="col-sm-4">{{accSummary[0].badBeatJackpotAmount.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total number of deposits</label>
+                <span class="col-sm-4">{{accSummary[0].totalPurchaseTransactions}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total deposits:</label>
+                <span class="col-sm-4">{{accSummary[0].totalPurchases.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total pending cashouts</label>
+                <span class="col-sm-4">{{accSummary[0].totalPendingCashouts.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total chargebacks</label>
+                <span class="col-sm-4">{{accSummary[0].totalChargebacks.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total number of withrawals</label>
+                <span class="col-sm-4">{{accSummary[0].totalWithdrawalsTransactions}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total withrawals</label>
+                <span class="col-sm-4">{{accSummary[0].totalWithdrawals.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total number of agents</label>
+                <span class="col-sm-4">{{accSummary[0].totalAgents}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total agents balance</label>
+                <span class="col-sm-4">{{accSummary[0].agentBalance.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total transfers agent to player</label>
+                <span class="col-sm-4">{{accSummary[0].totalTransfersAgentToPlayer.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total transfers agent to agent</label>
+                <span class="col-sm-4">{{accSummary[0].totalTransfersAgentToAgent.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Payable to agents</label>
+                <span class="col-sm-4">{{accSummary[0].payableToAgents.value}}</span>
+            </div>
+            <div class="fd">
+                <h6 class="col-sm-12">House Data for the Period</h6>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-8">Total number of affiliates</label>
+                <span class="col-sm-4">{{accSummary[0].totalWebmasters}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Payable to affiliates</label>
+                <span class="col-sm-4">{{accSummary[0].payableToWebmasters.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Number of registrations for selected time</label>
+                <span class="col-sm-4">{{accSummary[0].numberOfRegistrationsForSelTime}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Number of first deposits for period</label>
+                <span class="col-sm-4">{{accSummary[0].numberOfNewCustomersWhoMadePurchasesForSelTime}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total deposits for selected time</label>
+                <span class="col-sm-4">{{accSummary[0].totalPurchasesForSelTime.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total chargebacks for selected time</label>
+                <span class="col-sm-4">{{accSummary[0].totalChargeBacksForSelTime.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">chargeback fees from users</label>
+                <span class="col-sm-4">{{accSummary[0].unconfirmedReferring.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total initiated cashouts for selected time</label>
+                <span class="col-sm-4">{{accSummary[0].totalInitiatedCashoutsForSelTime.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total approved cashouts for selected time</label>
+                <span class="col-sm-4">{{accSummary[0].totalApprovedCashoutsForSelTime.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total canceled cashouts for selected time</label>
+                <span class="col-sm-4">{{accSummary[0].totalCanceledCashoutsForSelTime.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Cumulative game banks amount</label>
+                <span class="col-sm-4">{{accSummary[0].cumulativeGameBanksAmount.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Cumulative jackpots amount</label>
+                <span class="col-sm-4">{{accSummary[0].cumulativeCasinoJackpotsAmount.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Number of first-time logins for selected time</label>
+                <span class="col-sm-4">{{accSummary[0].numberOfFirstLoginsForSelectedTime}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Number of first-time transfers from remote system from remote system for
+                    selected time</label>
+                <span class="col-sm-4">{{accSummary[0].numberOfFirstTransfersFromRemoteSystemForSelectedTime}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total amount of first-time transfers from remote system for Selected
+                    time</label>
+                <span class="col-sm-4">{{accSummary[0].sumOfFirstTransfersFromRemoteSystemForSelectedTime
+                    |numberFormat}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <div class="fd over_tbl" id="tablerecords" style="overflow-x:auto;">
+    <div clas='fd' *ngIf="dataLoader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="tablCode">
+        <table class="fd table_2" id="excel_table">
+            <thead>
+                <tr>
+                    <th>Funds that can be withdrawn from the house turnover:</th>
+                    <th>House balance:</th>
+                    <th>Activity simulator balance:</th>
+                    <th>Total number of players:</th>
+                    <th>Total players balance:</th>
+                    <th>Locked bonuses:</th>
+                    <th>Bad beat jackpot amount:</th>
+                    <th>Total number of deposits:</th>
+                    <th>Total deposits:</th>
+                    <th>Total pending cashouts:</th>
+                    <th>Total chargebacks:</th>
+                    <th>Total number of withrawals:</th>
+                    <th>Total withrawals:</th>
+                    <th>Total number of agents:</th>
+                    <th>Total agents balance:</th>
+                    <th>Total transfers agent to player:</th>
+                    <th>Total transfers agent to agent:</th>
+                    <th>Payable to agents:</th>
+                    <th>Total number of affiliates:</th>
+                    <th>Payable to affiliates:</th>
+                    <th>Number of registrations for selected time:</th>
+
+                    <th>Number of first deposits for period:</th>
+                    <th>Total deposits for selected time:</th>
+                    <th>Total chargebacks for selected time:</th>
+                    <th>chargeback fees from users:</th>
+
+                    <th>Total initiated cashouts for selected time:</th>
+                    <th>Total approved cashouts for selected time:</th>
+                    <th>Total canceled cashouts for selected time:</th>
+                    <th>Cumulative game banks amount:</th>
+                    <th>Cumulative jackpots amount:</th>
+                    <th>Number of first-time logins for selected time:</th>
+                    <th>Number of first-time transfers from remote system from remote system for selected time:</th>
+                    <th>Total amount of first-time transfers from remote system for Selected time:</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="accSummary">
+                <tr (click)="openSummaryPop();onClick(i)"
+                    *ngFor="let i = index; let list of accSummary | paginate: {itemsPerPage:selectnum, currentPage:p}">
+                    <td>{{list.fundsCanBeWithdrawn.value}}</td>
+                    <td>{{list.casinoBalance.value}}</td>
+                    <td>{{list.cumulativeCasinoJackpotsAmount.value}}.00</td>
+                    <td>{{list.totalPlayers}}</td>
+                    <td>{{list.totalPlayersBalance.value}}.00</td>
+                    <td>{{list.lockedBonuses.value}}.00</td>
+                    <td>{{list.badBeatJackpotAmount.value}}.00</td>
+                    <td>{{list.totalPurchaseTransactions}}</td>
+                    <td>{{list.totalPurchases.value}}.00</td>
+                    <td>{{list.totalPendingCashouts.value}}.00</td>
+                    <td>{{list.totalChargebacks.value}}.00</td>
+                    <td>{{list.totalWithdrawalsTransactions}}</td>
+                    <td>{{list.totalWithdrawals.value}}.00</td>
+                    <td>{{list.totalAgents}}</td>
+                    <td>{{list.agentBalance.value}}.00</td>
+                    <td>{{list.totalTransfersAgentToPlayer.value}}.00</td>
+                    <td>{{list.totalTransfersAgentToAgent.value}}.00</td>
+                    <td>{{list.payableToAgents.value}}.00</td>
+                    <td>{{list.totalWebmasters}}</td>
+                    <td>{{list.payableToWebmasters.value}}.00</td>
+                    <td>{{list.numberOfRegistrationsForSelTime}}</td>
+
+                    <td>{{list.numberOfNewCustomersWhoMadePurchasesForSelTime}}</td>
+                    <td>{{list.botStrategyBalance.value}}</td>
+                    <td>{{list.totalChargeBacksForSelTime.value}}</td>
+                    <td>{{list.unconfirmedReferring.value}}.00</td>
+
+                    <td>{{list.totalInitiatedCashoutsForSelTime.value}}.00</td>
+                    <td>{{list.totalApprovedCashoutsForSelTime.value}}.00</td>
+                    <td>{{list.totalCanceledCashoutsForSelTime}}.00</td>
+                    <td>{{list.cumulativeGameBanksAmount.value}}</td>
+                    <td>{{list.cumulativeCasinoJackpotsAmount.value}}.00</td>
+                    <td>{{list.numberOfFirstLoginsForSelectedTime}}</td>
+                    <td>{{list.numberOfFirstTransfersFromRemoteSystemForSelectedTime}}</td>
+                    <td>{{list.sumOfFirstTransfersFromRemoteSystemForSelectedTime}}</td>
+                </tr>
+            </tbody>
+            <tfoot *ngIf="accSummary">
+                <tr>
+                    <td>SUM={{fundsCanBeWithdrawnValue}}</td>
+                    <td>SUM={{fundsCanBeWithdrawnValue}}</td>
+                    <td>SUM={{fundsCanBeWithdrawnValue}}</td>
+                    <td>SUM={{fundsCanBeWithdrawnValue}}</td>
+                    <td>SUM={{casinoBalanceValue}}</td>
+                    <td>SUM={{cumulativeCasinoJackpotsAmountValue}}.00</td>
+                    <td>SUM={{TotalPlayers}}</td>
+                    <td>SUM={{totalPlayersBalanceValue}}.00</td>
+                    <td>SUM={{lockedBonusesValue}}.00</td>
+                    <td>SUM={{badBeatJackpotAmountValue}}.00</td>
+                    <td>SUM={{TotalPurchaseTransactions}}</td>
+                    <td>SUM={{totalPurchasesValue}}.00</td>
+                    <td>SUM={{totalPendingCashoutsValue}}.00</td>
+                    <td>SUM={{totalChargebacksValue}}.00</td>
+                    <td>SUM={{TotalWithdrawalsTransactions}}</td>
+                    <td>SUM={{totalWithdrawalsValue}}.00</td>
+                    <td>SUM={{TotalAgents}}</td>
+                    <td>SUM={{agentBalanceValue}}.00</td>
+                    <td>SUM={{totalTransfersAgentToPlayerValue}}.00</td>
+                    <td>SUM={{totalTransfersAgentToAgentValue}}.00</td>
+                    <td>SUM={{payableToAgentsValue}}.00</td>
+                    <td>SUM={{TotalWebmasters}}</td>
+                    <td>SUM={{payableToWebmastersValue}}.00</td>
+                    <td>SUM=</td>
+
+                    <td>SUM=</td>
+                    <td>SUM={{botStrategyBalanceValue}}</td>
+                    <td>SUM={{totalChargeBacksForSelTimeValue}}</td>
+                    <td>SUM=</td>
+
+                    <td>SUM={{totalInitiatedCashoutsForSelTimeValue}}.00</td>
+                    <td>SUM={{totalApprovedCashoutsForSelTimeValue}}.00</td>
+                    <td>SUM={{TotalCanceledCashoutsForSelTime}}.00</td>
+                    <td>SUM={{cumulativeGameBanksAmountValue}}</td>
+                    <td>SUM={{cumulativeCasinoJackpotsAmountValue}}.00</td>
+                    <td>SUM=</td>
+                    <td>SUM=</td>
+                    <td>SUM=</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+     <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+            class="pt-2 page-item float-right">
+        </pagination-controls> 
+
+     <div class="page_count">
+            <div style="margin-right:20px;" *ngIf="accSummary">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+            <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+        </div> 
+</div> -->
+
+<!-- <div class="fd">
+    <div class="fd" *ngIf="accSummary">
+        <div class="pagecount">
+            <button class="Pagebtns" [disabled]="PageCount==1 || accSummary==null" (click)="fastbackforward()"><i
+                    class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||accSummary==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="accSummary">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="accSummary==null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="accSummary==null || pagecontrolbtn" (click)="fastforward()">
+                <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+</div> -->
+
+<div class="black_cover" *ngIf="SummaryPopup" (click)="closePopup()"></div>
+<div class="popup_1 pop_sm" *ngIf="SummaryPopup">
+    <div class="PopupHead">
+        <h5 class="text-center">Summary</h5>
+        <span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13">
+        <div class="fd p_5 ">
+            <div class="fd">
+                <h6 class="col-sm-12">Current Data</h6>
+            </div>
+            <div class=" m_3">
+                <label class="col-sm-8">Funds that can be withdrawn from the house turnover</label>
+                <span class="col-sm-4">{{subSummary.fundsCanBeWithdrawn.value}}</span>
+            </div>
+            <div class="fd">
+                <h6 class="col-sm-12">House data for the end of the period</h6>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-8">House balance</label>
+                <span class="col-sm-4">{{subSummary.casinoBalance.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Activity simulator balance</label>
+                <span class="col-sm-4">{{subSummary.cumulativeCasinoJackpotsAmount.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total number of players</label>
+                <span class="col-sm-4">{{subSummary.totalPlayers}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total players balance</label>
+                <span class="col-sm-4">{{subSummary.totalPlayersBalance.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Locked bonuses</label>
+                <span class="col-sm-4">{{subSummary.lockedBonuses.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Bad beat jackpot amount</label>
+                <span class="col-sm-4">{{subSummary.badBeatJackpotAmount.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total number of deposits</label>
+                <span class="col-sm-4">{{subSummary.totalPurchaseTransactions}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total deposits:</label>
+                <span class="col-sm-4">{{subSummary.totalPurchases.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total pending cashouts</label>
+                <span class="col-sm-4">{{subSummary.totalPendingCashouts.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total chargebacks</label>
+                <span class="col-sm-4">{{subSummary.totalChargebacks.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total number of withrawals</label>
+                <span class="col-sm-4">{{subSummary.totalWithdrawalsTransactions.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total withrawals</label>
+                <span class="col-sm-4">{{subSummary.totalWithdrawals.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total number of agents</label>
+                <span class="col-sm-4">{{subSummary.totalAgents}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total agents balance</label>
+                <span class="col-sm-4">{{subSummary.agentBalance.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total transfers agent to player</label>
+                <span class="col-sm-4">{{subSummary.totalTransfersAgentToPlayer.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total transfers agent to agent</label>
+                <span class="col-sm-4">{{subSummary.totalTransfersAgentToAgent.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Payable to agents</label>
+                <span class="col-sm-4">{{subSummary.payableToAgents.value}}.00</span>
+            </div>
+            <div class="fd">
+                <h6 class="col-sm-12">House Data for the Period</h6>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-8">Total number of affiliates</label>
+                <span class="col-sm-4">{{subSummary.totalWebmasters}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Payable to affiliates</label>
+                <span class="col-sm-4">{{subSummary.payableToWebmasters.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Number of registrations for selected time</label>
+                <span class="col-sm-4">{{subSummary.numberOfRegistrationsForSelTime}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Number of first deposits for period</label>
+                <span class="col-sm-4">{{subSummary.numberOfNewCustomersWhoMadePurchasesForSelTime}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total deposits for selected time</label>
+                <span class="col-sm-4">{{subSummary.botStrategyBalance.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total chargebacks for selected time</label>
+                <span class="col-sm-4">{{subSummary.totalChargeBacksForSelTime.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">chargeback fees from users</label>
+                <span class="col-sm-4">{{subSummary.unconfirmedReferring.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total initiated cashouts for selected time</label>
+                <span class="col-sm-4">{{subSummary.totalApprovedCashoutsForSelTime.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total approved cashouts for selected time</label>
+                <span class="col-sm-4">{{subSummary.totalApprovedCashoutsForSelTime.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total canceled cashouts for selected time</label>
+                <span class="col-sm-4">{{subSummary.totalCanceledCashoutsForSelTime.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Cumulative game banks amount</label>
+                <span class="col-sm-4">{{subSummary.cumulativeGameBanksAmount.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Cumulative jackpots amount</label>
+                <span class="col-sm-4">{{subSummary.cumulativeCasinoJackpotsAmount.value}}.00</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Number of first-time logins for selected time</label>
+                <span class="col-sm-4">{{subSummary.numberOfFirstLoginsForSelectedTime}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Number of first-time transfers from remote system from remote system for
+                    selected time</label>
+                <span class="col-sm-4">{{subSummary.numberOfFirstTransfersFromRemoteSystemForSelectedTime}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8">Total amount of first-time transfers from remote system for Selected
+                    time</label>
+                <span class="col-sm-4">{{subSummary.sumOfFirstTransfersFromRemoteSystemForSelectedTime}}</span>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closePopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+
+<div class="black_cover" style="z-index: 1000;" *ngIf="ParticipantsPopup">
+    <div class="Blindpopup " *ngIf="ParticipantsPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Edit Participants Ranges12 </h5>
+            <span class="closetop" (click)="ParticipantsPopClose()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="wh">
+                    <div class="overflow col-sm-6 border border-secondary p_2">
+                        <div *ngIf="ar_lables?.length">
+                            <div class="fd ParticipantRangeArea" (click)="row_select(i)"
+                                *ngFor="let i = index;let range of ar_lables">
+                                <p [class]="{'highlightedrow':i==selectedRowIndex}">{{range.from_value}} 
+                                    <!-- <span *ngIf="i == (ar_lables?.length-1)"> and more</span> -->
+                                    <span *ngIf="i != (ar_lables?.length-1)"> - {{range.to_value}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 overflow m_3">
+                        <h6>Seleted Range</h6>
+                        <div class="SeletedRangeArea">
+                            <div>
+                                <label>From</label>
+                                <input type="number" disabled [(ngModel)]="from" />
+                            </div>
+                            <div >
+                                <label>To</label>
+                               <span *ngIf="selectedRowIndex==0 && ar_lables.length ==1">
+                                <input #toValue type="number" disabled  value="1"/>
+                               </span> 
+
+                               <span *ngIf="selectedRowIndex==0 && ar_lables.length >1">
+                                <input #toValue type="number" [(ngModel)]="to" value="1" appMaximimNumbersLengthValidation [digitCount]= 6/>
+                               </span>
+
+                                <span *ngIf="selectedRowIndex>0&&selectedRowIndex<=ar_lables.length-2">
+                                    <input #toValue type="number" [(ngModel)]="to" appMaximimNumbersLengthValidation [digitCount]= 6/>
+                                </span>
+                                <span *ngIf="selectedRowIndex>=1&&selectedRowIndex==ar_lables.length-1">
+                                    <input #toValue type="number" disabled value="1"/>
+                                </span>
+
+                                <button class="AddNewRangebtn" (click)="save(to,from)">Save</button>
+                            </div>
+
+                        </div>
+                        <div class="fd">
+                            <button class="AddNewRangebtn" (click)="newRangesAdd()">Add New Range</button>
+                            <button class="AddNewRangebtn" [disabled] ="ar_lables.length ==1 || selectedRowIndex == ar_lables.length-1" (click)="deleteRanges(to)">Delete selected Range</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="ParticipantsRangesPopClose()"> Ok </button>
+            <button class="btn_grade_2" (click)="ParticipantsPopClose()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+

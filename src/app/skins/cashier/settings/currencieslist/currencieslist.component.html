@@ -1,0 +1,132 @@
+<!-- <div class="topnav">
+    <a >Actions</a>
+    <a (click)="openCurrenciesPop()">Open</a>
+    <a >Explore</a>
+    <a (click)="ignoreContext()">Ignore Context</a>
+    <div class="dropdown">
+       <button class="dropbtn">View</button>
+       <div class="dropdown-content">
+           <a (click)="onRequery()">Normal</a>
+           <a>Autosize</a>
+           <a>Card</a>
+       </div>
+   </div>
+    <a (click)="onRequery()">Requery</a>
+    <a (click)="exportExcel()">Export to XSL</a> 
+    <a (click)="onPrint()">Print</a>
+</div> -->
+
+<div>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="onRequery()">
+        Requery</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportExcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    <h3>Currencies List:</h3>
+</div>
+<div class="fd df m_3">
+    <div style="margin-right:20px;" *ngIf="currencieList">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+    <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+</div>
+<!-- <div (contextmenu)="onRightClick()"></div> -->
+
+<div class="fd" id="tablerecords">
+    <div *ngIf="dataLoader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="table_2">
+        <table class="fd tablCode" id="excel_table">
+            <thead>
+                <tr>
+                    <th>Payment System</th>
+                    <th>Currency</th>
+                    <th>Enable</th>
+                </tr>
+            </thead>
+
+            <tbody *ngIf="currencieList" (dblclick)="openCurrenciesPop()">
+                <tr *ngFor="let list of currencieList">
+                    <td>{{list.paymentSystemName}}</td>
+                    <td>{{list.currencyName}}</td>
+                    <td>
+                        <input *ngIf="list.enabled==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="list.enabled==false" type="checkbox" class="checkclick" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+        class="pt-2 page-item float-right">
+    </pagination-controls> -->
+</div>
+
+
+
+<!-- sub_popup table -->
+<div class="black_cover" *ngIf="currencielist">
+    <div class="popup_1 pop_sm" *ngIf="currencielist">
+        <div class="PopupHead">
+            <h5 class="text-center">Currencies List</h5>
+            <span class="closetop" (click)="enableCurrencies('no')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+
+        <!-- <div class="popupCover" *ngIf="currencielist" (click)="currenciespopupsub()"></div>
+         <div class="popup_1" *ngIf="currencielist"> -->
+        <!-- <p class="depositbon ">Currencies List </p> -->
+        <!-- <div class="popup_1"> -->
+        <div class="fd">
+            <table class="tablCode Blindtable margtp">
+                <thead>
+                    <tr class="tablCoderow">
+                        <th>Payment System</th>
+                        <th>Currency</th>
+                        <th>Enable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let list of changeCurrencies">
+                        <td>{{list.paymentSystemName}}</td>
+                        <td>{{list.currencyName}}</td>
+                        <td>
+                            <input [(ngModel)]=list.enabled type="checkbox" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="bottomFix">
+                <button class="btn_grade_1" (click)="enableCurrencies('yes')"> Save </button>
+                <button class="btn_grade_2" (click)="enableCurrencies('no')"> Cancel </button>
+            </div>
+            <!-- <div class="closeevnte">
+                <button class="closeBTN" (click)="closePopup()">close</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+<div class="black_cover" *ngIf="errorMessage">
+    <div class="popup_1 pop_sm" *ngIf="errorMessage">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="enableCurrencies('no')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="fd showErorr">
+            <p> The payment system should have at least one currecncy enabled.</p>
+            <p> Please correct settings for : <b>{{errorMessage}}</b></p>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_2" (click)="Errorpopup()"> okay </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ################################################### -->
+<div class="black_cover" *ngIf="Spinner"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="Spinner">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+<!-- ################################################### -->

@@ -1,0 +1,166 @@
+.trigger {
+    margin: auto;
+    position: relative;
+    text-align: center;
+    border: none;
+    padding: 5px 8px;
+    background: #4aab4e;
+    border-radius: 50px;
+    color: #fff;
+    width: 30px;
+    cursor: pointer;
+  }
+  
+  .popup1 {
+    position: absolute;
+    left: -80px;
+    top: -10px;
+    transform: translate3d(0, -50%, 0);
+    background: none;
+    color: #000;
+    max-width: 256px;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19) !important;
+    z-index: 1;
+  }
+  
+  .groupBTN {
+    padding: 0px 10px;
+  }
+  
+  .popup1 button:hover {
+    background: #dd6c0c;
+    color: #fff;
+  }
+  
+  .popup1 button {
+    margin: 0px;
+    border: none;
+    padding: 7px 10px;
+    border-bottom: 1px solid #b0adad;
+  }
+  
+  .popup1 {
+    display: grid;
+  }
+  
+  .popup1:after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    transform: rotate(-45deg);
+    background: #fff;
+    position: absolute;
+    z-index: -1;
+    bottom: 20%;
+    left: calc(99% - 12px);
+  }
+  
+  .popup1 {
+    padding: 0px;
+    background: #fff;
+  }
+  
+  .opPopHTML {
+    position: absolute;
+    max-width: 400px;
+    background: #fff;
+    z-index: 10;
+    margin: auto;
+    border-radius: 6px;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19) !important;
+    right: 0;
+    left: 0;
+    top: 35%;
+  }
+  
+  .Save_No_flex {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+  }
+  
+  .save_BTN {
+    padding: 4px 12px;
+    font-size: 16px;
+    background: #009a68;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19) !important;
+  }
+  
+  .Np_BTN {
+    cursor: pointer;
+    padding: 4px 12px;
+    font-size: 16px;
+    background: #9d0207;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19) !important;
+  }
+  
+  .qutionTag {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: #000 !important;
+    margin-top: 10px;
+  }
+  
+  .cont_Icon {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .cont_Icon span {
+    margin-top: 10px;
+  }
+  
+  .Cover_Body {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.7);
+  }
+  
+  .FullCover {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 99;
+    background: #00000047;
+  
+  }
+  
+  .spinnerTrue {
+    position: fixed;
+    z-index: 100;
+    left: 50%;
+    right: 0;
+    top: 50%;
+    margin: auto;
+  }
+  
+  .popup_1 select{
+    border: 1px solid #ddd;
+    padding: 5px;
+    width: 200px;
+    margin: 2px;
+    outline: none;
+  }
+  .popup_1 input[type="text"] {
+    border: 1px solid #ddd;
+    padding: 5px;
+    width: 200px;
+    margin: 2px;
+    outline: none;
+  }

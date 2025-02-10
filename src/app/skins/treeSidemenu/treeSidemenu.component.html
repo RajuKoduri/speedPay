@@ -1,0 +1,24 @@
+<ul class="menuSide fd" *ngFor="let menu of treeData; let i=index">
+  <li [ngClass]="menu?.color" class="pad_right"
+    [routerLink]="menu.url == '#' && menu.children.length > 0 ? null  : menu.url" routerLinkActive="active_link_1">
+    <div class="d_flex12" id="{{menu.name}}" (dblclick)="toggleItem(menu,i)">
+      <span class="first_lvl" (click)="changemenuclick(menu.name,menu,i)">{{menu.name}}</span>
+      <i class="font_ss fa fa-angle-right font_ss" (click)="toggleItem(menu,i)" *ngIf="menu.children"
+        [ngClass]="{'active12': menu.expanded}"></i>
+    </div>
+    <ul *ngIf="menu.expanded">
+      <app-treeSidemenu [treeData]="menu.children"></app-treeSidemenu>
+    </ul>
+  </li>
+</ul>
+<!-- <ul class="menuSide fd" *ngFor="let menu of treeData; let i=index" >   
+    <li class="pad_right" [routerLink]="menu.url == '#' && menu.children.length > 0 ? null  : menu.url" routerLinkActive="active_link_1">
+      <div class="d_flex12"  id="{{menu.name}}" (dblclick)="toggleItem(menu)">
+        <span class="first_lvl" (click)="changemenuclick(menu.name,menu)">{{menu.name}}</span>
+        <i class="font_ss fa fa-angle-right font_ss"  (click)="toggleItem(menu)" *ngIf="menu.children" [ngClass]="{'active12': menu.expanded}"></i> 
+      </div>
+        <ul *ngIf="menu.expanded">    
+          <app-treeSidemenu [treeData]="menu.children" ></app-treeSidemenu>   
+        </ul>
+      </li> 
+</ul>  -->

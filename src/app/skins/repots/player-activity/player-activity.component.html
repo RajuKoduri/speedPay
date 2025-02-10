@@ -1,0 +1,115 @@
+<div>
+    <h3>Player Activity </h3>
+</div>
+<div class="dropdown fd fil_export">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+<div>
+
+    <button class="fillterbtn m_l_5 btn_sub12" (click)="exportCsv()"> Export Csv</button>
+    <button class="fillterbtn m_l_5 btn_sub12" (click)="exportexcel()"> Export Excel</button>
+</div> 
+
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                </div>
+                <div class="red_col text-center" *ngIf="steddate">
+                    Start date should be below or equal to end date
+                </div>
+                <div class="red_col text-center" *ngIf="timeerror">
+                    Start time should be below or equal to end time
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <!-- <button class="fillterbtn font_14" style="margin-right:85px; float: right;" (click)="onFormSubmit()">Submit</button> -->
+    <div class="text-centers div_sub">
+        <div class="text-centers df m_t_5ks">
+            <div style="margin-right:20px;" *ngIf="PlayerActivityData">Rows On the Page: {{rowsOnthePage}}</div>
+            <div *ngIf="PlayerActivityData"> Result Count: {{ResultCount}} </div>
+        </div>
+        <button class="fillterbtn btn_sub12" (click)="onFormSubmit()" [disabled]="steddate || timeerror">Submit</button>
+    </div>
+</div>
+
+<div class="fd table_2 ">
+    <table class="tablCode" id="excel-table">
+        <thead>
+            <tr>
+                <th>Nick Name </th>
+                <th>Skin </th>
+                <th>Currency </th>
+                <th>Wins (Tables)</th>
+                <th>Loss (Tables)</th>
+                <th>Wins (Tournament)</th>
+                <th>Loss (Tournament)</th>
+                <th>Wins</th>
+            </tr>
+        </thead>
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <tbody *ngIf="PlayerActivityData">
+            <tr *ngFor="let List of PlayerActivityData,let i =index">
+                <td>{{List.nickName}}</td>
+                <td>{{List.skin}}</td>
+                <td>{{List.currencyCode}}</td>
+                <td class="text-end">{{List.tableWins | numberFormat }}</td>
+                <td class="text-end">{{List.tableLoss | numberFormat}}</td>
+                <td class="text-end">{{List.tournamentWins | numberFormat}}</td>
+                <td class="text-end">{{List.tournamentLoss | numberFormat}}</td>
+                <td class="text-end">{{List.wins | numberFormat}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="fd">
+    <div class="fd" *ngIf="PlayerActivityData">
+        <div class="pagecount">
+            <button class="Pagebtns" [disabled]="PageCount==1 || PlayerActivityData==null"
+                (click)="fastbackforward()"><i class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||PlayerActivityData==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="PlayerActivityData">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="PlayerActivityData == null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PlayerActivityData==null || pagecontrolbtn" (click)="fastforward()"><i
+                    class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+</div>

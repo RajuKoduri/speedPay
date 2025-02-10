@@ -1,0 +1,157 @@
+<div class="popup_4 pop_sm">
+    <div class=" PopupHead">
+        <h5 class="text-center">Create New Player </h5>
+    </div>
+    <form [formGroup]="CreateNewPlayer">
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-4"> Player Login*</label>
+                    <div class="col-sm-4">
+                        <input class="col-sm-12" type=text formControlName="PlayerLogin" (keypress)="userNameValid($event)" maxLength="15"/>
+                        <div class="stakes-error-message"
+                            *ngIf="f['PlayerLogin'].touched && f['PlayerLogin'].invalid || submitted">
+                            <div *ngIf="f['PlayerLogin'].errors && f['PlayerLogin'].errors['required']">Please Enter
+                                Player Name</div>
+                            <div *ngIf="f['PlayerLogin'].errors && f['PlayerLogin'].errors['minlength']">PlayerName must be min 4 characters max 15 characters</div>
+                            <div *ngIf="f['PlayerLogin'].errors && f['PlayerLogin'].errors['maxlength']"> PlayerName must be min 4 characters max 15 characters</div>
+                            <div *ngIf="f['PlayerLogin'].errors && f['PlayerLogin'].errors['pattern']">Enter alphabets and numeric only</div>
+                        </div>
+                    </div>
+                    <!-- <span *ngIf="submitted && f['PlayerLogin'].errors?.['required']">
+                            This field is required.
+                        </span> -->
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Nick Name*</label>
+                    <div class="col-sm-4">
+                        <input class="col-sm-12" type=text formControlName="NickName" />
+                        <span class="stakes-error-message"
+                            *ngIf="f['NickName'].touched && f['NickName'].invalid || submitted">
+                            <div *ngIf="f['NickName'].errors && f['NickName'].errors['required']">Please Enter
+                                Player NickName</div>
+                            <div *ngIf="f['NickName'].errors && f['NickName'].errors['minlength']">NickName Should
+                                be 4 Character.</div>
+                        </span>
+                    </div>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Email</label>
+                    <div class="col-sm-4">
+                        <input class="col-sm-12" type=text formControlName="Email" (keypress)="emailValid($event)"/>
+                        <div class="stakes-error-message" *ngIf="f['Email'].touched && f['Email'].invalid || submitted">
+                            <div *ngIf="f['Email'].errors && f['Email'].errors['required']">Enter Email</div>
+                            <div *ngIf="f['Email'].errors && f['Email'].errors['pattern']">Enter Valid Email</div>
+                       </div>
+                    </div>
+                   
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Password*</label>
+                    <div class="col-sm-4">
+                        <input class="col-sm-12" type=text formControlName="Password" (keypress)="passwordValid($event)" maxLength="15"/>
+                        <div class="stakes-error-message"
+                            *ngIf="f['Password'].touched && f['Password'].invalid || submitted">
+                            <div *ngIf="f['Password'].errors && f['Password'].errors['required']">Please Enter
+                                Password</div>
+                            <div *ngIf="f['Password'].errors && f['Password'].errors['minlength']">Password must be min 6 characters max 15 characters</div>
+                            <div *ngIf="f['Password'].errors && f['Password'].errors['maxlength']">Password must be min 6 characters max 15 characters</div>
+                            <div *ngIf="f['Password'].errors && f['Password'].errors['pattern']">Enter alphabets and numeric only</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">First Name</label>
+                    <input class="col-sm-4" type=text formControlName="FirstName" />
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Last Name</label>
+                    <input class="col-sm-4" type=text formControlName="LastName" />
+                </div>
+                <!-- <div class="df m_3">
+                    <label class="col-sm-4">BirthDay</label>
+                    <input class="col-sm-4" type=text formControlName="BirthDay" />
+                </div> -->
+                <div class="df m_3">
+                    <label class="col-sm-4">Address</label>
+                    <input class="col-sm-4" type=text formControlName="Address" />
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">City</label>
+                    <input class="col-sm-4" type=text formControlName="City" />
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">State</label>
+                    <input class="col-sm-4" type=text formControlName="State" />
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Zip Code</label>
+                    <input class="col-sm-4" type=text formControlName="ZipCode" />
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Country</label>
+                    <select class="col-sm-4" type=text formControlName="Country" [(ngModel)]="SeletedCountry">
+                        <option [ngValue]="Country.CID" *ngFor="let Country of Countries">{{Country.title}}</option>
+                    </select>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Phone</label>
+                    <div class="col-sm-4">
+                        <input class="col-12" type=text formControlName="Phone" (keypress)="phonenum($event)" maxLength="12"/>
+                        <div class="stakes-error-message"
+                            *ngIf="f['Password'].touched && f['Password'].invalid || submitted">
+                            <div *ngIf="f['Phone'].errors && f['Phone'].errors['required']">Enter valid phone</div>
+                            <div *ngIf="f['Phone'].errors && f['Phone'].errors['minlength']">Phone must be min 7 characters max 12 characters</div>
+                            <div *ngIf="f['Phone'].errors && f['Phone'].errors['maxlength']">Phone must be min 7 characters max 12 characters</div>
+                           
+                        </div>
+                    </div>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Language</label>
+                    <select class="col-sm-4" type=text formControlName="Language" [(ngModel)]="SeletedLang">
+                        <option [ngValue]="Language.guid" *ngFor="let Language of LanguagesList">{{Language.value}}
+                        </option>
+                    </select>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Face</label>
+                    <select class="col-sm-4" type=text formControlName="Face" (change)="onFaceChange()">
+                        <option *ngFor="let faces of faceParametersList">{{faces.name}}</option>
+                    </select>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-4">Sub Network</label>
+                    <select class="col-sm-4" type=text formControlName="Subnetwork">
+                        <option *ngFor="let subNet of subNetWorks">{{subNet.subnetwork}}</option>
+                    </select>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onFormSubmit()"> Save </button>
+        </div>
+    </form>
+</div>
+
+
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="CreatePlayerSuccessPop">
+    <div class="popup_1 pop_sm" *ngIf="CreatePlayerSuccessPop">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <b class="p_5 text-success">Player Successfully Created </b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->

@@ -1,0 +1,254 @@
+<div>
+    <h2>Affiliates list </h2>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export CSV</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Affiliate Account Mask</label>
+                        <input type="text" formControlName="Affiliateaccountmask">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Alias</label>
+                        <input type="text" formControlName="Alias">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Reporting Period Start</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            (change)="timechnage($event)" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Reporting Period End</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+
+                    <div class="div_flex p_5_10">
+                        <label>Referred Players</label>
+                        <input class="Birthdayinputs" type="text" formControlName="ReferredPlayersFrom">
+                        <input class="Birthdayinputs" type="text" formControlName="ReferredPlayersTo">
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>Revenue From Players</label>
+                        <input class="Birthdayinputs" type="text" formControlName="RevenueFromPlayersFrom">
+                        <input class="Birthdayinputs" type="text" formControlName="RevenueFromPlayersTo">
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>Referred Affiliates</label>
+                        <input class="Birthdayinputs" type="text" formControlName="ReferredAffiliatesFrom">
+                        <input class="Birthdayinputs" type="text" formControlName="ReferredAffiliatesTo">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Revenue From Affiliates</label>
+                        <input class="Birthdayinputs" type="text" formControlName="RevenueFromAffiliatesFrom">
+                        <input class="Birthdayinputs" type="text" formControlName="RevenueFromAffiliatesTo">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers">
+        <div style="margin-right:20px;" *ngIf="Affiliateslist">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+
+</div>
+
+<div class="fd table_2">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel_table">
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Affiliate Account</th>
+                <th>Alias</th>
+                <th>Full Name </th>
+                <th>Status</th>
+                <th>Unique Hits</th>
+                <th>Depositors </th>
+                <th>Referred Affiliates</th>
+                <th> Referred players</th>
+                <th>Revenue From Affiliates </th>
+                <th>Revenue From Players </th>
+                <th>Including Chargebacks</th>
+                <th>Canceled Payments</th>
+                <th> Revenue Adjustments</th>
+                <th>Net Revenue </th>
+                <th>Registation Date</th>
+                <th>Referred By Affiliate</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="Affiliateslist">
+            <tr *ngFor="let list of Affiliateslist; let i=index" (click)="onClick(i)">
+                <td>{{i + 1}}</td>
+                <td>{{list.webmaster.account}}</td>
+                <td>{{list.webmaster.alias}}</td>
+                <td></td>
+                <td>{{list.status}}</td>
+                <td>{{list.hits}}</td>
+                <td>{{list.depositors}}</td>
+                <td>{{list.referredWebmasters}}</td>
+                <td>{{list.referredPlayers}}</td>
+                <td class="text-end">{{list.incomeFromWebmasters.value |numberFormat}}</td>
+                <td class="text-end">{{list.incomeFromPlayers.value |numberFormat}}</td>
+                <td class="text-end">{{list.chargebacks.value |numberFormat}}</td>
+                <td class="text-end">{{list.cancels.value |numberFormat}}</td>
+                <td class="text-end">{{list.adjustments.value |numberFormat}}</td>
+                <td class="text-end">{{list.total.value |numberFormat}}</td>
+                <td>{{list.regDate}}</td>
+                <td></td>
+
+            </tr>
+
+        </tbody>
+        <tfoot *ngIf="Affiliateslist">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total:{{Uniquehits |numberFormat}}</td>
+                <td>Total:{{Depositors |numberFormat}}</td>
+                <td>Total:{{ReferredAffiliates |numberFormat}}</td>
+                <td>Total:{{ReferredPlayers |numberFormat}}</td>
+                <td>Total:{{IncomeFromWebmasters |numberFormat}}</td>
+                <td>Total:{{IncomeFromPlayers |numberFormat}}</td>
+                <td>Total:{{Chargebacks |numberFormat}}</td>
+                <td>Total:{{Cancels |numberFormat}}</td>
+                <td>Total:{{Adjustments |numberFormat}}</td>
+                <td>Total:{{Total |numberFormat}}</td>
+                <td></td>
+                <td></td>
+
+            </tr>
+
+        </tfoot>
+    </table>
+</div>
+
+<!-- *********************************POP-UP***************************************** -->
+<div class="black_cover" *ngIf="Affiliatedetailspopup">
+    <div class="popup_1 pop_sm" *ngIf="Affiliatedetailspopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Affiliate: {{Affiliatesfulldetails.webmaster.account}}</h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5">
+                <table class="fd ">
+                    <tr>
+                        <th>Affiliate Account</th>
+                        <td>{{Affiliatesfulldetails.webmaster.account}}</td>
+                    </tr>
+                    <tr>
+                        <th>Alias</th>
+                        <td>{{Affiliatesfulldetails.webmaster.alias}}</td>
+                    </tr>
+                    <tr>
+                        <th>Full Name</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>{{Affiliatesfulldetails.status}}</td>
+                    </tr>
+                    <tr>
+                        <th>Unique Hits</th>
+                        <td>{{Affiliatesfulldetails.hits}}</td>
+                    </tr>
+                    <tr>
+                        <th>Depositors </th>
+                        <td>{{Affiliatesfulldetails.depositors}}</td>
+                    </tr>
+                    <tr>
+                        <th>Preferred Affiliates </th>
+                        <td>{{Affiliatesfulldetails.referredWebmasters}}</td>
+                    </tr>
+                    <tr>
+                        <th>Preferred Players </th>
+                        <td>{{Affiliatesfulldetails.referredPlayers}}</td>
+                    </tr>
+                    <tr>
+                        <th>Revenue form Affiliates </th>
+                        <td>{{Affiliatesfulldetails.incomeFromWebmasters.value}}</td>
+                    </tr>
+                    <tr>
+                        <th>Revenue form Players </th>
+                        <td>{{Affiliatesfulldetails.incomeFromPlayers.value}}</td>
+                    </tr>
+                    <tr>
+                        <th>Including Chargebacks </th>
+                        <td>{{Affiliatesfulldetails.chargebacks.value}}</td>
+                    </tr>
+                    <tr>
+                        <th>Canceled Payments </th>
+                        <td>{{Affiliatesfulldetails.cancels.value}}</td>
+                    </tr>
+                    <tr>
+                        <th>Revenue Adjustments </th>
+                        <td>{{Affiliatesfulldetails.adjustments.value}}</td>
+                    </tr>
+                    <tr>
+                        <th>Net Revenue </th>
+                        <td>{{Affiliatesfulldetails.total.value}}</td>
+                    </tr>
+                    <tr>
+                        <th>Registation Date </th>
+                        <td>{{Affiliatesfulldetails.regDate}}</td>
+                    </tr>
+                    <tr>
+                        <th>Referred by Affiliate </th>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ***************************POPUP-END*********************************************** -->

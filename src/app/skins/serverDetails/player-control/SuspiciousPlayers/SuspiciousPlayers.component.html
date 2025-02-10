@@ -1,0 +1,26 @@
+<div>
+  <h1>Suspicious Players </h1>
+</div>
+<div>
+  <table>
+    <tr>
+      <th>Account</th>
+      <th>Face</th>
+      <th>Registation Date</th>
+      <th>Balance</th>
+      <th>Bonus</th>
+      <th>shortId</th>
+
+
+    </tr>
+
+    <tr *ngFor="let List of PlayerList">
+      <td>{{List.player.account}}</td>
+      <td>{{List.player.network}}</td>
+      <td>{{List.registrationDate}}</td>
+      <td>{{List.balance.value}}</td>
+      <td>{{List.bonus.value}}</td>
+      <td>{{List.player.shortId}}</td>
+
+    </tr>
+  </table>

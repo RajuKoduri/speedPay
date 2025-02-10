@@ -1,0 +1,260 @@
+<div>
+    <h1>Player Links</h1>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <select class="seclectopt" formControlName="Currency">
+                            <!-- <option value="" disabled> Real Money </option> -->
+                            <option disabled value="userPreferred"> User Preferred</option>
+                            <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletTypelist">
+                                {{CURRENCY.description}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Login Mask</label>
+                        <input type="text" formControlName="LoginMask">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Registration StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1"
+                            formControlName="startTime" [(ngModel)]="selectedTime" name="selectedTime"
+                            [ngModelOptions]="{standalone: true}" (change)="timechange($event)" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Registration EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" format="yyyy-MM-dd" step="1" formControlName="endTime"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+
+
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Balance</label>
+                        <input class="Birthdayinputs" type="text" formControlName="balancefrom" appMaxLengthValidation
+                            [maxNumber]=9>
+                        <input class="Birthdayinputs" type="text" formControlName="balanceto" appMaxLengthValidation
+                            [maxNumber]=9>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Bonus</label>
+                        <input class="Birthdayinputs" type="text" formControlName="bonusfrom" appMaxLengthValidation
+                            [maxNumber]=9>
+                        <input class="Birthdayinputs" type="text" formControlName="bonusto" appMaxLengthValidation
+                            [maxNumber]=9>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Alias</label>
+                        <input type="text" formControlName="Alias">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Player and Player</label>
+                        <input type="text" formControlName="PlayerandPlayer">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Status</label>
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingsstatus" [data]="playerStatusList"
+                                [(ngModel)]="selectedItemsStatus" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                                (onDeSelectAll)="onDeSelectAll($event)" formControlName="Status">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="fd">
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="onFormSubmit()"
+        [disabled]="steddate || timeerror">Submit</button>
+    <div class="df">
+        <div style="margin-right:20px;" *ngIf="Playerlinkslist">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div>
+</div>
+<div class="fd table_2">
+    <div>
+        <table class="tablCode" id="excel_table">
+            <div *ngIf="loader">
+                <div class="loaderWraper">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Confilct Player Account</th>
+                    <th>Registration Date</th>
+                    <th>Balance</th>
+                    <th>Bonus</th>
+                    <th>FNPP (Full name between Player and Player)</th>
+                    <th>BAPP (Billing Address between Player and Player)</th>
+                    <th>PPP (Password between Player and Player)</th>
+                    <th>IPP (IP address between Player and Player)</th>
+                    <th>APP (Address between Player and Player)</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="Playerlinkslist">
+                <tr (dblclick)="playerLinkRow(i)" *ngFor="let list of Playerlinkslist;let i=index">
+                    <td>{{list.player.account}}</td>
+                    <td class="link-primary text-decoration-underline"
+                        (click)="PlayerExplore(list.conflictPlayer.account,list.conflictPlayer.guid , list.conflictPlayer)">
+                        {{list.conflictPlayer.account}}</td>
+                    <td>{{changeSelect(list.registrationDate)}}</td>
+                    <td class="text-end">{{walletSymbol}} {{list.balance.value |numberFormat}}</td>
+                    <td class="text-end">{{walletSymbol}} {{list.bonus.value |numberFormat}}</td>
+                    <td ><span class="text-center"><input type="checkbox" class="checkclick"
+                                [checked]="list.suspicionsId.includes('FNPP')"></span></td>
+                    <td><span class="text-center"><input type="checkbox" class="checkclick"
+                                [checked]="list.suspicionsId.includes('BAPP')"></span></td>
+                    <td><span class="text-center"><input type="checkbox" class="checkclick"
+                                [checked]="list.suspicionsId.includes('PPP')"></span></td>
+                    <td><span class="text-center"><input type="checkbox" class="checkclick"
+                                [checked]="list.suspicionsId.includes('IPP')"></span></td>
+                    <td><span class="text-center"><input type="checkbox" class="checkclick"
+                                [checked]="list.suspicionsId.includes('APP')"></span></td>
+
+
+                </tr>
+            </tbody>
+            <tfoot *ngIf="Playerlinkslist && Playerlinkslist.length>0">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-end text-nowrap">SUM={{walletSymbol}} {{balanceSum |numberFormat}}</td>
+                    <td class="text-end text-nowrap">SUM={{walletSymbol}} {{bonusSum |numberFormat}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<!-- **************************POPUP************************************ -->
+<div class="black_cover" *ngIf="PlayerlinkslistPopup" (click)="closepopup()"></div>
+<div class="popup_1 pop_sm" *ngIf="PlayerlinkslistPopup">
+    <div class="PopupHead">
+        <h5 class="text-center">Suspicious Player</h5>
+        <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13">
+        <div class="fd p_5 ">
+
+            <div class="df m_3">
+                <label class="col-sm-8"> Player </label>
+                <span class="col-sm-4">{{SuspiciousPlayer.player.account}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8"> Confilct Player Account </label>
+                <span class="col-sm-4">{{SuspiciousPlayer.conflictPlayer.account}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8"> Registation Date </label>
+                <span class="col-sm-4">{{changeSelect(SuspiciousPlayer.registrationDate)}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8"> Blance </label>
+                <span class="col-sm-4">{{SuspiciousPlayer.balance.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8"> Bonus </label>
+                <span class="col-sm-4">{{SuspiciousPlayer.bonus.value |numberFormat}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8"> FNPP (Full name between Player and Player) </label>
+                <span class="col-sm-4"><input type="checkbox" class="checkclick"
+                        [checked]="SuspiciousPlayer.suspicionsId.includes('FNPP')"></span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8"> BAPP (Billing Address between Player and Player) </label>
+                <span class="col-sm-4"><input type="checkbox" class="checkclick"
+                        [checked]="SuspiciousPlayer.suspicionsId.includes('BAPP')"></span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8"> PPP (Password between Player and Player) </label>
+                <span class="col-sm-4"><input type="checkbox" class="checkclick"
+                        [checked]="SuspiciousPlayer.suspicionsId.includes('PPP')"></span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8"> IPP (IP address between Player and Player) </label>
+                <span class="col-sm-4"><input type="checkbox" class="checkclick"
+                        [checked]="SuspiciousPlayer.suspicionsId.includes('IPP')"></span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-8"> APP (Address between Player and Player) </label>
+                <span class="col-sm-4"><input type="checkbox" class="checkclick"
+                        [checked]="SuspiciousPlayer.suspicionsId.includes('APP')"></span>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <!-- <button class="btn_grade_1" (click)="closepopup()"> Save </button> -->
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<div class="fd" *ngIf="Playerlinkslist && Playerlinkslist.length>0">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || Playerlinkslist==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||Playerlinkslist==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="Playerlinkslist">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="Playerlinkslist==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="Playerlinkslist==null || pagecontrolbtn" (click)="fastforward()"><i
+                class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>

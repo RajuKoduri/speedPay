@@ -1,0 +1,12 @@
+.table_2 {
+    overflow-y: auto;
+    display: block;
+    /* height: 400px; */
+    /* background: #e8eeef; */
+    background-color: #eee;
+  }
+  .table_1 tr th {
+    color: #000;
+    background: #d3e2e5;
+    padding: 1px 50px;
+  }

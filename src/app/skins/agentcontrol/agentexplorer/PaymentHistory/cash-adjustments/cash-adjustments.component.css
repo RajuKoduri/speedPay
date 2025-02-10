@@ -1,0 +1,43 @@
+.Birthdayinputs{
+    width: 28%;
+}
+select{
+    border: 1px solid #ddd;
+}
+table thead{
+    position: sticky;
+    top:0
+}
+.popmini{
+        width: 400px;
+        position: absolute;
+        top: 25%;
+        left: 31%;
+        text-align: center;
+        z-index: 12;
+        box-shadow: -1px 0px 4px 6px #5e5a5a;
+        background-color: #fff;
+        border-radius: 6px;
+        padding-bottom: 10px;
+    
+}
+
+.black_cover{
+    width: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    background: #00000096;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9;
+    /* position: absolute; */
+  }
+.headcommon{
+    background-color: transparent;
+    font-size: 15px;
+    font-weight: 600;
+}
+  

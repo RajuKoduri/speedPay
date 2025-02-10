@@ -1,0 +1,200 @@
+<div class="popup_4 pop_sm">
+    <div class=" PopupHead" *ngIf="!RakestrutureData">
+        <h5 class="text-center">Create Poker Rake Structure </h5>
+    </div>
+
+    <div class="soon font_13 fd p_lr_15">
+        <form [formGroup]="CreatePokerRakeStructure">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-4"> Rake Structure Name</label>
+                    <input class="col-sm-4" type=text formControlName="RakeStructureName" />
+                </div>
+            </div>
+        </form>
+
+        <div class="fd p_5">
+            <span class="p_b_5  p_5 ">Create Poker RakeStructure</span>
+
+            <div class="fd tablCode">
+                <table class="fd table_2" id="excel-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Rake</th>
+                            <th>Per Pot</th>
+                            <th>Max Rake</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let i=index;let range of ar_lables1">
+                            <td>
+                                <!-- <p>{{range.from_value}} <span *ngIf="i == (ar_lables1?.length-1)"> and
+                                            more</span><span *ngIf="i != (ar_lables?.length-1)"> -
+                                            {{range.to_value}}</span></p> -->
+                                <p>{{range.from_value}}
+                                    <!-- <span *ngIf="i  == (ar_lables1?.length-1)"> and more</span> -->
+                                    <!-- <span *ngIf="i !== (ar_lables?.length-1)"> - {{range.to_value}}</span> -->
+                                    <span *ngIf="i  ==(ar_lables1?.length-1)"> and more</span>
+                                    <span *ngIf="i < (ar_lables1?.length-1)"> - {{range.to_value}}</span>
+                                </p>
+                            </td>
+                            <td><input class="input_width" [(ngModel)]="range.rake" type="number"  (keypress)="inputpayout12($event)" /></td>
+                                <!-- oninput="this.value = !!this.value&&Math.abs(this.value) >0?Math.abs(this.value):0"/></td> -->
+                            <td><input class="input_width" [(ngModel)]="range.perpot" type="number"   (keypress)="inputpayout12($event)" /></td>
+                                <!-- oninput="this.value = !!this.value&&Math.abs(this.value) >0?Math.abs(this.value):0"/></td> -->
+                            <td><input class="input_width" [(ngModel)]="range.maxrake" type="number"  (keypress)="inputpayout12($event)" /></td>
+                                <!-- oninput="this.value = !!this.value&&Math.abs(this.value) >0?Math.abs(this.value):0"/></td> -->
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="fd"  *ngIf="!RakestrutureData">
+                <div class="bottomFix">
+                    <button class="btn_grade_1" (click)="ParticipantPopUp()"> Number of Players </button>
+                    <button class="btn_grade_1" (click)="onFormSubmit()"> Save</button>
+                </div>
+            </div>
+            <!-- <div class="fd" *ngIf="RakestrutureData">
+                <div class="bottomFix">
+                    <button class="btn_grade_1" (click)="ParticipantPopUp()"> Number of Players </button>
+                    <button class="btn_grade_1" (click)="onFormSubmit()"> Save </button>
+                    <button class="btn_grade_1" (click)="closerakestuture()"> Cencel </button>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+
+<!-- ********************************************************* -->
+<div class="black_cover" *ngIf="ParticipantsPopup">
+    <div class="Blindpopup pop_sm" *ngIf="ParticipantsPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Edit Participants Ranges </h5>
+            <span class="closetop" (click)="ParticipantsPopClose()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="wh">
+                    <div class="overflow col-sm-6 border border-secondary p_2">
+                        <!-- <p>Edit Participants Ranges</p> -->
+                        <div *ngIf="ar_lables?.length">
+                            <div class="fd ParticipantRangeArea" (click)="row_select(i)"
+                                *ngFor="let i = index;let range of ar_lables">
+                                <!-- <p>{{range.from_value}} <span *ngIf="i == (ar_lables?.length-1)"> and more</span><span
+                                        *ngIf="i != (ar_lables?.length-1)"> - {{range.to_value}}</span></p> -->
+                                <p [class]="{'highlightedrow':i==selectedRowIndex}">{{range.from_value}} <span *ngIf="i == (ar_lables?.length-1)"> and more</span><span
+                                        *ngIf="i != (ar_lables?.length-1)"> - {{range.to_value}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 overflow m_3">
+                        <h6>Seleted Range</h6>
+                        <!-- <div class="col-sm-4"> -->
+                        <div class="SeletedRangeArea">
+                            <div>
+                                <label>From</label>
+                                <input type="number" disabled [(ngModel)]="from" />
+                            </div>
+                            <div >
+                                <label>To</label>
+                               <span *ngIf="selectedRowIndex==0 && ar_lables.length ==1">
+                                <input #toValue type="number" disabled  value="1"/>
+                               </span> 
+
+                               <span *ngIf="selectedRowIndex==0 && ar_lables.length >1">
+                                <input #toValue type="number" [(ngModel)]="to" value="1" appMaximimNumbersLengthValidation [digitCount]= 6/>
+                               </span>
+
+                                <span *ngIf="selectedRowIndex>0&&selectedRowIndex<=ar_lables.length-2">
+                                    <input #toValue type="number" [(ngModel)]="to" appMaximimNumbersLengthValidation [digitCount]= 6/>
+                                </span>
+                                <span *ngIf="selectedRowIndex>=1&&selectedRowIndex==ar_lables.length-1">
+                                    <input #toValue type="number" disabled value="1"/>
+                                </span>
+
+                                <button class="AddNewRangebtn" (click)="save(to,from)">Save</button>
+                            </div>
+
+                        </div>
+                        <div class="fd">
+                            <button class="AddNewRangebtn" (click)="newRangesAdd()">Add New Range</button>
+                            <button class="AddNewRangebtn" [disabled] ="ar_lables.length ==1 || selectedRowIndex == ar_lables.length-1" (click)="deleteRanges(to)">Delete selected Range</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="ParticipantsRangesPopClose()"> Ok </button>
+            <button class="btn_grade_2" (click)="ParticipantsPopClose()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ********************************************************* -->
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="CreateSuccessPop">
+    <div class="popup_1 pop_sm" *ngIf="CreateSuccessPop">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <!-- <b class="p_5 text-success">Successfully Created </b> -->
+                <b class="p_5 text-success">{{SuccessMessageText}} </b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->
+
+<!-- ************************ErrorPopUp*********************************** -->
+<div class="black_cover" *ngIf="ErrorPopup">
+    <div class="popup_1 pop_sm" *ngIf="ErrorPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <!-- <i class="p_5 text-danger">Technical Error... </i> -->
+                <i class="p_5 text-danger">{{errorMessageText}} </i>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="TechnicalError()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************ErrorPopUpClose*********************************** -->
+
+<!-- ************************Validation PopUp*********************************** -->
+
+
+
+<div class="black_cover" *ngIf="validationPopUp">
+    <div class="popup_1 pop_sm" *ngIf="validationPopUp">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="validation-class">
+            <div>
+                <pre class="error-apply-margin"
+                    style="white-space: pre-line;font-family: inherit">{{validationText}}</pre>
+            </div>
+        </div>
+
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="TechnicalError()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************Validation PopUp*********************************** -->

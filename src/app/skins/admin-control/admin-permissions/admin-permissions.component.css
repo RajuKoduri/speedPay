@@ -1,0 +1,23 @@
+.d_flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pad_left {
+    padding-right: 23px;
+}
+
+ul,li {
+    list-style: none;
+    padding: 2px!important;
+}
+.flex_cls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+label.parenDiv {
+    font-size: 15px;
+    margin: 5px 0px;
+}

@@ -1,0 +1,378 @@
+<div>
+    <h3>Player Mailing list </h3>
+</div>
+
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export CSV</button>
+</div>
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class=" p_25">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>Login</label>
+                            <input type="text" formControlName="accountMask" placeholder="(none)" />
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Face</label>
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="faceParaDropdownSettings"
+                                    [data]="faceParametersList" [(ngModel)]="selectedFaces"
+                                    formControlName="facePara"></ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Number of Deposits</label>
+                            <input class="Birthdayinputs" type="text" placeholder="(none)" appMaxLengthValidation
+                                formControlName="depositsCountFrom" />
+                            <input class="Birthdayinputs" type="text" placeholder="(none)" appMaxLengthValidation
+                                formControlName="depositsCountTo" />
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Email Mask</label>
+                            <input type="text" placeholder="(none)" formControlName="emailMask"
+                                appMaxLengthValidation />
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>Not logged in for</label>
+                            <input class="Birthdayinputs" type="text" placeholder="(none)"
+                                formControlName="notLoggedInForLow" appMaxLengthValidation />
+                            <input class="Birthdayinputs" type="text" placeholder="(none)"
+                                formControlName="notLoggedInForHigh" appMaxLengthValidation />
+                        </div>
+
+                        <div class="div_flex p_5_10">
+                            <label> Have Opened Account Start</label>
+                            <input class="inp_agent_time Birthdayinputs" type="date" [max]="endDate"
+                                formControlName="startDate" [ngModel]="startDate" (ngModelChange)="startDate = $event"
+                                (change)="showDate($event)" />
+                            <input class="inp_agent_time Birthdayinputs mobile_view" type="time"
+                                formControlName="startTime" step="1" [ngModel]="startTime"
+                                (ngModelChange)="startTime = $event" (change)="timechange($event)" [max]="endTime" />
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Have Opened Account End</label>
+                            <input class="inp_agent_time Birthdayinputs" type="date" [max]="todaydate"
+                                formControlName="endDate" [ngModel]="endDate" (ngModelChange)="endDate = $event"
+                                (change)="showDate($event)" />
+                            <input class="inp_agent_time  Birthdayinputs mobile_view" type="time"
+                                formControlName="endTime" step="1" [ngModel]="endTime"
+                                (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                        </div>
+                        <div class="red_col" *ngIf="steddate">
+                            Start date should be below or equal to end date
+                        </div>
+                        <div class="red_col" *ngIf="timeerror">
+                            Start time should be below or equal to end time
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        
+                        <div class="div_flex p_5_10">
+                            <label>Player Level</label>
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="playerLevelDropdownSettings"
+                                    [data]="getPlayerLevelsNamesList.compPointsLevels"
+                                    [(ngModel)]="selectedPlayerLevels"
+                                    formControlName="playerLevel"></ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>User Status</label>
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="playerStatusDropdownSettings"
+                                    [data]="palyerstatusList" [(ngModel)]="selectedPlayerStatus"
+                                    formControlName="userStatus"></ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>First Record</label>
+                            <input type="text" formControlName="firstRecord" />
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Page Size</label>
+                            <input type="text" formControlName="maxCountRecord" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="fd">
+    <button class="fillterbtn font_14" style=" float: right;" (click)="filterPopup()">Submit</button>
+    <div class="df m_3">
+        <div style="margin-right:20px;" *ngIf="playerMailingList">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class='fd table_2'>
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel-table">
+        <thead>
+            <tr>
+                <th>Section</th>
+                <th>Login</th>
+                <th>Face</th>
+                <th>Player Email</th>
+                <th>Registation Date</th>
+                <th>Actions</th>
+                <th>Full Name</th>
+                <th>Preferred Balance</th>
+                <th>Not Logged in Days</th>
+                <th>Number of Deposits</th>
+            </tr>
+        </thead >
+
+        <tbody *ngIf="playerMailingList">
+            <tr *ngFor="let list of playerMailingList; let i = index " (dblclick)="onDblClick(list)">
+                <td>
+                    <input type="checkbox" [(ngModel)]="list.selection" (change)="checkBoxChange(list)">
+                </td>
+                <td class="hyperLink" (click)="PlayerExplore(list.player.account, list.player.guid, list)">
+                    {{list.player.account}}</td>
+                <td>{{list.player.network}}</td>
+                <td></td>
+                <td>{{list.registrationDate.slice(0,10)}}</td>
+                <td>
+                    <div class="fd">
+                        <div class="trigger">
+                            <a><i class="fa fa-reorder" style="color: #fff;"(click)="showmanu(i,list.guid)"></i> </a>
+                           
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                    <button (click)="changePermissionGroupPopup(list)">Change Permission Group</button>
+                                    <button (click)="sendMailforPlayer()">Send mail</button>
+                                    <button (click)="OnActions(list,'checkSelection')">Check selection</button>
+                                    <button (click)="OnActions(list,'uncheckSelection')">Uncheck selection</button>
+                                    <button (click)="OnActions(list,'invertSelection')">Invert selection</button>
+                                    <button (click)="OnActions(list,'checkPage')">Check page</button>
+                                    <button (click)="OnActions(list,'uncheckPage')">Uncheck page</button>
+                                    <button (click)="OnActions(list,'uncheckAll')">Uncheck all</button>
+                                    <button (click)="OnActions(list,'checkAll')">Check all</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{list.player.fullName}}</td>
+                <td class="text-end">{{getWalletSymbol(list.balance.wallet)}} {{list.balance.value}}</td>
+                <td class="text-end">{{list.notLoggedInDays}}</td>
+                <td class="text-end">{{list.numberOfDepositsSinceLastBonus}}</td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="playerMailingList && playerMailingList.length > 0">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-end">SUM = 
+                    <span *ngFor="let key of keys(totalSum)">{{totalSum[key]}}</span>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<!-- pagination-controls -->
+<div class="fd" *ngIf="playerMailingList">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || playerMailingList==null" (click)="fastbackforward()">
+            <i class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||playerMailingList==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="playerMailingList">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="playerMailingList==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="playerMailingList==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- ################################# Filter Popup ########################################## -->
+
+<div class="black_cover" *ngIf='isFilterPopup'>
+    <div class="popup_1 pop_sm text-black" *ngIf='isFilterPopup'>
+        <div class="PopupHead">
+            <h5 class="text-center">Filter Applying</h5>
+            <span class="closetop" (click)="filterPopup()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="row fd p-3 d-flex text-center">
+                Would you like to send Email notifications right now or view mailing list ?
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onView()"> View </button>
+            <button class="btn_grade_2" (click)="onSend()"> send </button>
+            <button class="btn_grade_3" (click)="filterPopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- ####################################### Email Template Error popup ####################################  -->
+
+<div class="black_cover" *ngIf='isEmailTemp'>
+    <div class="popup_1 pop_sm text-black" *ngIf='isEmailTemp'>
+        <div class="PopupHead">
+            <h5 class="text-center">Error</h5>
+            <span class="closetop" (click)="emailTempPopup('emailTemp')"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="row fd p-3 d-flex text-center ">
+                There are no available e-mail templates
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_3" (click)="emailTempPopup('emailTemp')"> OK </button>
+        </div>
+    </div>
+</div>
+
+<!-- ####################################### send player mail popup ####################################  -->
+
+<div class="black_cover" *ngIf='isMailSend'>
+    <div class="popup_1 pop_sm text-black" *ngIf='isMailSend'>
+        <div class="PopupHead">
+            <h5 class="text-center">Send Players Mail</h5>
+            <span class="closetop" (click)="emailTempPopup('mailSend')"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15 border rounded ">
+            <div class="fd p-2 d-flex">
+                Do you want to send mail?
+            </div>
+            <div class="fd p-2 ">
+                <label> E-mail template:</label>
+                <select class="form-select my-2" [(ngModel)]="selectedTempforMail">
+                    <option [ngValue]="list.guid" *ngFor="let list of templateList">{{list.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="sendMail()"> OK </button>
+            <button class="btn_grade_2" (click)="emailTempPopup('mailSend')"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ####################################### Double click popup ####################################  -->
+
+<div class="black_cover" *ngIf='isDoubleClick'>
+    <div class="popup_1 pop_sm text-black" *ngIf='isDoubleClick'>
+        <div class="PopupHead">
+            <h5 class="text-center">Common</h5>
+            <span class="closetop" (click)="closeClicPopUp()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="row fd my-3">
+                <div class="col-6">
+                    <label>Login</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.player.account}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Face</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.player.network}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Player Email</label>
+                </div>
+                <div class="col-6">
+                    
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Registation Date</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.registrationDate.slice(0,10)}} {{selectedRowData.registrationDate.slice(12,19)}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Full Name</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.player.fullName}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Preferred Balance</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.balance.value}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Not Logged in Days</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.notLoggedInDays}}
+                </div>
+            </div>
+            <div class="row fd mb-3">
+                <div class="col-6">
+                    <label>Number of Deposits</label>
+                </div>
+                <div class="col-6">
+                    {{selectedRowData.numberOfDepositsSinceLastBonus}}
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_3" (click)="closeClicPopUp()"> OK </button>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="isChangePermissionGroup">
+    <change-permission-group (notifyParent)="changePermissionGroupPopup('')" [userInfo]="PlayerInfo"
+        [userType]="'Player'"></change-permission-group>
+</div>

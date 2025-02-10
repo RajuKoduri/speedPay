@@ -1,0 +1,219 @@
+<div class="fd">
+    <h2> Satellite Series</h2>
+</div>
+<div class="dropdown fd">
+    <button (click)="filterbtn()" class="fillterbtn font_14">Filters
+        <i *ngIf="!Fillterdata" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="Fillterdata" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="margin-right:15px; float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+
+<div class="fd filterDiv" *ngIf="Fillterdata">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="Currency">
+                            <option>U.S.Dollars</option>
+                            <option>Chips</option>
+                            <option>Play Money</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList"
+                                [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                                (onDeSelectAll)="onDeSelectAll($event)" formControlName="skills">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Game Type</label>
+                        <!-- <input type="text" formControlName="GameType"/> -->
+                        <div class="fd d-flex flex-row align-items-center games-list-container"
+                            (click)="filtergamesbtn()">
+                            <!-- <input class="games-input-container" type="text" formControlName="GameName"> -->
+                            <div class="games-input-container">
+                                [{{gamesTobeSelected}}]
+                            </div>
+                            <button class="fillterbtn-games font-size-16">
+                                <i *ngIf="!Filtergamesbtn" class="fa fa-chevron-down IcArrow-games" title="open"
+                                    style="font-size:14px;"></i>
+                                <i *ngIf="Filtergamesbtn" class="fa fa-chevron-up IcArrow-games" title="close"
+                                    style="font-size:14px;"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>Series Name</label>
+                        <input type="text" formControlName="SeriesName" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>FirstRecord</label>
+                        <input type="text" formControlName="firstRecord" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' ">
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>MaxCount Record</label>
+                        <input type="text" formControlName="maxCountRecord" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' ">
+                    </div>
+                </div>
+                <!-- <div class="m_t_10">
+                    <button type="submit" class="btn_1" (click)="onFormSubmit()">Submit</button>
+                </div> -->
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+<!-- fillter games popup -->
+<div *ngIf="Filtergamesbtn" class="black_cover"></div>
+<!-- <div class="fd filterDiv-game-filter" *ngIf="Filtergamesbtn"> -->
+<!-- <div *ngIf="Filtergamesbtn" class="popup_view fd filterDiv-game-filter"> -->
+<div *ngIf="Filtergamesbtn" class="fd filterDiv-game-filter">
+    <div class="PopupHeads">
+        <h5 class="text-center">Poker games </h5>
+        <span class="closetop" (click)="filtergamesbtn()"> <img src="assets/icons/closePop.svg">
+        </span>
+    </div>
+    <div class="d-flex flex-row all-games">
+        <input class="" type="checkbox" id="checkboxForallgameCaption" [checked]="pokerGamesCheckbox"
+            (change)="clickonCheckboxForAllGames($event)">
+        <label for="">Poker Games</label>
+    </div>
+    <div class="poker-caption-container">
+        <div class="caption-checkbox" *ngFor="let game of filterItem let i = index">
+            <input class="" type="checkbox" [checked]="checkedList[i]" value="{{game.caption}}" id="checkboxId{{i}}"
+                (change)="clickonCheckboxIndivisualGames()">
+            <!-- (change) ="clickonCheckboxIndivisualGames($event,'checkboxId'+i)"> -->
+            <label for="checkboxId{{i}}">{{game.caption}}</label>
+        </div>
+
+    </div>
+
+
+    <div class="bottomFixs">
+        <button class="closeBTN" (click)="filtergamesbtn()">close</button>
+    </div>
+</div>
+
+<!-- fillter games popup -->
+
+
+
+
+
+<div class="fd">
+    <button class="fillterbtn font_14" style="margin-right:15px;margin-top:4px; float: right;"
+        (click)="onFormSubmit()">Submit</button>
+    <div class="df m_5">
+        <div style="margin-right:20px;" *ngIf="satiliteseriesdata">Rows On the Page: {{rowsOnthePage}} </div>
+        <div > Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class=" fd table_2">
+        <table class="tablCode " id="excel_table">
+            <thead>
+                <tr>
+                    <th>Series Name</th>
+                    <th>Levels</th>
+                    <th>Virgin Tournaments</th>
+                    <th>Action</th>
+                    <th>Opened Tournaments</th>
+                    <th>Closed Tournaments</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="satiliteseriesdata">
+                <tr *ngFor="let serieslist of satiliteseriesdata;let i=index">
+                    <td>{{serieslist.name}}</td>
+                    <td>{{serieslist.levels}}</td>
+                    <td>{{serieslist.virginCount}}</td>
+                    <td>
+                        <div class="fd">
+                            <div class="trigger">
+                                <i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i)"></i>
+                            
+                                <div *ngIf="popupArrow" class="fd">
+                                    <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                        <button  (click)="clickOnEditSeries(i,serieslist)">Edit Tournament</button>
+                                        <button  [disabled] = "serieslist.openedCount>0"
+                                            (click)="clickOnEnableDisableActions('true',serieslist)">Enable Series</button>
+                                        <!-- <button [disabled]="trlist.enableNow==true"
+                                            (click)="SitnGoActions('EnableDisable')">Enable Series</button> -->
+                                        <button  [disabled] = "serieslist.openedCount==0"
+                                            (click)="clickOnEnableDisableActions('false',serieslist)">Disable Series</button>
+                                        <!-- <button [disabled]="trlist.enableNow==false"
+                                            (click)="SitnGoActions('EnableDisable')">Disable Series</button> -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{serieslist.openedCount}}</td>
+                    <td>{{serieslist.closedCount}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="fd" *ngIf="pokerGamesLoader"> Loading... </div>
+    </div>
+
+    <div class="black_cover" *ngIf="editstellitePopup">
+        <div class="popup_123" *ngIf="editstellitePopup">
+            <div class="PopupHead">
+                <h5 class="text-center">Edit Poker Satellite Series </h5> 
+                <!-- <span>{{PlayerTableGroupData.name}}</span>   -->
+                <span class="closetop" (click)="clickOnCloseSatellitepopup()"> 
+                    <img src="assets/icons/closePop.svg"> </span>
+            </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="fd p_5 ">
+                   <app-create-poker-satellite-series #CreateSatelliteComponent
+                   [tournamentData]="tournamentData"
+                   [payoutData]="payoutData"
+                   (closeEditSatellitePopup)="clickCloseEditSatellitePopup($event)"
+                   [activatedIndexSatelitteserivesData]="activatedIndexSatelitteserivesData"></app-create-poker-satellite-series>
+                   
+                </div>
+            </div>
+            <div class="bottomFix">
+              
+               
+                <button class="btn_grade_2" (click)="clickOnCloseSatellitepopup()"> Cancel </button>
+
+                <button class="satellite-edit-button" (click) = "clickToFinish()"> Finish </button>
+            </div>
+            
+        </div>
+        
+    </div>
+
+    <div class="black_cover" *ngIf="SpinnwerT"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>

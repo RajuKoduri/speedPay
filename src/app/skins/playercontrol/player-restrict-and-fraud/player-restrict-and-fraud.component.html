@@ -1,0 +1,160 @@
+<div class="black_cover" *ngIf="playerActionType == 'Restrict'">
+    <div class="popup_1 pop_sm" *ngIf="playerActionType == 'Restrict'">
+        <div class="PopupHead">
+            <h5 class="text-center">Restrict Player {{playerData.player.account}}</h5>
+            <span class="closetop" (click)="closepopup(false)"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="p-2 pb-0">
+            <p>Put the following player data into Black List</p>
+        </div>
+        <div class="fd table_2 p-2">
+            <table class="tablCode">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="restrictList">
+                    <tr *ngFor="let list of restrictList; let i = index">
+                        <td><input [(ngModel)]="checkedList[i]" type="checkbox" (change)="onChange()"></td>
+                        <td>{{list.group}}</td>
+                        <td>{{list.value}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div class="p-2 position-absolute bottom-0 ">
+                <span (click)="isCheckedAll('checkAll')" class="me-4 hyperLink">check all</span>
+                <span (click)="isCheckedAll('unCheckAll')" class="hyperLink">uncheck all</span>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="conformPopup()"> Restrict </button>
+            <button class="btn_grade_2" (click)="closepopup(false)"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ##################################################### Mark as Fraud Popup #################################################### -->
+
+<div class="black_cover" *ngIf="playerActionType == 'Fraud'">
+    <div class="popup_1" *ngIf="playerActionType == 'Fraud'">
+        <div class="PopupHead">
+            <h5 class="text-center">Mark Player {{playerData.player.account}} as fraud</h5>
+            <span class="closetop" (click)="closepopup(false)"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="mx-3 d-flex ">
+            <div class="w-50 me-1 my-2">
+                <div class="border rounded mb-2">
+                    <div class="heading">
+                        <h6>Player Actions</h6>
+                    </div>
+                    <div class="p-2 ">
+                        <div class="mb-2">
+                            <input type="checkbox" id="user" [(ngModel)]="blockUser"><label for="user">Block user account</label>
+                        </div>
+                        <div class="mb-2">
+                            <input type="checkbox" id="notify" [(ngModel)]="sendUserNotification"><label for="notify">Send user
+                                notification</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="cash" [(ngModel)]="cancelActiveCashouts"><label for="cash">Cancel active
+                                cashouts</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="border rounded" *ngIf="actionTypes">
+                    <div class="heading">
+                        <h6>{{actionTypes.typeName}} Actions</h6>
+                    </div>
+                    <div class="p-2">
+                        <div class="mb-2"> {{actionTypes.typeName}} : {{playerData.affiliate.login}}</div>
+                        <div class="mb-2">Revenue from this player : 0</div>
+                        <div class="mb-2">
+                            <label> Adjustment value :</label> <span
+                                *ngIf="isValidAdjustmentValue" class="text-danger">
+                                <b class="bi bi-x-circle-fill p-1" title="value must be negative"></b>
+                            </span>
+                            <input type="number" [(ngModel)]="adjustmentValue" (input)="OnadjustmentValueInp($event)"> <span>(must be negative)</span>
+                        </div>
+                        <div class="mb-2">
+                            <input type="checkbox" id="relationship" [(ngModel)]="cancelRelationship"><label for="relationship">Cancel
+                                {{actionTypes.typeName}} relationship</label>
+                        </div>
+                        <div class="mb-2">
+                            <input type="checkbox" id="notification" [(ngModel)]="sendAgentOrAffiliateNotification"><label for="notification">Send {{actionTypes.typeName}} notification</label>
+                        </div>
+                        <div><label for="temp">Notification email template:</label>
+                            <select id="temp" [(ngModel)]="selectedMailTemp" [disabled]="!sendAgentOrAffiliateNotification" >
+                                <option [ngValue]="data.guid"  *ngFor="let data of mailTempData">{{data.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-50 ms-1 my-2">
+                <div class="heading">
+                    <h6>Add to Black List</h6>
+                </div>
+                <div class="p-2 pb-0">
+                    <p>Put the following player data into Black List</p>
+                </div>
+                <div class="fd table_21 p-2">
+                    <table class="tablCode">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Type</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="blackListRecords">
+                            <tr *ngFor="let list of blackListRecords; let i = index">
+                                <td><input [(ngModel)]="fraudCheckedList[i]" type="checkbox" (change)="onChange()"></td>
+                                <td>{{list.group}}</td>
+                                <td>{{list.value}}</td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                    <div class="p-2 position-absolute bottom-0 ">
+                        <span (click)="isFraudCheckedAll('checkAll')" class="me-4 hyperLink">check all</span>
+                        <span (click)="isFraudCheckedAll('unCheckAll')" class="hyperLink">uncheck all</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="conformPopup()" [disabled]="isValidAdjustmentValue"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup(false)"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- ################################################### ConformPopup start ##################################################### -->
+
+<div class="black_cover" *ngIf="isConformPopup">
+    <div class="popup_1 pop_sm" *ngIf="isConformPopup">
+        <div class="PopupHead">
+            <h5 class="text-center text-danger">Warning</h5>
+            <span class="closetop" (click)="conformPopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="p-3 text-center" *ngIf="playerActionType == 'Restrict'">
+            <b>Do you want to Restrict the player account?</b>
+        </div>
+        <div class="p-3 text-center" *ngIf="playerActionType == 'Fraud'">
+            <b>Do you want to mark the player as Fraud?</b>
+        </div>
+
+        <div class="bottomFix">
+            <button *ngIf="playerActionType == 'Restrict'" class="btn_grade_1" (click)="onSubmit('restrict')"> Yes </button>
+            <button  *ngIf="playerActionType == 'Fraud'" class="btn_grade_1" (click)="onSubmit('Fraud')"> Yes </button>
+            <button class="btn_grade_2" (click)="conformPopup()"> No </button>
+        </div>
+    </div>
+</div>
+
+<!-- ##################################################### ConformPopup end #################################################### -->

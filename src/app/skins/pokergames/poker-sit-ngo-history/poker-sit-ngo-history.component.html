@@ -1,0 +1,565 @@
+<div class="fd">
+    <h2>Sit'n'go History</h2>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="margin-right:15px; float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <!-- <div class="div_flex p_5_10"> -->
+                        <!-- <label>Date Period</label>
+                        <input class="Birthdayinputs" format="yyyy-MM-dd HH:mm:ss" type="datetime-local" step="1"
+                            formControlName="Datefrom">
+                        <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                            formControlName="Dateto"> -->
+
+                            <div class="df p_5_10">
+                                <label>StartDate</label>
+                                <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                                    [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                                <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                                    [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                                    [max]="endTime" />
+                            </div>
+                            <div class="df p_5_10">
+                                <label>EndDate</label>
+                                <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                                    [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                                <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                                    [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                            </div>
+        
+                            <div class="red_col" *ngIf="steddate">
+                                Start date should be below or equal to end date
+                            </div>
+                            <div class="red_col" *ngIf="timeerror">
+                                Start time should be below or equal to end time
+                            </div>
+
+                    <!-- </div> -->
+                    <div class="div_flex p_5_10">
+                        <label>Sit'n'Go Setting Id</label>
+                        <input type="text" formControlName="TournamentSettingId" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Name</label>
+                        <input type="text" formControlName="Name" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Currency </label>
+                        <!-- <select class="seclectopt" formControlName="Currency">
+                            <option [ngValue]="Wallet.currency" *ngFor="let  Wallet of walletlists">
+                                {{Wallet.description}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList"
+                                [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                                (onDeSelectAll)="onDeSelectAll($event)" formControlName="Currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex">
+                        <label>Game </label>
+                        <!-- <input type="text" formConrolName="Game" /> -->
+
+                        <div class="fd d-flex flex-row align-items-center games-list-container"
+                            (click)="filtergamesbtn()">
+                            <!-- <input class="games-input-container" type="text" formControlName="GameName"> -->
+                            <div class="games-input-container">
+                                [{{gamesTobeSelected}}]
+                            </div>
+                            <button class="fillterbtn-games font-size-16">
+                                <i *ngIf="!Filtergamesbtn" class="fa fa-chevron-down IcArrow-games" title="open"
+                                    style="font-size:14px;"></i>
+                                <i *ngIf="Filtergamesbtn" class="fa fa-chevron-up IcArrow-games" title="close"
+                                    style="font-size:14px;"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                   
+                    <div class="div_flex p_5_10">
+                        <label>Total Cost </label>
+                        <div class="df">
+                            <input class="Birthdayinputs" type="text" formControlName="TotalCostfrom" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                            <input class="Birthdayinputs" type="text" formControlName="TotalCostto" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>BuyIn</label>
+                        <div class="df">
+                            <input class="Birthdayinputs" type="text" formControlName="BuyInfrom" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                            <input class="Birthdayinputs" type="text" formControlName="BuyInto" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Fee</label>
+                        <div class="df">
+                            <input class="Birthdayinputs" type="text" formControlName="Feefrom" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                            <input class="Birthdayinputs" type="text" formControlName="Feeto" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Knockout Bounty</label>
+                        <div class="df">
+                            <input class="Birthdayinputs" type="text" formControlName="KnockoutBountyfrom"
+                                pattern="[0-9]*" maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                            <input class="Birthdayinputs" type="text" formControlName="KnockoutBountyto"
+                                pattern="[0-9]*" maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                        </div>
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>Registered</label>
+                        <div class="df">
+                            <input class="Birthdayinputs" type="text" formControlName="Registeredfrom" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                            <input class="Birthdayinputs" type="text" formControlName="Registeredto" pattern="[0-9]*"
+                                maxLength="9"
+                                oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                   
+                    <div class="div_flex p_5_10"> 
+                            <label>Max Players</label>
+                            <div class="df">
+                                <input class="Birthdayinputs" type="text" formControlName="MaxPlayersfrom"
+                                    pattern="[0-9]*" maxLength="9"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                                <input class="Birthdayinputs" type="text" formControlName="MaxPlayersto"
+                                    pattern="[0-9]*" maxLength="9"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                            </div>
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>Status</label>
+                        <!-- <select class="seclectopt" formControlName="Status"> -->
+                        <!-- <option [ngValue]="StatusList.guid" *ngFor="let StatusList of TournamentStatusList">
+                                {{StatusList.value}}
+                            </option> -->
+                        <!-- </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="TournamentStatusListDropdownSettings"
+                                [data]="TournamentStatusList" [(ngModel)]="TournamentStatusListSelectedItems"
+                                formControlName="tournamentListStatus"
+                                (onSelect)="tournamentStatusListonItemSelect($event)"
+                                (onDeSelect)="tournamentStatusListOnItemDeSelect($event)"
+                                (onSelectAll)="tournamentStatusListonSelectAll($event)"
+                                (onDeSelectAll)="tournamentStatusListonDeSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Manual Prize Pool</label>
+                        <input type="checkbox" formControlName="ManualPrizePool" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<!-- fillter games popup -->
+<div *ngIf="Filtergamesbtn" class="black_cover"></div>
+<!-- <div class="fd filterDiv-game-filter" *ngIf="Filtergamesbtn"> -->
+<!-- <div *ngIf="Filtergamesbtn" class="popup_view fd filterDiv-game-filter"> -->
+<div *ngIf="Filtergamesbtn" class="fd filterDiv-game-filter">
+    <div class="PopupHeads">
+        <h5 class="text-center">Poker games </h5>
+        <span class="closetop" (click)="filtergamesbtn()"> <img src="assets/icons/closePop.svg">
+        </span>
+    </div>
+    <div class="d-flex flex-row all-games">
+        <input class="" type="checkbox" id="checkboxForallgameCaption" [checked]="pokerGamesCheckbox"
+            (change)="clickonCheckboxForAllGames($event)">
+        <label for="">Poker Games</label>
+    </div>
+    <div class="poker-caption-container">
+        <div class="caption-checkbox" *ngFor="let game of filterItem let i = index">
+            <input class="" type="checkbox" [checked]="checkedList[i]" value="{{game.caption}}" id="checkboxId{{i}}"
+                (change)="clickonCheckboxIndivisualGames()">
+            <!-- (change) ="clickonCheckboxIndivisualGames($event,'checkboxId'+i)"> -->
+            <label for="checkboxId{{i}}">{{game.caption}}</label>
+        </div>
+
+    </div>
+
+
+    <div class="bottomFixs">
+        <button class="closeBTN" (click)="filtergamesbtn()">close</button>
+    </div>
+</div>
+
+<!-- fillter games popup -->
+
+
+
+
+
+
+<div class="fd">
+    <button class="fillterbtn font_14" style="margin-right:15px; float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df">
+        <div style="margin-right:20px;" *ngIf="SitNgoHistoryData">Rows On the Page: {{rowsOnthePage}} </div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd table_2">
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel-table" *ngIf="!playerExporer">
+        <thead>
+            <tr>
+                <th>Sit'n'Go Setting Id</th>
+                <th>Creation Date</th>
+                <th>Name</th>
+                <th>Currency</th>
+                <th>Game</th>
+                <th>Actions</th>
+                <th>Total Cost</th>
+                <th>-Buy-In</th>
+                <th>-Fee</th>
+                <th>Knockout Bounty</th>
+                <th>Total Buy-Ins</th>
+                <th>Total fee</th>
+                <th>Seats</th>
+                <th>Registred/Max Players</th>
+                <th>Comp Points</th>
+                <th>Status</th>
+                <th>Rule Name</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="SitNgoHistoryData">
+            <tr (dblclick)="onClick(i)" *ngFor="let list of SitNgoHistoryData,let i=index">
+                <td> </td>
+                <td>{{ changeSelect(list.createDate)}}</td>
+                <td  class="tournet-explorer" (click)="tournamentExplore(list?.guid,list?.caption)">{{list.caption}}</td>
+                <td>{{list?.totalCost?.wallet}}</td> 
+                <td >{{list.gameName}}</td>
+                <td>
+                    <div class="fd">
+                        <div class="trigger">
+                            <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,list.guid)">
+                                </i>
+                            </a>
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                    <!-- <button [disabled]="list.active==true" (click)="setSitngoActions('Enabled',i)">Enable Table</button>
+                                    <button [disabled]="list.active==false" (click)="setSitngoActions('disabled',i)">Disable Table</button> -->
+                                    <button [disabled]="list.status!=='Running'"
+                                        (click)="setSitngoActions('Pause',i)">Pause Tournament</button>
+                                    <button [disabled]="list.status!=='Paused'"
+                                        (click)="setSitngoActions('Continue',i)">Continue Tournament</button>
+                                    <button
+                                        [disabled]="list.status=='Completed'||list.status=='Canceled (After start)'||list.status=='Canceled (Before start)'||list.status=='Cancelling'"
+                                        (click)="setSitngoActions('Cancel',i)">Cancel Tournament</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="text-end">{{list.totalCost?.value |numberFormat}}</td>
+                <td class="text-end">{{list.buyIn?.value |numberFormat}}</td>
+                <td class="text-end">{{list.fee?.value |numberFormat}}</td>
+                <td class="text-end">{{list.knockoutBounty?.value |numberFormat}}</td>
+                <td class="text-end">{{list.totalBuyIn?.value |numberFormat}}</td>
+                <td class="text-end">{{list.totalFee?.value |numberFormat}}</td>
+                <td>{{list.seats}}</td>
+                <td>{{list.registered}}/{{list.maxPlayers}}</td>
+                <td></td>
+                <td>{{list.status}}</td>
+                <td>{{list.accessRuleName}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <table class="tablCode" id="excel-table" *ngIf="playerExporer">
+        <thead>
+            <tr>
+
+                <th>Player</th>
+                <th>Creation Date</th>
+                <th>Registration Date</th>
+                <th>Start Date </th>
+                <th>Finish Date</th>
+                <th>Currency</th>
+                <th>Sit'n'Go Setting Id</th>
+                <th>Name</th>
+                <th>Game</th>
+                <th>Initial Balance</th>
+                <th>Total Cost</th>
+                <th>-Buy-In</th>
+                <th>-Fee</th>
+                <th>Knockout Bounty</th>
+                <th>Buy-IN Type</th>
+                <th>Rebuy</th>
+                 <th>Comp Points</th>
+                 <th>Seats</th>
+                <th>Registred/Max Players</th>
+                <th>Status</th>
+                <th>Place</th>
+                <th>Prize</th>
+                <th>Closing Balance</th>
+                <th>Actions</th>
+
+                
+                
+                
+                <!-- <th>Total Buy-Ins</th>
+                <th>Total fee</th>
+                <th>Rule Name</th> -->
+            </tr>
+        </thead>
+        <tbody *ngIf="SitNgoHistoryData">
+            <tr (dblclick)="onClick(i)" *ngFor="let list of SitNgoHistoryData,let i=index">
+                <td>{{ list.player?.login}}</td>
+                <td>{{ changeSelect(list.history?.createDate)}}</td>
+                <td>{{ changeSelect(list.history?.registrationStartDate)}}</td>
+                <td>{{ changeSelect(list.history?.startDate)}}</td>
+                <td>{{ changeSelect(list.history?.finishDate)}}</td>
+                <td>{{list.buyIn.wallet}}</td> 
+                <td> </td>
+                <td  class="tournet-explorer" (click)="tournamentExplore(list?.history?.guid,list?.history?.caption)">{{list.history?.caption}}</td>
+                <td >{{list.history?.gameName}}</td>
+                <td >{{list.initialBalance?.value}}</td>
+                <td class="text-end">{{list.totalCost?.value |numberFormat}}</td>
+                <td class="text-end">{{list.buyIn?.value |numberFormat}}</td>
+                <td class="text-end">{{list.fee?.value |numberFormat}}</td>
+                <td class="text-end">{{list.knockoutBounty?.value |numberFormat}}</td>
+                <td >{{list.registrationType}}</td>
+                <td >{{list.rebuy?.value}}</td>
+                <td>{{list?.compPoints?.value}}</td>
+                <td>{{list.history?.seats}}</td>
+                <td>{{list.history?.registered}}/{{list.history?.maxPlayers}}</td>
+                <td>{{list.history?.status}}</td>
+                <td>{{list.place?.from}}</td>
+                <td>{{list.prize?.value}}</td>
+                <td>{{list.closingBalance?.value}}</td>              
+                <td>
+                    <div class="fd">
+                        <div class="trigger">
+                            <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,list.guid)">
+                                </i>
+                            </a>
+                            <div *ngIf="popupArrow" class="fd">
+                                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                    <!-- <button [disabled]="list.active==true" (click)="setSitngoActions('Enabled',i)">Enable Table</button>
+                                    <button [disabled]="list.active==false" (click)="setSitngoActions('disabled',i)">Disable Table</button> -->
+                                    <button [disabled]="list.status!=='Running'"
+                                        (click)="setSitngoActions('Pause',i)">Pause Tournament</button>
+                                    <button [disabled]="list.status!=='Paused'"
+                                        (click)="setSitngoActions('Continue',i)">Continue Tournament</button>
+                                    <button
+                                        [disabled]="list.status=='Completed'||list.status=='Canceled (After start)'||list.status=='Canceled (Before start)'||list.status=='Cancelling'"
+                                        (click)="setSitngoActions('Cancel',i)">Cancel Tournament</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+          
+                <!-- <td class="text-end">{{list.totalBuyIn?.value |numberFormat}}</td>
+                <td class="text-end">{{list.totalFee?.value |numberFormat}}</td>
+                <td>{{list.accessRuleName}}</td> -->
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+</div>
+<div class="fd">
+    <div class="fd" *ngIf="SitNgoHistoryData">
+        <div class="pagecount">
+            <button class="Pagebtns" [disabled]="PageCount==1 || SitNgoHistoryData==null" (click)="fastbackforward()"><i
+                    class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||SitNgoHistoryData==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="SitNgoHistoryData">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="SitNgoHistoryData==null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="SitNgoHistoryData==null || pagecontrolbtn" (click)="fastforward()">
+                <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="playerSitNgoPopup">
+    <div class="popup_1 pop_sm" *ngIf="playerSitNgoPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Poker Sit'n'Go History </h5>
+            <span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df">
+                    <label class="col-sm-6"> Sit'n'Go Setting Id </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Creation Date </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.createDate}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Name </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.caption}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Currency </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.buyIn.wallet}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Game </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.gameName}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Total Cost </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.totalCost.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> -Buy-In </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.buyIn.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Fee</label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.fee.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Knockout Bounty </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.knockoutBounty.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Total Buy-Ins </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.totalBuyIn.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Total fee </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.totalFee.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Seats </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.seats}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Registred/Max Players </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.registered}}/{{playerSitNgoHistory.maxPlayers}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Comp Points</label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Status </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.status}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Rule Name </label>
+                    <span class="col-sm-6">{{playerSitNgoHistory.accessRuleName}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closePopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->
+
+
+<!-- ****************************CancelSitNgoPopup*********************************** -->
+<div class="black_cover" *ngIf="CancelSitNgoPopup">
+    <div class="popup_1 pop_sm" *ngIf="CancelSitNgoPopup">
+        <div class="PopupHead">
+            <h5 class="text-center" *ngIf="CancelSitNgo">Cancel Sit'n'Go: {{playerSitNgoHistory?.caption}} </h5>
+            <h5 class="text-center" *ngIf="AlertMessage">Alert</h5>
+            <span class="closetop" (click)="cancelTourny('no')"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="p_5" *ngIf="CancelSitNgo">
+                <textarea class="col-sm-12"
+                    [(ngModel)]="playerSitNgoHistory.description">{{playerSitNgoHistory?.description}}</textarea>
+            </div>
+            <div class="p_20" *ngIf="AlertMessage">
+                <b class="p_5 text-success text-center">{{AlertMessage}} </b>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="cancelTourny('yes')"> Save </button>
+            <button class="btn_grade_2" (click)="cancelTourny('no')"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- ****************************CancelSitNgoPopup_end*********************************** -->
+
+
+
+<!-- ******************************************************* -->
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>

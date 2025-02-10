@@ -1,0 +1,493 @@
+{
+    
+        "menu": [
+            {
+                "name": "DashBoard",
+                "url": "/DashBoard",
+                "title": "DashBoard",
+                "Id" : "" ,
+                "expanded": false
+            },
+            {
+                "name": "Configuration",
+                "url": "#",
+                "title": "Configuration",
+                "expanded": false,
+                "children": [
+                    {
+                        "url": "/Countries",
+                        "name": "Countries",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/currencieslist",
+                        "name": "currencieslist",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/currencyexchangerates",
+                        "name": "Exchange Rates",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/levelchangeshistory",
+                        "name": "Player Level List",
+                        "Id" : "" ,
+                        "status" : false
+                    }
+                ]
+            },
+            {
+                "name": "Skins",
+                "url": "#",
+                "title": "Skins",
+                "expanded": false,
+                "children": [
+                    {
+                        "url": "/SkinsManage",
+                        "name": "Manage",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/Skins",
+                        "name": "Skins Money",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/SkinsReportBySessions",
+                        "name": "Skins Money By Sessions",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/RakeRace",
+                        "name": "Rake Race",
+                        "Id" : "GAMES_SETTINGS_VIEW" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/PlayerActivity",
+                        "name": "Players Activities",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/Leaderboard",
+                        "name": "LeaderBoard",
+                        "Id" : "" ,
+                        "status" : false
+                    }
+                ]
+            },
+            {
+                "name": "Users",
+                "url": "#",
+                "title": "Users",
+                "expanded": false,
+                "children": [
+                    {
+                        "url": "/CreateNewplayer",
+                        "name": "Add Player",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/comppointslevels",
+                        "name": "Player Levels",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/playeravatars",
+                        "name": "Players Avatars",
+                        "Id" : "PLAYER_VIEW" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/playersaccessrules",
+                        "name": "Guest Access Control",
+                        "Id" : "GAMES_SETTINGS_VIEW" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/Participation",
+                        "name": "Participation",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/playerpermissiongroups",
+                        "name": "Player Groups",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "name": "Users List",
+                        "url": "/playerslist",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/disconnectionprotectionsettings",    
+                        "name": "Dp Settings",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/CreateAccessRule",
+                        "name": "Create Access Rule",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/CreatePokerRakeStructure",
+                        "name": "Create Poker Rake Structur",
+                        "Id" : "GAMES_CONTROL" ,
+                        "status" : false
+                    }
+                ]
+            },
+            {
+                "name": "Real time Monitoring",
+                "url": "#",
+                "title": "Real time Monitoring",
+                "expanded": false,
+                "children": [
+                    {
+                        "url": "/onlineplayers",
+                        "name": "Online Player List",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/visitstatistics",
+                        "name": "Visit Statistics",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/TournamentsMonitoring",
+                        "name": "Tourney Monitoring",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/SngMonitoring",
+                        "name": "Sng Monitoring",
+                        "Id" : "" ,
+                        "status" : false
+                    }
+                ]
+            },
+            {
+                "name": "Tables",
+                "url": "#",
+                "title": "Tables",
+                "expanded": false,
+                "children": [
+                    {
+                        "url": "/ActiveTables",
+                        "name": "Active Tables",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/CreatePokerTableGroup",  
+                        "name": "Add Table",
+                        "Id" : "GAMES_CONTROL" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/pokergamesessions",
+                        "name": "Game History",
+                        "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/pokertablegroups",
+                        "name": "Poker Table Group",
+                        "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/pokertableshistory",
+                        "name": "Poker Table History",
+                        "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/pokerrakestructure",
+                        "name": "Poker Rake Structures",
+                        "Id" : "GAMES_SETTINGS_VIEW" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/timeoutsettings",
+                        "name": "Time Out Settings",
+                        "Id" : "GAMES_SETTINGS_VIEW" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/pokerhandsessionspokerhandshistory",
+                        "name": "Poker Hands History",
+                        "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+                        "status" : false
+                    }
+                ]
+            },
+            {
+                "name": "Tournaments",
+                "url": "#",
+                "title": "Tournaments",
+                "expanded": false,
+                "children": [
+                    {
+                        "url": "/pokertournaments",
+                        "name": "Poker Tournaments",
+                        "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/TournamentsMonitoring",
+                        "name": "Active Tournament",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/CreatePokerTournament",
+                        "name": "Add Tournament",
+                        "Id" : "GAMES_CONTROL" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/pokersitandgos",
+                        "name": "SnG",
+                        "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/CreatePokerSitngo",
+                        "name": "Add SnG",
+                        "Id" : "GAMES_CONTROL" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/tournamenttickets",
+                        "name": "Tickets List",
+                        "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/pokertournaments",
+                        "name": "Tournament Group",
+                        "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/TournamentList",
+                        "name": "Tournament List",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/pokertournamenthistory",
+                        "name": "Tournament Statistics",
+                        "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/pokersitngoHistory",
+                        "name": "Sng List",
+                        "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/pokersatelliteseries",
+                        "name": "Poker Satellite Series",
+                        "Id" : "GAMES_INFO_VIEW_GLOBAL" ,
+                        "status" : false
+                    },
+                    {
+                        "name": "Blind Structure",
+                        "url": "/pokerblindstructures",
+                        "Id" : "GAMES_SETTINGS_VIEW" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/pokerpayouttables",
+                        "name": "Payout Table",
+                        "Id" : "GAMES_SETTINGS_VIEW" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/timeoutsettings",
+                        "name": "TimeOut Settings",
+                        "Id" : "GAMES_SETTINGS_VIEW" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/CreatePokerSatelliteSeries",
+                        "name": "Add SatelliteSeries",
+                        "Id" : "GAMES_CONTROL" ,
+                        "status" : false
+                    }
+                ]
+            },
+            {
+                "name": "Jackpots",
+                "url": "#",
+                "title": "Jackpots",
+                "expanded": false,
+                "children": [
+                    {
+                        "url": "/jackpotslist",
+                        "name": "JP List",
+                        "Id" : "GAMES_INFO_VIEW" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/jackpotwinningsandadjustments",
+                        "name": "Jackpot Winnings and Adjustments",
+                        "Id" : "GAMES_INFO_VIEW" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/JackpotAwards",
+                        "name": "Awards",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/JackpotFee",
+                        "name": "Fee",
+                        "Id" : "" ,
+                        "status" : false
+                    },
+                    {
+                        "url": "/JackpotInitialAmount",
+                        "name": "Initial Amount",
+                        "Id" : "" ,
+                        "status" : false
+                    }
+                ]
+            },
+            {
+                "name": "Transactions",
+                "url": "#",
+                "title": "Transactions",
+                "expanded": false,
+                "children": [
+                    {
+                        "name": "Casino",
+                        "url": "#",
+                         "expanded": false,
+                        "subchildren": [
+                            {
+                                "url": "/remotesystems",
+                                "name": "Game Provider",
+                                "Id" : "" ,
+                                "status" : false
+                            },
+                            {
+                                "url": "/remotesystemsgames",
+                                "name": "Game History",
+                                "Id" : "" ,
+                                "status" : false
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Poker",
+                        "url": "#",
+                        "subchildren": [
+                            {
+                                "url": "/transfersummary",
+                                "name": "Transfers Summary",
+                                "Id" : "" ,
+                                "status" : false
+                            },
+                            {
+                                "url": "/transferhistory",
+                                "name": "Transfers History",
+                                "Id" : "" ,
+                                "status" : false
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Admin Management",
+                "url": "#",
+                "title": "Admin Management",
+                "expanded": false,
+                "children": [
+                    {
+                        "url": "/adminControl",
+                        "name": "Admin List",
+                        "Id" : "" ,
+                        "status" : false
+                    }
+                ]
+            },
+            {
+                "name": "Loyalty Points System",
+                "url": "#",
+                "title": "Loyalty Points System",
+                "expanded": false,
+                "children": [
+                    {
+                        "name": "settings",
+                        "url": "#",
+                        "children": [
+                            {
+                                "url": "/comppointssettings",
+                                "name": "Points Settings",
+                                "Id" : "COMP_POINTS_SETTINGS_VIEW" ,
+                                "status" : false
+                            },
+                            {
+                                "name": "Earn Settings"
+                            },
+                            {
+                                "url": "/exchangerates",
+                                "name": "Exchange Rates",
+                                "Id" : "" ,
+                                "status" : false
+                            },
+                            {
+                                "url": "/comppointslevels",
+                                "name": "Levels",
+                                "Id" : "" ,
+                                "status" : false
+                            },
+                            {
+                                "url": "/playercomppointsadjustments",
+                                "name": "Points Adjustments",
+                                "Id" : "COMP_POINTS_INFO_VIEW_GLOBAL" ,
+                                "status" : false
+                            },
+                            {
+                                "url": "/playercomppointsexchange",
+                                "name": "Points Exchange",
+                                "Id" : "COMP_POINTS_INFO_VIEW" ,
+                                "status" : false
+                            },
+                            {
+                                "url": "/levelchangeshistory",
+                                "name": "Levels History",
+                                "Id" : "" ,
+                                "status" : false
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+ 

@@ -1,0 +1,32 @@
+<div>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="getUserTransferLimits()">Requery</button>
+    <h3>P2P Transfer Limits</h3>
+</div>
+<div>
+    <div style="overflow-x:auto;" id="tablerecords">
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <div class="table_2">
+            <table class="tablCode" id="excel-table">
+                <thead>
+                    <tr class="tablCoderow">
+                        <th> Currency</th>
+                        <th>User Login</th>
+                        <th>Max Single Transfer Limit</th>
+                        <th>Transfers Number Limit</th>
+                        <th>Transfers amount Limit</th>
+                        <th>Limit Period. days</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

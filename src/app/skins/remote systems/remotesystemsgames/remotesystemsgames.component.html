@@ -1,0 +1,153 @@
+<div>
+    <h3>Remote Games</h3>
+</div>
+<div>
+    <button class="fillterbtn font_16" (click)="fillterMenu()">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+    <button class="fillterbtn font_14 ml_25" style=" float: right;" (click)="onRequery()">Requery</button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportExcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<!-- <div>
+    <div class="fd" *ngIf="FillterMenu">
+        <div class="df mainSystem">
+            <label class="LABregi">Registration:</label>
+            <input class="Birthdayinputs" format="yyyy-MM-dd HH:mm:ss" type="datetime-local" step="1"
+                formControlName="RegistrationStart">
+            <input class="Birthdayinputs" format="24-hour" type="datetime-local" step="1"
+                formControlName="RegistrationEnd">
+        </div>
+        <div class="df back_Lable">
+            <label class="LABregi">currency:</label>
+       
+            <select class="seclectopt" formControlName="wallet" placeholder="select">
+                <option value="" disabled> Real Money </option>
+                <option> U.S Dollars</option>
+                <option>Chips</option>
+        
+            </select>
+        </div>
+    </div>
+</div> -->
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="wallet" placeholder="select">
+                            <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlists">
+                                {{CURRENCY.description}}</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencystatus"
+                                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="wallet">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df m_t_5">
+
+        <div style="margin-right:20px;" *ngIf="GamesList">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd over_tbl" id="tablerecords" style="overflow-x:auto;">
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class=" fd  table_2">
+        <table class="fd tablCode" id="excel_table">
+            <thead>
+                <tr id="myInput">
+                    <th>Face</th>
+                    <th>Game</th>
+                    <!-- <th>Currency</th> -->
+                    <th>Sessions</th>
+                    <th>BuyIN</th>
+                    <th>Bets</th>
+                    <th>Wins</th>
+                    <th>Payout</th>
+                    <th>House Revenue</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="GamesList">
+                <tr *ngFor="let list of GamesList">
+                    <td>{{list.remoteSystemName}}</td>
+                    <td>{{list.name}}</td>
+                    <!-- <td></td> -->
+                    <td *ngIf="list.sessionsCount"><a [routerLink]="['/remotegamesessions']" [queryParams]='{ data:stringifyData(list) }'>{{list.sessionsCount}}</a></td>        
+                    <td *ngIf="!list.sessionsCount">{{list.sessionsCount}}</td>        
+                    <td class="text-end">{{list.buyInSum.value |numberFormat}}</td>
+                    <td class="text-end">{{list.bonusSum.value |numberFormat}}</td>
+                    <td class="text-end">{{list.winSum.value |numberFormat}}</td>
+                    <td class="text-end">{{list.payoutSum.value |numberFormat}}</td>
+                    <td class="text-end">{{list.houseRevenueSum.value |numberFormat}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="fd" *ngIf="GamesList">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || GamesList==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||GamesList==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="GamesList">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="GamesList == null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="GamesList==null || pagecontrolbtn" (click)="fastforward()"><i
+                class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>

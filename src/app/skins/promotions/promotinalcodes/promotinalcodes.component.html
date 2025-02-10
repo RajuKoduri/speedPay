@@ -1,0 +1,336 @@
+<div>
+    <h3>Promotional Codes</h3>
+</div>
+
+<div>
+    <button class="fillterbtn font_16" (click)="filterPromo()">Filters
+        <i *ngIf="!showPro" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="showPro" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+    <!-- <b style="font-weight:100;margin-left:40px">Applied Filters: {{counter}}</b> -->
+
+    <!-- <button class="fillterbtn m_l_5" (click)="onFormSubmit()">Submit</button> -->
+    <!-- <button class="fillterbtn m_l_5" (click)="fastforward()">fastforward</button> -->
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export CSV</button>
+</div>
+<!-- <div class="fd row">
+    <div (click)="filterPromo()" class="col-md-6">
+        <button class="filters">Filter
+            <i *ngIf="showPro" class="fa fa-chevron-left" style="font-size:15px"></i>
+            <i *ngIf="!showPro" class="fa fa-chevron-down" style="font-size:15px"></i>
+
+        </button>
+
+    </div>
+   
+    <div class="col-md-6">
+        <button (click)="onformsubmit()" class="submitpro">
+            Submit
+        </button>
+    </div>
+</div> -->
+<!-- <form [formGroup]="filterForm">
+    <div class="fd filterbox" *ngIf="showBox">
+
+        <div class="row ">
+            <div class="col-md-6 filteroption">
+                <label>Creator :</label>
+                <input type="text" formControlName="Creator" />
+            </div>
+            <div class="col-md-6 filteroption">
+                <label>Creator Type :</label>
+                <select formControlName="creatorType">
+                    <option> All</option>
+                    <option [ngValue]="names.guid" *ngFor="let names of creatnames">{{names.value}}</option>
+                </select>
+            </div>
+            <div class="col-md-6 filteroption">
+                <label>Promotional Codes :</label>
+                <input type="text" formControlName="PromotionalCodes" />
+            </div>
+            <div class="col-md-6 filteroption">
+                <label>Status :</label>
+                <select formControlName="statustype">
+                    <option [ngValue]="status.guid" *ngFor="let status of promoStatusList">{{status.value}}</option>
+                    <option *ngFor="let status of promoStatusList" [ngValue]="status.guid"> All </option>
+                </select>
+            </div>
+            <div class="col-md-6 filteroption">
+                <label>Usage Mehtod :</label>
+                <select formControlName="usagemethod">
+                    <option>All</option>
+                    <option [ngValue]="usageList.guid" *ngFor="let usageList of PromoCodeUsageTypeList">
+                        {{usageList.value}}</option>
+                </select>
+            </div>
+            <div class="col-md-6 filteroption">
+                <label>Refer To :</label>
+                <input type="text" />
+            </div>
+            <div class="row filteroption">
+                <div class="col-md-3 filteroption">
+                    <label>Referre Type :</label>
+                    <select formControlName="Referretype">
+                        <option>All</option>
+                        <option [ngValue]="referrerMemo.guid" *ngFor="let referrerMemo of username">
+                            {{referrerMemo.value}}</option>
+                    </select>
+                </div>
+                <div (click)="filterPage()" class="col-md-2">
+                    <button class="pagebtn"> Paging
+                        <i *ngIf="!openPagen" class="fa fa-chevron-left" style="font-size:15px"></i>
+                        <i *ngIf=" openPagen" class="fa fa-chevron-right" style="font-size:15px"></i>
+                    </button>
+
+                </div>
+                <div class="col-md-7">
+                    <div class="row" *ngIf="openpageBox">
+                        <div class="col-md-6 record ">
+                            <label>Frist Record :</label>
+                            <input type="text" formControlName="firstRecord" />
+                        </div>
+                        <div class="col-md-6 record">
+                            <label>Page Size :</label>
+                            <input type="text" formControlName="maxCountRecord" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form> -->
+
+
+
+
+<div class="fd filterDiv" *ngIf="showBox">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Creator</label>
+                        <input type="text" formControlName="Creator"/>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Creator Type </label>
+                        <!-- <select class="seclectopt" formControlName="creatorType">
+                            <option> All</option>
+                            <option [ngValue]="names.guid" *ngFor="let names of creatnames">{{names.value}}</option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownListceateType" [data]="creatnames"
+                              [(ngModel)]="selectCreatetype" (onSelect)="onItemSelectCreatorType($event)"
+                              (onDeSelect)="OnItemDeSelectCreatorType($event)" (onSelectAll)="onSelectAllCreatorType($event)"
+                              (onDeSelectAll)="onDeSelectAllCreatorType($event)" formControlName="creatorType">
+                            </ng-multiselect-dropdown>
+                          </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Promotional Codes</label>
+                        <input type="text" formControlName="PromotionalCodes"/>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Status</label>
+                        <!-- <select class="seclectopt" formControlName="statustype"> 
+                            <option [ngValue]="status.guid" *ngFor="let status of promoStatusList">{{status.value}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownsettingsStatus" [data]="promoStatusList"
+                                [(ngModel)]="convertedstatus" (onSelect)="onItemSelectStatus($event)"
+                                (onDeSelect)="OnItemDeSelectStatus($event)" (onSelectAll)="onSelectAllStatus($event)"
+                                (onDeSelectAll)="onDeSelectAllStatus($event)"
+                                formControlName="statustype"></ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Usage Method</label>
+                        <!-- <select class="seclectopt" formControlName="usagemethod">
+                            
+                            <option [ngValue]="usageList.guid" *ngFor="let usageList of PromoCodeUsageTypeList">
+                                {{usageList.value}}</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="DropdownSettingsPromo" [data]="PromoCodeUsageTypeList"
+                              [(ngModel)]="selectpromocode" (onSelect)="onItemSelectPromo($event)"
+                              (onDeSelect)="OnItemDeSelectPromo($event)" (onSelectAll)="onSelectAllPromo($event)"
+                              (onDeSelectAll)="onDeSelectAllPromo($event)" formControlName="usagemethod">
+                            </ng-multiselect-dropdown>
+                          </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Refer To</label>
+                        <input type="text" />
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Referre Type</label>
+                        <!-- <select class="seclectopt" formControlName="Referretype">
+                            <option [ngValue]="referrerMemo.guid" *ngFor="let referrerMemo of username">
+                                {{referrerMemo.value}}</option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownsettingUser" [data]="username"
+                                [(ngModel)]="selectUsertypes" (onSelect)="onItemSelectRefType($event)"
+                                (onDeSelect)="OnItemDeSelectRefType($event)" (onSelectAll)="onSelectAllRefType($event)"
+                                (onDeSelectAll)="onDeSelectAllRefType($event)"
+                                formControlName="Referretype"></ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Frist Record</label>
+                        <input type="text" formControlName="firstRecord" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="fd">
+    <!-- <div class="text-centers"> -->
+    <button class="fillterbtn " style=" float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <!-- <button class="fillterbtn m_l_5" style="float:right;margin-left: 1px;" (click)="onFormSubmit()">Submit</button> -->
+        <div style="margin-right:20px;" *ngIf="promotioncode">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd table_2">
+    <div>
+        <table class="tablCode" id="excel_table">
+            <div *ngIf="loader">
+                <div class="loaderWraper">
+                    <div class="loader"></div>
+                </div>
+            </div>
+           <thead>
+            <tr class="tablCoderow">
+                <th *ngIf="isAgentExplorer">Agent</th>
+                <th>Creator</th>
+                <th>Creation Date</th>
+                <th>Promotional Codes</th>
+                <th>Status</th>
+                <th>Actions</th>
+                <th>Reward</th>
+                <th *ngIf="!isAgentExplorer">Referring</th>
+                <th>Usage Method</th>
+                <th>Limits</th>
+                <th>Successful Usages</th>
+                <th>Last Status Change</th>
+            </tr>
+           </thead>
+            <tbody *ngIf="promotioncode">
+                <!-- <tr *ngFor="let list of promotioncode | paginate: {itemsPerPage:selectnum, currentPage:p}; "> -->
+                <tr *ngFor="let list of promotioncode; let i = index" (dblclick)="editPromotionalCodePopup(list)">
+                    <td *ngIf="isAgentExplorer">{{list.referrer.login}}</td>
+                    <td>{{list.creator.login}}</td>
+                    <td>{{changeSelect(list.creationDate)}}</td>
+                    <td>{{list.name}}</td>
+                    <td>{{list.status}}</td>
+                    <td>
+                        <div class="fd">
+                            <div class="trigger">
+                                <a><i class="fa fa-reorder" style="color: #fff;"(click)="showmanu(i)"></i> </a>
+                                <div *ngIf="popupArrow" class="fd">
+                                    <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                        <button [disabled]="list.status == 'Active'"
+                                            (click)="playerStatusPromotionalCode(list.guid,i,'activate')">Activate Promotional Code</button>
+                                        <button [disabled]="list.status == 'Inactive'"
+                                            (click)="playerStatusPromotionalCode(list.guid,i,'deactivate')">Deactivate Promotional Code</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td [title]="list.rewardMemo">{{list.rewardMemo | slice:0:20}}</td>
+                    <td *ngIf="!isAgentExplorer">{{list.referrerMemo}}</td>
+                    <td [title]="list.usageTypeMemo">{{list.usageTypeMemo | slice:0:31}}</td>
+                    <td [title]="list.limitsMemo">{{list.limitsMemo | slice:0:20}}</td>
+                    <td>{{list.usageNumber}}</td>
+                    <td>{{changeSelect(list.statusChangeDate)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- pagination-controls -->
+<div class="fd" *ngIf="promotioncode">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || promotioncode==null" (click)="fastbackforward()">
+            <i class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||promotioncode==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="promotioncode">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="promotioncode==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="promotioncode==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- <pagination-controls *ngIf="promotioncode" class="pagination justify-content-end" (pageChange)="p=$event"
+    class="pt-2 page-item float-right">
+</pagination-controls> -->
+
+<!-- ################################################# Activate and Deactivate popup ##################################### -->
+
+<div *ngIf="isStatusPopup" class="black_cover">
+    <div *ngIf="isStatusPopup" class=" popup_1 pop_sm">
+        <div class="PopupHeads">
+            <h5 class="text-center">Warning </h5>
+            <span class="closetop" (click)="setPromotionalCodeActivity('no')"> <img src="assets/icons/closePop.svg"></span>
+        </div>
+        <div class="p-2 text-center">
+            <h6>Do you want to {{type}} Promotional Code the selected record(s)?</h6>
+        </div>
+
+        <div class="bottomFixs">
+            <button class="btn_grade_1" (click)="setPromotionalCodeActivity('yes')">Yes</button>
+            <button class="btn_grade_2" (click)="setPromotionalCodeActivity('no')">No</button>
+        </div>
+    </div>
+</div>
+
+
+
+<div *ngIf="isEditPromotionalCodePopup">
+    <app-addpromotionalcode  (notifyParent)="editPromotionalCodePopup('')" [EditInfo]="EditInfo"
+    [userType]="userType"></app-addpromotionalcode>
+</div>
+
+<!-- <div *ngIf="isEditPromotionalCodePopup && isAgentExplorer">
+    <app-addpromotionalcode (notifyParent)="editPromotionalCodePopup('')" [agentinfo]="AgentInfo" [EditInfo]="EditInfo"
+        [userType]="'Agent'"></app-addpromotionalcode>
+</div> -->
+
+
+
+
+<!-- ######################### spinner ############################## -->
+
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+  <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>

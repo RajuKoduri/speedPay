@@ -1,0 +1,346 @@
+<div>
+  <h1>Suspicious Players</h1>
+</div>
+
+<div class="dropdown fd">
+  <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+    <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+      style="font-size:14px;  transition:all 0.5s ;"></i>
+    <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+      style="font-size:14px; transition:all 0.5s"></i>
+  </button>
+
+  <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+  <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+  <form [formGroup]="filterForm">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-6 col-xl-4">
+          <div class="div_flex">
+            <label>currency</label>
+            <!-- <select class="seclectopt" formControlName="currency" #tb2>
+              <option value="" disabled> Real Money </option>
+              <option> User Preferred</option>
+              <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlist">
+                {{CURRENCY.value}}
+              </option>
+            </select> -->
+
+            <div class="multi_dropdown">
+              <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencyList"
+                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                (onDeSelect)="OnItemDeSelectcurrency($event)" (onSelectAll)="onSelectAllcurrency($event)"
+                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="div_flex">
+            <label>Login Mask</label>
+            <input type="text" formControlName="loginMask">
+
+          </div>
+
+          <div class="div_flex">
+            <label>Face</label>
+            <!-- <select class="seclectopt" formControlName="face">
+              <option [ngValue]="Status.name" *ngFor="let  Status of faceParameterslist">
+                {{Status.name}}
+              </option>
+            </select> -->
+            <div class="multi_dropdown">
+              <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList12"
+                [(ngModel)]="selectedItems12" (onSelect)="onItemSelectnew($event)"
+                (onDeSelect)="OnItemDeSelectnew($event)" (onSelectAll)="onSelectAllnew($event)"
+                (onDeSelectAll)="onDeSelectAllnew($event)" formControlName="networkNames">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <!-- <div class="col-12 col-sm-6 col-lg-4"> -->
+
+          <div class="div_flex">
+            <label>StartDate</label>
+            <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate" [ngModel]="startDate"
+              (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+            <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+              [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+              [max]="endTime" />
+          </div>
+          <div class="div_flex ">
+            <label>EndDate</label>
+            <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate" [ngModel]="endDate"
+              (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+            <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1" [ngModel]="endTime"
+              (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+          </div>
+          <div class="red_col" *ngIf="steddate">
+            Start date should be below or equal to end date
+          </div>
+          <div class="red_col" *ngIf="timeerror">
+            Start time should be below or equal to end time
+          </div>
+
+          <!-- </div> -->
+        </div>
+        <div class="col-12 col-lg-6 col-xl-4">
+          <div class="df">
+            <label>Balance</label>
+            <input type="text" class="Birthdayinputs" formControlName="balancefrom">
+            <input type="text" class="Birthdayinputs" formControlName="balanceto">
+          </div>
+          <div class="df div_flex">
+            <label>Bonus</label>
+            <input type="text" class="Birthdayinputs" formControlName="bonusfrom">
+            <input type="text" class="Birthdayinputs" formControlName="bonusto">
+          </div>
+          <div class="div_flex">
+            <label>Alias</label>
+            <input type="text" formControlName="alias">
+          </div>
+          <div class="div_flex">
+            <label>Status</label>
+            <!-- <select class="seclectopt" formControlName="status" #tb7>
+              <option [ngValue]="Status.guid" *ngFor="let  Status of playerStatusList">
+                {{Status.value}}
+              </option>
+            </select> -->
+            <div class="multi_dropdown">
+              <ng-multiselect-dropdown [settings]="dropdownSettingsstatus" [data]="playerStatusList"
+                [(ngModel)]="selectedItemsStatus" (onSelect)="onItemSelect($event)"
+                (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                (onDeSelectAll)="onDeSelectAll($event)" formControlName="statusesIdList">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="div_flex">
+            <label>Player and Player</label>
+            <input type="text" formControlName="playerandplayer">
+          </div>
+          <!-- <div style="width: 200px;">
+            <ng-multiselect-dropdown 
+            [settings]="dropsettingsplyr2plyr" 
+            [data]="plyr2plyrdroplist"
+              [(ngmodel)]="selectitemsPlayers"
+               (onselect)="onItemselectplyr($event)"
+              (onDeselect)="OnItemDeselectplyr($event)"
+               (OnSelectAll)="onselectAllplyr($event)"
+              (onDeselectAll)="onDeselectallplyr($event)"
+               formControlName="player2player">
+            </ng-multiselect-dropdown>
+          </div> -->
+
+        </div>
+        <div class="col-12 col-lg-6 col-xl-4">
+          <div class="div_flex">
+            <label>Player and Affiliate</label>
+            <input type="text" formControlName="playerandaffilate">
+          </div>
+          <div class="div_flex">
+            <label>Black List</label>
+            <input type="text" formControlName="blacklist">
+          </div>
+          <div class="div_flex">
+            <label>Others</label>
+            <input type="text" formControlName="Others">
+          </div>
+          <div class="div_flex">
+            <label>firstRecord</label>
+            <input type="text" formControlName="firstRecord">
+          </div>
+          <div class="div_flex">
+            <label>Page Size</label>
+            <input type="text" formControlName="maxCountRecord">
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="fd">
+  <button class="fillterbtn font_14" style=" float: right;" (click)="onFormSubmit()">Submit</button>
+  <div class="df">
+    <!-- <button class="fillterbtn m_l_5" style="float:right;margin-left: 1px;" (click)="onFormSubmit()">Submit</button> -->
+    <div style="margin-right:20px;" *ngIf="PlayerList">Rows On the Page: {{rowsOnthePage}} </div>
+    <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+        the filters</b></div>
+  </div>
+</div>
+<!-- <div class="black_cover" *ngIf="ErrorPopup">
+  <div class="popup_1 pop_sm">
+    <div class="PopupHead" *ngIf="ErrorPopup">
+      <h5 class="text-center">Alert</h5>
+      <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+      <div class="fd p_10 text-center ">
+        <i class="p_5 text-danger">{{errorMessageText}}  Technical Error... </i>
+        <i class="p_5 text-danger">No Data Found</i>
+      </div>
+    </div>
+    <div class="bottomFix text-center df m_3">
+      <button class="btn_grade_1 " (click)="TechnicalError()"> Okay </button>
+    </div>
+  </div>
+</div> -->
+<div class="fd table_2">
+  <div *ngIf="loader">
+    <div class="loaderWraper">
+      <div class="loader position"></div>
+    </div>
+
+  </div>
+
+  <!-- <div class="fd"> -->
+  <table class="tablCode" id="excel_table">
+    <thead>
+      <tr class="">
+        <th>Account</th>
+        <th>Status</th>
+        <th>Face</th>
+        <th>Registration Date</th>
+        <th>Balance</th>
+        <th>Bonus</th>
+        <th>Actions</th>
+        <th>FNPP</th>
+        <th>BAPP</th>
+        <th>PPP</th>
+        <th>IPP</th>
+        <th>FDB</th>
+        <th>BBP</th>
+        <th>FNPA</th>
+        <th>EPA</th>
+        <th>BAPA</th>
+        <th>PB</th>
+        <th>APP</th>
+        <th>APA</th>
+      </tr>
+    </thead>
+
+    <tbody *ngIf="PlayerList">
+      <tr *ngFor="let List of PlayerList,let i=index">
+        <td class="hyperLink" (click)="PlayerExplore(List.player.account, List.player.guid, List.player)">
+          <a>{{List.player.account}}</a>
+        </td>
+        <td>{{List.status}}</td>
+        <td>{{List.player.network }}</td>
+        <td>{{changeSelect(List.registrationDate)}}</td>
+        <td class="text-end">{{getWalletSymbol(List.balance.wallet)}} {{List.balance.value |numberFormat}}</td>
+        <td class="text-end">{{getWalletSymbol(List.bonus.wallet)}} {{List.bonus.value |numberFormat}}</td>
+        <td>
+          <div class="fd">
+            <div class="trigger">
+              <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,List.guid)">
+                </i>
+              </a>
+              <div *ngIf="popupArrow" class="fd">
+                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                  <button [disabled]="List.status=='Locked'" (click)="PlayerActionsType('lock',i)">Lock</button>
+                  <button [disabled]="List.status=='Active'" (click)="PlayerActionsType('unlock',i)">Unlock</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <!-- <td *ngFor="let suspicionsId of List.suspicionsId">{{suspicionsId?.FNPP}}</td>
+        <td *ngFor="let suspicionsId of List.suspicionsId">{{suspicionsId?.BAPP}}</td>
+        <td *ngFor="let suspicionsId of List.suspicionsId">{{suspicionsId?.PPP}}</td> -->
+        <td><span><input type="checkbox" class="checkclick" [checked]="List.suspicionsId.includes('FNPP')"></span></td>
+        <td><span><input type="checkbox" class="checkclick" [checked]="List.suspicionsId.includes('BAPP')"></span></td>
+        <td><span><input type="checkbox" class="checkclick" [checked]="List.suspicionsId.includes('PPP')"></span></td>
+        <td><span><input type="checkbox" class="checkclick" [checked]="List.suspicionsId.includes('IPP')"></span></td>
+        <td><span><input type="checkbox" class="checkclick" [checked]="List.suspicionsId.includes('FDB')"></span></td>
+        <td><span><input type="checkbox" class="checkclick" [checked]="List.suspicionsId.includes('BBP')"></span></td>
+        <td><span><input type="checkbox" class="checkclick" [checked]="List.suspicionsId.includes('FNPA')"></span></td>
+        <td><span><input type="checkbox" class="checkclick" [checked]="List.suspicionsId.includes('EPA')"></span></td>
+        <td><span><input type="checkbox" class="checkclick" [checked]="List.suspicionsId.includes('BAPA')"></span></td>
+        <td><span><input type="checkbox" class="checkclick" [checked]="List.suspicionsId.includes('PB')"></span></td>
+        <td><span><input type="checkbox" class="checkclick" [checked]="List.suspicionsId.includes('APP')"></span></td>
+        <td><span><input type="checkbox" class="checkclick" [checked]="List.suspicionsId.includes('APA')"></span></td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="PlayerList && PlayerList.length > 0">
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="text-end text-nowrap">SUM =
+          <span *ngFor="let key of keys(totalBalanceSum)">{{totalBalanceSum[key]}}</span>
+        </td>
+        <td class="text-end text-nowrap">SUM =
+          <span *ngFor="let key of keys(totalBonusSum)">{{totalBonusSum[key]}}</span>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </table>
+
+</div>
+<div class="fd" *ngIf="PlayerList">
+  <div class="pagecount">
+    <button class="Pagebtns" [disabled]="PageCount==1 || PlayerList==null" (click)="fastbackforward()"><i
+        class="fa fa-step-backward" style="font-size:20px"></i>
+    </button>
+    <button class="Pagebtns" [disabled]="PageCount==1 ||PlayerList==null" (click)="prev()">
+      <i class="fa fa-caret-left" style="font-size:20px"></i>
+    </button>
+    <div class="PageCountNoDiv">
+      <div class="" *ngIf="PlayerList">{{PageCount}}</div>
+    </div>
+    <button class="Pagebtns " [disabled]="PlayerList==null || pagecontrolbtn" (click)="next()">
+      <i class="fa fa-caret-right" style="font-size:20px"></i>
+    </button>
+    <button class="Pagebtns" [disabled]="PlayerList==null || pagecontrolbtn" (click)="fastforward()"><i
+        class="fa fa-step-forward" style="font-size:20px"></i></button>
+  </div>
+</div>
+
+<!-- <div>
+  sssssssss
+  <nav class="pagination">
+    <div class="nav-btn prev fa fa-step-backward"></div>
+    <div class="nav-btn prev  fa fa-caret-left"></div>
+    <ul class="nav-pages">{{PageCount}}</ul>
+    <div class="nav-btn next fa fa-caret-right"></div>
+    <div class="nav-btn next fa fa-step-forward"></div>
+  </nav>
+</div> -->
+
+<div class="black_cover" *ngIf="ActionType">
+  <div class="popup_1 pop_sm" *ngIf="ActionType">
+    <div class="PopupHead">
+      <h5 class="text-center">Warning</h5>
+      <span class="closetop" (click)="setPlayerActions('no')"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+      <!-- <div class="fd p_10 text-center "> -->
+      <div class="fd p_10  ">
+        <b class="p_5 text-success text-center" *ngIf="ActionType">
+          Do you want to {{ActionType}} the player account </b>
+      </div>
+    </div>
+    <div class="bottomFix text-center df m_3">
+      <button class="btn_grade_1" (click)="setPlayerActions('yes')"> Yes </button>
+      <button class="btn_grade_2" (click)="setPlayerActions('no')"> NO </button>
+    </div>
+  </div>
+</div>
+<!-- Spinnwer -->
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+  <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>

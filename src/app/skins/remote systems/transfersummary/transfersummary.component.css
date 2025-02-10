@@ -1,0 +1,10 @@
+.text-centers {
+    display: flex;
+    margin: 5px;
+}
+
+
+.filterDiv label {
+    padding-right: 0px;
+    width: 130px;
+}

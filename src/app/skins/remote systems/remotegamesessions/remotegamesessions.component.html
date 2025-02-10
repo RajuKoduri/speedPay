@@ -1,0 +1,563 @@
+<!-- <div class="topnav">
+  <a (click)="fillterMenu()">Filter</a>
+  <a>Actions</a>
+  <a>Open</a>
+  <a>Explore</a>
+  <a (click)="ignoreContext()">Ignore Context</a>
+  <div class="dropdown">
+    <button class="dropbtn">View</button>
+    <div class="dropdown-content">
+      <a (click)="onRequery()">Normal</a>
+      <a>Autosize</a>
+      <a>Card</a>
+    </div>
+  </div>
+  <a (click)="onRequery()">Requery</a>
+  <a (click)="exportExcel()">Export to XSL</a>
+  <a (click)="onPrint()">Print</a>
+</div> -->
+
+<div>
+  <h3>Remote Game Sessions</h3>
+</div>
+<div>
+  <button class="fillterbtn font_16" (click)="fillterMenu()">Filters
+    <i *ngIf="!FillterList" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+    <i *ngIf="FillterList" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+  </button>
+
+  <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportExcel()"> Export Excel</button>
+  <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<!-- filter-Form -->
+<div class="fd filterDiv" *ngIf="FillterList">
+  <form [formGroup]="filterForm">
+    <div class="p_25">
+      <div class="row">
+        <div class="col-12 col-lg-6 col-xl-6">
+          <div class="div_flex p_5_10">
+            <label>StartDate</label>
+            <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate" [ngModel]="startDate"
+              (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+            <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+              [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+              [max]="endTime" />
+          </div>
+          <div class="div_flex p_5_10">
+            <label>EndDate</label>
+            <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate" [ngModel]="endDate"
+              (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+            <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1" [ngModel]="endTime"
+              (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+          </div>
+          <div class="red_col" *ngIf="steddate"> Start date should be below or equal to end date </div>
+          <div class="red_col" *ngIf="timeerror">Start time should be below or equal to end time </div>
+
+          <div class="div_flex p_5_10">
+            <label>currency</label>
+            <!-- <select class="seclectopt" formControlName="currency">
+              <option *ngFor="let curreny of currencys" [ngValue]="curreny.guid">{{curreny.description}}</option>
+            </select> -->
+
+            <div class="multi_dropdown">
+              <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencystatus"
+                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                (onDeSelect)="OnItemDeSelectcurrency($event)" (onSelectAll)="onSelectAllcurrency($event)"
+                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+
+          <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% provider Dropdown start %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  -->
+
+          <div class="div_flex p_5_10">
+            <label for="">Providers</label>
+            <div class="multi_dropdown">
+              <ng-multiselect-dropdown [settings]="dropdownSettingsProviders" [data]="GamesAllProvider"
+                [(ngModel)]="selectedProviders" (onSelect)="onItemSelectProviders($event)"
+                (onDeSelect)="OnItemDeSelectProviders($event)" (onSelectAll)="onSelectAllProviders($event)"
+                (onDeSelectAll)="onDeSelectAllProviders($event)" formControlName="providers">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+
+
+          <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% provider Dropdown End %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  -->
+
+
+
+          <!-- <div class="div_flex p_5_10">
+            <label>Game</label>
+            <select class="seclectopt" formControlName="game">
+              <option *ngFor="let game of gameList" [ngValue]="game.guid">{{game.value}}</option>
+            </select>
+          </div> -->
+
+
+
+
+          <!-- <div class="div_flex p_5_10" *ngIf="!playerExporer"> 
+            <label>Games</label>
+            <div class="d-flex flex-wrap justify-content-center align-items-center w-100">
+              <input type="text" formControlName="gamelist" [(ngModel)]="gamesTobeSelected" (click)="filtergamesbtn()"
+                class="bg-white text-overflow-clip">
+              <button class="fillterbtn-games font-size-16" (click)="filtergamesbtn()">
+                <i *ngIf="!Filtergamesbtn" class="fa fa-chevron-down IcArrow-games" title="open"
+                  style="font-size:10px;"></i>
+                <i *ngIf="Filtergamesbtn" class="fa fa-chevron-up IcArrow-games" title="close"
+                  style="font-size:10px;"></i>
+              </button>
+            </div>
+          </div> -->
+          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+          <div class="div_flex p_5_10" *ngIf="!Providergamesbtn">
+            <label>Games</label>
+            <div class="d-flex flex-wrap justify-content-center align-items-center w-100">
+              <input type="text" formControlName="gamelist" [(ngModel)]="gamesTobeSelected" (click)="providergamesbtn()"
+                class="bg-white text-overflow-clip">
+              <button class="fillterbtn-games font-size-16" (click)="providergamesbtn()">
+                <i *ngIf="!Providergamesbtn" class="fa fa-chevron-down IcArrow-games" title="open" style="font-size:10px;"></i>
+                <i *ngIf="Providergamesbtn" class="fa fa-chevron-up IcArrow-games" title="close" style="font-size:10px;"></i>
+              </button>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="col-12 col-lg-6 col-xl-6">
+          <div class="div_flex p_5_10" *ngIf="!playerExporer">
+            <label>Player Nickname</label>
+            <input type="text" formControlName="playerNickname" placeholder="(none)">
+          </div>
+          <div class="div_flex p_5_10">
+            <label>Session Status</label>
+            <!-- <select class="seclectopt" formControlName="sessionStatus"> 
+              <option *ngFor="let Status of RemoteGameSessionStatusList" [ngValue]="Status.guid">
+                {{Status.value}}
+              </option>
+            </select> -->
+
+            <div class="multi_dropdown">
+              <ng-multiselect-dropdown [settings]="dropdownSettingsSession" [data]="RemoteGameSessionStatusList"
+                [(ngModel)]="selectsessionList" (onSelect)="onItemSelectSession($event)"
+                (onDeSelect)="OnItemDeSelectSession($event)" (onSelectAll)="onSelectAllSession($event)"
+                (onDeSelectAll)="onDeSelectAllSession($event)" formControlName="sessionStatus">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="div_flex p_5_10">
+            <label>First Record</label>
+            <input type="number" formControlName="firstRecord">
+          </div>
+          <div class="div_flex p_5_10">
+            <label>Page Size</label>
+            <input type="number" formControlName="maxCountRecord">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>
+<!-- filter-Form-end -->
+<div class="fd">
+  <button class="fillterbtn font_14" style=" float: right;" (click)="onRequery()">Submit</button>
+  <div class="df m_t_5">
+
+    <div style="margin-right:20px;" *ngIf="remoteList">Rows On the Page: {{rowsOnthePage}}</div>
+    <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+        the filters</b></div>
+  </div>
+</div>
+<!-- table-start -->
+<div class="fd over_tbl" id="tablerecords" style="overflow-x:auto;">
+  <div clas='fd' *ngIf="dataLoader">
+    <div class="loaderWraper">
+      <div class="loader"></div>
+    </div>
+  </div>
+  <div class="fd tablCode">
+    <table class="fd table_2 " id="excel_table">
+      <thead>
+        <tr>
+          <!-- <th>Server</th> -->
+          <th>Face</th>
+          <th>Game</th>
+          <th>Currency</th>
+          <th>Session ID</th>
+          <th>Start Date</th>
+          <th>Finish Date</th>
+          <th>Player</th>
+          <th>Initial Balance</th>
+          <th>BuyIn</th>
+          <th>Bonus BuyIn</th>
+          <th>Bet</th>
+          <th>Bonus Bet</th>
+          <th>Win</th>
+          <th>Payout</th>
+          <th>Closing Balance</th>
+          <th>House Revenue</th>
+          <th>Status</th>
+          <th>Comment</th>
+          <th>Comp points</th>
+        </tr>
+      </thead>
+      <ng-container *ngIf="remoteList">
+        <tbody *ngFor=" let i = index ; let List of remoteList ">
+          <tr (dblclick)="PlayerPopup(i)">
+            <!-- <td>
+            <a class="expand-row" *ngIf="hideme" (click)="showActionList(i,List.rgsId)"> + </a>
+            <a class="expand-row" *ngIf="!hideme" (click)="hideActionList()"> - </a>
+          </td> -->
+            <td>{{List.remoteSystemName}}</td>
+            <td>{{List.gameName}}</td>
+            <td>{{List.currency}}</td>
+            <td>{{List.hexadecimalValue}}</td>
+            <!-- <td>{{List.startDate}}</td> -->
+            <td>{{changeSelect(List.startDate) }}</td>
+            <!-- <td>{{List.finishDate}}</td> -->
+            <td>{{changeSelect(List.finishDate) }}</td>
+            <td class="hyperLink" (click)="PlayerExplore(List.playerNickname,List.playerGuid,List.playerGuid)">
+              {{List.playerNickname}}
+            </td>
+            <td class="text-end">{{List.initialBalance.value |numberFormat}}</td>
+            <td class="text-end">{{List.buyIn.value |numberFormat}}</td>
+            <td class="text-end">{{List.bonusBuyIn.value |numberFormat}}</td>
+            <td class="text-end">{{List.bet.value |numberFormat}}</td>
+            <td class="text-end">{{List.bonusBet.value |numberFormat}}</td>
+            <td class="text-end">{{List.win.value |numberFormat}}</td>
+            <td class="text-end">{{List.payout.value |numberFormat}}</td>
+            <td class="text-end">{{List.closingBalance?.value |numberFormat}}</td>
+            <td class="text-end">{{List.houseRevenue.value |numberFormat}}</td>
+            <td>{{List.status}}</td>
+            <td>{{List.comment}}</td>
+            <td class="text-end">{{List.compPoints.value |numberFormat}}</td>
+          </tr>
+          <tr *ngIf="openRow == i" class="sub-table no-bg">
+            <td align="center"> </td>
+            <td colspan="15" class="p-0">
+              <table class="tablCode mb-0 table-striped">
+                <thead class="bg-dark text-white">
+                  <tr>
+                    <th>action</th>
+                    <th>betTime</th>
+                    <th>betType</th>
+                    <th>gameCode</th>
+                    <th>gameInfo</th>
+                    <th>gameName</th>
+                    <th>gameType</th>
+                    <th>key</th>
+                    <th>platform</th>
+                    <th>platformTxId</th>
+                    <th>refPlatformTxId</th>
+                    <th>rgsId</th>
+                    <th>roundId</th>
+                    <th>turnover</th>
+                    <th>txTime</th>
+                    <th>updateTime</th>
+                    <th>userId</th>
+                    <th>winAmount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let list of actionList">
+                    <td>{{list.action}}</td>
+                    <td>{{list.betTime}}</td>
+                    <td>{{list.betType}}</td>
+                    <td>{{list.gameCode}}</td>
+                    <td>{{list.gameInfo}}</td>
+                    <td>{{list.gameName}}</td>
+                    <td>{{list.gameType}}</td>
+                    <td>{{list.key}}</td>
+                    <td>{{list.platform}}</td>
+                    <td>{{list.platformTxId}}</td>
+                    <td>{{list.refPlatformTxId}}</td>
+                    <td>{{list.rgsId}}</td>
+                    <td>{{list.roundId}}</td>
+                    <td>{{list.turnover}}</td>
+                    <td>{{list.txTime}}</td>
+                    <td>{{list.updateTime}}</td>
+                    <td>{{list.userId}}</td>
+                    <td>{{list.winAmount}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </ng-container>
+      <tfoot *ngIf="remoteList && remoteList.length>0">
+        <tr>
+          <!-- <td><b>{{rowsOnthePage}}</b></td> -->
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>SUM:{{initialBalanceValue |numberFormat}}</td>
+          <td>SUM:{{buyInValue |numberFormat}}</td>
+          <td>SUM:{{bonusBuyInValue |numberFormat}}</td>
+          <td>SUM:{{betValue |numberFormat}}</td>
+          <td>SUM:{{bonusBetValue |numberFormat}}</td>
+          <td>SUM:{{winValue |numberFormat}}</td>
+          <td>SUM:{{payoutValue |numberFormat}}</td>
+          <td></td>
+          <td>SUM:{{houseRevenueValue |numberFormat}}</td>
+          <td></td>
+          <td></td>
+          <td>SUM:{{compPointsValue |numberFormat}}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+    class="pt-2 page-item float-right">
+  </pagination-controls> -->
+
+  <!-- <div class="page_count">
+    <div style="margin-right:20px;" *ngIf="remoteList">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+    <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+  </div> -->
+</div>
+<!-- table-end -->
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="PlayersPopup">
+  <div class="popup_1 pop_sm" *ngIf="PlayersPopup">
+    <div class="PopupHead">
+      <h5 class="text-center">Remote Game Session </h5>
+      <span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+      <div class="fd p_5 ">
+        <div class="df">
+          <label class="col-sm-6"> Face </label>
+          <span class="col-sm-6">{{PopupData.remoteSystemName}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Game </label>
+          <span class="col-sm-6">{{PopupData.gameName}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Currency </label>
+          <span class="col-sm-6">{{PopupData.currency}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Session Id </label>
+          <span class="col-sm-6">{{PopupData.null}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Start Date </label>
+          <!-- <span class="col-sm-6">{{PopupData.startDate}}</span> -->
+          <span class="col-sm-6">{{changeSelect(PopupData.startDate) }}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Finish Date </label>
+          <!-- <span class="col-sm-6">{{PopupData.finishDate}}</span> -->
+          <span class="col-sm-6">{{changeSelect(PopupData.finishDate) }}</span>
+
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Player </label>
+          <span class="col-sm-6">{{PopupData.playerNickname}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> initial Balance </label>
+          <span class="col-sm-6">{{PopupData.initialBalance.value}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Buy In </label>
+          <span class="col-sm-6">{{PopupData.buyIn.value}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Bonus BuyIn </label>
+          <span class="col-sm-6">{{PopupData.bonusBuyIn.value}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Bet </label>
+          <span class="col-sm-6">{{PopupData.bet.value}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Bonus Bet</label>
+          <span class="col-sm-6">{{PopupData.bonusBet.value}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Win </label>
+          <span class="col-sm-6">{{PopupData.buyIn.value}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Payout </label>
+          <span class="col-sm-6">{{PopupData.payout.value}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Closing Balance </label>
+          <span class="col-sm-6">{{PopupData.closingBalance?.value}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> House Revenue </label>
+          <span class="col-sm-6">{{PopupData.houseRevenue.value}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Status </label>
+          <span class="col-sm-6">{{PopupData.status}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6">Comment </label>
+          <span class="col-sm-6">{{PopupData.comment}}</span>
+        </div>
+        <div class="df">
+          <label class="col-sm-6"> Comp Points </label>
+          <span class="col-sm-6">{{PopupData.compPoints.value}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="bottomFix">
+      <button class="btn_grade_1" (click)="closePopup()"> Save </button>
+      <button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+    </div>
+  </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->
+
+
+<div class="fd" *ngIf="remoteList">
+  <div class="pagecount">
+    <button class="Pagebtns" [disabled]="PageCount==1 || remoteList==null" (click)="fastbackforward()"><i
+        class="fa fa-step-backward" style="font-size:20px"></i>
+    </button>
+    <button class="Pagebtns" [disabled]="PageCount==1 ||remoteList==null" (click)="prev()">
+      <i class="fa fa-caret-left" style="font-size:20px"></i>
+    </button>
+    <div class="PageCountNoDiv">
+      <div class="" *ngIf="remoteList">{{PageCount}}</div>
+    </div>
+    <button class="Pagebtns " [disabled]="remoteList == null || pagecontrolbtn" (click)="next()">
+      <i class="fa fa-caret-right" style="font-size:20px"></i>
+    </button>
+    <button class="Pagebtns" [disabled]="remoteList==null || pagecontrolbtn" (click)="fastforward()"><i
+        class="fa fa-step-forward" style="font-size:20px"></i></button>
+  </div>
+</div>
+
+<!-- ****************************GamesPopUp*********************************** -->
+
+<!-- <div *ngIf="Filtergamesbtn" class="black_cover"></div>
+<div *ngIf="Filtergamesbtn" class="fd filterDiv-game-filter">
+  <div class="PopupHeads">
+    <h5 class="text-center">Remote Game Sessions </h5>
+    <span class="closetop" (click)="filtergamesbtn()"> <img src="assets/icons/closePop.svg">
+    </span>
+  </div>
+
+  <div *ngFor="let provider of GamesAllProvider; let i = index">
+    <div class="d-flex flex-row all-games" *ngIf="provider.games.length>0">
+      <input class="m_r_5" type="checkbox" id="{{provider.name}}" [(ngModel)]="pokerGamesCheckbox[i]"
+        (change)="clickonCheckboxForAllGames($event, i)">
+      <label for="{{provider.name}}">{{provider.name}}</label>
+    </div>
+
+    <div class="poker-caption-container">
+      <div class="caption-checkbox" *ngFor="let game of provider.games; let j = index">
+        <input class="m_r_5" type="checkbox" [(ngModel)]="checkedList[i][j]" id="checkboxId{{i}}_{{j}}"
+          (change)="clickonCheckboxIndivisualGames($event, i, j,game.name)">
+        <label for="checkboxId{{i}}_{{j}}">{{game.name}}</label>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="bottomFixs">
+    <button class="closeBTN" (click)="filtergamesbtn()">close</button>
+  </div>
+</div> -->
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Games PopUp using accordian start %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+<!-- <div *ngIf="Filtergamesbtn" class="black_cover"></div>
+<div *ngIf="Filtergamesbtn" class="fd filterDiv-game-filter">
+  <div class="PopupHeads">
+    <h5 class="text-center">Remote Game Sessions </h5>
+    <span class="closetop" (click)="filtergamesbtn()"> <img src="assets/icons/closePop.svg"></span>
+  </div>
+
+  <div class="all-games all">
+    <input class="m_r_5" type="checkbox" id="all" [(ngModel)]="allRemoteGamesCheckbox"
+      (change)="clickonCheckboxForAllRemoteGames($event)">
+    <label for="all">Select All Providers</label>
+  </div>
+
+
+  <div *ngFor="let provider of GamesAllProvider; let i = index">
+    <div
+      [ngClass]="i === activeIndex ? 'active d-flex flex-row justify-content-between' : ' d-flex flex-row justify-content-between all-games' "
+      *ngIf="provider.games.length>0">
+     
+      <div>
+        <input class="m_r_5" type="checkbox" id="{{provider.name}}" [(ngModel)]="pokerGamesCheckbox[i]"
+          (change)="clickonCheckboxForAllGames($event, i)">
+        <label for="{{provider.name}}">{{provider.name}}</label>
+      </div>
+      <span class="me-2"  (click)="toggleAccordian(i)">
+        <i [ngClass]="i === activeIndex ? 'bi-chevron-up' : 'bi-chevron-down' "></i>
+      </span>
+    </div>
+
+
+    <div *ngIf="i===activeIndex" class="black_cover"></div>
+    <div class="fd filterDiv-game-filter-child" *ngIf="i===activeIndex">
+      <div class="PopupHeads">
+        <h5 class="text-center">{{provider.name}}</h5>
+        <span class="closetop" (click)="toggleAccordian(i)"> <img src="assets/icons/closePop.svg">
+        </span>
+      </div>
+      <div class="poker-caption-container  "  *ngIf="i===activeIndex">
+        <div class="caption-checkbox" *ngFor="let game of provider.games; let j = index">
+          <input class="m_r_5" type="checkbox" [(ngModel)]="checkedList[i][j]" id="checkboxId{{i}}_{{j}}"
+            (change)="clickonCheckboxIndivisualGames($event, i, j,game.name)">
+          <label for="checkboxId{{i}}_{{j}}">{{game.name}}</label>
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
+  <div class="bottomFixs">
+    <button class="closeBTN" (click)="filtergamesbtn()">close</button>
+  </div>
+</div> -->
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Games PopUp using accordian End %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+
+<div *ngIf="Providergamesbtn" class="black_cover"></div>
+<div *ngIf="Providergamesbtn" class="fd filterDiv-game-filter-child">
+  <div class="PopupHeads">
+    <h5 class="text-center">Remote Game Sessions </h5>
+    <span class="closetop" (click)="providergamesbtn()"> <img src="assets/icons/closePop.svg">
+    </span>
+  </div>
+
+  <div *ngFor="let provider of providersArray; let i = index">
+    <div class="d-flex flex-row all-games" *ngIf="provider.games.length>0">
+      <input class="m_r_5" type="checkbox" id="{{provider.name}}" [(ngModel)]="providerGamesCheckbox[i]"
+        (change)="clickonCheckboxForAllGames($event, i)">
+      <label for="{{provider.name}}">{{provider.name}}</label>
+    </div>
+
+    <div class="poker-caption-container">
+      <div class="caption-checkbox" *ngFor="let game of provider.games; let j = index">
+        <input class="m_r_5" type="checkbox" [(ngModel)]="providerGamescheckedList[i][j]"
+          id="providerGamescheckedList{{i}}_{{j}}" (change)="clickonCheckboxIndivisualGames($event, i, j,game.name)">
+        <label for="providerGamescheckedList{{i}}_{{j}}">{{game.name}}</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottomFixs">
+    <button class="closeBTN" (click)="providergamesbtn()">close</button>
+  </div>
+</div>

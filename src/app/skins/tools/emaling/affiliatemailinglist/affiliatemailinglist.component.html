@@ -1,0 +1,220 @@
+<div>
+    <h3>Affiliate Mailing list </h3>
+</div>
+
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+        <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export CSV</button>
+</div>
+
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class=" p_25">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>Email Mask</label>
+                            <input type="text" formControlName="emalMask" placeholder="(none)" />
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Revenue Currency</label>
+                            <div class="multi_dropdown">
+                                <ng-multiselect-dropdown [settings]="walletDropdownSettings" [data]="walletTypesList"
+                                    [(ngModel)]="selectedWallet"
+                                    formControlName="Revenuecurrency"></ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Revenue</label>
+                            <input class="Birthdayinputs" type="text" placeholder="(none)"  appMaxLengthValidation
+                                formControlName="Revenuefrom" />
+                            <input class="Birthdayinputs" type="text" placeholder="(none)"  appMaxLengthValidation
+                                formControlName="Revenueto" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl-4">
+
+                        <div class="div_flex p_5_10">
+                            <label>Reffered Affiliates</label>
+                            <input class="Birthdayinputs" type="text" placeholder="(none)" formControlName="refferedWebmastersLow"  appMaxLengthValidation />
+                            <input class="Birthdayinputs" type="text" placeholder="(none)" formControlName="refferedWebmastersHigh"  appMaxLengthValidation />
+
+                        </div>
+
+                        <div class="div_flex p_5_10">
+                            <label> Registration StartDate</label>
+                            <input class="inp_agent_time Birthdayinputs" type="date" [max]="endDate"
+                                formControlName="startDate" [ngModel]="startDate" (ngModelChange)="startDate = $event"
+                                (change)="showDate($event)" />
+                            <input class="inp_agent_time Birthdayinputs mobile_view" type="time"
+                                formControlName="startTime" step="1" [ngModel]="startTime"
+                                (ngModelChange)="startTime = $event" (change)="timechange($event)" [max]="endTime" />
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Registration EndDate</label>
+                            <input class="inp_agent_time Birthdayinputs" type="date" [max]="todaydate"
+                                formControlName="endDate" [ngModel]="endDate" (ngModelChange)="endDate = $event"
+                                (change)="showDate($event)" />
+                            <input class="inp_agent_time  Birthdayinputs mobile_view" type="time"
+                                formControlName="endTime" step="1" [ngModel]="endTime"
+                                (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                        </div>
+                        <div class="red_col" *ngIf="steddate">
+                            Start date should be below or equal to end date
+                        </div>
+                        <div class="red_col" *ngIf="timeerror">
+                            Start time should be below or equal to end time
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl-4">
+                        <div class="div_flex p_5_10">
+                            <label>Referred Players</label>
+                            <input class="Birthdayinputs" type="text" placeholder="(none)" formControlName="refferedPlayersLow"  appMaxLengthValidation />
+                            <input class="Birthdayinputs" type="text" placeholder="(none)" formControlName="refferedPlayersHigh"  appMaxLengthValidation />
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>First Record</label>
+                            <input type="text" formControlName="firstRecord" />
+                        </div>
+                        <div class="div_flex p_5_10">
+                            <label>Page Size</label>
+                            <input type="text" formControlName="maxCountRecord" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style=" float: right;" (click)="filterPopup()">Submit</button>
+    <div class="df m_3">
+      <div style="margin-right:20px;" *ngIf="affiliateMailingList">Rows On the Page: {{rowsOnthePage}}</div>
+      <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+          the filters</b></div>
+    </div>
+</div>
+
+<div class='fd table_2'>
+    <div  *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <table class="tablCode" id="excel-table">
+        <thead>
+            <tr>
+                <th>Section</th>
+                <th>Account</th>
+                <th>Email</th>
+                <th>Registation Date</th>
+                <th>Full Name</th>
+                <th>Revenue</th>
+                <th>Reffered Players</th>
+                <th>Reffered Affiliates</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+
+<!-- pagination-controls -->
+<div class="fd" *ngIf="affiliateMailingList">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || affiliateMailingList==null" (click)="fastbackforward()">
+            <i class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||affiliateMailingList==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="affiliateMailingList">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="affiliateMailingList==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="affiliateMailingList==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- ################################# Filter Popup ########################################## -->
+
+<div class="black_cover"*ngIf='isFilterPopup'>
+    <div class="popup_1 pop_sm text-black" *ngIf='isFilterPopup'>
+        <div class="PopupHead">
+            <h5 class="text-center">Filter Applying</h5>
+            <span class="closetop" (click)="filterPopup()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="row fd p-3 d-flex text-center">
+                    Would you like to send Email notifications right now or view mailing list ?
+                </div>
+            </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onView()"> View </button>
+            <button class="btn_grade_2" (click)="onSend()"> send </button>
+            <button class="btn_grade_3" (click)="filterPopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- ####################################### Email Template Error popup ####################################  -->
+
+<div class="black_cover"*ngIf='isEmailTemp'>
+    <div class="popup_1 pop_sm text-black" *ngIf='isEmailTemp'>
+        <div class="PopupHead">
+            <h5 class="text-center">Error</h5>
+            <span class="closetop" (click)="emailTempPopup('emailTemp')"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="row fd p-3 d-flex text-center ">
+                    There are no available e-mail templates
+                </div>
+            </div>
+        <div class="bottomFix">
+            <button class="btn_grade_3" (click)="emailTempPopup('emailTemp')"> OK </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ####################################### send webmaster mail popup ####################################  -->
+
+<div class="black_cover"*ngIf='isMailSend'>
+    <div class="popup_1 pop_sm text-black" *ngIf='isMailSend'>
+        <div class="PopupHead">
+            <h5 class="text-center">Send Webmaster Mail</h5>
+            <span class="closetop" (click)="emailTempPopup('mailSend')"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+            <div class="soon font_13 fd p_lr_15 border rounded ">
+                <div class="fd p-2 d-flex">
+                    Do you want to send mail?
+                </div>
+                <div class="fd p-2 ">
+                  <label> E-mail template:</label>
+                   <select class="form-select my-2" [(ngModel)]="selectedTempforMail">
+                    <option [ngValue]="list.guid" *ngFor="let list of templateList">{{list.name}}</option>
+                   </select>
+                </div>
+            </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="sendWmMail()"> OK </button>
+            <button class="btn_grade_2" (click)="emailTempPopup('mailSend')"> Cancel </button>
+        </div>
+    </div>
+</div>

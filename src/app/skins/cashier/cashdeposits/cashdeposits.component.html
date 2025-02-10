@@ -1,0 +1,519 @@
+<!-- <div class="topnav">
+    <a (click)="fillterMenu()">Filter</a>
+    <a >Actions</a>
+    <a >Open</a>
+    <a >Explore</a>
+    <a (click)="ignoreContext()">Ignore Context</a>
+    <div class="dropdown">
+       <button class="dropbtn">View</button>
+       <div class="dropdown-content">
+           <a (click)="onRequery()">Normal</a>
+           <a>Autosize</a>
+           <a>Card</a>
+       </div>
+   </div>
+    <a (click)="onRequery()">Requery</a>
+    <a (click)="exportExcel()">Export to XSL</a>
+    <a (click)="onPrint()">Print</a>
+</div> -->
+
+<div>
+    <h3>Deposits</h3>
+</div>
+<div>
+    <button class="fillterbtn font_16" (click)="fillterMenu()">Filters
+        <i *ngIf="!FillterList" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="FillterList" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportExcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export CSV</button>
+</div>
+<!-- filtermenu start -->
+<div class="fd filterDiv" *ngIf="FillterList">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Reporting Period Start</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs"  step="1" formControlName="startTime"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            (change)="timechnage($event)" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Reporting Period End</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" step="1" formControlName="endTime"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="currency">
+                            <option [ngValue]="currency.guid" *ngFor="let currency of currencyList">
+                                {{currency.description}}</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencyList"
+                                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer && !agentExplorer">
+                        <label>User Type</label>
+                        <!-- <select class="seclectopt" formControlName="userType">
+                            <option [ngValue]="type.guid" *ngFor="let type of usertypes">{{type.value}}</option>>
+                        </select>  -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingsUsertypes" [data]="usertypes"
+                                [(ngModel)]="selectedUserlist" (onSelect)="onItemSelectUsertypes($event)"
+                                (onDeSelect)="OnItemDeSelectUsertypes($event)"
+                                (onSelectAll)="onSelectAllUsertypes($event)"
+                                (onDeSelectAll)="onDeSelectAllUsertypes($event)" formControlName="userType">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer && !agentExplorer">
+                        <label>User Login</label>
+                        <input type="text" formControlName="userLogin" placeholder="(none)">
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!agentExplorer"> 
+                        <label>Payment Systems</label>
+                        <!-- <select class="seclectopt" formControlName="paymentSystem" placeholder="(none)">
+                            <option [ngValue]="paymentSystem.guid" *ngFor="let paymentSystem of paymentSystemlist">
+                                {{paymentSystem.value}}</option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingsPaymentSystem"
+                                [data]="PaymentsSystemsList" [(ngModel)]="selectedPaymentsSystemsList"
+                                (onSelect)="onItemSelectPaymentSystem($event)"
+                                (onDeSelect)="OnItemDeSelectPaymentSystem($event)"
+                                (onSelectAll)="onSelectAllPaymentSystem($event)"
+                                (onDeSelectAll)="onDeSelectAllPaymentSystem($event)" formControlName="paymentSystem">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer && !agentExplorer">
+                        <label>Short ID</label>
+                        <input type="text" formControlName="shortId" placeholder="(none)">
+                    </div>
+
+                    <div class="div_flex p_5_10" *ngIf="!agentExplorer">
+                        <label>Payment Means Number</label>
+                        <input type="text" formControlName="paymentMeansNumber" placeholder="(none)">
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!agentExplorer">
+                        <label>Status</label>
+                        <!-- <select class="seclectopt" formControlName="status" placeholder="(none)">
+                            <option [ngValue]="status.guid" *ngFor="let status of TransactionStatusesList">
+                                {{status.value}}</option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownStatusSettings" [data]="TransactionStatusesList"
+                                [(ngModel)]="convertedStatus" (onSelect)="onItemSelectStatus($event)"
+                                (onDeSelect)="OnItemDeSelectStatus($event)" (onSelectAll)="onSelectAllStatus($event)"
+                                (onDeSelectAll)="onDeSelectAllStatus($event)"
+                                formControlName="status"></ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!agentExplorer">
+                        <label>Internal ID</label>
+                        <input type="text" formControlName="internalId" placeholder="(none)">
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!agentExplorer">
+                        <label>External ID</label>
+                        <input type="text" formControlName="externalId" placeholder="(none)">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4" *ngIf="!agentExplorer">
+                    <div class="div_flex p_5_10">
+                        <label>Initiator Login</label>
+                        <input type="text" formControlName="initiatorLogin" placeholder="(none)">
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer">
+                        <label>Face</label>
+                        <!-- <select class="seclectopt" formControlName="face">
+                            <option [ngValue]="face.name" *ngFor="let face of faceList">{{face.name}}</option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList12"
+                                [(ngModel)]="selectedItems12" (onSelect)="onItemSelectnew($event)"
+                                (onDeSelect)="OnItemDeSelectnew($event)" (onSelectAll)="onSelectAllnew($event)"
+                                (onDeSelectAll)="onDeSelectAllnew($event)" formControlName="networkNames">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="number" formControlName="firstRecord">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="number" formControlName="maxCountRecord">
+                    </div>
+                    <!-- <button class="fillterbtn insidebtn" (click)="onFormSubmit()">Apply</button>
+                    <button class="fillterbtn insidebtn" (click)="FormReset()">Reset</button> -->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- filtermenu end  -->
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df m_t_5">
+
+        <div style="margin-right:20px;" *ngIf="depositsList">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd over_tb1" id="tablerecords" style="overflow-x:auto;"*ngIf="!agentExplorer">
+    <div clas='fd' *ngIf="dataLoader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="tablCode">
+        <table class="table_2" id="excel_table">
+            <thead>
+                <tr>
+                    <th>Face</th>
+                    <th>Start Date</th>
+                    <th>Finish Date</th>
+                    <th>Actions </th>
+                    <th>User Type</th>
+                    <th>User</th>
+                    <th>Short ID</th>
+                    <th>Status</th>
+                    <th>Top-up Amount</th>
+                    <th>Order Amount</th>
+                    <th>Payment System</th>
+                    <th>Payment Means Number</th>
+                    <th>Bonus</th>
+                    <th>Locked Bonus</th>
+                    <th *ngIf="playerExplorer" >Required Bets</th>
+                    <th *ngIf="playerExplorer" >Release Date</th>
+                    <th>Promotional Code</th>
+                    <th>Internal ID</th>
+                    <th>External ID</th>
+                    <th>External ID 2</th>
+                    <th>First Deposit</th>
+                    <th>Deposit Details</th>
+                    <th>System Comment</th>
+                    <th>Initiator</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="depositsList">
+                <tr (dblclick)="onDblClick(i)" *ngFor=" let i = index ; let List of depositsList ">
+                    <td>{{List.userFace}}</td>
+                    <td>{{List.startDate}}</td>
+                    <td>{{List.finishDate}}</td>
+                    <td>
+                        <div class="fd">
+                            <div class="trigger">
+                                <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmanu(i,List)"> </i> </a>
+                                <div *ngIf="popupArrow" class="fd">
+                                    <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                                        <button [disabled]="List.fraud" (click)="chargeBackPopup()">Charge back</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td >{{List.user?.type}}</td>
+                    <td  class="hyperLink" (click)=" List.user.type == 'Player' ? PlayerExplore(List.user.login, List.user.guid, List) : AgentExplore(List.user.login, List.user.guid, List)">{{List.user?.login}}</td>
+                    <td>{{List.user?.shortId}}</td>
+                    <td>{{List.status}}</td>
+                    <td class="text-end">{{currencySymbol(List.topUpAmount.wallet)}} {{List.topUpAmount?.value |numberFormat}}</td>
+                    <td class="text-end">{{currencySymbol(List.orderAmount.wallet)}} {{List.orderAmount?.value |numberFormat}}</td>
+                    <td>{{List.paymentSystemType}}</td>
+                    <td>{{List.paymentMeansNumber}}</td>
+                    <td class="text-end">{{currencySymbol(List.bonus?.wallet)}} {{List.bonus?.value |numberFormat}}</td>
+                    <td class="text-end">{{currencySymbol(List.lockedBonus?.wallet)}} {{List.lockedBonus?.value |numberFormat}}</td>
+                    
+                    <td *ngIf="playerExplorer" >{{List.requiredBets.value}}</td>
+                    <td *ngIf="playerExplorer"></td>
+                    <td></td>
+                    <td class="hyperLink" (click)="navigateToTransation(List.internalId)">{{List.internalId}}</td>
+                    <td class="text-nowrap" [title]="List.externalId1">{{textTruncate(List.externalId1)}}</td>
+                    <td></td>
+                    <td>
+                        <input *ngIf="List.first==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="List.first==false" type="checkbox" class="checkclick" />
+                    </td>
+                    <td></td>
+                    <td [title]="List.comment">{{textTruncate(List.comment)}}</td>
+                    <td>{{List.initiator?.login}}</td>
+                </tr>
+            </tbody>
+            <tfoot *ngIf="depositsList && depositsList.length > 0">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(topUpAmountSum)">{{topUpAmountSum[key]}} ;</span></td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(orderAmountSum)">{{orderAmountSum[key]}} ;</span></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(bonusSum)">{{bonusSum[key]}} ;</span></td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(lockedBonusSum)">{{lockedBonusSum[key]}} ;</span></td>
+                    <td *ngIf="playerExplorer"></td>
+                    <td *ngIf="playerExplorer"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+        class="pt-2 page-item float-right">
+    </pagination-controls>
+
+    <div class="page_count">
+        <div style="margin-right:20px;" *ngIf="depositsList">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+        <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div> -->
+</div>
+
+
+<div class="fd over_tb1" id="tablerecords" style="overflow-x:auto;" *ngIf="agentExplorer">
+    <div clas='fd' *ngIf="dataLoader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="tablCode">
+        <table class="table_2" id="excel_table">
+            <thead>
+                <tr>
+                    <th>Agent</th>
+                    <th>Date</th>
+                    <th>Payment System</th>
+                    <th>Payment Means Number</th>
+                    <th>External ID</th>
+                    <th>Internal ID</th>
+                    <th>Order Amount</th>
+                    <th>Top-up Amount</th>
+                    <th>Deposit Details</th>
+                    <th>System Comment</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="depositsList">
+                <tr (dblclick)="onDblClick(i)" *ngFor=" let i = index ; let List of depositsList ">
+                    <td></td>
+                    <td class="text-nowrap">{{dateTransform(List.date)}}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{List.extID}}</td>
+                    <td>{{List.intID}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+        class="pt-2 page-item float-right">
+    </pagination-controls>
+
+    <div class="page_count">
+        <div style="margin-right:20px;" *ngIf="depositsList">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+        <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div> -->
+</div>
+<div class="fd">
+    <div class="fd" *ngIf="depositsList">
+        <div class="pagecount">
+            <button class="Pagebtns" [disabled]="PageCount==1 || depositsList==null" (click)="fastbackforward()"><i
+                    class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||depositsList==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="depositsList">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="depositsList==null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="depositsList==null || pagecontrolbtn" (click)="fastforward()">
+                <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="Depositspopup">
+    <div class="popup_1 pop_sm" *ngIf="Depositspopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Deposits</h5>
+            <span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-6"> Face</label>
+                    <span class="col-sm-6">{{PlayerDepositsData.userFace}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Start Date: </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.startDate}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Finish Date: </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.finishDate}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">User Type </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.user.fullName}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">User </label>
+                    <span class="col-sm-6"> {{PlayerDepositsData.user.login}} </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Short ID: </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.user.shortId}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Status </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.status}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Top-up Amount: </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.topUpAmount.value |numberFormat}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Order Amount: </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.orderAmount.value |numberFormat}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Payment System: </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.paymentSystemType}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Payment Means Number: </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.paymentMeansNumber}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Bonus </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.bonus?.value |numberFormat}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Locked Bonus </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.lockedBonus?.value |numberFormat}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Promotional Code </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Internal ID </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.internalId}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">External ID</label>
+                    <span class="col-sm-6">{{PlayerDepositsData.externalId1}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">External ID2</label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">First Deposit</label>
+                    <span class="col-sm-6">
+                        <input *ngIf="PlayerDepositsData.first==true" type="checkbox" class="checkclick" checked />
+                        <input *ngIf="PlayerDepositsData.first==false" type="checkbox" class="checkclick" />
+                    </span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6">Deposit Details </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> System Comment </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.comment}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Initiator </label>
+                    <span class="col-sm-6">{{PlayerDepositsData.initiator.login}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closePopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% charge back popup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+<div class="black_cover" *ngIf="isChargebackPopup">
+    <div class="popup_1 pop_sm" *ngIf="isChargebackPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Charge back </h5>
+            <span class="closetop" (click)="chargeBackPopup()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                    <div class="row py-2">
+                        <div class="col-sm-5">Player</div>
+                        <div class="col-sm-7">{{chargeBackData.user.login}}</div>
+                    </div>
+                    <div class="row pb-2">
+                        <div  class="col-sm-5">External ID</div>
+                        <div class="col-sm-7">{{chargeBackData.externalId1}}</div>
+                    </div>
+                    <div class="row pb-2">
+                        <div  class="col-sm-5">Amount</div>
+                        <div class="col-sm-7">{{chargeBackData.orderAmount?.value}}</div>
+                    </div>
+                    <div class="row pb-2">
+                        <div  class="col-sm-5">Payment system</div>
+                        <div class="col-sm-7">{{chargeBackData.paymentSystemType}}</div>
+                    </div>
+                    <div class="row pb-2">
+                        <div  class="col-sm-5">Payment mean</div>
+                        <div class="col-sm-7">{{chargeBackData.paymentMeansNumber}}</div>
+                    </div>
+                    
+                  
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onChargeBack()"> Charge back </button>
+            <button class="btn_grade_2" (click)="chargeBackPopup()"> Close </button>
+            <!-- <button class="btn_grade_2" (click)="cashoutReversel('no')"> Cancel </button> -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,159 @@
+{
+    "menu": [
+       
+        {
+            "name":"Personal Info",
+            "url": "/Agentexplorer/AgentPersonalInfo",
+            "Id": "AFFILIATES_VIEW",
+            "status": false
+        },
+        {
+            "name":"Summary",
+            "url": "/Agentexplorer/AgentCashWallets",
+            "Id": "ACCOUNTING",
+            "status": false
+        },
+        {
+            "name":"Agent's Nested Balance",
+            "url": "/Agentexplorer/AgentNestedBalance",
+            "Id": "AFFILIATES_VIEW",
+            "status": false
+        },
+        {
+            "name":"Agent Balance",
+            "url": "/Agentexplorer/AgentBalance",
+            "Id": "AFFILIATES_VIEW",
+            "status": false
+        },
+        {
+            "name":" Referred Players",
+            "url": "/RefferedPlayers",
+            "Id": "PLAYER_FINANCE_VIEW",
+            "status": false
+        },
+        {
+            "name":" Referred Agent",
+            "url": "/RefferedAgents",
+            "Id": "AFFILIATES_VIEW",
+            "status": false
+        },
+        {
+            "name":"Revenue Settings",
+            "url": "/Agentexplorer/RevenueSettings",
+            "Id": "AFFILIATES_VIEW",
+            "status": false
+        },
+        {
+            "name":"Player ChargeBack",
+            "url": "/chargeback",
+            "Id": "PLAYER_PAYMENTS_CONTROL",
+            "status": false
+        },
+        {
+            "name":"Ip History",
+            "url": "/Agentexplorer/IpHistory",
+            "Id": "PLAYER_FINANCE_VIEW ",
+            "status": false
+        },
+       
+        {
+            "name":"Revenue Summary",
+            "url": "/Agentexplorer/revenueSummary",
+            "Id": "AFFILIATES_VIEW",
+            "status": false
+        },  
+        {
+              "name": "Promotional Code",
+            "url": "#",
+            "title": "Promotional Code",
+            "expanded": false,
+            "children": [
+                {
+                    "name": "Promotional Codes Usages",
+                    "url": "/promotinolcodeusages",
+                    "Id": "CASHIER_BONUSCODES_VIEW",
+                    "status": false
+                },
+                {
+                    "name": "Promotional Codes",
+                    "url": "",
+                    "Id": "",
+                    "status": false
+                },
+                {
+                    "name": "Promotional Codes",
+                    "url": "/promotinalcodes",
+                    "Id": "CASHIER_BONUSCODES_VIEW",
+                    "status": false
+                }
+            ]
+        },  
+        {
+            "name": "Payment History",
+            "url": "#",
+            "title": "Payment History",
+            "expanded": false,
+            "children": [
+                {
+                    "name": "Deposit",
+                    "url": "/Agentexplorer/Deposits",
+                    "Id": "AFFILIATES_VIEW",
+                    "status": false
+                },
+                {
+                    "name": "Cashouts",
+                    "url": "/Agentexplorer/Cash",
+                    "Id": "AFFILIATES_VIEW",
+                    "status": false
+                },
+                {
+                    "name": "Withdrawals",
+                    "url": "/Agentexplorer/withdrawl",
+                    "Id": "AFFILIATES_VIEW",
+                    "status": false
+                },
+                {
+                    "name": "Cash Adjustments",
+                    "url": "/Agentexplorer/CashAdjustments",
+                    "Id": "AFFILIATES_VIEW",
+                    "status": false
+                }, 
+                {
+                    "name": "Chargebacks",
+                    "url": "/Agentexplorer/chargeback",
+                    "Id": "AFFILIATES_VIEW",  
+                    "status": false
+                } ,
+                {
+                    "name": "Cash Adjustments",
+                    "url": "/Agentexplorer/CashAdjustments",
+                    "Id": "AFFILIATES_VIEW",  
+                    "status": false
+                } ,
+                {
+                    "name": "Transfer to Players",
+                    "url": "/Agentexplorer/AgentTransferstoPlayers",
+                    "Id": "AFFILIATES_VIEW",  
+                    "status": false
+                } ,
+                {
+                    "name": "Transfer to Agents",
+                    "url": "/Agentexplorer/AgentTransferstoAgents",
+                    "Id": "AFFILIATES_VIEW",  
+                    "status": false
+                }, 
+                {
+                    "name": "Revenue Adjustments",
+                    "url": "/Agentexplorer/revenueAdjustments",
+                    "Id": "AFFILIATES_VIEW",  
+                    "status": false
+                } ,
+                {
+                    "name": "Detailed Transaction History",
+                    "url": "/Agentexplorer/DetailTransaction",
+                    "Id": "AFFILIATES_VIEW",  
+                    "status": false
+                      }     ]  
+        }        
+    ]
+}

@@ -1,0 +1,219 @@
+<h1>Detailed History</h1>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <!-- <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button> -->
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label class="datelabel">Reporting Start Period</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view " type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+
+                    <div>
+                        <div class="div_flex p_5_10">
+                            <label class="datelabel">Reporting End Period</label>
+                            <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                                [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                            <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                                [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                        </div>
+                        <div class="red_col" *ngIf="steddate">
+                            Start date should be below or equal to end date
+                        </div>
+                        <div class="red_col" *ngIf="timeerror">
+                            Start time should be below or equal to end time
+                        </div>
+                    </div>
+                    <div class=" div_flex p_5_10 ">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="wallets" (change)="onChange($event)"
+                        [(ngModel)]="selectedCurrency">
+                        <option [ngValue]="Wallet.guid" *ngFor="let  Wallet of walletlists">
+                            {{Wallet.description}}
+                        </option>
+                    </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="walletlists"
+                                [(ngModel)]="selectedCurrency" formControlName="wallets">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4 ">
+                    <div class=" div_flex p_5_10 ">
+                        <label>Initial Balance</label>
+                        <input type="number" class="inBala inp_agent_time" />
+                        :
+                        <input type="number" class="inBala inp_agent_time" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Cash Amount</label>
+                        <input type="number" class="inStartD inp_agent_time" formControlName="cashAmountlow" /> :
+                        <input type="number" class="inStartD inp_agent_time" formControlName="cashAmounthigh" />
+                    </div>
+                    <!-- <div class="div_flex p_5_10">
+                        <label>Operation type</label>
+                        <select class="seclectopt">
+                            <option value="" *ngFor="let name of HistoryType">{{name.Names}}</option>
+                        </select>
+                    </div> -->
+                    <div class="div_flex p_5_10">
+                        <label>Activity</label>
+                        <div class="d-flex flex-wrap justify-content-center align-items-center w-100">
+                            <input type="text" formControlName="operationTypes" [(ngModel)]="SelectedOperationsNames"
+                                [readonly]="true" (click)="operationClosePopup()" class="bg-white text-overflow-clip">
+                            <button class="fillterbtn-games font-size-16" (click)="operationClosePopup()">
+                                <i *ngIf="!operationPopup" class="fa fa-chevron-down IcArrow-games" title="open"
+                                    style="font-size:10px;"></i>
+                                <i *ngIf="operationPopup" class="fa fa-chevron-up IcArrow-games" title="close"
+                                    style="font-size:10px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4 ">
+                    <div class="div_flex p_5_10">
+                        <label>Details</label>
+                        <input type="text" class="" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Initiator</label>
+                        <input type="text" class="" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>First record</label>
+                        <input type="text" formControlName="firstRecord" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord" type="text" pattern="[0-9]*" maxLength="9"
+                            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : '' " />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df m_3">
+        <div style="margin-right:20px;" *ngIf="DetailedtranstionData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+
+    </div>
+</div>
+<div class="fd">
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div> 
+        </div>
+    </div>
+    <div class="fd table_2 ">
+        <table class="tablCode " id="excel-table">
+            <thead>
+                <tr>
+                    <th>{{playerExplorer?'Player':'Agent'}}</th>
+                    <th>Date</th>
+                    <th>Initial Balance</th>
+                    <th>Cash Amount</th>
+                    <th>Operation Type</th>
+                    <ng-container *ngIf="playerExplorer">
+                        <th>Bonus Amount</th>
+                        <th>TM Amount</th>
+                        <th>Ticket</th>
+                    </ng-container>
+                    <th>Details</th>
+                    <th>Initiator</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="DetailedtranstionData">
+                <tr *ngFor="let List of DetailedtranstionData,let i=index">
+                    <td>{{List.user?.login}}</td>
+                    <td class="text-nowrap">{{changeDate(List.date)}}</td>
+                    <td class="text-end"> {{List.initialBalance?.value |numberFormat}}</td>
+                    <td class="text-end"> {{List.cashAmount?.value |numberFormat}}</td>
+                    <td>{{getOperationType(List.operationType)}} </td>
+                    <ng-container *ngIf="playerExplorer">
+                        <td class="text-end">{{List.bonusAmount.value |numberFormat}}</td>
+                        <td class="text-end">{{List.tournamentMoneyAmount.value |numberFormat}}</td>
+                        <td class="text-end">{{List.tournamentTicketAmount.value |numberFormat}}</td>
+                    </ng-container>
+                    <td class="text-nowrap">{{List.details}}</td>
+                    <td>{{List.initiator?.login}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% operation popup start %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+    <div *ngIf="operationPopup" class="black_cover">
+        <div *ngIf="operationPopup" class="fd filterDiv-game-filter-child">
+            <div class="PopupHead">
+                <h5 class="text-center">Operations</h5>
+                <span class="closetop" (click)="operationClosePopup()"> <img src="assets/icons/closePop.svg">
+                </span>
+            </div>
+            <div class="d-flex flex-row all-games" style="z-index: 1000;">
+                <input class="m_r_5" type="checkbox" id="allActivities" [(ngModel)]="allOperations"
+                    (change)="clickOnAllOperationCheckbox()">
+                <label for="{{allOperations}}">All Operations</label>
+            </div>
+            <div *ngIf="TransactionHistoryFilter">
+                <div *ngFor="let key of getObjectKeys(TransactionHistoryFilter); let i = index">
+                    <div class="d-flex flex-row all-games ms-4" style="background-color: rgb(190 204 228);">
+                        <input class="m_r_5" type="checkbox" id="{{key}}" [(ngModel)]="keysCheckedList[i]"
+                            (change)="clickOnkeysCheckedListNamecheckbox($event, i)">
+                        <label for="{{key}}" class="text-nowrap">{{getDisplayName(key)}}</label>
+                        <div class="fd" (click)="toggleParent(i)">
+                            <span [class]="isParentOpen[i] ? 'arrows down' : 'arrows right'"></span>
+                        </div>
+                    </div>
+                    <div *ngIf="isParentOpen[i]">
+                        <div *ngFor="let name of TransactionHistoryFilter[key]; let j = index">
+                            <div class="d-flex flex-row all-games ms-5"
+                                style="background-color: #eef0f4;font-size: 14px;" (click)="toggleSubParent(i, j)">
+                                <input class="m_r_5" type="checkbox" id="{{name.name}}"
+                                    [(ngModel)]="systemNameCheckbox[i][j]"
+                                    (change)="clickOnSystemNameCheckbox($event, i,j)">
+                                <label for="{{name.name}}">{{name.name}}</label>
+                                <span [class]="isSubParentOpen[i][j] ? 'arrows down' : 'arrows right'"></span>
+                            </div>
+
+                            <div *ngIf="isSubParentOpen[i][j]" class="poker-caption-container">
+                                <div *ngFor="let opt of name.operationTypes.transactionTypes; let n= index"
+                                    class="caption-checkbox">
+                                    <input class="m_r_5" type="checkbox" id="{{opt.name}}"
+                                        [(ngModel)]="transactionTypeCheckbox[i][j][n]"
+                                        (change)="clickOnTransactionTypeCheckbox($event, i,j,n)">
+                                    <label for="{{opt.name}}">{{opt.name}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottomFixs">
+                <button class="closeBTN" (click)="operationClosePopup()">close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% operation popup end %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->

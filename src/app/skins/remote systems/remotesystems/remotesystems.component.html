@@ -1,0 +1,215 @@
+<!-- topnav -->
+<!-- <div class="topnav">   
+    <div class="dropdown">
+      <button class="dropbtn">Actions</button>
+      <div class="dropdown-content">
+        <a>Edit Parameters</a>
+      </div>
+    </div>
+   <a (click)="openRemotePop()">Open</a>
+   <a >Explore</a>
+   <a (click)="ignoreContext()">Ignore Context</a>
+   <div class="dropdown">
+      <button class="dropbtn">View</button>
+      <div class="dropdown-content">
+        <a (click)="onRequery()">Normal</a>
+        <a>Autosize</a>
+        <a>Card</a>
+      </div>
+    </div>
+   <a (click)="onRequery()">Requery</a>
+   <a (click)="exportExcel()">Export to XSL</a>
+   <a (click)="onPrint()">Print</a>
+</div> -->
+<!-- topnav End -->
+
+<div>
+  <button class="fillterbtn font_14 ml_25" style=" float: right;" (click)="onRequery()">Requery</button>
+  <button class="fillterbtn m_l_5" style="float: right;" (click)="exportExcel()"> Export
+    Excel</button>
+  <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+  <h3>Remote Systems</h3>
+
+</div>
+
+<div class="fd over_tbl" id="tablerecords" style="overflow-x:auto;">
+  <div clas='fd' *ngIf="dataLoader">
+    <div class="loaderWraper">
+      <div class="loader"></div>
+    </div>
+  </div>
+  <div class=" table_2">
+    <table class="fd tablCode" id="excel_table">
+      <thead>
+        <tr>
+          <th>Face</th>
+          <th>IntegrationType </th>
+          <th>Login</th>
+          <th>Password</th>
+          <th>Supported Currencies</th>
+          <th>Login Prefix</th>
+          <th>Website URL</th>
+          <th>Webservice URL</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="remoteSystemDatas">
+        <!-- <tr  *ngFor="let i = index;  let list of remoteSystemDatas  | paginate: {itemsPerPage:selectnum, currentPage:p}"> -->
+        <tr (dblclick)="openRemotePop();onClick(i)" *ngFor=" let i = index;  let list of remoteSystemDatas">
+
+
+          <td>{{list.login}}</td>
+          <td>{{list.integrationTypeName}}</td>
+          <td>{{list.login}}</td>
+          <td>{{list.password}}</td>
+          <td>{{list.walletsName}} </td>
+          <td>{{list.loginPrefix}}</td>
+          <td></td>
+          <td>{{list.webserviceUrl}}</td>
+        </tr>
+      </tbody>
+      <!-- <tfoot *ngIf="remoteSystemDatas">
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tfoot> -->
+    </table>
+  </div>
+  <div class="text-centers">
+    <div style="margin-right:20px;" *ngIf="remoteSystemDatas">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+    <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="ResultCount">To get data set and apply the filters</b></div>
+
+
+    <div class="fd" *ngIf="remoteSystemDatas">
+      <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || remoteSystemDatas==null" (click)="fastbackforward()"><i
+            class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||remoteSystemDatas==null" (click)="prev()">
+          <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+          <div class="" *ngIf="remoteSystemDatas">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="remoteSystemDatas == null || pagecontrolbtn" (click)="next()">
+          <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="remoteSystemDatas==null || pagecontrolbtn" (click)="fastforward()"><i
+            class="fa fa-step-forward" style="font-size:20px"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- table-end -->
+
+
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="remotepopup">
+  <div class="popup_1 pop_sm" *ngIf="remotepopup">
+    <div class="PopupHead">
+      <h5 class="text-center">Edit Remote Systems Parameters </h5>
+      <span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <form [formGroup]="filterForm">
+      <div class="soon font_13 fd p_lr_15">
+        <div class="fd p_5 row">
+          <div class="df m_3">
+            <label class="col-sm-6"> Face </label>
+            <span class="col-sm-6">{{subRemote.name}}</span>
+          </div>
+          <div class="df m_3">
+            <label class="col-sm-6">IntegrationType </label>
+            <span class="col-sm-6">{{subRemote.integrationTypeName}}</span>
+          </div>
+          <div class="df m_3 fd">
+            <label class="col-sm-6"> Login </label>
+            <input type="text" class="fd" [(ngModel)]="subRemote.login" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="df m_3 fd">
+            <label class="col-sm-6"> Password </label>
+            <input type="text" class="fd" [(ngModel)]="subRemote.password" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="df m_3">
+            <label class="col-sm-6">subRemote Currenciesss </label>
+
+            <!-- <select class="col-sm-6"> 
+            <option [ngValue]="wallets.guid" *ngFor="let  wallets of currencyCode">
+              {{wallets.currencyCode}}
+            </option> -->
+            <!-- </select>formControlName="currency" -->
+            <div class="multi_dropdown col-sm-6">
+              <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="walletTypesList"
+                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                (onDeSelect)="OnItemDeSelectcurrency($event)" (onSelectAll)="onSelectAllcurrency($event)"
+                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+
+              </ng-multiselect-dropdown>
+              <div class="fd">
+                <span class="text-danger" *ngIf="selectedcurrency.length==0 "> value must be positive</span>
+              </div>
+            </div>
+          </div>
+          <div class="df m_3">
+            <label class="col-sm-6">Default Currency </label>
+            <div class="col-sm-6">
+              <select class="col-sm-12" [ngModelOptions]="{standalone: true}" [(ngModel)]="DefaultCurrency"(change)="defaultChange()"  >
+                <option [ngValue]="wallets.guid" *ngFor="let  wallets of selectedcurrency" >
+                  {{wallets.description}}
+                </option>
+              </select>
+              <div class="fd">
+                <span class="text-danger" *ngIf="selectedcurrency.length==0 "> value must be positive</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="df m_3">
+            <label class="col-sm-6">Send Balance in</label>
+            <div class="col-sm-6" style="display: grid;">
+              <span>
+                <input type="radio" name="options" [(ngModel)]="radioCheckbox" [value]="true"
+                  [ngModelOptions]="{standalone: true}" (change)="onSelectedRadio()"> Player's referred wallets
+              </span>
+              <span>
+                <input type="radio" name="options" [(ngModel)]="radioCheckbox" [value]="false"
+                  [ngModelOptions]="{standalone: true}" (change)="onSelectedRadio()"> System's default Currency
+              </span>
+            </div>
+          </div>
+
+
+
+          <div class="df m_3">
+            <label class="col-sm-6">Website URL </label>
+            <input type="text" class="fd" [(ngModel)]="subRemote.websiteUrl" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="df m_3">
+            <label class="col-sm-6"> Webservice URL </label>
+            <input type="text" class="fd" [(ngModel)]="subRemote.webserviceUrl" [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="bottomFix">
+      <button class="btn_grade_1 Pagebtns" [disabled]="selectedcurrency.length==0" (click)="EditRemoteSystems()"> Save
+      </button>
+      <button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+    </div>
+  </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->
+
+<!-- ################################################### -->
+<div class="black_cover" *ngIf="Spinner"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="Spinner">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+<!-- ################################################### -->

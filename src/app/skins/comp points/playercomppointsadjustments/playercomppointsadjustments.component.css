@@ -1,0 +1,49 @@
+.Pagebtns {
+    padding: 5px;
+    border: none;
+}
+
+.PageCountNoDiv {
+    width: 40px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.PageCountNoDiv div {
+    font-weight: 600;
+}
+
+.pagecount {
+    margin: 5px;
+    border: 3px solid #40483e;
+    display: flex;
+    position: absolute;
+    right: 0;
+}
+
+.text-centers {
+    display: flex;
+    margin: 5px;
+
+}
+thead{
+    position: sticky;
+    top: -1px;
+}
+.table_3 {
+    overflow-y: auto;
+ 
+    height: 400px;
+    width: 100% !important;
+    /* background: #e8eeef; */
+    background-color: #eee;
+}
+
+.UI-change{
+    color: rgb(60, 60, 225);
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -1,0 +1,62 @@
+.color{
+    /* background-color: #63c5ea; */
+    background-color: #ace4f9;
+}
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+input {
+    padding: 5px;
+    /* width: 200px; */
+    margin: 2px;
+}
+
+label {
+    padding-right: 20px;
+    width: 130px;
+}
+
+
+.df {
+    display: flex;
+
+}
+
+.reglabel {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.text-centers {
+    display: flex;
+    /* justify-content: space-around; */
+    margin: 5px;
+}
+
+.table_1 thead th {
+    position: sticky;
+    top: 0;
+    padding: 1px 68px;
+}
+
+table tfoot {
+    inset-block-end: 0;
+    /* "bottom" */
+  
+  }
+  
+  tfoot {
+    position: sticky;
+    bottom: -1px;
+  }
+  
+  table tfoot tr td {
+    /* border-radius: 2em; */
+    background-color: #a6bfc5;
+    color: #000000;
+  }

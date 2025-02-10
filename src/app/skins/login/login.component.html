@@ -1,0 +1,122 @@
+<div class="fd">
+    <form>
+        <div class="loginPage">
+            <div class="black_cover" *ngIf="loginloader"></div>
+            <!-- <div clas='fd' >
+                <div class="loaderWraper" *ngIf="loginloader">
+                    <div class="loader"></div>
+                </div>
+            </div> -->
+            <div clas='fd ' *ngIf="loginloader">
+                <div class="loader_Cover ">
+                    <div class="loader12 gameInLoader loader_d_f"></div>
+                </div>
+            </div>
+            <div class="loginPageIn">
+                <div class="fd m_t_15">
+                    <h3 class="text_center login_edit"> Login to Back Office </h3>
+                </div>
+                <form [formGroup]="logInForm">
+                    <!-- <div class="text-danger">{{errormsg}}</div> -->
+                    <!-- <div class="fd m_t_15">
+                        <label class="label_edit"> Username </label>
+                        <input class="mb-10 " type="" formControlName="userName" (keypress)="userNameValid($event)" placeholder="Username" >
+                    </div> -->
+                    <div class="fd m_t_15 mb_15">
+                        <input [ngClass]="usernameactive?'input_user':''"
+                            class="mb-10 form-row-field-input form-control" type="text" formControlName="userName"
+                            (input)="usernameact($event)" (keypress)="userNameValid($event)">
+                        <label class="form-row-field"> Username </label>
+                    </div>
+                    <div class="error_msg" *ngIf="f['userName'].touched && f['userName'].invalid">
+                        <div *ngIf="f['userName'].errors && f['userName'].errors['required']">Enter valid UserName
+                        </div>
+                        <div *ngIf="f['userName'].errors && f['userName'].errors['minlength']">Username must be min 4
+                            characters max 15 characters
+                        </div>
+                        <div *ngIf="f['userName'].errors && f['userName'].errors['maxlength']"> Username must be min 4
+                            characters max 15 characters
+                        </div>
+                    </div>
+                    <div class="fd m_t_15 mb_15">
+                        <input [ngClass]="passwordactive?'input_user':''" class="form-row-field-input form-control"
+                            type="password" formControlName="passWord" (input)="passwordact($event)"
+                            (keypress)="passwordValid($event)" [type]="fieldTextType?'password':'text'"
+                            autocomplete="off">
+                        <span class="iconeyeLOGin" (click)="viewpass()">
+                            <i [ngClass]="changeeye?'fa fa-eye-slash':'fa fa-eye'" style="color: rgb(63, 62, 62);"></i>
+                        </span>
+                        <label class="mb-10 form-row-field"> Password </label>
+                    </div>
+                    <div class="error_msg" *ngIf="f['passWord'].touched && f['passWord'].invalid">
+                        <div *ngIf="f['passWord'].errors && f['passWord'].errors['required']">Enter valid Password
+                        </div>
+                        <div *ngIf="f['passWord'].errors && f['passWord'].errors['minlength']">Password must be min 4
+                            characters max 15 characters
+                        </div>
+                        <div *ngIf="f['passWord'].errors && f['passWord'].errors['maxlength']"> Password must be min 4
+                            characters max 15 characters
+                        </div>
+                    </div>
+                    <div class="fd m_t_15 df">
+                        <input type="checkbox" checked class="m_3" style="width: 16px;" formControlName="RememberMe">
+                        <label class="mb-10"> Remember Me </label>
+                    </div>
+
+                    <div class="fd text-center " *ngIf="errormsg">
+                        <!-- <p class="text-danger errormsg12" *ngIf="!errormsg"> Invalid Login or Password</p> -->
+                        <p class="text-danger errormsg12"> {{errormsg}}</p>
+                    </div>
+                    <div class="fd m_t_25 submit-btn text-center">
+                        <!-- <button type="submit" (click)="login()" [disabled]="logInForm.invalid "> Submit </button> -->
+                        <button type="submit" (click)="login()" [disabled]="logInForm.invalid || apiFail"> Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="black_cover" *ngIf="verifyTwoFactorPopup">
+    <!-- <div class="popup_1 pop_sm" *ngIf="verifyTwoFactorPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Verify Two Factor Authentication </h5>
+            <span class="closetop" (click)="verifyTwoFactorPopupClose()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+           
+            </div> --> 
+            <div class="centered-div">
+            <div class="otp-dialog">
+                <h2>OTP Verification</h2>
+                <div class="text-center text-danger my-2" *ngIf="otpVerificationMsg">
+                   <b>{{otpVerificationMsg}}</b>
+                </div>
+                <form [formGroup]="otpForm" (ngSubmit)="verifyTwoFactor()">
+                  <div class="otp-inputs">
+                    <input
+                      *ngFor="let control of otpControls; let i = index"
+                      [formControlName]="control"
+                      maxlength="1"
+                      type="number" 
+                      (input)="onInput($event, i)"
+                      (keydown.backspace)="onBackspace($event, i)"
+                      #otpInput
+                    />
+                  </div>
+                  <div class="error" *ngIf="otpForm.invalid && otpForm.touched">
+                    Please enter a 6-digit OTP.
+                  </div>
+                  <div class="actions">
+                    <button type="button" (click)="verifyTwoFactorPopupClose()">Cancel</button>
+                    <button type="submit" [disabled]="otpForm.invalid || isOTPVerifyDisabled">Verify</button>
+                  </div>
+                </form>
+              </div>
+              </div>
+              
+        <!-- </div>
+    </div> -->
+</div>

@@ -1,0 +1,75 @@
+<!-- <div class="fd">
+    <div class="fd p_lr_20">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-4 col-6" *ngFor="let list of tablist" (click)="gotoUrl(list.url)">
+                <div class="tabBox">
+                    <div class="tabIcon"> <img src="assets/icons/MenuIcons/{{list.icon}}.svg" class="imgsize">
+                    </div>
+                    <div class="fd p_b_10">
+                        {{list.name}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div> -->
+
+<div class="fd">
+    <h3>DashBoard</h3>
+    <div class="fd p_lr_20">
+        <div class="row">
+            <div class="col-sm-12 col-md-4 col-lg-3">
+                <div class="tabBox">
+
+                    <div class="tabIcon">
+                        <img class="imgsize" src="assets/icons/Online-Players.png" alt="">
+
+                    </div>
+                    <div class="fd p_b_10">
+                        Online Players
+                    </div>
+                    <p>{{OnlinePlayersCount}}</p>
+                </div>
+            </div>
+            <div class=" col-sm-12 col-md-4 col-lg-3">
+                <div class="tabBox">
+                    <div class="tabIcon">
+
+                        <img class="imgsize" src="assets/icons/Active-Tables.png" alt="">
+                    </div>
+                    <div class="fd p_b_10">
+                        Active Tables
+                    </div>
+                    <p>{{ActiveTables}}</p>
+                </div>
+            </div>
+            <div class="  col-sm-12 col-md-4 col-lg-3">
+                <div class="tabBox">
+                    <div class="tabIcon">
+                        <img class="imgsize" src="assets/icons/Active-Players.png" alt="">
+
+                    </div>
+                    <div class="fd p_b_10">
+                        Active Players
+                    </div>
+                    <p>{{ActivePlayers}}</p>
+                </div>
+            </div>
+            <div class="  col-sm-12 col-md-4 col-lg-3">
+                <div class="tabBox">
+
+                    <div class="tabIcon">
+                        <img class="imgsize" src="assets/icons/Total-Registered-Players.png" alt="">
+
+                    </div>
+                    <div class="fd p_b_10">
+                        Total Reg. Players
+                    </div>
+                    <p>{{registrationsPlayersCount}}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

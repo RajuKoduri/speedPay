@@ -1,0 +1,438 @@
+<div class="fd">
+
+    <div class="fd d_flex ">
+        <div class="mainside_cover" id="blackcovermobile" (click)="closeMenuNames()" *ngIf="closeMenuCoverDiv == true">
+        </div>
+        <div class="sideMenu sideMenu12" id="sideMenu" [ngClass]="{ openMenu: isMenuOpen }">
+            <!-- <app-sidemenu></app-sidemenu> -->
+
+            <div class="df">
+                <div class=" p_5">
+                    <h5>Player Explore</h5>
+                </div>
+                <div (click)="openSideP()" class="text-end" title="Add Ticket">
+                    <!-- <i class="fa fa-ellipsis-v" style="font-size:24px"></i> -->
+
+                    <img src="assets/Logos/right-click.png" class="right_image">
+                </div>
+                <div *ngIf="popupList" class="black_cover" (click)="popupListclose()">
+                    <div class="popup1" *ngIf="popupList">
+                        <button (click)="clickOnPlayerAction('AddTicket')">Add Ticket</button>
+                        <button (click)="clickOnPlayerAction('attach-documents')">Attach Document</button>
+                        <button (click)="clickOnPlayerAction('add-comment')">Add comment</button>
+                        <button (click)="clickOnPlayerAction('TMAdjustment')">Tm Adjustment</button>
+                        <button (click)="compulsaryCashoutPopup()">Compulsary Cashout</button>
+                        <button (click)="changePermissionGroupPopup()">Change Permission Group</button>
+                        <button (click)="reportActivityPopup()">Report Activity</button>
+                        <button (click)="clickOnPlayerAction('PointsAdjustment')">Comp Points Adjustment</button>
+                        <button (click)="clickOnPlayerAction('ResetDisconnectionSettings')">Reset Disconnection
+                            Settings</button>
+                    </div>
+                </div>
+            </div>
+            <li class="list_tag">
+                <!-- <div (click)="playerMenu(true)" class="main_liTag" (click)="showPopu('Pexplore')" [ngClass]="{'activeTab' : popupName == 'Pexplore' }"> -->
+
+                <div class="p_10 fd icon_i" (click)="showPopu('Pexplore')" routerLinkActive="active_link_1"
+                    routerLink="/playerexplorer/PlayersSummary">{{PlayerName}}<span *ngIf="!playermenu"><i
+                            class="fa fa-angle-right font_ss"></i> </span> <span *ngIf="playermenu"><i
+                            class="fa fa-angle-down font_ss"></i></span>
+                </div>
+                <!--	<div class="p_10 fd icon_i" (click)="showPopu('Pexplore')" routerLinkActive="active_link_1"
+                routerLink="/playerexplorer/PlayersSummary" [queryParams]="{pname:encryptedPlayerName,pguide:encryptedPlayerGuide}">{{PlayerName}}<span *ngIf="!playermenu"><i
+                            class="fa fa-angle-right font_ss"></i> </span> <span *ngIf="playermenu"><i
+                            class="fa fa-angle-down font_ss"></i></span>
+                </div>-->
+            </li>
+            <div class="fd">
+                <ul *ngIf="playermenu" class="menuSide" (click)="sidebarclose()">
+                    <!-- <li  routerLink="/playerexplorer/Personalinfo" (click)="showPopu('Pinfo')" [ngClass]="{'activeTab' : popupName == 'Pinfo' }">Personal Information</li>
+                    <li routerLink="/playerexplorer/PlayerBonusAdjustment" (click)="showPopu('PBAdjustment')" [ngClass]="{'activeTab' : popupName == 'PBAdjustment' }">Bonus Adjustment </li>
+                    <li routerLink="/playerexplorer/PlayerCashAdjustment" (click)="showPopu('PCAdjustment')" [ngClass]="{'activeTab' : popupName == 'PCAdjustment' }">Cash Adjustment </li>
+                    <li routerLink="/playerexplorer/PlayerManualDeposit" (click)="showPopu('PMDeposit')" [ngClass]="{'activeTab' : popupName == 'PMDeposit' }">Manual Deposit  </li> -->
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/Personalinfo">Personal Information</li>
+                    <!-- <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/PlayerCashWallets">Summary</li> -->
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/AttachedDocuments">Attached Documents</li>
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/PlayerBonusAdjustment">Bonus Adjustment</li>
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/PlayerCashAdjustment">Cash Adjustment</li>
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/PlayerManualDeposit">Manual Deposit</li>
+                    <!-- <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/PlayerCashWallets">Summary</li> -->
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/playerHouseRevenue">House Revenue</li>
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/acplayerbalance">Player Balance</li>
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/RefferedPlayers">Reffered Players</li>
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/playerPendingCashouts">Pending Cashout</li>
+
+                    <!--<li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/Personalinfo" [queryParams]="{pname:encryptedPlayerName,pguide:encryptedPlayerGuide}">Personal Information</li>
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/PlayerBonusAdjustment" [queryParams]="{pname:encryptedPlayerName,pguide:encryptedPlayerGuide}">Bonus Adjustment</li>
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/PlayerCashAdjustment" [queryParams]="{pname:encryptedPlayerName,pguide:encryptedPlayerGuide}">Cash Adjustment</li>
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/PlayerManualDeposit" [queryParams]="{pname:encryptedPlayerName,pguide:encryptedPlayerGuide}">Manual Deposit</li>
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/PlayerCashWallets" [queryParams]="{pname:encryptedPlayerName,pguide:encryptedPlayerGuide}">Summary</li>
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/playerHouseRevenue" [queryParams]="{pname:encryptedPlayerName,pguide:encryptedPlayerGuide}">House Revenue</li>
+                    <li class="sidebtns MT_JCE" routerLinkActive="active_link_1"
+                        routerLink="/playerexplorer/playerPendingCashouts" [queryParams]="{pname:encryptedPlayerName,pguide:encryptedPlayerGuide}">Pending Cashout</li>
+						-->
+
+
+
+
+                    <li style="padding: 0px;">
+                        <div class="p_10 fd icon_i" (click)="showPopu('PokerGames')" routerLinkActive="active_link_1">
+                            Poker Games<span *ngIf="!PokerGame"><i class="fa fa-angle-right font_ss"></i> </span> <span
+                                *ngIf="PokerGame"><i class="fa fa-angle-down font_ss"></i></span>
+                        </div>
+                        <div class="fd">
+
+                            <ul *ngIf="PokerGame">
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/pokertableshistory">Poker Tables History</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/pokertablespokerhandshistory">Poker Hands History</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/pokersitngoHistory">Poker Sit'n'Go History</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/pokertournamenthistory">Poker Tournaments History</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/tournamenttickets">Tournaments Tickets</li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    <li style="padding: 0px;">
+                        <div class="p_10 fd icon_i" (click)="showPopu('RemoteSystems')"
+                            routerLinkActive="active_link_1"> Remote Systems<span *ngIf="!remotemenu"><i
+                                    class="fa fa-angle-right font_ss"></i> </span> <span *ngIf="remotemenu"><i
+                                    class="fa fa-angle-down font_ss"></i></span>
+                        </div>
+                        <div class="fd">
+                            <ul *ngIf="remotemenu" style="padding: 0px;">
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/remotegamesessions">Remote Game Sessions</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li style="padding: 0px;">
+                        <div class="p_10 fd icon_i" (click)="showPopu('Comppoints')" routerLinkActive="active_link_1">
+                            Comp points<span *ngIf="!ComppointsMenu"><i class="fa fa-angle-right font_ss"></i> </span>
+                            <span *ngIf="ComppointsMenu"><i class="fa fa-angle-down font_ss"></i></span>
+                        </div>
+                        <div class="fd">
+                            <ul *ngIf="ComppointsMenu" style="padding: 0px;">
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/playercomppointsbalance/">Comp Points Balance</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/playercomppointsadjustments">Comp Points Adjustments
+                                </li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/playercomppointsexchange">Comp Points Exchange</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/levelchangeshistory">level Changes History</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/comppointsCounters">Comp Points Counters</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li style="padding: 0px;">
+                        <div class="p_10 fd icon_i" (click)="showPopu('depositlimitssettings')"
+                            routerLinkActive="active_link_1">Additional<span *ngIf="!AdditionalMenu"><i
+                                    class="fa fa-angle-right font_ss"></i> </span> <span *ngIf="AdditionalMenu"><i
+                                    class="fa fa-angle-down font_ss"></i></span>
+                        </div>
+                        <div class="fd">
+                            <ul *ngIf="AdditionalMenu" style="padding: 0px;">
+                                <!-- <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/depositlimitssettings">Deposit limits settings</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/P2pTransferLimits">P2P Transfer Limits</li> -->
+                                <!-- <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/p2pReferringSettings">P2P Referring Settings</li> -->
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/depositbonussettings">Deposit Bonus settings</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/EmailSettings">Email Settings</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/comments">Comments</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="p_10 fd icon_i" (click)="showPopu('Payment History')"
+                            routerLinkActive="active_link_1">Payment History<span *ngIf="!PaymentHistoryMenu"><i
+                                    class="fa fa-angle-right font_ss"></i> </span> <span
+                                *ngIf="PaymentHistoryMenu      "><i class="fa fa-angle-down font_ss"></i></span>
+                        </div>
+                        <div class="fd">
+                            <ul *ngIf="PaymentHistoryMenu" style="padding: 0px;">
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/cashdeposits">Deposits</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/withdrawals">Withdrawals</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/cashout">Cashouts</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/chargebacks">Chargebacks</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/playercashadjustments">Cash Adjustments</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/playerbonusadjustments">Bonus Adjustments</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/promotinolcodeusages">Promotinol Codes Usages</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/transfersfromagent">Transfers from Agent </li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/tmadjustments">TM Adjustments </li>
+                                <!-- <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playerexplorer/p2pTransfers">P2P Transfers </li> -->
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/DetailTransaction">Detailed Transaction History</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/currencyexchanges">Currency Exchanges</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/promotionprizepayments">Promotion Prize Payments</li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    <li style="padding: 0px;">
+                        <div class="p_10 fd icon_i" (click)="showPopu('Suspicious Information')"
+                            routerLinkActive="active_link_1">Suspicious Information<span
+                                *ngIf="!SuspiciousInformation"><i class="fa fa-angle-right font_ss"></i> </span> <span
+                                *ngIf="SuspiciousInformation"><i class="fa fa-angle-down font_ss"></i></span>
+                        </div>
+                        <div class="fd">
+                            <ul *ngIf="SuspiciousInformation" style="padding: 0px;">
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/playerlinks">Player Links</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/playeriphistory">IP History</li>
+                                <li class="sidebtns" routerLinkActive="active_link_1"
+                                    routerLink="/playerexplorer/blacklist">Black List</li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- <li style="padding: 0px;">
+                     <div class="p_10 fd icon_i" (click)="showPopu('RemoteSystems')" routerLinkActive="active_link_1"> Suspicious Information <span *ngIf="!remotemenu"><i
+                        class="fa fa-angle-right font_ss"></i> </span> <span *ngIf="remotemenu"><i
+                        class="fa fa-angle-down font_ss"></i></span>
+                  </div>
+                  <div class="fd">
+                      <ul *ngIf="remotemenu" style="padding: 0px;">
+                          <li class="sidebtns" routerLinkActive="active_link_1" routerLink="/playerexplorer/remotegamesessions">Player Link</li>
+                      </ul>
+                  </div>
+                    </li> -->
+
+                    <!-- <li routerLink="/playerexplorer/PlayersSummary">Attached Documents</li> -->
+                    <!-- <li>Summary</li>
+                    <li>House Revenue</li>
+                    <li>Player Blance</li>
+                    <li>Pending Cashout</li>
+                    <li>Casino Games</li>
+                    <li>Poker Games</li>
+                    <li>Remote Systems</li>
+                    <li>Comp Points</li>
+                    <li>Payment History</li>
+                    <li>Additional</li> -->
+                </ul>
+            </div>
+        </div>
+
+        <div *ngIf="isCompulsaryCashout">
+            <app-compulsory-cahout (notifyParent)="compulsaryCashoutPopup()" [userInfo]="PlayerInfo"
+                [userType]="'Player'"></app-compulsory-cahout>
+        </div>
+
+        <div *ngIf="isChangePermissionGroup">
+            <change-permission-group (notifyParent)="changePermissionGroupPopup()" [userInfo]="PlayerInfo"
+                [userType]="'Player'"></change-permission-group>
+        </div>
+
+        <div *ngIf="isReportActivity">
+            <report-activity (notifyParent)="reportActivityPopup()" [userInfo]="PlayerInfo"
+                [userType]="'Player'"></report-activity>
+        </div>
+
+
+
+        <!-- **************************** AddTicket Player ********************************** -->
+
+        <div class="black_cover" *ngIf="addTicketToPlayer">
+            <div class="popup_1" *ngIf="addTicketToPlayer">
+                <div class="PopupHead">
+                    <h5 class="text-center">Add Ticket </h5>
+                    <span class="closetop" (click)="addTicketToPlayerclosepopup()">
+                        <img src="assets/icons/closePop.svg"> </span>
+                </div>
+                <div class="soon font_13 fd p_lr_15">
+                    <div class="p_5">
+                        <!-- <app-registerPlayer [registerPlayerData]="pokerPlayerData"
+                    (registerPlayerButton)="updateRegisterPlayerButton()"
+                    (registerclosepopUp)="registrationApiStatus($event)"
+                    ></app-registerPlayer> -->
+
+                        <div>
+                            <app-add-ticket-to-player (addEnableDisableButton)="tournamentsDatalength=$event"
+                                (addResultStatus)="getaddResultStatus($event)"></app-add-ticket-to-player>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spinnerTrue" *ngIf="addTicketLoader">
+                    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+                </div>
+
+
+
+                <div class="bottomFix">
+                    <button
+                        [ngClass]="{'btn_grade_1': tournamentsDatalength == true , 'btn_grade': tournamentsDatalength == false}"
+                        (click)="clickOnaddTicketToPlayer()">Add </button>
+                    <button class="btn_grade_2" (click)="addTicketToPlayerclosepopup()"> close </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- **************************** AddTicket Player ********************************** -->
+
+
+        <!-- **************************** AddTicket Success and Error popup ********************************** -->
+
+        <div class="black_cover" *ngIf="AddTicketSuccessFailurePopup">
+            <div class="popup_1 pop_sm" *ngIf="AddTicketSuccessFailurePopup">
+                <div class="PopupHead">
+                    <h5 class="text-center">Alert</h5>
+                    <span class="closetop" (click)="AddTicketSuccessFailurePopupPopupClose()"> <img
+                            src="assets/icons/closePop.svg"> </span>
+                </div>
+                <div class="soon font_13 fd p_lr_15 text-center">
+                    <div class="p_5" *ngIf="AddTicketSuccessFailurePopup">
+                        <h4>{{AddTicketSuccessFailurePopup}}</h4>
+                    </div>
+                </div>
+                <div class="bottomFix">
+                    <button class="btn_grade_2" (click)="AddTicketSuccessFailurePopupPopupClose()"> Cancel </button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- **************************** AddTicket Success and Error popup ********************************** -->
+
+
+        <div class="rightBody" id="rightBody" [ngClass]="{ closeMenu: !isMenuOpen }">
+            <div class="fd">
+                <!-- <div class="bg_27 shadow_2 dashTop z_1 p_15 d_flex spc_bwtn"> -->
+                <div class="bg_27 shadow_2 dashTop p_15 d_flex spc_bwtn">
+                    <div class="d_flex">
+                        <div (click)="toggelMenu()" class="clr_ff menuIcn">
+                            <!-- <img class="menuIcon" src="assets/icons/menu.svg" /> -->
+                            <!-- <i class="fa fa-regular fa-xmark-large"></i> -->
+                            <!-- <i class="fa fa-times" aria-hidden="true"></i> -->
+                            <i [ngClass]="isMenuOpen ? 'fa fa-bars' : 'fa fa-solid fa-bars' "></i>
+                            <!-- <i [ngClass]="isMenuOpen ? 'fa fa-times' : 'fa fa-solid fa-bars' "></i> -->
+                        </div>
+                        <!-- <img class="logoTop" src="assets/logo.png" /> -->
+                        <img class="logoTop" src="assets/Back-Office.jpg" />
+                        <!-- <img class="logoTop" src="assets/Logos/latpokerlogo.png" /> -->
+                        <!-- <img class="logoTop" src="assets/Logos/logo_dark.png" /> -->
+                    </div>
+                    <!-- <div style="float:right; width: 100px;">
+               <button class="btn" (click)="logout()">Logout</button>
+               </div> -->
+                </div>
+                <div class="fd p_15 m_t_60 rightBodyScrol">
+                    <!-- <img src="assets/Logos/LatamBackImg.png" alt=""> -->
+                    <!-- <img src="../src/assets/Logos/LatamBackImg.png" alt=""> -->
+                    <router-outlet></router-outlet>
+                    <!-- <div> {{currentDateTime| date:'yyyy-MM-dd'}} </div> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ********************************attach-documents**************************** -->
+
+<div *ngIf="attachDdocumentsPop">
+    <div class="PopupHead">
+
+    </div>
+    <attach-documents (showHidePopup)="attachDdocumentsPop=$event" [isVisible]=true [userinfo]="PlayerInfo"
+        [showplayername]="PlayerName"></attach-documents>
+</div>
+
+<!-- ********************************attach-documents**************************** -->
+
+
+<!-- ********************************Add-comments**************************** -->
+
+<div *ngIf="addcCommentpopUp">
+   
+    <!-- <add-comment (showHidePopupp)="addcCommentpopUp=$event"  > </add-comment>  -->
+    <add-comment (showHidePopupp)="addcCommentpopUp=$event" [showplayername]="PlayerName"> </add-comment>
+</div>
+
+<!-- ********************************Add-comments**************************** -->
+
+
+<!-- ********************************PointsAdjustmentpopUp**************************** -->
+<div *ngIf="PointsAdjustmentpopUp">
+    
+    <app-playercomppointsadjustments (showHidePopup)="PointsAdjustmentpopUp=$event" [setcomppointsadjustments]=true
+        [userinfo]="PlayerInfo" [showplayername]="PlayerName"> </app-playercomppointsadjustments>
+</div>
+<!-- ********************************PointsAdjustmentpopUp**************************** -->
+<!-- ********************************TMAdjustment**************************** -->
+<!-- <div *ngIf="TMAdjustmentpopUp">
+    <div class="PopupHead">
+
+    </div> -->
+<!-- <app-player-cash-adjustment > </app-player-cash-adjustment> -->
+
+
+<div class="black_cover" *ngIf="TMAdjustmentpopUp">
+    <div class="popup_1" *ngIf="TMAdjustmentpopUp">
+        <div class="PopupHead">
+            <h5 class="text-center">TM Adjustment</h5>
+            <span class="closetop" (click)="TMadjustmentPopup()">
+                <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="p_5">
+                <div>
+                    <app-player-cash-adjustment (showHidePopup)="TMAdjustmentpopUp=$event" [istmAdjust]=true>
+                    </app-player-cash-adjustment>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ********************************TMAdjustment**************************** -->
+
+<div *ngIf="ResetDisconnectionSettingspopup">
+        <app-disconnection-protection-settings [resetSettings]=true  [userinfo]="PlayerInfo" (showHidePopup)="ResetDisconnectionSettingspopup=$event"></app-disconnection-protection-settings>
+</div>

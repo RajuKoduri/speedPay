@@ -1,0 +1,16 @@
+{
+    "/api/*": {
+      // "target": "http://prode.czargaming.com",
+      // "target": "http://demo.rapoker.club",
+      // "target": "https://demo.latsoft.org",
+      // "target": "http://riverweb.undertesting.com", 
+      // "target": "http://lapokerbo.undertesting.com", 
+      "target": "http://riv7.czargaming.com",
+      // "target": "http://10.10.20.71:8779",
+      // "target": "https://riverpoker-dev.czargaming.com",
+      "secure": false,  
+      "logLevel": "debug",
+      "changeOrigin": true
+    }
+} 
+

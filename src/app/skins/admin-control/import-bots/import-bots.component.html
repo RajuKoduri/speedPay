@@ -1,0 +1,32 @@
+<div class="black_cover">
+    <div class="popup_1 pop_sm text-black">
+        <form [formGroup]="importBotsForm">
+            <div class="PopupHead">
+                <h5 class="text-center">Import Bots</h5>
+                <span class="closetop" (click)="importBotsPopup()"> <img src="assets/icons/closePop.svg">
+                </span>
+            </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="fd p-2">
+                    Upload csv-file:
+                    <div class="d-flex align-items-center my-3">
+                        <div class="col-sm-8">
+                            <input type="file" class="form-control" accept=".csv">
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="btn_grade_3" (click)="onUploadCsv()">Upload</button>
+                        </div>
+                    </div>
+                    <div>
+                        <p>Please, upload list in the form below.</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="bottomFix">
+            <button class="btn_grade_1" [disabled]="" (click)="onImport()"> Import </button>
+            <button class="btn_grade_2" (click)="importBotsPopup()"> Cancel </button>
+        </div>
+    </div>
+</div>

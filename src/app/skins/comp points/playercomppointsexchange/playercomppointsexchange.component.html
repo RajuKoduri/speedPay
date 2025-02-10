@@ -1,0 +1,313 @@
+<div>
+    <h3>Player Comp Points Exchange </h3>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export
+        Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    <!-- <button class="fillterbtn m_l_5" style="margin-right:85px; float: right;" (click)="next()">
+        next</button> -->
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>Type</label>
+                        <!-- <select class="seclectopt" formControlName="Type" #tb2>
+                            <option [ngValue]="TypesList.guid" *ngFor="let  TypesList of CurrencyExchangTypeList">
+                                {{TypesList.value}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownsEttingsType" [data]="CurrencyExchangTypeList"
+                                [(ngModel)]="selectedTYpeS" (onSelect)="onItemSelectTYpe($event)"
+                                (onDeSelect)="OnItemDeSelectTYpe($event)" (onSelectAll)="onSelectAllTYpe($event)"
+                                (onDeSelectAll)="onDeSelectAllTYpe($event)" formControlName="Type">
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <!-- <select class="seclectopt" formControlName="currency" #tb2>
+                            <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlists">
+                                {{CURRENCY.description}}
+                            </option>
+                        </select> -->
+
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencystatus"
+                                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <select class="seclectopt" formControlName="currency" #tb2>
+                            <option [ngValue]="CURRENCY.guid" *ngFor="let  CURRENCY of walletlists">
+                                {{CURRENCY.description}}
+                            </option>
+                        </select>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style=" float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers">
+        <!-- <button class="fillterbtn m_l_5" style="float:right;margin-left: 1px;" (click)="onFormSubmit()">Submit</button> -->
+        <div style="margin-right:20px;" *ngIf="playerCompPointsData">Rows On the Page: {{rowsOnthePage}} </div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd">
+    <div clas='fd' *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="fd table_2">
+        <table class="fd tablCode " id="excel-table">
+            <thead>
+                <tr>
+                    <th>S.no</th>
+                    <th>Player</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Comp Points</th>
+                    <th>Amount </th>
+                </tr>
+            </thead>
+            <div class="showError" *ngIf="showError">{{showError}}</div>
+
+            <tbody *ngIf="playerCompPointsData">
+                <tr *ngFor="let list of playerCompPointsData, let i =index" (dblclick)="onClick(i)">
+                    <td>{{i+1}}</td>
+                    <td class="hyperLink" (click)="PlayerExplore(list.user.login, list.user.guid, list.user)">
+                        {{list.user.login}}</td>
+                    <td>{{list.user.type}}</td>
+                    <td>{{changeDate(list.date)}}</td>
+                    <td class="text-end">{{list.compPoints.value |numberFormat}}</td>
+                    <td class="text-end">{{list.cash.value |numberFormat}}</td>
+                </tr>
+            </tbody>
+            <tfoot *ngIf="playerCompPointsData && playerCompPointsData.length>0">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(compPoints)">
+                            {{compPoints[key]}} ; </span> </td>
+                    <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(Amount)">
+                            {{Amount[key]}} ; </span> </td>
+                   
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+</div>
+
+<div class="fd" *ngIf="playerCompPointsData">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || playerCompPointsData==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||playerCompPointsData==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="playerCompPointsData">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="playerCompPointsData==null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="playerCompPointsData==null || pagecontrolbtn" (click)="fastforward()">
+            <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- *******************************PopUP************************************** -->
+<div class="black_cover" *ngIf="playerCompPointsDatapopup">
+    <div class="popup_1 pop_sm" *ngIf="playerCompPointsDatapopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Admin: {{playerCompPointsdetails.user.login}}</h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-6"> Player</label>
+                    <span class="col-sm-6">{{playerCompPointsdetails.user.login}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Type </label>
+                    <span class="col-sm-6">{{playerCompPointsdetails.user.type}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Date </label>
+                    <span class="col-sm-6">{{playerCompPointsdetails.date}}</span>
+                </div>
+                <div class="df m_3 ">
+                    <label class="col-sm-6"> Comp Points </label>
+                    <span class="col-sm-6">{{playerCompPointsdetails.compPoints.value}}</span>
+                </div>
+                <div class="df m_3 ">
+                    <label class="col-sm-6"> Amount </label>
+                    <span class="col-sm-6">{{playerCompPointsdetails.cash.value}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- ********************************************************************* -->
+
+<!-- <div class="fd ">
+    <div (click)="filterlevel()">
+        <button class="filters">Filter
+            <i *ngIf="showPro" class="fa fa-chevron-left" style="font-size:15px"></i>
+            <i *ngIf="!showPro" class="fa fa-chevron-down" style="font-size:15px"></i>
+        </button>
+    </div>
+    <div class="fd" *ngIf="showPro">
+        <div class="filteroption">
+            <label>Date :</label>
+            <input type="datetime-local" />
+            <input type="datetime-local" />
+        </div> 
+        <div class=" filteroption allCheckbox">
+            <div class="EXchansele">
+                <label>Type:</label>
+                <button class="levelbtn" (click)="showtype()">All
+                    <i *ngIf="Proshowtype" class="fa fa-chevron-left" style="font-size:15px"></i>
+                    <i *ngIf="!Proshowtype" class="fa fa-chevron-down" style="font-size:15px"></i>
+                </button>
+            </div>
+            <div class="conditionExchang" *ngIf="Proshowtype">
+                <div class="conditionsubExchang">
+                    <div>
+                        <input type="checkbox" class="checkinput" name="Iron" />
+                        <label class="control">
+                            All
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="checkinput" name="Bronze" />
+                        <label class="control">
+                            Approved
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="checkinput" name="Platinum1" />
+                        <label class="control">
+                            Cancelled
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="checkinput" name="Platinum1" />
+                        <label class="control">
+                            Pending
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class=" filteroption allCheckbox">
+            <div class="EXchansele">
+                <label>Level:</label>
+                <button class="levelbtn" (click)="show()">All
+                    <i *ngIf="Proshow" class="fa fa-chevron-left" style="font-size:15px"></i>
+                    <i *ngIf="!Proshow" class="fa fa-chevron-down" style="font-size:15px"></i>
+                </button>
+            </div>
+            <div class="conditionExchang" *ngIf="Proshow">
+                <div class="conditionsubExchang">
+                    <div>
+                        <input type="checkbox" class="checkinput" name="Iron" />
+                        <label class="control">
+                            Real Money
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="checkinput" name="Bronze" />
+                        <label class="control">
+                            U.S.Doullary
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="checkinput" name="Platinum1" />
+                        <label class="control">
+                            Chips
+                        </label>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fd">
+<table class="tablCode">
+    <tr class="tablCoderow">
+        <th>Player</th>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Comp Points</th>
+        <th>Amount</th>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+</div> -->

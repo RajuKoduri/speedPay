@@ -1,0 +1,203 @@
+<div *ngIf="!setcomppointsadjustments">
+    <div>
+        <h3>Player Comp Points Adjustments</h3>
+    </div>
+    <div class="dropdown fd">
+        <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+            <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+                style="font-size:14px;  transition:all 0.5s ;"></i>
+            <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+                style="font-size:14px; transition:all 0.5s"></i>
+        </button>
+
+        <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export
+            Excel</button>
+        <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+    </div>
+    <div class="fd filterDiv" *ngIf="FillterMenu">
+        <form [formGroup]="filterForm">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="div_flex p_5_10">
+                            <label>StartDate</label>
+                            <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                                [ngModel]="startDate" (ngModelChange)="startDate = $event"
+                                (change)="showDate($event)" />
+                            <input class="inp_agent_time mobile_view" type="time" formControlName="startTime" step="1"
+                                [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                                [max]="endTime" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="div_flex p_5_10">
+                            <label>EndDate</label>
+                            <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                                [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                            <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                                [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                        </div>
+                        <div class="red_col" *ngIf="steddate">
+                            Start date should be below or equal to end date
+                        </div>
+                        <div class="red_col" *ngIf="timeerror">
+                            Start time should be below or equal to end time
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="fd">
+        <button class="fillterbtn m_l_5" style="float: right;"
+            (click)="onFormSubmit()">Submit</button>
+        <div class="text-centers">
+            <div class="text-centers">
+                <div style="margin-right:20px;" *ngIf="tableAdjest">Rows On the Page: {{rowsOnthePage}}</div>
+                <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                        the filters</b></div>
+            </div>
+        </div>
+    </div>
+    <div class="fd">
+        <div class="table_2">
+
+            <table class="tablCode fd " id="excel-table">
+                <thead>
+                    <tr class="tablCoderow">
+                        <th>Player</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Increase</th>
+                        <th>Decrease</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="tableAdjest">
+                    <!-- <tr *ngFor="let list of tableAdjest | paginate: {itemsPerPage:selectnum, currentPage:p};let i=index" (click)="onClick(i)"> -->
+                    <tr *ngFor="let list of tableAdjest;let i=index " (dblclick)="onClick(i)">
+                        <td class="UI-change"
+                            (click)="PlayerExplore(list.player.account, list.player.guid, list.player)">
+                            {{list.player.nickName}}</td>
+                        <td>{{list.type}} </td>
+                        <td>{{list.DateFormat}}</td>
+                        <td class="text-end">{{list?.increase?.value |numberFormat}}</td>
+                        <td class="text-end">{{list?.decrease?.value |numberFormat}}</td>
+                        <!-- <td>{{list.decrease.value}}</td> -->
+                    </tr>
+                </tbody>
+                <tfoot *ngIf="tableAdjest && tableAdjest.length>0">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(increaseSum)">
+                                {{increaseSum[key]}} ; </span> </td>
+                        <td class="text-end text-nowrap">SUM = <span *ngFor="let key of keys(decreaseSum)">
+                                {{decreaseSum[key]}} ; </span> </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+        class="pt-2 page-item float-right">
+    </pagination-controls> -->
+
+
+        <div class="fd" *ngIf="tableAdjest">
+            <div class="pagecount">
+                <button class="Pagebtns" [disabled]="PageCount==1 || tableAdjest==null" (click)="fastbackforward()"><i
+                        class="fa fa-step-backward" style="font-size:20px"></i>
+                </button>
+                <button class="Pagebtns" [disabled]="PageCount==1 ||tableAdjest==null" (click)="prev()">
+                    <i class="fa fa-caret-left" style="font-size:20px"></i>
+                </button>
+                <div class="PageCountNoDiv">
+                    <div class="" *ngIf="tableAdjest">{{PageCount}}</div>
+                </div>
+                <button class="Pagebtns " [disabled]="tableAdjest==null || pagecontrolbtn" (click)="next()">
+                    <i class="fa fa-caret-right" style="font-size:20px"></i>
+                </button>
+                <button class="Pagebtns" [disabled]="tableAdjest==null || pagecontrolbtn" (click)="fastforward()">
+                    <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="comppointsadjustpopup">
+    <div class="popup_1 pop_sm" *ngIf="comppointsadjustpopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Admin: </h5>
+            <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df">
+                    <label class="col-sm-6"> Player </label>
+                    <span class="col-sm-6">{{compPointsadjustList.player.account}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Type </label>
+                    <span class="col-sm-6">{{compPointsadjustList.type}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Date </label>
+                    <span class="col-sm-6">{{compPointsadjustList.DateFormat}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Increase </label>
+                    <span class="col-sm-6">{{compPointsadjustList?.increase?.value}}</span>
+                </div>
+                <div class="df m_3">
+                    <label class="col-sm-6"> Decrease </label>
+                    <span class="col-sm-6">{{compPointsadjustList?.decrease?.value}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <!-- <button class="btn_grade_1" (click)="closepopup()"> Save </button> -->
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->
+
+
+<!-- ****************************setcomppointsadjustments*********************************** -->
+<div class="black_cover" *ngIf="setcomppointsadjustments">
+    <div class="popup_1 pop_sm" *ngIf="setcomppointsadjustments">
+        <div class="PopupHead">
+            <h5 class="text-center">Comp Points Adjustment: </h5>
+            <span class="closetop" (click)="closepopUP()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div>
+                    <label  class="col-sm-6"> Date </label>
+                    <span>{{todaydate | date: 'M/d/yyyy'}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6">Comp Points</label>
+                    <div class="col-sm-6">
+                        <input type="number" class="col-sm-12" (change)="notZero()" [(ngModel)]="SetCompPointsValue"/>
+                        <div >
+                        <span class="text-danger" *ngIf="submitted">Zero value is not allowed for 'Comp points' fileld.</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label  class="col-sm-6">Player</label>
+                    <sapn>{{showplayername}}</sapn>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="setComppoints()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopUP()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->

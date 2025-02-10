@@ -1,0 +1,186 @@
+<!-- <div class="topnav">
+    <a (click)="fillterMenu()">Filter</a>
+    <a>Actions</a>
+    <a>Open</a>
+    <a>Explore</a>
+    <a (click)="ignoreContext()">Ignore Context</a>
+    <div class="dropdown">
+        <button class="dropbtn">View</button>
+        <div class="dropdown-content">
+            <a (click)="onFormSubmit()">Normal</a>
+            <a>Autosize</a>
+            <a>Card</a>
+        </div>
+    </div>
+    <a (click)="onFormSubmit()">Requery</a>
+    <a (click)="exportExcel()">Export to XSL</a>
+    <a (click)="onPrint()">Print</a>
+</div> -->
+
+<div>
+    <h2>Player Bonus Adjustments</h2>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillterMenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterList" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterList" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportExcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+
+<!-- filtermenu start -->
+<div class="fd filterDiv" *ngIf="FillterList">
+    <form [formGroup]="filterForm">
+        <div class="p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer">
+                        <label>Reporting PeriodStart</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs"  step="1" formControlName="startTime"
+                            [(ngModel)]="selectedTime" name="selectedTime" [ngModelOptions]="{standalone: true}"
+                            (change)="timechnage($event)" />
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer">
+                        <label>Reporting PeriodEnd</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input type="time" class="Birthdayinputs" step="1"  formControlName="endTime"
+                            [(ngModel)]="selectedEndTime" name="selectedEndTime"
+                            [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencyList"
+                                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer">
+                        <label>User</label>
+                        <input type="text" formControlName="user" placeholder="(none)">
+                    </div>
+                    <div class="div_flex p_5_10" *ngIf="!playerExplorer">
+                        <label>Initiator Login</label>
+                        <input type="text" formControlName="initiatorLogin" placeholder="(none)">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="number" formControlName="firstRecord">
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 col-xl-4">
+
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="number" formControlName="maxCountRecord">
+                    </div>
+                    <!-- <button class="fillterbtn insidebtn" (click)="onFormSubmit()">Apply</button> -->
+                    <!-- <button class="fillterbtn" (click)="FormReset()">Reset</button> -->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- filtermenu end  -->
+<!-- 
+<div class="fd">
+    <div class="text-center">
+    <div>Rows On the Page: {{rowsOnthePage}}</div>
+    <div> Result Count: {{ResultCount}} <b>To get data set and apply the filters</b></div>
+    <div> Applied Filters: {{counter}}</div>
+    <div class="paginationdiv">
+        <button class="backbutton" (click)="prev()"> < Previous</button>
+        <button class="backbutton" (click)="next()"> Next > </button>
+    </div>
+    </div>
+</div> -->
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <div style="margin-right:20px;" *ngIf="bonusList">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+
+</div>
+<!-- table start -->
+<div class="fd over_tb1" id="tablerecords" style="overflow-x:auto;">
+    <div clas='fd' *ngIf="dataLoader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="table_2">
+        <table class="tablCode fd" id="excel_table">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Increase</th>
+                    <th>Decrease</th>
+                    <th *ngIf="!playerExplorer">Initiator</th>
+                </tr>
+            </thead>
+            <!-- <tbody *ngFor=" let i = index ; let List of bonusList | paginate: {itemsPerPage:selectnum, currentPage:p}"> -->
+            <tbody *ngIf="bonusList">
+                <tr *ngFor="let i = index ; let List of bonusList">
+                    <td class="hyperLink" (click)="PlayerExplore(List.player.account, List.player.guid, List)">
+                        {{List.player.account}}</td>
+                    <td>{{List.type}}</td>
+                    <td>{{changeSelect(List.date)}}</td>
+                    <td class="text-end">
+                        <span>{{List?.increase?.walletsymbol}} {{List?.increase?.value |numberFormat}}</span>
+                    </td>
+                    <td class="text-end">
+                        <span>{{List?.decrease?.walletsymbol}} {{List?.decrease?.value |numberFormat}}</span>
+                    </td>
+                    <td *ngIf="!playerExplorer">{{List.initiator.login}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+        class="pt-2 page-item float-right">
+    </pagination-controls> -->
+
+
+
+</div>
+<div class="page_count fd">
+    <!-- <div style="margin-right:20px;" *ngIf="bonusList">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+    <div> Result Count:<b>{{ResultCount}}</b> <b *ngIf="resultcount">To get data set and apply the filters</b></div> -->
+
+    <div class="fd" *ngIf="bonusList">
+        <div class="pagecount">
+            <button class="Pagebtns" [disabled]="PageCount==1 || bonusList==null" (click)="fastbackforward()"><i
+                    class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||bonusList==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="bonusList">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="bonusList==null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="bonusList==null || pagecontrolbtn" (click)="fastforward()">
+                <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+</div>

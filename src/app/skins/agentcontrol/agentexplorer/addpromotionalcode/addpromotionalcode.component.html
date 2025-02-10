@@ -1,0 +1,528 @@
+<div class="black_cover" id="addpromo">
+    <!-- <div>
+        <h3>Add promotional code</h3>
+    </div> -->
+    <div class="w-75 m-auto mt-5 popup_1 rounded-top">
+        <div class=" PopupHeads">
+            <h5 class="text-center p-2 "> Add promotional code :</h5>
+
+            <span class="closetop" (click)="popupClose()"> <img src="assets/icons/closePop.svg"></span>
+        </div>
+        <div class="container bg-white">
+            <div class="col-sm-12">
+                <form [formGroup]="addpromotionalcodeForm" (ngSubmit)="onSubmit()">
+                    <div class="row d-flex justify-content-evenly">
+                        <div class="col-12  col-xl-5">
+                            <div class="mybrdr">
+                                <div>
+                                    <h6 class="headbckgrnd">General</h6>
+                                </div>
+                                <div class="p-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Promo Code </label>
+                                        </div>
+                                        <div class="col-4 d-flex">
+                                            <span *ngIf="f['promoCode'].touched && f['promoCode'].invalid || submitted">
+                                                <span
+                                                    *ngIf="f['promoCode'].errors && f['promoCode'].errors['required'] || f['promoCode'].errors && f['promoCode'].errors['minlength']"
+                                                    class="text-danger">
+                                                    <b class="bi bi-x-circle-fill p-1" title="value can not be empty"></b>
+                                                </span>
+                                            </span>
+                                            <input type="text" [(ngModel)]="generatedString" formControlName="promoCode">
+                                        </div>
+                                        <div class="col-4 text-center">
+                                            <button class="btn btn-info btn-sm px-2 ms-1" (click)="generateRandomString()">Generate</button>
+                                        </div>
+
+                                    </div>
+                                    <div>
+                                        <P>Can be used by</P>
+                                    </div>
+                                    <div class="ms-3" formArrayName="Promo">
+                                        <div *ngFor="let list of PromoCodeUsageTypeList; let i = index">
+                                            <div class="d-flex mb-2">
+                                                <input type="checkbox" [ngValue]="list.guid" [formControlName]="i" [(ngModel)]="list.isChecked">
+                                                <label >{{list.value}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="df m_3  spacebetween">
+                                        <div class="d-flex">
+                                            <input id="newplayers" type="checkbox" formControlName="newplayers">
+                                            <label for="newplayers"> New players during registation</label>
+                                        </div>
+                                    </div>
+                                    <div class="df m_3 spacebetween">
+                                        <div class="d-flex">
+                                            <input id="existingTogether12" type="checkbox"
+                                                formControlName="existingTogether">
+                                            <label for="existingTogether12">Existing player together with player</label>
+                                        </div>
+                                    </div>
+                                    <div class="df m_3 spacebetween">
+                                        <div class="d-flex">
+                                            <input id="existingStandalone" type="checkbox"
+                                                formControlName="existingStandalone">
+                                            <label for="existingStandalone"> Existing are standalone promotional
+                                                code</label>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+
+                            <div class=" mybrdr" [ngClass]="{'disable':rewardDisabel}">
+                                <div>
+                                    <h6
+                                        class="headbckgrnd {{ !(this.f['flatAmount'].value || this.f['percentOfDeposit'].value || this.f['upgradeCpLevel'].value) ? 'text-danger' : '' }}">
+                                        {{ !(this.f['flatAmount'].value || this.f['percentOfDeposit'].value ||
+                                        this.f['upgradeCpLevel'].value) ? 'No rewards selected' : 'Reward' }}
+                                    </h6>
+                                </div>
+                                <div class="row">
+                                    <div class=" spacebetween" [ngClass]="{'disable':f['flatAmount'].disabled}">
+                                        <div class="col-4 d-flex">
+                                            <input id="flatAmount" type="checkbox" formControlName="flatAmount">
+                                            <label for="flatAmount">flat amount:</label>
+                                        </div>
+                                        <!-- <div class="stakes-error-message"
+                                            *ngIf="f['flatamount'].touched && f['flatamount'].invalid || submitted">
+                                            <div *ngIf="f['flatamount'].errors && f['flatamount'].errors['required']">
+                                                Please Enter flat amount </div>
+                                        </div> -->
+                                        <div class="col-4 d-flex">
+                                            <span
+                                                *ngIf="(addpromotionalcodeForm.controls['flatAmountNumber']?.dirty || addpromotionalcodeForm.controls['flatAmountNumber']?.touched)">
+                                                <span
+                                                    *ngIf=" addpromotionalcodeForm.controls['flatAmountNumber']?.value == 0 || addpromotionalcodeForm.controls['flatAmountNumber']?.errors "
+                                                    class="text-danger">
+                                                    <b class="bi bi-x-circle-fill p-1"
+                                                        title="value can not be empty"></b>
+                                                </span>
+                                            </span>
+                                            <input class="w-75" type="number" formControlName="flatAmountNumber" />
+                                        </div>
+                                        <div class="col-4 d-flex">
+                                            <span
+                                                *ngIf="(addpromotionalcodeForm.controls['flatAmountDropdown']?.dirty || addpromotionalcodeForm.controls['flatAmountDropdown']?.touched)">
+                                                <span
+                                                    *ngIf=" addpromotionalcodeForm.controls['flatAmountDropdown']?.value == '' || addpromotionalcodeForm.controls['flatAmountDropdown']?.errors "
+                                                    class="text-danger">
+                                                    <b class="bi bi-x-circle-fill p-1"
+                                                        title="value can not be empty"></b>
+                                                </span>
+                                            </span>
+                                            <select class="w-75" formControlName="flatAmountDropdown"
+                                                [(ngModel)]="selFlatAmountType" (change)="selFlatAmountList($event)">
+                                                <option *ngFor="let list of flatAmountObj" [ngValue]="list">
+                                                    {{list.value}}</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="df m_3 spacebetween row"
+                                        [ngClass]="{'disable':f['percentOfDeposit'].disabled}">
+                                        <div class="col-4 d-flex">
+                                            <input id="percentOfDeposit" type="checkbox"
+                                                formControlName="percentOfDeposit">
+                                            <label for="percentOfDeposit">percent of deposit</label>
+                                        </div>
+                                        <div class="col-4 d-flex">
+                                            <span
+                                                *ngIf="(addpromotionalcodeForm.controls['percentOfDepositNum']?.dirty || addpromotionalcodeForm.controls['percentOfDepositNum']?.touched)">
+                                                <span
+                                                    *ngIf=" addpromotionalcodeForm.controls['percentOfDepositNum']?.value == 0 || addpromotionalcodeForm.controls['percentOfDepositNum']?.errors "
+                                                    class="text-danger">
+                                                    <b class="bi bi-x-circle-fill p-1"
+                                                        title="value can not be empty"></b>
+                                                </span>
+                                            </span>
+                                            <input class="w-75" type="number" formControlName="percentOfDepositNum" />
+                                        </div>
+                                        <div class="col-4 d-flex">
+                                            <span class="col-sm-2">% in</span>
+                                            <span
+                                                *ngIf="(addpromotionalcodeForm.controls['percentOfDepositDropdown']?.dirty || addpromotionalcodeForm.controls['percentOfDepositDropdown']?.touched)">
+                                                <span
+                                                    *ngIf=" addpromotionalcodeForm.controls['percentOfDepositDropdown']?.value == '' || addpromotionalcodeForm.controls['percentOfDepositDropdown']?.errors "
+                                                    class="text-danger">
+                                                    <b class="bi bi-x-circle-fill p-1"
+                                                        title="value can not be empty"></b>
+                                                </span>
+                                            </span>
+                                            <select class="w-50" formControlName="percentOfDepositDropdown"
+                                                [(ngModel)]="selectedDepositeType">
+                                                <option *ngFor="let type of PromocodeRewardList" [ngValue]="type.guid">
+                                                    {{type.value}} </option>
+                                                <!-- <option value="two">Cash</option> -->
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="df m_3 spacebetween row"
+                                        [ngClass]="{'disable':f['upgradeCpLevel'].disabled}">
+                                        <div class="col-4 d-flex">
+                                            <input id="upgradeCpLevel" type="checkbox" formControlName="upgradeCpLevel">
+                                            <label for="upgradeCpLevel">Upgrade CP level to:</label>
+                                        </div>
+                                        <div class="col-4 d-flex">
+                                            <span
+                                                *ngIf="(addpromotionalcodeForm.controls['upgradeCpLevelDropdown']?.dirty || addpromotionalcodeForm.controls['upgradeCpLevelDropdown']?.touched) || submitted">
+                                                <span
+                                                    *ngIf=" addpromotionalcodeForm.controls['upgradeCpLevelDropdown']?.value == '' || addpromotionalcodeForm.controls['upgradeCpLevelDropdown']?.errors "
+                                                    class="text-danger">
+                                                    <b class="bi bi-x-circle-fill p-1"
+                                                        title="value can not be empty"></b>
+                                                </span>
+                                            </span>
+                                            <select class="w-75" [(ngModel)]="currencyselect"
+                                                formControlName="upgradeCpLevelDropdown">
+                                                <option [ngValue]="name.guid" *ngFor="let name of updateleav">
+                                                    {{name.Names}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="mybrdr" [ngClass]="{'disable':reffering}">
+                                <div>
+                                    <h6 class="headbckgrnd">Reffering</h6>
+                                </div>
+                                <div class=" row" [ngClass]="{'disable':f['referPlayerTo'].disabled}">
+                                    <div class="df m_3 spacebetween">
+                                        <div class="col-4 d-flex">
+                                            <input id="referPlayerTo" type="checkbox" formControlName="referPlayerTo">
+                                            <label for="referPlayerTo"> Refer player to:</label>
+                                        </div>
+                                        <span class="col-4">
+                                            <select class="w-75" [(ngModel)]="selectedUserTypes"
+                                                (ngModelChange)="myFuncEnglish($event)"
+                                                formControlName="referPlayerDropdown"
+                                                [ngModelOptions]="{standalone: true}">
+                                                <option id="{{name.name}}" [ngValue]="name.guid"
+                                                    *ngFor="let name of filterUserTypes">{{name.value}}</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                    <div class="df m_3 spacebetween row ">
+                                        <div class="col-4">
+                                            <label>Find by login </label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input class="w-75" type="text" [(ngModel)]="selectinput"
+                                                formControlName="findByloginInp" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                        <div class="col-4 pb-3">
+                                            <button class="btn btn-info btn-sm px-2"
+                                                [disabled]="isButtonDisabled('findBtn') || f['findByloginInp'].value == '' "
+                                                (click)="getUserByLoginfind()">Find</button>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="!userNotFound">
+                                        <div *ngIf="findData" class="ps-3 pb-2">
+                                            {{referType}} will be referred to: {{findData.login}}
+                                            ({{findData.fullName}})
+                                        </div>
+                                        <div *ngIf="!findData && isSearching">Searching...</div>
+                                    </div>
+                                    <div *ngIf="userNotFound" class="ps-3 pb-2 text-danger">{{userNotFound}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12  col-xl-5 mybrdr" [ngClass]="{'disable':limits}">
+                            <div>
+                                <h6 class="headbckgrnd">Limits</h6>
+                            </div>
+                            <div class=" py-2">
+                                <div class="row spacebetween" [ngClass]="{'disable':f['maxUsage'].disabled}">
+                                    <div class="col-6 d-flex align-items-center">
+                                        <input id="maxUsage" type="checkbox" formControlName="maxUsage">
+                                        <label for="maxUsage">Max number of Usages:</label>
+                                    </div>
+                                    <div class="col-5 d-flex">
+                                        <span *ngIf="(maxUsageNumber?.dirty || maxUsageNumber?.touched)">
+                                            <span *ngIf=" maxUsageNumber?.value == 0 || maxUsageNumber?.errors "
+                                                class="text-danger">
+                                                <b class="bi bi-x-circle-fill p-1" title="value can not be empty"></b>
+                                            </span>
+                                        </span>
+                                        <input class="w-100"
+                                            [ngClass]="{'error':maxUsageNumber?.invalid && (maxUsageNumber?.dirty || maxUsageNumber?.touched) && maxUsageNumber?.errors}"
+                                            type="text" formControlName="maxUsageNumber" appMaxLengthValidation
+                                            [maxNumber]=5 />
+                                        <!-- <div *ngIf="maxUsageNumber?.invalid && (maxUsageNumber?.dirty || maxUsageNumber?.touched)">
+                                            <div *ngIf="maxUsageNumber?.errors" class="text-danger">
+                                                value can not be empty.
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+
+                                <div class="row spacebetween" [ngClass]="{'disable':f['maxUsagePerPlayer'].disabled}">
+                                    <div class="col-6 d-flex align-items-top">
+                                        <input id="maxUsagePerPlayer" type="checkbox"
+                                            formControlName="maxUsagePerPlayer">
+                                        <label for="maxUsagePerPlayer">Max number of Usages for player:</label>
+                                    </div>
+                                    <div class="col-5 d-flex">
+                                        <span
+                                            *ngIf="(maxUsagePerPlayerNumber?.dirty || maxUsagePerPlayerNumber?.touched)">
+                                            <span
+                                                *ngIf=" maxUsagePerPlayerNumber?.value == 0 || maxUsagePerPlayerNumber?.errors "
+                                                class="text-danger">
+                                                <b class="bi bi-x-circle-fill p-1" title="value can not be empty"></b>
+                                            </span>
+                                        </span>
+                                        <input class="w-100"
+                                            [ngClass]="{'error':maxUsagePerPlayerNumber?.invalid && (maxUsagePerPlayerNumber?.dirty || maxUsagePerPlayerNumber?.touched) && maxUsagePerPlayerNumber?.errors}"
+                                            type="text" formControlName="maxUsagePerPlayerNumber" appMaxLengthValidation
+                                            [maxNumber]=5 />
+                                    </div>
+                                </div>
+                                <div class="row spacebetween" [ngClass]="{'disable':f['expirationDate'].disabled}">
+                                    <div class="col-6 d-flex align-items-center">
+                                        <input id="expirationDate" type="checkbox" formControlName="expirationDate">
+                                        <label for="expirationDate"> Expiration date:</label>
+                                    </div>
+                                    <div class="col-5 d-flex">
+                                        <!-- <input type="date" [ngModel]="today | date:'yyyy-MM-dd'"
+                                                (ngModelChange)="today = $event" name="dt" #searchDate
+                                                formControlName="calenderDate" /> -->
+                                        <span
+                                            *ngIf="(this.addpromotionalcodeForm.controls['calenderDate']?.dirty || this.addpromotionalcodeForm.controls['calenderDate']?.touched) || submitted">
+                                            <span
+                                                *ngIf=" this.addpromotionalcodeForm.controls['calenderDate']?.value == 0 || this.addpromotionalcodeForm.controls['calenderDate']?.errors "
+                                                class="text-danger">
+                                                <b class="bi bi-x-circle-fill p-1" title="value can not be empty"></b>
+                                            </span>
+                                        </span>
+                                        <input class="w-100" type="date" [(ngModel)]="selectedDate" [min]="minDate"
+                                            formControlName="calenderDate" />
+                                    </div>
+                                </div>
+
+                                <div class="row spacebetween" [ngClass]="{'disable':f['allowedPayment'].disabled}">
+                                    <div class="col-6 d-flex align-items-center">
+                                        <input id="allowedPayment" type="checkbox" formControlName="allowedPayment">
+                                        <label for="allowedPayment"> Allowed payment systems:</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <span class="col-sm-3">
+                                            <!-- <select formControlName="allowedPaymentDropdown">
+                                                <option [ngValue]="name.guid" *ngFor="let name of paymentsystems">
+                                                    {{name.value}}</option>
+                                            </select> -->
+                                            <div class="multi_dropdown">
+                                                <span
+                                                    *ngIf="( addpromotionalcodeForm.controls['allowedPaymentDropdown']?.touched) || submitted">
+                                                    <span
+                                                        *ngIf="addpromotionalcodeForm.controls['allowedPaymentDropdown']?.errors "
+                                                        class="text-danger">
+                                                        <b class="bi bi-x-circle-fill p-1"
+                                                            title="value can not be empty"></b>
+                                                    </span>
+                                                </span>
+                                                <ng-multiselect-dropdown [settings]="allowedPaymentDropdownSettings"
+                                                    [data]="paymentsystems" [(ngModel)]="selectedAllowedPayment"
+                                                    (onSelect)="onItemSelectPayment($event)"
+                                                    (onDeSelect)="OnItemDeSelectPayment($event)"
+                                                    (onSelectAll)="onPaymentSelectAll($event)"
+                                                    (onDeSelectAll)="onPaymentDeSelectAll($event)"
+                                                    formControlName="allowedPaymentDropdown"
+                                                    [disabled]="!addpromotionalcodeForm.get('allowedPayment')?.value">
+
+                                                </ng-multiselect-dropdown>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row spacebetween" [ngClass]="{'disable':f['allowedFaces'].disabled}">
+                                    <div class="col-6 d-flex align-items-center">
+                                        <input id="allowedFaces" type="checkbox" formControlName="allowedFaces">
+                                        <label for="allowedFaces"> Allowed Faces:</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <span class="col-sm-3">
+                                            <!-- <select formControlName="allowedFacesDropdown">
+                                                <option [ngValue]="name.guid" *ngFor="let name of facepara">
+                                                    {{name.name}}({{name.siteName}})</option>
+                                            </select> -->
+                                            <div class="multi_dropdown">
+                                                <span
+                                                    *ngIf="(addpromotionalcodeForm.controls['allowedFacesDropdown']?.touched) || submitted">
+                                                    <span
+                                                        *ngIf="addpromotionalcodeForm.controls['allowedFacesDropdown']?.errors "
+                                                        class="text-danger">
+                                                        <b class="bi bi-x-circle-fill p-1"
+                                                            title="value can not be empty"></b>
+                                                    </span>
+                                                </span>
+                                                <ng-multiselect-dropdown [settings]="allowedFacacesDropdownSettings"
+                                                    [data]="facepara" [(ngModel)]="selectedAllowedFaces"
+                                                    (onSelect)="onItemSelectFaces($event)"
+                                                    (onDeSelect)="OnItemDeSelectFaces($event)"
+                                                    (onSelectAll)="onFacesSelectAll($event)"
+                                                    (onDeSelectAll)="onFacesDeSelectAll($event)"
+                                                    formControlName="allowedFacesDropdown"
+                                                    [disabled]="!addpromotionalcodeForm.get('allowedFaces')?.value">
+                                                </ng-multiselect-dropdown>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row spacebetween" [ngClass]="{'disable':f['playerCpLevel'].disabled}">
+                                    <div class="col-6 d-flex align-items-center">
+                                        <input id="playerCpLevel" type="checkbox" formControlName="playerCpLevel">
+                                        <label for="playerCpLevel">Player CP Level must be in :</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <span class="col-sm-3">
+                                            <!-- <select formControlName="playerCpLevelDropdown">
+                                                <option [ngValue]="name.guid" *ngFor="let name of updateleav">
+                                                    {{name.Names}}</option>
+                                            </select> -->
+                                            <div class="multi_dropdown">
+                                                <span
+                                                    *ngIf="(addpromotionalcodeForm.controls['playerCpLevelDropdown']?.touched) || submitted">
+                                                    <span
+                                                        *ngIf="addpromotionalcodeForm.controls['playerCpLevelDropdown']?.errors "
+                                                        class="text-danger">
+                                                        <b class="bi bi-x-circle-fill p-1"
+                                                            title="value can not be empty"></b>
+                                                    </span>
+                                                </span>
+                                                <ng-multiselect-dropdown [settings]="playerCpLevelDropdownSettings"
+                                                    [data]="updateleav" [(ngModel)]="selectedplayerCpLevel"
+                                                    (onSelect)="onItemSelectPlayerCp($event)"
+                                                    (onDeSelect)="OnItemDeSelectPlayerCp($event)"
+                                                    (onSelectAll)="onPlayerCpSelectAll($event)"
+                                                    (onDeSelectAll)="onPlayerCpDeSelectAll($event)"
+                                                    formControlName="playerCpLevelDropdown"
+                                                    [disabled]="!addpromotionalcodeForm.get('playerCpLevel')?.value">
+                                                </ng-multiselect-dropdown>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+
+
+                                <div class="row spacebetween" [ngClass]="{'disable':f['playerPermission'].disabled}">
+                                    <div class="col-6 d-flex align-items-center">
+                                        <input id="playerPermission" type="checkbox" formControlName="playerPermission">
+                                        <label for="playerPermission">Player permission group must be in :</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <span class="col-sm-3">
+                                            <!-- <select formControlName="playerPermissionDropdown">
+                                                <option [ngValue]="name.guid" *ngFor="let name of selectedPermissionGroup">
+                                                    {{name.name}}</option>
+                                            </select> -->
+                                            <div class="multi_dropdown">
+                                                <span
+                                                    *ngIf="( addpromotionalcodeForm.controls['playerPermissionDropdown']?.touched) || submitted">
+                                                    <span
+                                                        *ngIf="addpromotionalcodeForm.controls['playerPermissionDropdown']?.errors "
+                                                        class="text-danger">
+                                                        <b class="bi bi-x-circle-fill p-1"
+                                                            title="value can not be empty"></b>
+                                                    </span>
+                                                </span>
+                                                <ng-multiselect-dropdown [settings]="permissionDropdownSettings"
+                                                    [data]="selectedPermissionGroup"
+                                                    [(ngModel)]="selectedPlayerPermission"
+                                                    (onSelect)="onItemSelectPermission($event)"
+                                                    (onDeSelect)="OnItemDeSelectPermission($event)"
+                                                    (onSelectAll)="onPermissionSelectAll($event)"
+                                                    (onDeSelectAll)="onPermissionDeSelectAll($event)"
+                                                    formControlName="playerPermissionDropdown"
+                                                    [disabled]="!addpromotionalcodeForm.get('playerPermission')?.value">
+                                                </ng-multiselect-dropdown>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+
+
+                                <div [ngClass]="{'disable':f['specificUsers'].disabled}">
+                                    <div class="spacebetween d-flex align-items-center">
+                                        <input id="specificUsers" type="checkbox" formControlName="specificUsers">
+                                        <label for="specificUsers"> allow only specificed usres</label>
+                                    </div>
+
+                                    <div class="spacebetween ms-4">
+                                        Enter login names allowed player (Comma Separted):
+                                    </div>
+                                    <div class="row d-flex pb-3">
+                                        <span class="col-6 ms-5">
+                                            <input type="text" [(ngModel)]="UserLogin"
+                                                formControlName="specificUsersInp"
+                                                [ngModelOptions]="{standalone: true}" />
+                                        </span>
+                                        <span class="col-4 d-flex ">
+                                            <button type="button" class="btn btn-info btn-sm px-2"
+                                                [disabled]="isButtonDisabled('addBtn')"
+                                                (click)="getUserByLogin()">Add</button>
+                                        </span>
+
+                                    </div>
+                                    <div *ngIf="uniqueLoginNames.length > 0" class="spacebetween ms-4 row">
+                                        <div class="col-6">
+                                            <p>Allowed players:</p>
+                                            <ul *ngFor="let list of uniqueLoginNames; let i= index">
+                                                <!-- <h6>{{name}}</h6> -->
+                                                <li class="d-flex justify-content-between my-2"><span
+                                                        [ngClass]="{'line-through':list.status}">{{list.user.login}}
+                                                        ({{list.user.fullName}})</span>
+                                                    <button class="btn btn-danger px-2 btn-sm" *ngIf="!list.status"
+                                                        (click)="remove(i)">Remove</button>
+                                                    <button class="btn btn-success px-2 btn-sm" *ngIf="list.status"
+                                                        (click)="restore(i,list)">Restore</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" type="submit" (click)="validationCheck()">Save</button>
+            <!-- <button type="submit"  [disabled]="addpromotionalcodeForm.invalid">Submit</button> -->
+            <button class="btn_grade_2" (click)="popupClose()">Cancel</button>
+        </div>
+    </div>
+
+</div>
+<!-- <div class="black_cover" *ngIf="SpinnwerT"></div>
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div> -->
+
+<div class="black_cover" *ngIf="alertMsg">
+    <div class="popup_1 pop_sm error-popup " *ngIf="alertMsg">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="alertPopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="py-3">
+            <h6 class="text-center" [innerHTML]="alertMsg">{{alertMsg}}</h6>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onFormSubmit()"> Yes</button>
+            <button class="btn_grade_2" (click)="alertPopup()"> No </button>
+        </div>
+
+    </div>
+</div>

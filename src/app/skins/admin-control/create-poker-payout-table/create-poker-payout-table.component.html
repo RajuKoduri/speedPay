@@ -1,0 +1,474 @@
+<div class="popup_4 pop_sm">
+    <div class=" PopupHead" *ngIf="!PokerpayoutData">
+        <h5 class="text-center">Create Poker Payout Table </h5>
+    </div>
+    <form [formGroup]="PokerPayoutTableForm">
+        <div class="soon font_13 fd p_lr_15">
+            <div class="container">
+            <div class="row"> 
+                <div class="df m_3 col-sm-6 flex-column">
+                    <label>Payout Table Name</label>
+                    <input class="input-fields" type=text formControlName="PayoutTableName" (keypress)="inputSpaceControl($event)" />
+                    <div class="stakes-error-message"
+                        *ngIf="f['PayoutTableName'].touched && f['PayoutTableName'].invalid || submitted">
+                        <div class="fd" *ngIf="f['PayoutTableName'].errors && f['PayoutTableName'].errors['required']"> Please Enter Name</div>
+                    </div>
+                </div>
+                <div class="type-class col-sm-5 df" style="margin-top:5px" *ngIf="!PokerpayoutData">
+                    <label> Type</label>
+
+                    <!-- <select class="seclectopt" formControlNam="Type" (change)="onTypechange($event )">
+                        <option [ngValue]="Type.value" *ngFor="let Type of PayoutStructureList"
+                            [selected]="Type.value == 'Float'">{{Type.value}}</option>
+                    </select> -->
+
+                    <select class="seclectopt input-fields" formControlName="Type"
+                        (change)="onTypechange($event, selectedOption)" [(ngModel)]="selectedOption">
+                        <option [ngValue]="Type.guid" *ngFor="let Type of PayoutStructureList">
+                            {{Type.value}}</option>
+                    </select>
+                </div>
+            </div>
+            </div>
+
+
+            <div class="fd p_5">
+                <span class="p_b_5  p_5 "> Payout Table</span>
+                <div *ngIf="payout_table">
+                    <div class="fd tablCode">
+                        <table class="fd table_2">
+                            <thead *ngIf="ParticipantsRanges01?.length">
+                                <th></th>
+                                <ng-container *ngFor="let i=index;let range of ParticipantsRanges01">
+                                    <!-- <ng-container *ngFor="let i=index;let range of ranges.playersCountIndices"> -->
+                                    <!-- <th class="">{{range.from_value + i}}</th> -->
+                                    <th>{{range.from}}
+                                        <span *ngIf="i  ==(ParticipantsRanges01?.length-1)"> and more</span>
+                                        <span *ngIf="i < (ParticipantsRanges01?.length-1)"> - {{range.to}}</span>
+                                    </th>
+                                    <!-- </ng-container> -->
+                                </ng-container>
+                            </thead>
+                            <tbody>
+                                <!-- <tr *ngFor="let fromto of wrange.placesIndices; let z = index">
+                                        <td>{{fromto.from}}-{{fromto.to}}</td>
+                                        <ng-container *ngFor="let percents of wrange.percents">
+                                            <td *ngFor="let percent of percents?.percents">
+                                                {{percent}}
+                                            </td>
+                                        </ng-container>
+                                    </tr> -->
+                                <tr *ngFor="let j=index;let wrange of WinnersRanges01"> 
+                                    <td>{{wrange.from}}-{{wrange.to}}</td>
+                                    <td *ngFor="let i=index;let range of ParticipantsRanges01">
+                                        <input type="number" [(ngModel)]="percents[i]?.percents[j]"
+                                            [ngModelOptions]="{standalone: true}"
+                                            (input)="calculatingTotalPercentagesTable()" (keypress)="inputpayout12($event)">
+                                            <!-- oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : 0"> -->
+                                        <!-- {{percents[i].percents[j]||0}} -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="">Total</td>
+                                    <td *ngFor="let eachPercent of percentsaddList" 
+                                    [ngClass]="eachPercent ===100 ? 'percent-matched' : 'percent-not-matched'"
+                                    >{{eachPercent}}</td>   
+                                </tr>
+                               
+                                  
+
+                                <!-- <tr *ngFor="let i=index;let range of ParticipantsRanges">
+                                    <td>
+                                        
+                                        <p>{{range.from_value}}
+                        
+                                            <span *ngIf="i  ==(ar_lables1?.length-1)"> and more</span>
+                                            <span *ngIf="i < (ar_lables?.length-1)"> - {{range.to_value}}</span>
+                                        </p>
+                                    </td>
+                                    <td><input [(ngModel)]="range.rake" type="number" /></td>
+                                    <td><input [(ngModel)]="range.perpot" type="number" /></td>
+                                    <td><input [(ngModel)]="range.maxrake" type="number" /></td>
+        
+                                </tr> -->
+
+                            </tbody>
+                            <!-- <tfoot>
+                                <tr>
+                                    <td class="">Total</td>
+                                    <td *ngFor="let eachPercent of percentsaddList" 
+                                    [ngClass]="eachPercent ===100 ? 'percent-matched' : 'percent-not-matched'"
+                                    >{{eachPercent}}</td>
+                                </tr>
+
+                            </tfoot> -->
+                        </table>
+                        
+
+
+                    </div>
+                    <div class="fd">
+                        <div class="bottomFix" *ngIf="!PokerpayoutData">
+                            <div>
+                                <button class="btn_grade_1 font-10" (click)="EditWinnersPopUp()">Edit Winner Ranges </button>
+                                <button class="btn_grade_1 font-10" (click)="ParticipantPopUp()"> Edit Participants Ranges </button>
+                            </div>
+                            <div>
+                                <button class="btn_grade_1 font-10" (click)="CopyfromExistingPop()">Copy from Existing </button>
+                                <button class="btn_grade_1  font-10" (click)="onFormSubmit()"> Save </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="Fixed">
+                    <div class="col-sm-6">
+                        <div class="fd tablCode">
+                            <table class="fd table_2" id="excel-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Prize</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <!-- <tr colspan="2"><h6 *ngIf="!editWinnerRangeNumber" class="text-danger p-2"> Winners Ranges should be atleast one</h6></tr> -->
+                                    <tr *ngFor="let TicketType of PayoutTicketTypeListDup;let i=index"
+                                        (click)="clcikOnPayoutTickets(i,TicketType.value,ur)"
+                                        [class]="{'highlightedrow': i=== selectedPrizeIndex}">
+                                        <td>{{i+1}}</td>
+                                        <td #ur [attr.id]="'ticket'+i">{{TicketType.value}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 ">
+                        <div>
+                            <h6>Edit Places</h6>
+                        </div>
+                        <div>
+                            <p><input type="checkbox" formControlName="TicketsCheckBox"
+                                    (change)="TicketCheckboxStatusChange()" />Tickets</p>
+                            <ng-container *ngFor="let TicketType of PayoutTicketTypeList;let i=index">
+                                <p class="p_l_15" [class.ticket-status]="ticketClassStatus ==true">
+                                    <input type="radio" formControlName="TicketTypeStatus" [value]="TicketType.value" [ngModel]="selectedticket"
+                                        (change)="changeRadioTicketTypeStatus(i,$event)" />{{TicketType.value}}
+                                </p>
+                            </ng-container>
+                        </div>
+                        <div>
+                            <p><input type="checkbox" formControlName="BuyInCheckboxStatus"  
+                                    (change)="BuyInCheckboxStatusChange()" />Buy In</p>
+                            <div class="p_l_15">
+                                <input formControlName="BuyIn" type="text" pattern="[0-9]*" maxLength="9" [ngModel]="buyinvalue"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : 0"
+                                    (focusout)="BuyInCheckboxStatusChange()" id="buy-In" />
+                                <label for="buy-In"><b>X</b> Buy In</label>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="AutoRegister" formControlName="AutoRegisterCheckbox">
+                            <label for="AutoRegister">Auto Register</label>
+
+                        </div>
+                        <div>
+                            <input type="checkbox" id="Redeem" formControlName="RedeemCheckbox">
+                            <!-- <label for="Redeem">Redeem To TM</label> -->
+                            <label for="Redeem">Convert To TM</label>
+
+                        </div>
+                        
+                        <div>
+                            <input type="checkbox" id="ticketWithPrize" formControlName="ticketWithPrize">
+                            <!-- <label for="Redeem">Redeem To TM</label> -->
+                            <label for="ticketWithPrize">Tickets With Prize</label>
+
+                        </div>
+                            
+
+                        <!-- <div>
+                            <input type="text" [value]="generatedString" readonly>
+                            <button (click)="generateRandomString()">Generate</button>
+                        </div> -->
+                    </div>
+                    <div class="fd" *ngIf="!PokerpayoutData">
+                        <div class="bottomFix">
+                            <button class="btn_grade_1" (click)="FixedEditWinnersPopUp()">Edit Winners Ranges </button>
+                            <button class="btn_grade_1" (click)="onFormSubmit()"> Save </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!-- ******************* payoutTableErrorUpTextBoolValue *********************************-->
+
+
+<div *ngIf="payoutTableErrorUpTextBoolValue" class="black_cover"></div>
+<div *ngIf="payoutTableErrorUpTextBoolValue" class="error-pop">
+    <div class="PopupHeads">
+        <h5 class="text-center">Error-popUp </h5>
+        <span class="closetop" (click)="tournamentErrorclosepopup()"> <img src="assets/icons/closePop.svg">
+        </span>
+    </div>
+    <div class="text-center">
+        <div>
+            <pre class="error-apply-margin" style="white-space: pre-line;">{{errorPopup}}</pre>
+        </div>
+
+    </div>
+    <div class="bottomFixs">
+        <button class="closeBTN" (click)="tournamentErrorclosepopup()">close</button>
+    </div>
+</div>
+
+<!--********************** payoutTableErrorUpTextBoolValue ********************-->
+
+<!-- *************************Edit Winners Ranges******************************** -->
+<div class="black_cover" *ngIf="EditWinnersPop">
+    <div class="Blindpopup pop_sm" *ngIf="EditWinnersPop">
+        <div class="PopupHead">
+            <!-- <h5 class="text-center">Edit Winners Ranges </h5> -->
+            <span class="closetop" (click)="EditWinnersPopClose()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="wh">
+                    <div class="overflow col-sm-6 border border-secondary ">
+                        <p>Edit Winners Ranges</p>
+                        <div *ngIf="WinnersRanges?.length">
+                            <div class="fd ParticipantRangeArea" (click)="row_select(i)"
+                                *ngFor="let i = index;let range of WinnersRanges">
+                                <p (click)="SelectedIndexMethod(i)" [class]="{'highlightedrow': i=== selectedIndex}">
+                                    {{range.from}}to{{range.to}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 overflow m_3">
+                        <h6>Seleted Range</h6>
+                        <div class="SeletedRangeArea">
+                            <div>
+                                <label>From</label>
+                                <input disabled type="number" [(ngModel)]="from" />
+                            </div>
+                            <div>
+                                <label>To</label>
+                                <input type="number" [(ngModel)]="to" oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : ''"/>
+                                <button class="AddNewRangebtn" (click)="save(to,from)">Save</button>
+                            </div>
+                        </div>
+                        <div class="fd">
+                            <button class="AddNewRangebtn" (click)="newRangesAdd()">Add New Range</button>
+                            <button [disabled]="WinnersRanges.length ===1" class="AddNewRangebtn"
+                                (click)="deleteRanges(to)">Delete selected Range</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1 save" (click)="EditWinnersPopClose()"> Ok </button>
+            <button class="btn_grade_2 save" (click)="EditWinnersPopCloseCancel()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ********************************************************* -->
+
+
+
+<!-- *************************Edit Participant Range******************************** -->
+<div class="black_cover" *ngIf="PayoutStructuresPop">
+    <div class="Blindpopup pop_sm" *ngIf="PayoutStructuresPop">
+        <div class="PopupHead">
+            <h5 class="text-center">Edit Participant Ranges </h5>
+            <span class="closetop" (click)="ParticipantPopUpclose()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="wh">
+                    <div class="overflow col-sm-6 border border-secondary ">
+                        <!-- <p>Edit Participant Range</p> -->
+                        <div *ngIf="ParticipantsRanges?.length">
+                            <div class="fd ParticipantRangeArea" (click)="Participantrow_select(i)"
+                                *ngFor="let i = index;let range of ParticipantsRanges">
+                                <p (click)="SelectedIndexMethod(i)" [class]="{'highlightedrow': i=== selectedIndex}">
+                                    {{range.from}}
+                                    <span *ngIf="i  ==(ParticipantsRanges?.length-1)"> and more</span>
+                                    <span *ngIf="i < (ParticipantsRanges?.length-1)"> -
+                                        {{range.to}}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 overflow m_3">
+                        <h6>Seleted Range</h6>
+                        <div class="SeletedRangeArea">
+                            <div>
+                                <label>From</label>
+                                <input disabled type="number" [(ngModel)]="from"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : ''" />
+                            </div>
+                            <div>
+                                <label>To</label>
+
+
+                                    <span *ngIf="selectedRowIndex==0 && ParticipantsRanges.length ==1">
+                                        <input type="number" [(ngModel)]="to" disabled
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : '' " />
+                                    </span>
+                                    <span *ngIf="selectedRowIndex==0 && ParticipantsRanges.length >1">
+                                        <input type="number" [(ngModel)]="to"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : '' " />
+                                    </span>
+                                    <span *ngIf="selectedRowIndex>0&&selectedRowIndex<=ParticipantsRanges.length-2">
+                                        <input type="number" [(ngModel)]="to"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : '' " />
+                                    </span>
+                                    <span *ngIf="selectedRowIndex>=1&&selectedRowIndex==ParticipantsRanges.length-1">
+                                        <input type="number" [(ngModel)]="to" disabled
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : '' " />
+                                    </span>
+
+                                <!-- <input type="number" [(ngModel)]="to"
+                                    oninput="this.value = !!this.value && Math.abs(this.value) > 0 ? Math.abs(this.value) : '' " /> -->
+
+                                <button class="AddNewRangebtn" (click)="EditParticipantSave(to,from)">Save</button>
+                            </div>
+                        </div>
+                        <div class="fd">
+                            <button class="AddNewRangebtn" (click)="ParticipantnewRangesAdd()">Add New Range</button>
+                            <button [disabled]="ParticipantsRanges.length ===1" class="AddNewRangebtn"
+                            [disabled] ="ParticipantsRanges.length ==1 || selectedRowIndex == ParticipantsRanges.length-1"
+                                (click)="ParticipantdeleteRanges(to)">Delete selected Range</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1 save" (click)="ParticipantAddPopUpclose('addrang')"> Ok </button>
+            <button class="btn_grade_2 save" (click)="ParticipantPopUpclose()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- ********************************************************* -->
+
+
+<!-- *************************Copy from Existing******************************** -->
+<div class="black_cover" *ngIf="CopyfromExisting">
+    <div class="Blindpopup pop_sm" *ngIf="CopyfromExisting">
+        <div class="PopupHead">
+            <h5 class="text-center">Payout Tables </h5>
+            <span class="closetop" (click)="CopyfromExistingPopClose()"> <img
+                    src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="exestingPayOutSec">
+                    <select class="col-sm-6 total_select" [(ngModel)]="ExistingPayoutStructureName" (change)="pokerpayoutstructure12($event,ExistingPayoutStructureName)">
+                        <option  *ngFor="let list of PokerPayoutStructureList">{{list.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1 save" (click)="ExistingStructurePopClose()"> Ok </button>
+            <button class="btn_grade_2 save" (click)="CopyfromExistingPopClose()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ********************************************************* -->
+
+<!-- *************************Fixed Winners Range******************************** -->
+<div class="black_cover" *ngIf="FixedEditWinnersPop">
+    <div class="Blindpopup pop_sm" *ngIf="FixedEditWinnersPop">
+        <div class="PopupHead">
+            <h5 class="text-center">Payout Tables </h5>
+            <span class="closetop" (click)="FixedEditWinnersPopUpCloseCancel()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="exestingPayOutSec">
+                    <input value="{{PayoutTicketTypeListlenth}}" type="text" pattern="[1-9]*" maxLength=3
+                        [(ngModel)]="editWinnerRangeNumber"
+                        oninput="this.value = !!this.value && Math.abs(this.value) >= 1 ? Math.abs(this.value) : ''" />
+                    <!-- (input)="editWinnerRange()"  -->
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1 save" (click)="FixedEditWinnersPopUpClose()"> Ok </button>
+            <button class="btn_grade_2 save" (click)="FixedEditWinnersPopUpCloseCancel()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ********************************************************* -->
+
+<!-- <div class="black_cover" *ngIf="CopyfromExisting">
+    <div class="Blindpopup pop_sm" *ngIf="CopyfromExisting">
+        <div class="PopupHead">
+            <h5 class="text-center">Blind Structures </h5>
+            <span class="closetop" (click)="CopyfromExistingPopClose()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="exestingPayOutSec">
+                    <select class="col-sm-6" [(ngModel)]="ExistingPayoutStructureName">
+                        <option  *ngFor="let list of PokerPayoutStructureList">{{list.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1 save" (click)="CopyfromExistingPopClose()"> Ok </button>
+            <button class="btn_grade_2 save" (click)="CopyfromExistingPopClose()"> Cancel </button>
+        </div>
+    </div>
+</div> -->
+
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="CreateSuccessPop">
+    <div class="popup_1 pop_sm" *ngIf="CreateSuccessPop">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <!-- <b class="p_5 text-success">Successfully Created </b> -->
+                <b class="p_5 text-success">{{FilltererrorMessageText}} </b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->
+
+<!-- ************************ErrorPopUp*********************************** -->
+<div class="black_cover" *ngIf="ErrorPopup">
+    <div class="popup_1 pop_sm" *ngIf="ErrorPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <!-- <i class="p_5 text-danger">{{errorMessageText}}  Technical Error... </i> -->
+                <i class="p_5 text-danger">{{errorMessageText}}</i>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="TechnicalError()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************ErrorPopUpClose*********************************** -->

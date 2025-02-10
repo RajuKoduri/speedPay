@@ -1,0 +1,4 @@
+.table_1 thead th {
+    position: sticky;
+    top: 0;
+}

@@ -1,0 +1,77 @@
+<div *ngIf="!istmAdjust">
+    <h3>Cash Adjustment</h3>
+</div>
+<div class="popup_4 pop_sm fd">
+
+    <div class=" PopupHead1" *ngIf="!istmAdjust">
+        <h5 class="text-center"> Cash Adjustment :</h5>
+        <!-- <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span> -->
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+        <div class="fd p_5 ">
+            <div class="df m_3">
+                <label class="col-sm-6">Player </label>
+                <span>{{PlayerName}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Date </label>
+                <span class="col-sm-6">{{currentGMTTime}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Wallet </label>
+                <span class="col-sm-6">
+                    <select class="seclectopt " [(ngModel)]="selectedCurrency" (change)="getPlayersBalances()">
+                        <option [ngValue]="list.guid" *ngFor="let list of WalletList">{{list.description}}</option>
+                    </select>
+                </span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Avaliable Cash Balance </label>
+                <span class="col-sm-6" *ngIf="PlayerBalnce &&!istmAdjust">{{PlayerBalnce[0].cash.value}}</span>
+                <span class="col-sm-6" *ngIf="PlayerBalnce && istmAdjust">{{PlayerBalnce[0].tournamentMoney.value}}</span>
+            </div>
+            <div class="df m_3">
+                <label class="col-sm-6">Amount </label>
+                <div class="fd">
+
+                    <input class="col-sm-12 fd" [(ngModel)]="Amount" type="number"  (change)="errorcheck()"/>
+                </div>
+            </div>
+            <div class="df m_3" *ngIf="!istmAdjust">
+                <label class="col-sm-6">Comment</label>
+                <div class="col-sm-6">
+                    <textarea class="col-sm-12"  [(ngModel)]="comment"></textarea>
+                </div>
+            </div>
+            <div>
+                <span class="text-center text-danger p-3" *ngIf="submitted">
+                    <span *ngIf="PlayerBalnce && !istmAdjust"> You Can't Withdraw more than blance = {{PlayerBalnce[0].cash.value}}</span>
+                    <span *ngIf="PlayerBalnce  && istmAdjust"> You Can't Withdraw more than blance = {{PlayerBalnce[0].tournamentMoney.value}}</span>
+                </span>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onFormSubmit()" [disabled]="Amount==0 ||Amount==undefined"> Save </button>
+            <button class="btn_grade_2"  *ngIf="istmAdjust" (click)="tmpopupClose()" > Cancel </button>
+        </div>
+    </div>
+</div>
+
+<!-- ************************SuccessPopUp*********************************** -->
+<div class="black_cover" *ngIf="PlayerCashAdjustsuccessPopUp">
+    <div class="popup_1 pop_sm" *ngIf="PlayerCashAdjustsuccessPopUp">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <b class="p_5 text-success"> Successfully added </b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+        </div>
+    </div>
+</div>
+<!-- ************************SuccessPopUpClose*********************************** -->

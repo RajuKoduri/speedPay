@@ -1,0 +1,43 @@
+
+<div class="fd">
+  <div class="fd d_flex ">
+    <div class="mainside_cover" id="blackcovermobile" (click)="closeMenuNames()" *ngIf="closeMenuCoverDiv == true"></div>
+    <div class="sideMenu sideMenu12"  id="sideMenu" [ngClass]="{ openMenu: isMenuOpen }">
+    <!-- <div class="sideMenu" *ngIf="windowsidebar" id="sideMenu" [ngClass]="{ openMenu: isMenuOpen }"> -->
+      <app-sidemenu></app-sidemenu>
+      <!-- <app-SidemenuDynamic></app-SidemenuDynamic> -->
+    </div>
+    
+    <div class="rightBody" id="rightBody" [ngClass]="{ closeMenu: !isMenuOpen }">
+      <div class="fd">
+        <div class="bg_27 shadow_2 dashTop p_15 d_flex spc_bwtn">
+          <div class="d_flex">
+            <div (click)="toggelMenu()" class="clr_ff menuIcn">
+              <!-- <img class="menuIcon" src="../../../assets/icons/menu.svg" /> -->
+              <!-- <i class="fa fa-regular fa-xmark-large"></i> -->
+              <!-- <i class="fa fa-times" aria-hidden="true"></i> -->
+              <i [ngClass]="isMenuOpen ? 'fa fa-bars' : 'fa fa-solid fa-bars' "></i>
+              <!-- <i [ngClass]="isMenuOpen ? 'fa fa-times' : 'fa fa-solid fa-bars' "></i> -->
+            </div>
+            <!-- <img class="logoTop" src="assets/logo.png" /> -->
+            <img class="logoTop" src="assets/Back-Office.jpg" />
+            <!-- <img class="logoTop" src="assets/Logos/latpokerlogo.png" /> -->
+            <!-- <img class="logoTop" src="assets/Logos/logo_dark.png" /> -->
+          </div>
+          <div style="float:right; width: 100px;" >
+            <button class="btn" (click)="logout()">Logout</button>
+          </div>
+        </div>
+        <div class="fd p_15 m_t_60 rightBodyScrol">
+          <!-- <img src="assets/Logos/LatamBackImg.png" alt=""> -->
+          <!-- <img src="../src/assets/Logos/LatamBackImg.png" alt=""> -->
+          <router-outlet></router-outlet>
+          <!-- <div>
+            {{currentDateTime| date:'yyyy-MM-dd'}}
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

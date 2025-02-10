@@ -1,0 +1,143 @@
+<div>
+    <h4> Cash Adjustments</h4>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5 btn_sub12" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="AgentRevenueAdjustmentForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>Currency</label>
+                        <input type="text" formControlName="Admin">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Type</label>
+                        <select class="seclectopt">
+                            <option *ngFor="let list of CashAdjustmentOperationTypeList">{{list.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                     <div class="div_flex p_5_10">
+                        <label class="datelabel">StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view " type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label class="datelabel">EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="text-centers df">
+        <div style="margin-right:20px;" *ngIf="AgentCashAdjustmentData">Rows On the Page: {{rowsOnthePage}}</div>
+        <div *ngIf="ResultCount">Result Count: {{ResultCount}}</div>
+        <!-- <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div> -->
+    </div>
+</div>
+
+<div class="black_cover" (click)="closepop()" *ngIf="popupview"></div> 
+<div class="popmini" *ngIf="popupview">
+    <span class="closetop" (click)="closepop()">
+       <img src="assets/icons/closePop.svg" > 
+    </span>
+    <h4>Balance Adjustment</h4>
+    <hr>
+    <table style="width:100%">
+        <tr>
+         <td>Sever</td>
+         <td>rapoker_demo</td>
+        </tr>
+       <tr class="headcommon"> Common</tr>
+       <tr>
+        <td>Agent Login</td>
+        <td>{{selectedRowData.agent.login}}</td>
+        <!-- <td>{{agentlogin}}</td> -->
+       </tr>
+       <tr>
+        <td>Type</td>
+        <td>{{selectedRowData.direction}}</td>
+        <!-- <td>{{cashtype}}</td> -->
+       </tr>
+       <tr>
+        <td>Date</td>
+        <td>{{selectedRowData.date}}</td>
+        <!-- <td>{{dateform}}</td> -->
+       </tr>
+       <tr>   
+        <td>Amount</td>
+        <td>{{selectedRowData.amount.value}}</td>
+        <!-- <td>{{amount}}</td> -->
+       </tr>
+    </table>
+   <div>
+    <button class="btn btn-danger pt-2" (click)="closepop()">Close</button>
+   </div>
+</div>
+
+<div class="fd table_2">
+    <table class=" tablCode" id="excel-table">
+        <thead>
+            <tr>
+                <th>Agent Login</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Comment</th>
+            </tr>
+        </thead>
+        <div clas='fd' *ngIf="loader">
+            <div class="loaderWraper">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <tbody *ngIf="AgentCashAdjustmentData">
+            <tr *ngFor="let List of AgentCashAdjustmentData,let i =index" (click)="viewdata(List,i)">
+                <td>{{List.agent.login}}</td>
+                <td>{{List.direction}}</td>
+                <td>{{changeSelect(List.date)}}</td>
+                <td class="text-end">{{List.amount.value | numberFormat}}</td>
+                <td>{{List.comment}}</td>
+             
+            </tr>
+        </tbody>
+    </table>
+</div>

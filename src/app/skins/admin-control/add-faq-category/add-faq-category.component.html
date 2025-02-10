@@ -1,0 +1,87 @@
+<div class="black_cover" *ngIf="isMessageTemplate">
+    <div class="popup_1 pop_sm text-black" *ngIf="isMessageTemplate">
+        <div class="PopupHead">
+            <h5 class="text-center">FAQ Category</h5>
+            <span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <form [formGroup]="FaqCategoryForm">
+            <div class="soon font_13 fd p_lr_15">
+                <div class="row fd p-2 d-flex mt-3">
+                    <div class="col-4">
+                        <label>Object Alias</label>
+                    </div>
+                    <div class="col-8 df align-items-center">
+                        <span *ngIf="f['categoryAlias'].touched && f['categoryAlias'].invalid">
+                            <span *ngIf="f['categoryAlias'].errors && f['categoryAlias'].errors['required']"
+                                class="text-danger">
+                                <b class="bi bi-x-circle-fill p-1" title="value can not be empty"></b>
+                            </span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="categoryAlias">
+                    </div>
+                </div>
+                <div class="row fd p-2 d-flex ">
+                    <div class="col-4">
+                        <label>Responsible E-mail for Answers</label>
+                    </div>
+                    <div class="col-8 df align-items-center">
+                        <span *ngIf="f['responsEMail'].touched && f['responsEMail'].invalid">
+                            <span *ngIf="f['responsEMail'].errors && f['responsEMail'].errors['required']"
+                                class="text-danger">
+                                <b class="bi bi-x-circle-fill p-1" title="value can not be empty"></b>
+                            </span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="(none)" formControlName="responsEMail">
+                    </div>
+                </div>
+                <div class="row fd p-2 d-flex ">
+                    <div class="col-4">
+                        <label>Type</label>
+                    </div>
+                    <div class="col-8">
+                        <select class="form-select" formControlName="categoryType">
+                            <option [ngValue]="list.guid" *ngFor="let list of filteredUserType">{{list.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row fd p-2 d-flex mb-3">
+                    <div class="col-4">
+                        <label>E-mail Template</label>
+                    </div>
+                    <div class="col-8">
+                        <select class="form-select" formControlName="emailTemplate">
+                            <option [ngValue]="list.guid" *ngFor="let list of getMailTemplatesByTypeData">{{list.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onSubmit()"> Save </button>
+            <button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% POpup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+
+<div class="black_cover" *ngIf="isMessageTemp">
+    <div class="popup_1 pop_sm text-black" *ngIf="isMessageTemp">
+        <div class="PopupHead">
+            <h5 class="text-center">Error</h5>
+            <span class="closetop" (click)="closeErrPopup()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="text-center p-2 my-3">
+            <i>It is impossible to create a new troubleshooting category as there are no available message
+                templates.</i>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_2" (click)="closeErrPopup()"> OK </button>
+        </div>
+    </div>
+</div>

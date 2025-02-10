@@ -1,0 +1,158 @@
+.color{
+  /* background-color: #63c5ea; */
+  background-color: #ace4f9;
+}
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+input {
+  padding: 5px;
+  width: 200px;
+  margin: 2px;
+}
+
+/* label {
+  padding-right: 20px;
+  width: 130px;
+} */
+
+.seclectopt {
+  padding: 5px;
+  /* width: 200px; */
+  margin: 2px;
+}
+
+/* .Birthdayinputs {
+  width: 27.8%;
+} */
+
+.df {
+  display: flex;
+
+}
+
+.reglabel {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.text-centers {
+  display: flex;
+  /* justify-content: space-around; */
+  margin: 5px;
+}
+
+.filterDiv input:focus,
+.filterDiv select:focus {
+  outline: none;
+}
+
+
+/* .table_1 thead th {
+  position: sticky;
+  top: 0;
+  padding: 0px 71px;
+} */
+.popup_1 textarea:focus,
+.popup_1 input:focus,
+.popup_1 select:focus {
+outline: none;
+}
+
+.popup_1 input,
+.popup_1 select {
+border: solid 1px #ddd;
+padding: 2px;
+width: 200px;
+margin: 2px;
+}
+.popup_1 textarea{
+border: solid 1px #ddd;
+/* padding: 2px; */
+margin: 2px;
+}
+.soon .col-sm-6 label {
+padding: 2px;
+margin: 2px;
+}
+
+.soon .col-sm-6 select,
+.soon .col-sm-6 input {
+margin: 2px;
+}
+textarea{
+  height: 100px;
+}
+
+
+.table_1 tr th {
+  border-left: solid 1px #dbdbdb !important;
+  transition: all 0.5s;
+  border-bottom: solid 1px #dbdbdb !important;
+  padding: 3px 197.2px;
+}
+.trigger {
+  margin: auto;
+  position: relative;
+  text-align: center;
+  border: none;
+  padding: 5px 8px;
+  background: #4aab4e;
+  border-radius: 50px;
+  color: #fff;
+  width: 30px;
+  cursor: pointer;
+}
+.popup1 {
+  position: absolute;
+  left: -85px;
+  top: -8px;
+  transform: translate3d(0, -50%, 0);
+  background: none;
+  color: #000;
+  max-width: 280px;
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19) !important;
+  z-index: 100;
+}
+
+.popup1.btnGrp button:hover {
+  background: #dd6c0c;
+  color: #fff;
+}
+.popup1.btnGrp  button:disabled {
+  background: #fff;
+  color: #9b9898;
+  cursor: no-drop;
+}
+
+.popup1.btnGrp button {
+  margin: 0px;
+  border: none;
+  padding: 7px 4px;
+  border-bottom: 1px solid #b0adad;
+}
+
+.popup1.btnGrp {
+  display: grid;
+}
+
+.popup1:after {
+  content: "";
+  /* width: 20px; */
+  height: 20px;
+  transform: rotate(-45deg);
+  background: #fff;
+  position: absolute;
+  z-index: 10;
+  bottom: 74%;
+  left: calc(99% - 12px);
+}
+.popup1 {
+  padding: 0px;
+  background: #fff;
+}

@@ -1,0 +1,154 @@
+.btn {
+    background-color: wheat;
+    color: rgb(17, 16, 16);
+}
+.navbar {
+     overflow: hidden;
+  }
+  
+  /* Navbar links */
+  .navbar a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 5px 16px;
+    /* margin: 10px 10px 10px 10px; */
+    text-decoration: none;
+    font-size: 13px;
+  }
+  .navbar a:hover {
+    color: #cae804;
+  }
+
+  .dropbtn {
+    background-color: none;
+    color: rgb(12, 12, 12);
+    font-size: 16px;
+    border: none;
+  }
+  
+  /* The container <div> - needed to position the dropdown content */
+  .dropdown {
+    position: relative;
+    display: block;
+  }
+  
+  /* Dropdown Content (Hidden by Default) */
+  .dropdown-content {
+    display: none;
+    position: fixed;
+    background-color: rgba(175, 170, 126);
+    min-width: 100px;
+    z-index: 1;
+  }
+  
+  /* Links inside the dropdown */
+  .dropdown-content a {
+    color: black;
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  .flexDown{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {background-color: none;}
+  
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {
+    display: block;
+
+}
+  
+  /* Change the background color of the dropdown button when the dropdown content is shown */
+  .dropdown:hover .dropbtn {background-color: none;}
+
+  .topnav {
+    background-color: #333;
+    overflow: hidden;
+  }
+ 
+  
+
+
+
+.tabBox{ 
+    background: #dbc4c4;
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    /* height: 15vh; */
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center; 
+    display: flex;
+    font-size: 15px;
+    font-weight: bold;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+    cursor: pointer; 
+    float: left;
+    flex-direction: column;
+    width: 100%;
+}
+.tabBox:hover{
+    background: #b6c575;
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    /* height: 15vh; */
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    display: -webkit-box;
+    display: flex;
+    font-size: 15px;
+    font-weight: bold;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+    cursor: pointer; 
+    float: left;
+    flex-direction: column;
+    transform: scale(1.02);
+}
+/* .tabBox:hover {
+    transform: scale(1.02);
+} */
+.tabIcon img {width: 100%;}
+.tabIcon {
+    width: 100px;
+    padding: 10px;
+}
+.imgsize{
+    border-radius: 40px;
+}
+  
+  /* Add responsiveness - will automatically display the navbar vertically instead of horizontally on screens less than 500 pixels */
+  @media screen and (max-width: 500px) {
+    .navbar a {
+      float: none;
+      display: block;
+    }
+  }
+
+@media (min-width: 576px){
+    .p_lr_20{
+        /* background-color: currentColor; */
+        background-size: cover;
+        height: 650px;
+    } 
+    }
+    @media (max-width: 576px){
+        .p_lr_20{
+            /* background-color: currentColor; */
+            background-size: cover;
+            height: 100%;
+        }
+}

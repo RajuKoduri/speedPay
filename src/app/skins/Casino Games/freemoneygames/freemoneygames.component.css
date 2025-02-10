@@ -1,0 +1,6 @@
+.table_2 {
+    overflow-y: auto;
+    display: block;
+    height: auto !important;
+    background-color: rgb(225 225 219);
+  }

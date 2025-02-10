@@ -1,0 +1,110 @@
+<div class="popup_4 pop_sm">
+    <div class=" PopupHead" *ngIf="!AgentpermissionData">
+        <h5 class="text-center">New Agent Permissions Group </h5>
+    </div>
+    <form [formGroup]="NewAgentPermissionsForm">
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df m_3">
+                    <label class="col-sm-4"> Group Name</label>
+                    <input class="col-sm-4" type=text formControlName="GroupName" />
+                </div>
+                <div class="stakes-error-message text-center"
+                        *ngIf="f['GroupName'].touched && f['GroupName'].invalid || submitted">
+                        <div *ngIf="f['GroupName'].errors && f['GroupName'].errors['required']">
+                            Please Enter
+                            Group Name</div>
+                        <div *ngIf="f['GroupName'].errors && f['GroupName'].errors['minlength']">
+                            Group Name Should
+                            be 4 Character.</div>
+                        <div *ngIf="f['GroupName'].errors && f['GroupName'].errors['maxlength']">
+                            Minimum
+                            Length 10 Characters </div>
+                    </div>
+            </div>
+
+            <div class="fd p_5">
+                <span class="p_b_5  p_5 ">Permissions :</span>
+           
+                <div class="fd">
+                    <tr class=" row col-sm-12">
+                        <th class="col-sm-6">Permission</th>
+                        <th class="col-sm-6">Value</th>    
+                    </tr>
+                    <!-- <app-agentstatistics [menuData]="AgentPermissionList"></app-agentstatistics> -->
+                    <div class="row " *ngFor="let list of AgentPermissionList,let i=index">
+                        <span class="col-sm-4 "> {{list.name}}</span>
+                        <!-- <span class="col-sm-4 headingNames"> {{list.name}}</span> -->
+                        <select class="col-sm-6" [formControlName]="list.name" id="select_box"
+                            (change)="onSelected(i, $event, list )">
+                            <option *ngFor="let levels of list.levels" [ngValue]="levels.name"  >
+                                {{levels.name}}</option>
+                        </select>
+                        <div class="row " *ngFor="let listIn of list.children;let j = index">   
+                            <div class="row" style="margin-left: 10px;">
+                                <span class="col-sm-4"> {{listIn.name}}</span>
+                                <select class="col-sm-6" style="margin-left: 0px;" [formControlName]="listIn.name + i"
+                                    (change)="onChildernSelected(i, $event, listIn )">
+                                    <option [ngValue]="levels.name" *ngFor="let levels of listIn.levels,let j = index"
+                                      > {{levels.name}}</option>
+                                </select>
+                            </div>
+                              <div class="row " *ngFor="let listInc of listIn.children;let k = index">
+                                <div class="row" style="margin-left: 20px;">
+                                    <span class="col-sm-4"> {{listInc.name}} </span>
+                                    <select class="col-sm-6" style="margin-left: 0px;" [formControlName]="listInc.name + i"
+                                        (change)="onSubChildernSelected(i, $event, listInc )">
+                                        <option [ngValue]="levels.name" *ngFor="let levels of listInc.levels,let j = index"
+                                          > {{levels.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+
+            </div>
+            <div class="bottomFix">
+                <button class="btn_grade_1" (click)="onFormSubmit()"> Save </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- ************************SuccessPopUp*********************************** -->
+ <div class="black_cover" *ngIf="CreateSuccessPop">
+    <div class="popup_1 pop_sm" *ngIf="CreateSuccessPop">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="SuccessPop()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <b class="p_5 text-success">{{successmsg}}</b>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="SuccessPop()"> Okay </button>
+        </div>
+    </div>
+</div> 
+<!-- ************************SuccessPopUpClose*********************************** -->
+
+<!-- ************************ErrorPopUp*********************************** -->
+ <div class="black_cover" *ngIf="ErrorPopup">
+    <div class="popup_1 pop_sm" *ngIf="ErrorPopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Alert</h5>
+            <span class="closetop" (click)="TechnicalError()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_10 text-center ">
+                <i class="p_5 text-danger">Technical Error... </i>
+            </div>
+        </div>
+        <div class="bottomFix text-center df m_3">
+            <button class="btn_grade_1" (click)="TechnicalError()"> Okay </button>
+        </div>
+    </div>
+</div> 
+<!-- ************************ErrorPopUpClose*********************************** -->

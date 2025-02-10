@@ -1,0 +1,153 @@
+<div class="black_cover">
+    <div class="popup_1 text-black">
+        <div class="PopupHead">
+            <h5 class="text-center">Add News Record</h5>
+            <span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div>
+            <form [formGroup]="addNewsRecordForm">
+                <div class="PopupHead">
+                    <h5>General</h5>
+                </div>
+
+                <div class="soon font_13 fd p_lr_15 df">
+                    <div class="row fd p-2 d-flex mt-3 w-50 align-items-center">
+                        <div class="col-4">
+                            
+                            <label>News Name:</label>
+                        </div>
+                        <div class="col-8 df align-items-center">
+                            <span *ngIf="f['name'].invalid && submitted">
+                                <span *ngIf="f['name'].errors && f['name'].errors['required']" class="text-danger">
+                                    <b class="bi bi-x-circle-fill p-1" title="value can not be empty"></b>
+                                </span>
+                            </span>
+                            <input type="text" class="form-control" formControlName="name">
+                        </div>
+                    </div>
+                    <div class="row fd p-2 d-flex mt-3 w-50 align-items-center">
+                        <div class="col-4">
+                            <label>Type:</label>
+                        </div>
+                        <div class="col-8 df align-items-center">
+                            <select class="form-select" formControlName="type">
+                                <option [ngValue]="list.guid" *ngFor="let list of usertypeList">{{list.value}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="soon font_13 fd p_lr_15 df gap-2 mt-2">
+                    <div class="w-50 border rounded">
+                        <div class="shadow rounded p-2">Sites</div>
+                        <div class="p-2 m-3">
+                            <ng-multiselect-dropdown [settings]="facesDropdownSettings" formControlName="faces"
+                                [data]="faceParametersList" [(ngModel)]="selectedFaces">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="w-50 border rounded">
+                        <div class="shadow rounded p-2">Visibility</div>
+                        <div class="row fd p-2 d-flex mt-3">
+                            <div class="col-4">
+                                <label>Announce Date:</label>
+                            </div>
+                            <div class="col-8 df align-items-center">
+                                <input type="datetime-local" step="1" class="form-control" formControlName="announceDate">
+                            </div>
+                        </div>
+                        <div class="row fd p-2 d-flex mt-3">
+                            <div class="col-4">
+                                <label>'Hot' News period, min:</label>
+                            </div>
+                            <div class="col-8 df align-items-center">
+                                <input type="number" class="form-control" appMaxLengthValidation [maxNumber]=6
+                                    formControlName="hotPeriodMinutes">
+                            </div>
+                        </div>
+                        <div class="row fd p-2 d-flex mt-3">
+                            <div class="col-4">
+                                <label>Archive after 'Hot' news period</label>
+                            </div>
+                            <div class="col-8 df align-items-center">
+                                <input type="checkbox" formControlName="archiveAfterHotPeriod">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="soon font_13 fd p_lr_15 my-3">
+                <div class="shadow rounded p-2">
+                    <h5>News Text</h5>
+                </div>
+
+                <div class="row fd p-2 d-flex">
+                    <ul class="df flex-wrap m-0">
+                        <li (click)="onLanguageSelect(list.guid, i)" [ngClass]="{ 'active': i === activeLangIndex }"
+                            *ngFor="let list of LanguagesList; let i = index">{{list.value}}</li>
+                    </ul>
+                    <div class="NgxEditor__Wrapper">
+                        <div class="custom-toolbar df justify-content-end">
+                            <div>
+                                <select class="form-select" [(ngModel)]="selectedNewsParam" (change)="onChangeNewsParams('p1')">
+                                    <option *ngFor="let list of newsParametersList" [ngValue]="list.tag">
+                                        {{list.description}}</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-sm mx-1" (click)="toggleEditorMode('html')"
+                                [ngClass]="{'btn-outline-secondary': !isHtmlView, 'activeEditor': isHtmlView}">
+                                HTML Editor
+                            </button>
+                            <button type="button" class="btn btn-sm " (click)="toggleEditorMode('simple')"
+                                [ngClass]="{'btn-outline-secondary': isHtmlView, 'activeEditor': !isHtmlView}">
+                                Simple Editor
+                            </button>
+                        </div>
+
+                        <ngx-editor-menu *ngIf="!isHtmlView" [editor]="editor" [toolbar]="toolbar"></ngx-editor-menu>
+
+                        <textarea *ngIf="isHtmlView" [(ngModel)]="EditorMessage[activeLangIndex].shortText"
+                            class="form-control" rows="5" placeholder="Type here..."></textarea>
+
+                        <ngx-editor *ngIf="!isHtmlView" [editor]="editor"
+                            [(ngModel)]="EditorMessage[activeLangIndex].shortText" [placeholder]="'Type here...'"
+                            [ngModelOptions]="{standalone: true}"></ngx-editor>
+                    </div>
+
+                    <div class="NgxEditor__Wrapper mt-3">
+                        <div class="custom-toolbar df justify-content-end">
+                            <div>
+                                <select class="form-select" [(ngModel)]="selectedNewsParam2" (change)="onChangeNewsParams('p2')">
+                                    <option *ngFor="let list of newsParametersList" [ngValue]="list.tag">
+                                        {{list.description}}</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-sm mx-1" (click)="toggleEditorMode2('html')"
+                                [ngClass]="{'btn-outline-secondary': !isHtmlView2, 'activeEditor': isHtmlView2}">
+                                HTML Editor
+                            </button>
+                            <button type="button" class="btn btn-sm " (click)="toggleEditorMode2('simple')"
+                                [ngClass]="{'btn-outline-secondary': isHtmlView2, 'activeEditor': !isHtmlView2}">
+                                Simple Editor
+                            </button>
+                        </div>
+
+                        <ngx-editor-menu *ngIf="!isHtmlView2" [editor]="editor2" [toolbar]="toolbar"></ngx-editor-menu>
+
+                        <textarea *ngIf="isHtmlView2" [(ngModel)]="EditorMessage[activeLangIndex].fullText"
+                            class="form-control" rows="5" placeholder="'Type here...'"></textarea>
+
+                        <ngx-editor *ngIf="!isHtmlView2" [editor]="editor2"
+                            [(ngModel)]="EditorMessage[activeLangIndex].fullText" [placeholder]="'Type here...'"
+                            [ngModelOptions]="{standalone: true}"></ngx-editor>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="onSubmit()"> Save </button>
+            <button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+        </div>
+    </div>
+</div>

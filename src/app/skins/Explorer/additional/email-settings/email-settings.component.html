@@ -1,0 +1,77 @@
+<div>
+    <button class="fillterbtn m_l_5" style="float: right;" (click)="getPlayerSettings()">Requery</button>
+    <h3>Email Settings</h3>
+</div>
+<div>
+    <div class="fd">
+        <div class="table_2">
+            <div *ngIf="loader">
+                <div class="loaderWraper">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            <table class="tablCode" id="excel_table">
+                <thead>
+                    <tr class="tablCoderow">
+                        <th>Player Login</th>
+                        <th>Description</th>
+                        <th>Value</th>
+                </thead>
+                <tbody *ngIf="PlayerSettings">
+                    <tr *ngFor="let list of PlayerSettings,let i=index" (dblclick)="changesettingspopup(i)">
+                        <td>{{list.player.account}}</td>
+                        <td>{{list.desc}}</td>
+                        <td>
+                            <input type="checkbox" [checked]="list.boolValue" class="pointer">
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="fd df">
+        <div>
+            <span>Rows On the Page : <b>{{rowsOnthePage}}</b></span> ;&nbsp;
+            <span>Result Count : <b>{{ResultCount}}</b></span>
+        </div>
+    </div>
+
+    <div class="black_cover" *ngIf="settingspopup">
+        <div class="popup_1 pop_sm" *ngIf="settingspopup">
+            <div class="PopupHead">
+                <h5 class="text-center">PlayerSettings </h5>
+                <span class="closetop" (click)="changeSettings('no')"> <img src="assets/icons/closePop.svg"> </span>
+            </div>
+            <div class="soon font_13 fd p_lr_15">
+                <div class="fd p_5 ">
+                    <div class="df m_3">
+                        <label class="col-sm-6">Player Login</label>
+                        <span class="col-sm-3">{{copyPlayerObj.player.account}}</span>
+                    </div>
+                    <div class="df m_3">
+                        <label class="col-sm-6">Description</label>
+                        <span class="col-sm-3">{{copyPlayerObj.desc}}</span>
+                    </div>
+                    <div class="df m_3">
+                        <label class="col-sm-6">Value</label>
+                        <span class="col-sm-3">
+                            <input type="checkbox" [(ngModel)]="copyPlayerObj.boolValue" />
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="bottomFix">
+                <button class="btn_grade_1" (click)="changeSettings('yes')"> Save </button>
+                <button class="btn_grade_2" (click)="changeSettings('no')"> Cancel </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ################################################### -->
+    <div class="black_cover" *ngIf="Spinner"></div>
+    <div class="spinnerTrue" *ngIf="Spinner">
+        <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+    </div>
+    <!-- ################################################### -->

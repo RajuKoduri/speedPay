@@ -1,0 +1,377 @@
+<!-- topnav -->
+<!-- <div class="topnav">
+    <a (click)="fillterMenu()">Filter</a>
+    <div class="dropdown">
+      <button class="dropbtn">Actions</button>
+      <div class="dropdown-content">
+        <a  type="disable">View Detailed History (Flash)</a>
+      </div>
+    </div>
+   <a (click)="openCasinoPop()">Open</a>
+   <a >Explore</a>
+   <a (click)="ignoreContext()">Ignore Context</a>
+   <div class="dropdown">
+      <button class="dropbtn">View</button>
+      <div class="dropdown-content">
+        <a (click)="onRequery()">Normal</a>
+        <a>Autosize</a>
+        <a>Card</a>
+      </div>
+    </div>
+   <a (click)="onRequery()">Requery</a>
+   <a (click)="exportExcel()">Export to XSL</a>
+   <a (click)="onPrint()">Print</a>
+</div> -->
+<!-- topnav End -->
+
+<!-- <div class="fd">
+
+  <select  (change)="changeFace($event)"> 
+      <option> One </option>
+      <option> Two </option>
+      <option><input type="checkbox" > All </option>
+  </select>
+  <input type="checkbox" [checked]="checkedAll"> 
+  <input type="checkbox" [checked]="checkedAll"> 
+  <input type="checkbox" [checked]="checkedAll">  
+</div> -->
+
+<div>
+  <h4>Casino Game Sessions:</h4>
+</div>
+<div class="dropdown fd">
+  <button (click)="fillterMenu()" class="fillterbtn font_14">Filters
+    <i *ngIf="!FillterList" class="fa fa-chevron-down IcArrow" title="open"
+      style="font-size:14px;  transition:all 0.5s ;"></i>
+    <i *ngIf="FillterList" class="fa fa-chevron-up IcArrow" title="close"
+      style="font-size:14px; transition:all 0.5s"></i>
+  </button>
+
+  <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportExcel()"> Export
+    Excel</button>
+  <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+
+</div>
+<!-- filter-Form -->
+<div class="fd filterDiv" *ngIf="FillterList">
+  <form [formGroup]="filterForm">
+    <div class="p_25">
+      <div class="row">
+        <div class="col-12 col-lg-6 col-xl-4">
+          <div class="div_flex p_5_10">
+            <label>Start Date</label>
+            <!-- <input class="Birthdayinputs" format="yyyy-MM-dd" type="date" formControlName="startdateFrom">
+            <input class="Birthdayinputs" format="yyyy-MM-dd" type="date" formControlName="startdateTo"> -->
+            <input class="inp_agent_time" format="yyyy-MM-dd" type="date" formControlName="startdateFrom">
+            <input class="inp_agent_time mobile_view" format="yyyy-MM-dd" type="date" formControlName="startdateTo">
+          </div>
+
+          <div class="div_flex p_5_10">
+            <label>currency</label>
+            <!-- <select class="seclectopt" formControlName="currency">
+              <option *ngFor="let curreny of currencys" [ngValue]="curreny.guid">{{curreny.description}}</option>
+            </select> -->
+
+            <div class="multi_dropdown">
+              <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="walletlists"
+                [(ngModel)]="selectedCurrency" (onSelect)="onItemSelectcurrency($event)"
+                (onDeSelect)="OnItemDeSelectcurrency($event)" (onSelectAll)="onSelectAllcurrency($event)"
+                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+              </ng-multiselect-dropdown>
+            </div>
+
+          </div>
+
+          <!-- <div class="div_flex p_5_10">
+            <label>Game</label>
+            <select class="seclectopt" formControlName="game">
+              <option *ngFor="let game of gameList" [ngValue]="game.value">{{game.value}}</option>
+            </select>
+          </div> -->
+
+          <div class="div_flex p_5_10">
+            <label>Games</label>
+            <div class="d-flex flex-wrap justify-content-center align-items-center w-100">
+              <input type="text" formControlName="gamelist" [(ngModel)]="gameTobeSelected" (click)="casinoGamesbtn()"
+                class="bg-white text-overflow-clip">
+              <button class="fillterbtn-games font-size-16" (click)="casinoGamesbtn()">
+                <i *ngIf="!CasinoGamesbtn" class="fa fa-chevron-down IcArrow-games" title="open"
+                  style="font-size:10px;"></i>
+                <i *ngIf="CasinoGamesbtn" class="fa fa-chevron-up IcArrow-games" title="close"
+                  style="font-size:10px;"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6 col-xl-4">
+
+          <div class="div_flex p_5_10">
+            <label>Face</label>
+            <!-- <select class="seclectopt" formControlName="face" (change)="changeFace($event)">
+              <option [ngValue]="Status.name" *ngFor="let Status of faceParameterslist">
+                <input type="checkbox" value={{Status.name}}>{{Status.name}} </option>
+            </select> -->
+            <div class="multi_dropdown">
+              <ng-multiselect-dropdown [settings]=faceDropdownsettings [data]=faceParameterslist [(ngModel)]="selectedFaceParameters" formControlName="face">
+
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="div_flex p_5_10">
+            <label>Player</label>
+            <input type="text" formControlName="player" placeholder="(none)">
+          </div>
+          <div class="div_flex p_5_10">
+            <label>SessionID</label>
+            <input type="text" formControlName="sessionID" placeholder="(none)">
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6 col-xl-4">
+
+          <div class="div_flex p_5_10">
+            <label>First Record</label>
+            <input type="number" formControlName="firstRecord">
+          </div>
+          <div class="div_flex p_5_10">
+            <label>Page Size</label>
+            <input type="number" formControlName="pageSize">
+          </div>
+        </div>
+        <!-- <button class="fillterbtn" (click)="onRequery()">Apply</button>
+           <button class="fillterbtn" (click)="FormReset()">Reset</button> -->
+      </div>
+    </div>
+  </form>
+</div>
+<!-- filter-Form-end -->
+<div class="fd ">
+  <button class="fillterbtn font_14" style=" float: right;" (click)="onFormSubmit()">Submit</button>
+  <div class="text-centers df m_3">
+    <div style="margin-right:20px;" *ngIf="casinogameList">Rows On the Page: {{rowsOnthePage}}</div>
+    <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+        the filters</b></div>
+  </div>
+
+</div>
+<!-- table-start -->
+<!-- <div class="fd over_tbl" id="tablerecords" style="overflow-x:auto;">
+  <div clas='fd' *ngIf="dataLoader">
+    <div class="loaderWraper">
+      <div class="loader"></div>
+    </div>
+  </div>
+  <table class="table_1 table_2" id="excel_table">
+    <thead> -->
+<div class="fd" id="tablerecords">
+  <div *ngIf="dataLoader">
+    <div class="loaderWraper">
+      <div class="loader"></div>
+    </div>
+  </div>
+  <div class="table_2">
+    <table class="fd tablCode" id="excel_table">
+      <thead>
+        <tr>
+          <th>Session ID</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Game</th>
+          <th>Currency</th>
+          <th>Rounds</th>
+          <th>Player</th>
+          <th>Initial Balance</th>
+          <th>Buy-In</th>
+          <th>Bet</th>
+          <th>Win</th>
+          <th>Payout</th>
+          <th>Closing Balance</th>
+          <th>Gain/Loss Amount</th>
+          <th>Gain/Loss %</th>
+          <th>Comp points</th>
+          <th>Face</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="casinogameList">
+        <tr (click)="openCasinoPop();onClick(i)"
+          *ngFor="let i = index; let List of casinogameList | paginate: {itemsPerPage:selectnum, currentPage:p}">
+          <td>{{List.gameSessionId}}</td>
+          <td>{{List.datePeriod.start}}</td>
+          <td>{{List.datePeriod.end}}</td>
+          <td>{{List.gameName}}</td>
+          <td>{{List.currency}}</td>
+          <td>{{List.rounds}}</td>
+          <td>{{List.playerNickname}}</td>
+          <td>{{List.initialBalance.value}}</td>
+          <td>{{List.buyIn.value}}</td>
+          <td>{{List.bet.value}}</td>
+          <td>{{List.win.value}}</td>
+          <td>{{List.payout.value}}</td>
+          <td>{{List.closingBalance}}</td>
+          <td>{{List.gainlossamount.value}}</td>
+          <td>{{List.null}}</td>
+          <td>{{List.compPoints.value}}</td>
+          <td>{{List.casinoSystemName}}</td>
+          <td>{{List.comment}}</td>
+        </tr>
+      </tbody>
+      <tfoot *ngIf="casinogameList">
+        <tr>
+          <td><b>{{rowsOnthePage}}</b></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>SUM={{Rounds}}</td>
+          <td></td>
+          <td>SUM={{initialBalanceValue}}.00</td>
+          <td>SUM={{buyInValue}}.00</td>
+          <td>SUM={{betValue}}.00</td>
+          <td>SUM={{winValue}}.00</td>
+          <td>SUM={{payoutValue}}.00</td>
+          <td>SUM={{closingBalanceValue}}.00</td>
+          <td>SUM={{gainlossamountValue}}.00</td>
+          <td></td>
+          <td>SUM={{compPointsValue}}.00</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+        class="pt-2 page-item float-right">
+    </pagination-controls>
+
+    <div class="text-centers">
+      <div style="margin-right:20px;" *ngIf="casinogameList">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+      <div> Result Count:<b>{{ResultCount}}</b>  <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div> -->
+  </div>
+  <!-- table-end -->
+
+  <!-- onclick row popup -->
+  <div class="main_popup" *ngIf="casinopopup">
+    <div class="fd popup">
+      <div class="head_popup">
+        <p class="text-center"><b>Casino Game Sessions</b></p>
+        <span (click)="closePopup()">X</span>
+      </div>
+      <div class="sub_popup">
+        <table>
+          <tr>
+            <th>Session ID:</th>
+            <td>{{subCasino.null}}</td>
+          </tr>
+          <tr>
+            <th>Start Date:</th>
+            <td>{{subCasino.null}}</td>
+          </tr>
+          <tr>
+            <th>End Date:</th>
+            <td>{{subCasino.null}}</td>
+          </tr>
+          <tr>
+            <th>Game:</th>
+            <td>{{subCasino.null}}</td>
+          </tr>
+          <tr>
+            <th>Currency:</th>
+            <td>{{subCasino.null}}</td>
+          </tr>
+          <tr>
+            <th>Rounds:</th>
+            <td>{{subCasino.null}}</td>
+          </tr>
+          <tr>
+            <th>Player:</th>
+            <td>{{subCasino.null}}</td>
+          </tr>
+          <tr>
+            <th>Initial Balance:</th>
+            <td>{{subCasino.null}}</td>
+          </tr>
+          <tr>
+            <th>Buy-In:</th>
+            <td>{{subCasino.null}}</td>
+          </tr>
+          <tr>
+            <th>Bet: </th>
+            <td>{{subCasino.null}}</td>
+          </tr>
+          <tr>
+            <th>Win:</th>
+            <td>{{subCasino.playerNicknameMask}}</td>
+          </tr>
+          <tr>
+            <th>Payout:</th>
+            <td>{{subCasino.null}}</td>
+          </tr>
+          <tr>
+            <th>Closing Balance:</th>
+            <td>{{subCasino.null}}</td>
+          </tr>
+          <tr>
+            <th>Gain/Loss Amount:</th>
+            <td>{{subCasino.players}}</td>
+          </tr>
+          <tr>
+            <th>Gain/Loss %:</th>
+            <td>{{subCasino.gameNames}}</td>
+          </tr>
+          <tr>
+            <th>Comp points:</th>
+            <td>{{subCasino.roomName}}</td>
+          </tr>
+          <tr>
+            <th>Face:</th>
+            <td>{{subCasino.jokerslotSubgameName}}</td>
+          </tr>
+          <tr>
+            <th>Comment:</th>
+            <td>{{subCasino.networkNames}}</td>
+          </tr>
+          <div class="btn_row">
+            <button class="savebtn" (click)="closePopup()">Save</button>
+            <button class="closebtn" (click)="closePopup()">Close</button>
+          </div>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$ Games popup start $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ -->
+
+<div *ngIf="CasinoGamesbtn" class="black_cover"></div>
+<div *ngIf="CasinoGamesbtn" class="fd filterDiv-game-filter">
+  <div class="PopupHeads div_flex">
+    <h5 class="text-center">Casino Games </h5>
+    <span class="closetop" (click)="casinoGamesbtn()"> <img src="assets/icons/closePop.svg">
+    </span>
+  </div>
+  <div class="d-flex flex-row all-games">
+    <input class="" type="checkbox" id="checkboxForCasinogameCaption" [checked]="casinoGameCheckbox"
+      (change)="clickonCheckboxForAllGamesCasino($event)">
+    <label for="checkboxForCasinogameCaption">Casino Games</label>
+  </div>
+  <div class="poker-caption-container">
+    <div class="caption-checkbox" *ngFor="let game of Casinofilters; let i = index">  
+      <input class="" type="checkbox" [checked]="casinoGamescheckedList[i]" value="{{game.caption}}"
+        id="gamecheckboxId{{i}}" (change)="clickonCheckboxCasinoIndivisualGames($event, i)">
+      <label for="gamecheckboxId{{i}}" class="label_poker">{{game.caption}}</label>
+    </div>
+
+  </div>
+  <div class="bottomFixs">
+    <button class="closeBTN" (click)="casinoGamesbtn()">close</button>
+  </div>
+</div>
+
+
+
+
+<!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$ Games popup End $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ -->

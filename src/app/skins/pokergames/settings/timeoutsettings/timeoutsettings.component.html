@@ -1,0 +1,306 @@
+<div>
+    <h3>Time out Settings</h3>
+</div>
+<div class="fd table_2">
+    <!-- <div class=""> -->
+        <div class=" ">
+            <table class="tablCode" id="excel_table">
+        <!-- <table class="timeOutTable ">
+            <table class="table_1 table_2">
+                <table class="table_2"> -->
+                    <!-- <div class=""> -->
+                        <thead>
+                            <tr class="tablCoderow">
+                                <th colspan="2">TimeOuts Settings
+                                    <div class="arrow" (click)="TimeOutsSettings()">
+                                        <i *ngIf="showtime" class="fa fa-chevron-up"></i>
+                                        <i *ngIf="!showtime" class="fa fa-chevron-down"></i>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                    <!-- </div> -->
+                    <!-- <div *ngIf="showTiemoute" (click)="subTabletimeOut()"> -->
+                    <div *ngIf="showTiemoute">
+                        <tbody  *ngFor="let oblist of objList;let i=index" (click)="TimeOutPopMethod(i)">
+                            <!-- <tbody *ngFor="let oblist of objList;let i=index" > -->
+
+                            <tr>
+                                <td >Buy chips timeout, seconds:</td>
+                                <td>{{oblist.buyChipsTimeout/1000}}</td>
+                            </tr>
+                            <tr>
+                                <td>Buyin limit timeout, Minutes:</td>
+                                <td>{{oblist.buyinLimitTimeout/60000}}</td>
+                            </tr>
+                            <tr>
+                                <td>Reserve set timeout, Seconds:</td>
+                                <td>{{oblist.reserveSeatTimeout/1000}}</td>
+                            </tr>
+                            <tr>
+                                <td>New hands timeout, Seconds:</td>
+                                <td>{{oblist.newHandTimeout/1000}}</td>
+                            </tr>
+                            <tr>
+                                <td>Between hands timeout, Milliseconds:</td>
+                                <td>{{oblist.betweenHandsTimeout}}</td>
+                            </tr>
+                            <tr>
+                                <td>Show Winners timeout, seconds:</td>
+                                <td>{{oblist.showWinnersTimeout/1000}}</td>
+                            </tr>
+                            <tr>
+                                <td>Showdown timeout, seconds:</td>
+                                <td>{{oblist.showdownTimeout/1000}}</td>
+                            </tr>
+                            <tr>
+                                <td>Maximum hands in sit out, seconds:</td>
+                                <td>{{oblist.sitOutTime/1000}}</td>
+                            </tr>
+                            <tr>
+                                <td>Maximum hands in sit out, hands:</td>
+                                <td>{{oblist.sitOutHands}}</td>
+                            </tr>
+                            <tr>
+                                <td>Bad Beat Jackpot show timeout, sec:</td>
+                                <td>{{oblist.afterJackpotHandTimeout/1000}}</td>
+                            </tr>
+                            <tr>
+                                <td>play Money Reset Threshold:</td>
+                                <td>{{oblist.playMoneyResetThreshold.value |numberFormat}}</td>
+                            </tr>
+                            <tr>
+                                <td>play Money Reset limit, hours:</td>
+                                <td>{{oblist.playMoneyResetForbiddenPeriod}}</td>
+                            </tr>
+                            <tr>
+                                <td>synchronized Break TimeOut:</td>
+                                <td>{{oblist.synchronizedBreakTimeout/1000}}</td>
+                            </tr>
+                            <tr>
+                                <td>synchronized Break Frequency:</td>
+                                <td>{{oblist.synchronizedBreakFrequency}}</td>
+                            </tr>
+                            <tr>
+                                <td>synchronized Break ResumeDelay:</td>
+                                <td>{{oblist.synchronizedBreakResumeDelay}}</td>
+                            </tr>
+                            <tr>
+                                <td>synchronized Break ZoneMinute:</td>
+                                <td>{{oblist.synchronizedBreakZoneMinute}}</td>
+                            </tr>
+                            <tr>
+                                <td>synchronized Break TimeZone:</td>
+                                <td>{{oblist.synchronizedBreakTimeZone}}</td>
+                            </tr>
+                        </tbody>
+                    </div>
+                <!-- </table>
+            </table> -->
+        </table>
+    </div>
+</div>
+
+
+<!-- *********************************************************************************** -->
+<!-- <div class="popupCover" *ngIf="showtimeOut"></div>
+<div class="popup_time" *ngIf="showtimeOut">
+    <div class="icon_close" (click)="timeOutpopup()">
+        <img class="close_Img" src="assets/close_1.svg" />
+    </div>
+    <div class="fd">
+        <table class="tablsubtable Blindtable">
+            <tr class="tablCoderow">
+                <th>Srvere</th>
+                <th>Backoffice</th>
+            </tr>
+            <tbody *ngFor="let oblist of objList">
+                <tr>
+                    <td>Buy chips timeout, seconds</td>
+                    <button class="BT_time">  <td>{{oblist.buyChipsTimeout/1000}}</td></button>
+                    <input type="text" class="BT_time" value="{{oblist.buyChipsTimeout/1000}}" />
+                </tr>
+                <tr>
+                    <td>Buyin limit timeout, Minutes</td>
+                    <input class="BT_time" value="{{oblist.buyinLimitTimeout/60000}}" />
+                </tr>
+                <tr>
+                    <td>Reserve set timeout, Seconds</td>
+                    <input class="BT_time" value="{{oblist.reserveSeatTimeout/1000}}" />
+                </tr>
+                <tr>
+                    <td>New hands timeout, Seconds</td>
+                    <input class="BT_time" value="{{oblist.newHandTimeout/1000}}" />
+                </tr>
+                <tr>
+                    <td>Between hands timeout, Milliseconds</td>
+                    <input class="BT_time" value="{{oblist.betweenHandsTimeout}}" />
+                </tr>
+                <tr>
+                    <td>Show Winners timeout, seconds</td>
+                    <input class="BT_time" value="{{oblist.showWinnersTimeout/1000}}" />
+                </tr>
+                <tr>
+                    <td>Showdown timeout, seconds</td>
+                    <input class="BT_time" value="{{oblist.showdownTimeout/1000}}" />
+                </tr>
+                <tr>
+                    <td>Maximum hands in sit out, seconds</td>
+                    <input class="BT_time" value="{{oblist.sitOutTime/1000}}" />
+                </tr>
+                <tr>
+                    <td>Maximum hands in sit out, hands</td>
+                    <input class="BT_time" value="{{oblist.sitOutHands}}" />
+                </tr>
+                <tr>
+                    <td>Bad Beat Jackpot show timeout, sec</td>
+                    <input class="BT_time" value="{{oblist.afterJackpotHandTimeout/1000}}" />
+                </tr>
+                <tr>
+                    <td>play Money Reset Threshold</td>
+                    <input class="BT_time" value="{{oblist.playMoneyResetThreshold.value}}" />
+                </tr>
+                <tr>
+                    <td>play Money Reset limit, hours</td>
+                    <input class="BT_time" value="{{oblist.playMoneyResetForbiddenPeriod}}" />
+                </tr>
+                <tr>
+                    <td>synchronized Break TimeOut:</td>
+                    <input class="BT_time" value="{{oblist.synchronizedBreakTimeout/1000}}" />
+                </tr>
+                <tr>
+                    <td>synchronized Break Frequency</td>
+                    <input class="BT_time" value="{{oblist.synchronizedBreakFrequency}}" />
+                </tr>
+                <tr>
+                    <td>synchronized Break ResumeDelay</td>
+                    <input class="BT_time" value="{{oblist.synchronizedBreakResumeDelay}}" />
+                </tr>
+                <tr>
+                    <td>synchronized Break ZoneMinute</td>
+                    <input class="BT_time" value="{{oblist.synchronizedBreakZoneMinute}}" />
+                </tr>
+                <tr>
+                    <td>synchronized Break TimeZone</td>
+                    <input class="BT_time" value="{{oblist.synchronizedBreakTimeZone}}" />
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="closeevnte">
+            <button class="closeBTN" (click)="timeOutpopup()">close</button>
+        </div>
+    </div>
+</div> -->
+
+
+
+<div class="black_cover" *ngIf="timeOutpopup">
+    <div class="popup_1 pop_sm" *ngIf="timeOutpopup">
+        <div class="PopupHead">
+            <h5 class="text-center">TimeOuts Settings </h5>
+            <span class="closetop" (click)="timeOutpopupClose()"> <img src="assets/icons/closePop.svg">
+            </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <!-- <form [formGroup]="TimeOutSettingsForm"> -->
+            <div class="fd p_5 ">
+                <div class="df m_t_5">
+                    <label class="col-sm-8"> Buy chips timeout, seconds </label>
+                    <!-- <input class="col-sm-4" formControlName="Buychipstimeout" value="{{timeoutSettingsList.buyChipsTimeout/1000}}"/> -->
+                    <input class="col-sm-4" [(ngModel)]="buyChipsTimeout" maxlength="9"/>
+                    <!-- <input class="col-sm-4" 
+                            [(ngModel)]="timeoutSettingsList.buyChipsTimeout"
+                             [ngModelOptions]="{standalone: true}" /> -->
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">Buyin limit timeout, Minutes</label>
+                    <!-- <input class="col-sm-4" value="{{timeoutSettingsList.buyinLimitTimeout/60000}}" /> -->
+                    <input class="col-sm-4" [(ngModel)]="buyinLimitTimeout" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">Reserve set timeout, Seconds</label>
+                    <input class="col-sm-4" [(ngModel)]="reserveSeatTimeout" maxlength="9"/>
+
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">New hands timeout, Seconds</label>
+                    <input class="col-sm-4" [(ngModel)]="newHandTimeout" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">Between hands timeout, Milliseconds</label>
+                    <input class="col-sm-4" [(ngModel)]="timeoutSettingsList.betweenHandsTimeout" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">Show Winners timeout, seconds</label>
+                    <input class="col-sm-4" [(ngModel)]="showWinnersTimeout" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">Showdown timeout, seconds</label>
+                    <input class="col-sm-4" [(ngModel)]="showdownTimeout" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">Maximum hands in sit out, seconds</label>
+                    <input class="col-sm-4" [(ngModel)]="sitOutTime" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">Maximum hands in sit out, hands</label>
+                    <input class="col-sm-4" [(ngModel)]="timeoutSettingsList.sitOutHands" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">Bad Beat Jackpot show timeout, sec</label>
+                    <input class="col-sm-4" [(ngModel)]="afterJackpotHandTimeout" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">play Money Reset Threshold</label>
+                    <input class="col-sm-4" [(ngModel)]="timeoutSettingsList.playMoneyResetThreshold.value" maxlength="5"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">play Money Reset limit, hours</label>
+                    <input class="col-sm-4" value="{{timeoutSettingsList.playMoneyResetForbiddenPeriod}}" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">synchronized Break TimeOut</label>
+                    <input class="col-sm-4" [(ngModel)]="synchronizedBreakTimeout" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">synchronized Break Frequency</label>
+                    <!-- <input class="col-sm-4" [(ngModel)]="timeoutSettingsList.synchronizedBreakFrequency" /> -->
+                    <input class="col-sm-4" value="55" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">synchronized Break ResumeDelay</label>
+                    <input class="col-sm-4" [(ngModel)]="timeoutSettingsList.synchronizedBreakResumeDelay" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">synchronized Break ZoneMinute</label>
+                    <input class="col-sm-4" [(ngModel)]="timeoutSettingsList.synchronizedBreakZoneMinute"
+                        [(ngModel)]="timeoutSettingsList.synchronizedBreakZoneMinute" maxlength="9"/>
+                </div>
+                <div class="df m_t_5">
+                    <label class="col-sm-8">synchronized Break TimeZone</label>
+                    <!-- <input class="col-sm-4" formControlName="synchronizedBreakTimeZone"
+                            [(ngModel)]="timeoutSettingsList.synchronizedBreakTimeZone" /> -->
+                    <input class="col-sm-4" [(ngModel)]="timeoutSettingsList.synchronizedBreakTimeZone"
+                        [ngModelOptions]="{standalone: true}" />
+                    <!-- <input class="col-sm-4" formControlName="synchronizedBreakTimeZone" value="{{timeoutSettingsList.synchronizedBreakTimeZone}}" /> -->
+                </div>
+
+
+            </div>
+            <div class="bottomFix">
+                <button class="btn_grade_1" (click)="SettingsFormSubmit()"> Save </button>
+                <button class="btn_grade_2" (click)="timeOutpopupClose()"> Cancel </button>
+            </div>
+            <!-- </form> -->
+        </div>
+    </div>
+</div>
+
+<!-- ******************************Spinnwer********************************************** -->
+<div class="black_cover" *ngIf="SpinnwerT"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+    <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+<!-- **************************************************************************** -->

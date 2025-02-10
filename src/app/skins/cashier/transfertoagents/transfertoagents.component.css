@@ -1,0 +1,124 @@
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+input {
+  padding: 5px;
+  /* width: 200px; */
+  margin: 2px;
+}
+
+label {
+  padding-right: 20px;
+  width: 130px;
+}
+
+
+.df {
+  display: flex;
+
+}
+
+.reglabel {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.text-centers {
+  display: flex;
+  /* justify-content: space-around; */
+  margin: 5px;
+}
+
+
+.table_1 thead th {
+  position: sticky;
+  top: 0;
+}
+
+.full_div {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.168);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.popup {
+  width: 350px;
+  height: 500px;
+  margin: auto;
+  overflow: auto;
+  display: block;
+  border: 1px solid rgb(136, 167, 136);
+  position: relative;
+  background: #c9d7da !important;
+}
+
+.popup::-webkit-scrollbar {
+  width: 0;
+}
+
+.sub_pop {
+  padding: 10px;
+}
+
+.head {
+  width: 100%;
+  /* border: 1px solid blue; */
+  height: 30px;
+  padding: 5px;
+  position: sticky;
+  top: 0;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(180deg, rgb(9, 110, 153) 0%, rgb(11, 140, 179) 35%, rgba(0, 212, 255, 1) 100%);
+
+}
+.full_div span {
+  z-index: 999;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 12px;
+  position: absolute;
+  float: right;
+  right: 0;
+  top: 2px;
+  padding-right: 5px;
+  color: white;
+}
+
+.table_1 thead th {
+  position: sticky;
+  top: 0;
+  padding: 1px 43px;
+}
+
+table tfoot {
+  inset-block-end: 0;
+  /* "bottom" */
+
+}
+
+tfoot {
+  position: sticky;
+  bottom: -1px;
+}
+
+table tfoot tr td {
+  /* border-radius: 2em; */
+  background-color: #a6bfc5;
+  color: #000000;
+}

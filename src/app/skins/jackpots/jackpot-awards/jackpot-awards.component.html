@@ -1,0 +1,244 @@
+
+ <div>
+    <h3>Jackpot Awards</h3>
+</div>
+<div>
+    <button class="fillterbtn font_16" (click)="fillterMenu()">Filters
+        <i *ngIf="!FillterList" class="fa fa-chevron-down IcArrow" title="open" style="font-size:14px;"></i>
+        <i *ngIf="FillterList" class="fa fa-chevron-up IcArrow" title="close" style="font-size:14px;"></i>
+    </button>
+
+    <button class="fillterbtn m_l_5" style="margin-right:15px; float: right;" (click)="exportExcel()"> Export
+        Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<!-- filter-Form -->
+<div class="fd filterDiv" *ngIf="FillterList">
+    <form [formGroup]="filterForm" (ngSubmit)="onFormSubmit()">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>StartDate</label>
+                        <input class="inp_agent_time" type="date"  [max]="endDate" formControlName="startDate"
+                        [ngModel]="startDate" (ngModelChange)="startDate = $event"  (change)="showDate($event)"/>
+                        <input class="inp_agent_time mobile_view"  type="time" formControlName="startTime"  
+                        step="1" [ngModel]="startTime" (ngModelChange)="startTime = $event"  (change)="timechange($event)" 
+                        [max]="endTime"/>
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>EndDate</label>
+                        <input class="inp_agent_time" type="date"   [max]="todaydate" formControlName="endDate"
+                      [ngModel]="endDate" (ngModelChange)="endDate = $event"  (change)="showDate($event)"/>
+                      <input  class="inp_agent_time mobile_view" type="time" formControlName="endTime"  
+                      step="1" [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)"/>
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                      </div>
+                      <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time  
+                      </div>
+                  
+                    <!-- <div>
+                        <label> Jackpot Name</label>
+                        <input type="text" formControlName="jackpotname" placeholder="(none)">
+                    </div> -->
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label> User</label>
+                        <input type="text" formControlName="user" placeholder="(none)">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>currency</label>
+                        <!-- <select class="seclectopt" formControlName="currency">
+                            <option *ngFor="let curreny of walletlists" [ngValue]="curreny.guid">{{curreny.description}}
+                            </option>
+                        </select> -->
+
+                        
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettingscurrency" [data]="currencystatus"
+                                [(ngModel)]="selectedcurrency" (onSelect)="onItemSelectcurrency($event)"
+                                (onDeSelect)="OnItemDeSelectcurrency($event)"
+                                (onSelectAll)="onSelectAllcurrency($event)"
+                                (onDeSelectAll)="onDeSelectAllcurrency($event)" formControlName="currency">
+                            </ng-multiselect-dropdown>
+                        </div>
+                        
+                    </div>
+                    <!-- <div>
+                        <label>Type Operation</label>
+                        <select class="selectopt" formControlName="typeoperation" placeholder="(none)">
+                            <option *ngFor="let type of Operation" [ngValue]="type.guid">{{type.value}}</option>
+                        </select>
+                    </div> -->
+                    <!-- <div>
+                        <label>Owner Name</label>
+                        <input type="text" formControlName="ownername" placeholder="(none)">
+                    </div> -->
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="number" formControlName="firstRecord">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="number" formControlName="maxCountRecord">
+                    </div>
+                    <div class="fd df">
+                        <!-- <button class=" fillterbtn ApplyResetbtn" (click)="onFormSubmit()">Apply</button> -->
+                        <!-- <button class=" fillterbtn ApplyResetbtn" (click)="FormReset()">Reset</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- filter-Form-end -->
+<div class="fd">
+    <button class="fillterbtn font_14" style="margin-right:15px; float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df m_t_5">
+
+        <div style="margin-right:20px;" *ngIf="JackpotAdjustments">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+<!-- table start -->
+<div class="fd over_tbl" id="tablerecords">
+    <div clas='fd' *ngIf="dataLoader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="fd table_2">
+        <table class=" tablCode" id="excel_table">
+            <thead>
+                <tr>
+                    <th> User </th>
+                    <th> Type Operation</th>
+                    <th> Date</th>
+                    <th> Jackpot Name</th>
+                    <th> Owner Name</th>
+                    <th> Currency</th>
+                    <th> Amount</th>
+                    <th> Details</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="JackpotAdjustments">
+                <tr (click)="onClick(i)" *ngFor="let i = index; let list of JackpotAdjustments ">
+                    <td>{{list.creator.login}}</td>
+                    <td>{{list.type}}</td>
+                    <!-- <td>{{list.date}}</td> -->
+                    <td>{{changeSelect(list.date) }}</td>
+                    <td>{{list.potName}}</td>
+                    <td></td>
+                    <td>{{list.moneyType}}</td>
+                    <td class="text-end">{{list.amount.value |numberFormat}}</td>
+                    <td>{{list.details}}</td>
+                </tr>
+            </tbody>
+            <tfoot *ngIf="JackpotAdjustments">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>SUM={{amountValue |numberFormat}}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+
+    <!-- <pagination-controls class="pagination justify-content-end" (pageChange)="p=$event"
+        class="pt-2 page-item float-right">
+    </pagination-controls> -->
+
+    <!-- <div class="page_count">
+        <div style="margin-right:20px;" *ngIf="JackpotAdjustments">Rows On the Page: <b>{{rowsOnthePage}}</b> </div>
+        <div> Result Count:<b>{{ResultCount}}</b>  <b *ngIf="resultcount">To get data set and apply the filters</b></div>
+    </div> -->
+</div>
+<!--table end -->
+<div class="fd">
+    <div class="fd" *ngIf="JackpotAdjustments">
+        <div class="pagecount">
+            <button class="Pagebtns" [disabled]="PageCount==1 || JackpotAdjustments==null"
+                (click)="fastbackforward()"><i class="fa fa-step-backward" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="PageCount==1 ||JackpotAdjustments==null" (click)="prev()">
+                <i class="fa fa-caret-left" style="font-size:20px"></i>
+            </button>
+            <div class="PageCountNoDiv">
+                <div class="" *ngIf="JackpotAdjustments">{{PageCount}}</div>
+            </div>
+            <button class="Pagebtns " [disabled]="JackpotAdjustments==null || pagecontrolbtn" (click)="next()">
+                <i class="fa fa-caret-right" style="font-size:20px"></i>
+            </button>
+            <button class="Pagebtns" [disabled]="JackpotAdjustments==null || pagecontrolbtn" (click)="fastforward()">
+                <i class="fa fa-step-forward" style="font-size:20px"></i></button>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- *****************************PopUp********************************** -->
+<div class="black_cover" *ngIf="JWApopup">
+    <div class="popup_1 pop_sm" *ngIf="JWApopup">
+        <div class="PopupHead">
+            <h5 class="text-center">Jackpot Winnings And Adjustments </h5>
+            <span class="closetop" (click)="closePopup()"> <img src="assets/icons/closePop.svg"> </span>
+        </div>
+        <div class="soon font_13 fd p_lr_15">
+            <div class="fd p_5 ">
+                <div class="df">
+                    <label class="col-sm-6"> User </label>
+                    <span class="col-sm-6">{{subJWA.creator.login}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Type Operation </label>
+                    <span class="col-sm-6">{{subJWA.type}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Date </label>
+                    <!-- <span class="col-sm-6">{{subJWA.date}}</span> -->
+                    <span class="col-sm-6">{{changeSelect(subJWA.date) }}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Jackpot Name </label>
+                    <span class="col-sm-6">{{subJWA.potName}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Owner Name </label>
+                    <span class="col-sm-6"></span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Currency </label>
+                    <span class="col-sm-6">{{subJWA.moneyType}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Amount </label>
+                    <span class="col-sm-6">{{subJWA.amount.value}}</span>
+                </div>
+                <div class="df">
+                    <label class="col-sm-6"> Details </label>
+                    <span class="col-sm-6">{{subJWA.details}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closePopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closePopup()"> Cancel </button>
+        </div>
+    </div>
+</div>
+<!-- ****************************PopUp_end*********************************** -->

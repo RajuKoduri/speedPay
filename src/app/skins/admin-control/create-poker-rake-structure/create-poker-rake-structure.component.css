@@ -1,0 +1,152 @@
+.popup_4{
+    background: #fff;
+    max-width: 800px;
+    margin: auto;
+    /* top: 80px; */
+    /* position: fixed; */
+    /* z-index: 1000; */
+    /* left: 15px; */
+    /* right: 15px; */
+    border-radius: 5px;
+    overflow: auto;
+    max-height: 85vh;
+    box-shadow: 7px 11px 39px 5px rgb(0 0 0 / 20%);
+}
+.popup_4 input:focus,
+.popup_4 select:focus {
+  outline: none;
+}
+
+.popup_4 input,
+.popup_4 select {
+  border: solid 1px #ddd;
+  padding: 2px;
+  margin: 2px;
+}
+
+.soon .col-sm-6 label {
+  padding: 2px;
+  margin: 2px;
+}
+
+.soon .col-sm-6 select,
+.soon .col-sm-6 input {
+  margin: 2px;
+}
+
+
+.Blindpopup {
+  background: #fff;
+  max-width: 500px;
+  margin: auto;
+  top: 150px;
+  /* top: 250px; */
+  position: fixed;
+  z-index: 1000;
+  left: 15px;
+  right: 15px;
+  border-radius: 5px;
+  overflow: auto;
+  max-height: 80vh;
+}
+.wh{
+  width: 100%;
+  height: 200px;
+  margin-top: 5px;
+  /* align-items: center;
+  justify-content: center; */
+  display: flex;
+}
+.table_2 thead{
+  position: sticky;
+  top: 0;
+}
+ .deletebtn {
+  width: 50%;
+  padding: 12px 20px ;
+  margin: 0  25% 0 ;  
+  display: inline-block;
+  border: 1px solid #ccc; 
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.overflow{
+    overflow: auto;
+}
+.AddNewRangebtn {
+    padding: 5px 7px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 10px;
+    transition: all 0.5s;
+    margin: 3px;
+    border: solid 1px #ddd;
+    color: #fff;
+    background: linear-gradient(45deg, #00b782, #006b9f);
+    width: 70%;
+    position: relative;
+
+}
+.AddNewRangebtn:disabled{
+  cursor: no-drop;
+  color: #0c0c0c ;
+  background: #5e5d5d34;
+}
+.btn_grade_1 {
+    background: linear-gradient(45deg, #00b782, #006b9f);
+    background: linear-gradient(45deg, #00b782, #006b9f);
+}
+.SeletedRangeArea{
+    padding: 5px;
+    margin: 3px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    box-shadow: 1px 4px 9px gray;
+}
+.SeletedRangeArea label{
+    width: 35px;
+}
+.SeletedRangeArea input{
+    width: 50px;
+}
+.SeletedRangeArea button{
+   
+    width: 50px;
+    margin-left: 55px;
+}
+.ParticipantRangeArea{
+  height: 32px;
+}
+
+.ParticipantRangeArea p {
+  padding:2px;
+  margin: 2px 2 0 0;
+  text-align: center;
+  
+  border: 1px solid gray;
+  border-radius: 5px;
+  /* position: relative;
+  overflow: auto; */
+  /* box-shadow: 1px 4px 9px gray; */
+}
+.overflow {
+  position: relative;
+  overflow: auto;
+}
+.table_2 thead th{
+  width: 200px;
+}
+
+.PopupHead{
+  z-index:99;
+}
+
+.validation-class{
+  padding-left: 5%;
+  font-size: 15px;
+  margin-top: 10px;
+}
+.input_width{
+  width: 65% !important;
+}

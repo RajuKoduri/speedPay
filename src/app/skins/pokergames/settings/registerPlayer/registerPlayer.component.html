@@ -1,0 +1,45 @@
+<div class="register-container">
+  <h6>Register Player to Tournament: STC</h6>
+  <div class="search-container">
+    <label class="label-heading" for="search-item">User Login :</label>
+    <input id="search-item" type="text" [(ngModel)]="playerSearch">
+    <button [disabled]="playerSearch.length==0"
+      [ngClass]="{'btn_grade_1-disabled':playerSearch.length==0,'btn_grade_1':playerSearch.length>0}"
+      (click)="clickFindPokerTournamentPlayerRegistrationCandidate()">Find</button>
+  </div>
+  <h6>User Details :<span
+      [ngClass]="{'player-search-error': searchResultCount==0,'player-search-success': searchResultCount > 0}">{{userName}}</span>
+  </h6>
+
+
+  <div class="search-container">
+
+    <div class="bal-buy-container">
+      <p class="para-element">Player Avaiable Balance</p>
+      <p class="text-end" *ngIf="balance">Cash :{{balance | numberFormat}} , Bonus {{bonus | numberFormat}}</p>
+      <p class="text-end" *ngIf="tournamentMoney >=0">TM : {{tournamentMoney | numberFormat}}</p>
+      <p class="text-end" *ngIf="tournamentTickets == 0">no Ticket to this tournament </p>
+    </div>
+
+    <div class="bal-buy-container">
+      <p class="para-element">Buy-In</p>
+      <label *ngIf="balanceBuyIn">
+        <input type="radio" name="buy-in" [(ngModel)]="buyInValues" value="1" (click)="clickOnregisterRadioButton(0)"
+          [disabled]="searchResultCount==0 || !canUseBalanceRegistration || balance < balanceBuyIn">
+        {{balanceBuyIn | numberFormat}}
+      </label>
+      <label *ngIf="tournamentMoneyBuyIn">
+        <input type="radio" name="buy-in" [(ngModel)]="buyInValues" value="2" (click)="clickOnregisterRadioButton(1)"
+          [disabled]="searchResultCount==0 || tournamentMoney == 0 || !canUseTournamentMoneyRegistration || tournamentMoney < tournamentMoneyBuyIn">
+        {{tournamentMoneyBuyIn | numberFormat}} TM
+      </label>
+      <label>
+        <input type="radio" name="buy-in" [(ngModel)]="buyInValues" value="3" (click)="clickOnregisterRadioButton(2)"
+          [disabled]="searchResultCount==0 || !canUseTournamentTicketRegistration">
+        <span *ngIf="tournamentTickets != 0"> by Ticket </span>
+        <span *ngIf="tournamentTickets == 0"> Give Ticket and use it to buy in </span>
+      </label>
+
+    </div>
+  </div>
+</div>

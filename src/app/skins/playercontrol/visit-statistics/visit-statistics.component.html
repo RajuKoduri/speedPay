@@ -1,0 +1,184 @@
+<div>
+    <h1>Visit Statistics </h1>
+</div>
+<div class="dropdown fd">
+    <button (click)="fillermenu()" class="fillterbtn font_14">Filters
+        <i *ngIf="!FillterMenu" class="fa fa-chevron-down IcArrow" title="open"
+            style="font-size:14px;  transition:all 0.5s ;"></i>
+        <i *ngIf="FillterMenu" class="fa fa-chevron-up IcArrow" title="close"
+            style="font-size:14px; transition:all 0.5s"></i>
+    </button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+    <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+</div>
+<div class="fd filterDiv" *ngIf="FillterMenu">
+    <form [formGroup]="filterForm">
+        <div class=" p_25">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label class="datelabel">StartDate</label>
+                        <input class="inp_agent_time" type="date" [max]="endDate" formControlName="startDate"
+                            [ngModel]="startDate" (ngModelChange)="startDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view " type="time" formControlName="startTime" step="1"
+                            [ngModel]="startTime" (ngModelChange)="startTime = $event" (change)="timechange($event)"
+                            [max]="endTime" />
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label class="datelabel">EndDate</label>
+                        <input class="inp_agent_time" type="date" [max]="todaydate" formControlName="endDate"
+                            [ngModel]="endDate" (ngModelChange)="endDate = $event" (change)="showDate($event)" />
+                        <input class="inp_agent_time mobile_view" type="time" formControlName="endTime" step="1"
+                            [ngModel]="endTime" (ngModelChange)="endTime = $event" (change)="timechange($event)" />
+                    </div>
+                    <div class="red_col" *ngIf="steddate">
+                        Start date should be below or equal to end date
+                    </div>
+                    <div class="red_col" *ngIf="timeerror">
+                        Start time should be below or equal to end time
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Player Login</label>
+                        <input type="text" formControlName="playerLogin">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+
+                    <div class="div_flex p_5_10">
+                        <label>Nick Name</label>
+                        <input type="text" formControlName="nickName">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Face</label>
+                        <!-- <input type="text" formControlName="face"> -->
+                        <!-- <select class="seclectopt" formControlName="face">
+                            <option [ngValue]="Status.name" *ngFor="let  Status of faceParameterslist">
+                                {{Status.name}}
+                            </option>
+                        </select> -->
+                        <div class="multi_dropdown">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList12" style="text-wrap:nowrap"
+                                [(ngModel)]="selectedItems12" (onSelect)="onItemSelectnew($event)"
+                                (onDeSelect)="OnItemDeSelectnew($event)" (onSelectAll)="onSelectAllnew($event)"
+                                (onDeSelectAll)="onDeSelectAllnew($event)"
+                                formControlName="networkNames"></ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-4">
+                    <div class="div_flex p_5_10">
+                        <label>First Record</label>
+                        <input type="text" formControlName="firstRecord">
+                    </div>
+                    <div class="div_flex p_5_10">
+                        <label>Page Size</label>
+                        <input type="text" formControlName="maxCountRecord">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="fd">
+    <button class="fillterbtn font_14" style="float: right;" (click)="onFormSubmit()">Submit</button>
+    <div class="df m_3">
+        <div style="margin-right:20px;" *ngIf="PlayerList">Rows On the Page: {{rowsOnthePage}}</div>
+        <div> Result Count: {{ResultCount}} <b *ngIf="resultcount">To get data set and apply
+                the filters</b></div>
+    </div>
+</div>
+
+<div class="fd">
+    <div *ngIf="loader">
+        <div class="loaderWraper">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="fd table_2">
+        <table class="fd tablCode " id="excel-table">
+            <thead>
+                <tr>
+                    <th>Login</th>
+                    <th>Nickname</th>
+                    <th>Face</th>
+                    <th>No of Visits</th>
+                    <th>Last Visit</th>
+                    <th>Failed Visits</th>
+                    <th>Success Visits</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="PlayerList">
+                <tr (dblclick)="onClick(i)" *ngFor="let List of PlayerList,let i =index">
+                    <td class="hyperLink" (click)="PlayerExplore(List.player.account, List.player.guid, List.player)">{{List.player.account}}</td>
+                    <td>{{List.player.nickName}}</td>
+                    <td>{{List.player.network}}</td>
+                    <td>{{List.visitCount}}</td>
+                    <!-- <td>{{List.lastVisit}}</td> -->
+                    <td>{{List.DateFormat}}</td>
+                    <td>{{List.failedLogins}}</td>
+                    <td>{{(List.visitCount)-(List.failedLogins)}}</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="fd" *ngIf="PlayerList">
+    <div class="pagecount">
+        <button class="Pagebtns" [disabled]="PageCount==1 || PlayerList==null" (click)="fastbackforward()"><i
+                class="fa fa-step-backward" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PageCount==1 ||PlayerList==null" (click)="prev()">
+            <i class="fa fa-caret-left" style="font-size:20px"></i>
+        </button>
+        <div class="PageCountNoDiv">
+            <div class="" *ngIf="PlayerList">{{PageCount}}</div>
+        </div>
+        <button class="Pagebtns " [disabled]="PlayerList == null || pagecontrolbtn" (click)="next()">
+            <i class="fa fa-caret-right" style="font-size:20px"></i>
+        </button>
+        <button class="Pagebtns" [disabled]="PlayerList==null || pagecontrolbtn" (click)="fastforward()"><i
+                class="fa fa-step-forward" style="font-size:20px"></i></button>
+    </div>
+</div>
+
+<!-- **************************POPUP************************************ -->
+<div class="black_cover" *ngIf="VisitstatsPopup" (click)="closepopup()"></div>
+<div class="popup_1 pop_sm" *ngIf="VisitstatsPopup">
+    <div class="PopupHead">
+        <h5 class="text-center">Statistics Visits</h5>
+        <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13">
+        <div class="fd p_5 ">
+
+            <div class="df m_3">
+                <label class="col-sm-6"> Player </label>
+                <span class="col-sm-6">{{playerStatsldetails.player.account}}</span>
+            </div>
+
+            <div class="m_3">
+                <label class="col-sm-6">Nick Name</label>
+                <span class="col-sm-6">{{playerStatsldetails.player.nickName}}</span>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-6">Face</label>
+                <span class="col-sm-6">{{playerStatsldetails.player.network}}</span>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-6">Number Of Visits</label>
+                <span class="col-sm-6">{{playerStatsldetails.visitCount}}</span>
+            </div>
+            <div class="m_3">
+                <label class="col-sm-6">Last Visit Date</label>
+                <!-- <span class="col-sm-6">{{playerStatsldetails.lastVisit}}</span> -->
+                <span class="col-sm-6">{{changeSelect(playerStatsldetails.lastVisit)}}</span>
+            </div>
+        </div>
+        <div class="bottomFix">
+            <button class="btn_grade_1" (click)="closepopup()"> Save </button>
+            <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+        </div>
+    </div>
+</div>

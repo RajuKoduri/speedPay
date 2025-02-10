@@ -1,0 +1,25 @@
+.popup_1.pop_sm {
+    max-width: 900px;
+    /* overflow: auto;
+    max-height: 80vh; */
+}
+/* .table_2{
+    height: auto !important;
+} */
+table input{
+    width: 100px;
+}
+
+.error-popup {
+    position: fixed; 
+    /* left: 30%; */
+    margin: auto;
+    width: 35%;
+    /* background: #ff0000; */
+    color: #000;
+    /* padding: 10px; */
+    text-align: center;
+    /* border: 1px solid #9e0d0d; */
+    margin: auto;
+   z-index: 1000;
+}

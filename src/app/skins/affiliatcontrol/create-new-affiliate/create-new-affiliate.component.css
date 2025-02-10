@@ -1,0 +1,48 @@
+.sample {
+    background: linear-gradient(135deg, #4c8df5, #1e60d8); /* Gradient background */
+    color: #ffffff; /* White text color */
+    padding: 15px 20px; /* Padding around the content */
+    border-radius: 8px 8px 0 0; /* Rounded corners for the top part */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for a subtle 3D effect */
+    font-family: 'Roboto', sans-serif; /* Stylish font */
+    font-size: 18px; /* Font size for the heading */
+    text-align: center; /* Center align the heading */
+  }
+  
+  .sample h5 {
+    margin: 0; /* Remove default margin */
+    font-weight: 500; /* Medium weight for the text */
+    letter-spacing: 0.5px; /* Slight spacing between letters for readability */
+  }
+
+  .sampleBody {
+    padding: 20px; /* Padding inside the popup body */
+    background-color: #ffffff; /* White background for the body */
+    border-radius: 0 0 8px 8px; /* Rounded corners for the bottom part */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* A lighter shadow for the body */
+    font-family: 'Roboto', sans-serif; /* Matching font for consistency */
+    color: #333333; /* Dark text color for readability */
+  }
+
+  .PopupFooter {
+    padding: 10px 20px; /* Padding inside the popup footer */
+    background-color: #f1f1f1; /* Light grey background for the footer */
+    border-top: 1px solid #dddddd; /* A subtle border at the top of the footer */
+    border-radius: 0 0 8px 8px; /* Continue the rounded corners */
+    text-align: right; /* Right-align the footer content */
+  }
+  
+  .PopupFooter button {
+    background-color: #4c8df5; /* Button color matching the header */
+    color: #ffffff; /* White text color for buttons */
+    padding: 8px 16px; /* Padding inside buttons */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners for buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+  }
+  
+  .PopupFooter button:hover {
+    background-color: #1e60d8; /* Darker blue on hover */
+  }
+  

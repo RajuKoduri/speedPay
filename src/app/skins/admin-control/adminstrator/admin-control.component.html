@@ -1,0 +1,203 @@
+<!-- <div class="fd">
+  {{updatedCont}} check
+<input type="text" #cont (change)="updatePop(cont.value)">
+</div> -->
+<div class="fd">
+  <button class="fillterbtn m_l_5" style=" float: right;" (click)="getAdmins()"> Requery</button>
+  <button class="fillterbtn Addbutton" style=" float: right;" routerLink="/CreateNewAdministrator" title="Add admin">
+    <!-- <img class="Addicon" src="assets/icons/Pluse.png"/> -->Add Admin list
+  </button>
+  <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportexcel()"> Export Excel</button>
+  <button class="fillterbtn m_l_5" style=" float: right;" (click)="exportCsv()"> Export Csv</button>
+  <h3>Admin List</h3>
+</div>
+<div class="fd table_2">
+  <div *ngIf="loader">
+    <div class="loaderWraper">
+      <div class="loader"></div>
+    </div>
+  </div>
+  <table class="fd tablCode " id="excel_table">
+    <thead>
+      <tr>
+        <th>Login Name</th>
+        <th>Password</th>
+        <th>FirstName</th>
+        <th>lastName</th>
+        <th>ipAddress</th>
+        <th>email</th>
+        <th>Faces</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="adminList">
+      <!-- <tr *ngFor="let List of adminList;let i=index" (click)="onClick(i)"> -->
+
+      <!-- <tr *ngFor="let List of adminList;let i=index" (dblclick)="getAdminPermissions(i)"> -->
+      <tr *ngFor="let List of adminList;let i=index" (dblclick)="onClick(i)">
+
+        <td>{{ List.loginName }}</td>
+        <td class="fs-5">******</td>
+        <td>{{ List.firstName }}</td>
+        <td>{{ List.lastName }}</td>
+        <td>{{ List.ipAddress }}</td>
+        <td>{{List.email}}</td>
+        <td *ngIf="List.faces.length==0">[All]</td>
+        <td *ngIf="List.faces.length>=1">{{List.faces}}</td>
+
+        <td>
+          <div class="fd">
+            <div class="trigger">
+              <a><i class="fa fa-reorder" style="color: #fff;" (click)="showmActions(i,List.guid)">
+                </i>
+              </a>
+              <div *ngIf="popupArrow" class="fd">
+                <div *ngIf="SeletedIconIndex == i" class="popup1 btnGrp">
+                  <button (click)="setAdminActions('EditAdmin',i)">Edit Admin</button>
+                  <button (click)="setAdminActions('EditPermissions',i)">Edit Permissions</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- *********************************Pop_UP*********************************************** -->
+<div class="black_cover" *ngIf="adminListpopup">
+  <div class="popup_1 pop_sm" *ngIf="adminListpopup">
+    <div class="PopupHead">
+      <h5 class="text-center">Admin: {{adminDetailList.loginName}}</h5>
+      <span class="closetop" (click)="closepopup()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13 fd p_lr_15" [formGroup]="filterForm">
+      <div class="fd p_5 ">
+        <div class="df">
+          <label class="col-sm-6"> Login Name</label>
+          <span class="col-sm-6">{{adminDetailList.loginName}}</span>
+        </div>
+        <div class="df m_3">
+          <label class="col-sm-6"> Paswword </label>
+          <input class="col-sm-6" type="password" [(ngModel)]="adminDetailList.password" formControlName="Paswword" />
+        </div>
+        <div class="df m_3">
+          <label class="col-sm-6"> First Name </label>
+          <input class="col-sm-6" type="text" [(ngModel)]="adminDetailList.firstName" formControlName="FirstName" />
+        </div>
+        <div class="df m_3">
+          <label class="col-sm-6"> Last Name </label>
+          <input class="col-sm-6" type="text" [(ngModel)]="adminDetailList.lastName" formControlName="LastName" />
+        </div>
+
+        <div class="df m_3">
+          <label class="col-sm-6"> Face </label>
+          <!-- <select class="col-sm-6">
+            <option [ngValue]="Status.name" *ngFor="let  Status of faceParameterslist">
+              {{Status.name}}
+            </option>
+          </select> -->
+          <div class="multi_dropdown">
+            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="faceParameterslist"
+              [(ngModel)]="selectedFaceItems" (onSelect)="onItemSelectnew($event)"
+              (onDeSelect)="OnItemDeSelectnew($event)" (onSelectAll)="onSelectAllnew($event)"
+              (onDeSelectAll)="onDeSelectAllnew($event)" formControlName="networkNames">
+            </ng-multiselect-dropdown>
+          </div>
+        </div>
+        <div class="df m_3">
+          <label class="col-sm-6"> Email </label>
+          <input class="col-sm-6" type="text" [(ngModel)]="adminDetailList.email" formControlName="email" />
+        </div>
+      </div>
+    </div>
+    <div class="bottomFix">
+      <button class="btn_grade_1" (click)="editAdmin()"> Save </button>
+      <button class="btn_grade_2" (click)="closepopup()"> Cancel </button>
+    </div>
+  </div>
+</div>
+<!-- ******************************************************************************** -->
+
+<div class="black_cover" *ngIf="EditAdminPermissionsPop">
+  <div class="popup_1 pop_sm" *ngIf="getAdminPermissionsList">
+    <div class="PopupHead">
+      <h5 class="text-center">Edit Permissions for {{adminDetailList.loginName}}</h5>
+      <!-- <admin-permissions-tree-component [PermissionsData]="getAdminPermissionsList"></admin-permissions-tree-component> -->
+
+      <span class="closetop" (click)="closeAdminPermissionsPop()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+      <div class="fd p_5 ">
+        <div>
+
+          <!-- <admin-permissions-tree-component [PermissionsData]="getAdminPermissionsList"></admin-permissions-tree-component> -->
+          <!-- <admin-permissions [PermissionsData]="getAdminPermissionsList"></admin-permissions> -->
+
+          <div class="row " *ngFor="let list of EditAdminPermissionsList; let i = index">
+            <ng-container *ngIf="list.display" class="col-sm-6">
+              <label class="col-sm-6" for="{{list.name}}">{{list.name}}</label>
+              <span class="col-sm-6 text-center">
+                <input class="m_r_5" type="checkbox" id="{{list.name}}"
+                  [(ngModel)]="EditAdminPermissionsListCheckbox[i]" (change)="clickonCheckboxForAllGames($event, i)">
+              </span>
+            </ng-container>
+
+            <div>
+              <div class="row" style="margin-left: 10px;" *ngFor="let listIn of list.children; let j = index">
+                <ng-container *ngIf="listIn.display" class="col-sm-6">
+                  <label class="col-sm-6" for="checkboxId{{i}}_{{j}}">{{listIn.name}}</label>
+                  <span class="col-sm-6 text-center">
+                    <input class="m_r_5" type="checkbox" [(ngModel)]="checkedList[i][j]" id="checkboxId{{i}}_{{j}}"
+                      (change)="clickonCheckboxIndivisualPermission($event, i, j,listIn.name)"
+                      style="margin-right: 10px;">
+                  </span>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottomFix">
+      <button class="btn_grade_1" (click)="setAdminPermissions()"> Save </button>
+      <button class="btn_grade_2" (click)="closeAdminPermissionsPop()"> Cancel </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Spinner -->
+<div class="black_cover1" *ngIf="SpinnwerT"></div>
+<!-- <div class="FullCover" *ngIf="SpinnwerT"></div> -->
+<div class="spinnerTrue" *ngIf="SpinnwerT">
+  <i class="fa fa-spinner fa-spin" style="font-size:60px;color: #f28916;"></i>
+</div>
+
+<!-- ########################################################## -->
+<div class="black_cover" *ngIf="EditAdminPermissionsPop01 && getAdminPermissionsList">
+  <div class="popup_1 pop_sm" *ngIf="getAdminPermissionsList">
+    <div class="PopupHead">
+      <h5 class="text-center">Edit Permissions for {{adminDetailList.loginName}}</h5>
+      <!-- <admin-permissions-tree-component [PermissionsData]="getAdminPermissionsList"></admin-permissions-tree-component> -->
+
+      <span class="closetop" (click)="closeAdminPermissionsPop()"> <img src="assets/icons/closePop.svg"> </span>
+    </div>
+    <div class="soon font_13 fd p_lr_15">
+      <div class="fd p_5 ">
+        <div>
+
+          <!-- <admin-permissions-tree-component [PermissionsData]="getAdminPermissionsList"></admin-permissions-tree-component> -->
+          <admin-permissions [PermissionsData]="getAdminPermissionsList" [adminGuid]=" adminDetailList.guid"
+            (buttonClicked)="onChildButtonClick()"></admin-permissions>
+        </div>
+      </div>
+    </div>
+    <div class="bottomFix">
+      <button class="btn_grade_1" (click)="triggerAdminTask()"> Save </button>
+      <button class="btn_grade_2" (click)="closeAdminPermissionsPop()"> Cancel </button>
+    </div>
+  </div>
+</div>

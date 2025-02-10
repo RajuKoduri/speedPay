@@ -1,0 +1,56 @@
+<div class="fd" (click)="totalAbuse()">
+    <!-- <tr class="tablCoderow">
+        <th>Bonus Abuse</th>
+    </tr> -->
+    <div class="abuse">
+        <table class="abuseTable ">
+            <thead>
+                <tr>
+                    <th colspan="2">Bonus Abuse
+                        <div class="arrow" (click)="Abusearrow()">
+                            <i *ngIf="showing" class="fa fa-chevron-up"></i>
+                            <i *ngIf="!showing" class="fa fa-chevron-down"></i>
+                        </div>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody *ngIf="showing">
+
+                <tr *ngFor="let list of summary">
+                    <td class="headtd">Enable Comp Points :</td>
+                    <td>
+                        <input *ngIf="list.compPointsEnabled==true" type="checkbox" class="pointer" checked />
+                        <input *ngIf="list.compPointsEnabled==false" type="checkbox" class="pointer">
+                    </td>
+                </tr>
+                <tr *ngFor="let list of summary">
+
+                    <td class="headtd">Allow Exchange to Cash :</td>
+                    <td>
+                        <input *ngIf="list.conversionToCashEnabled==true" type="checkbox" class="pointer" checked />
+                        <input *ngIf="list.conversionToCashEnabled==false" type="checkbox" class="pointer">
+                    </td>
+                </tr>
+                <tr *ngFor="let list of summary">
+
+                    <td class="headtd">Allow Exchange to Bonus:</td>
+                    <td>
+                        <input *ngIf="list.conversionToTournamentBuyInEnabled==true" type="checkbox" class="pointer"
+                            checked />
+                        <input *ngIf="list.conversionToTournamentBuyInEnabled==false" type="checkbox" class="pointer">
+                    </td>
+                </tr>
+                <tr *ngFor="let list of summary">
+                    <td class="headtd">Allow Tournament Buy-In For Comp Points: </td>
+                    <td>
+                        <input *ngIf="list.conversionToWithdrawRestrictedEnabled==true" type="checkbox" class="pointer"
+                            checked />
+                        <input *ngIf="list.conversionToWithdrawRestrictedEnabled==false" type="checkbox"
+                            class="pointer">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

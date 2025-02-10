@@ -1,0 +1,110 @@
+<!-- <div *ngIf="childComponentsData.length >= 1"> -->
+    <!-- <div *ngFor="let eachItem of childComponentsData; let k = index"> -->
+    <div *ngFor="let Rulelist of childComponentsData; let k = index" [formGroup]="AccessRuleForm" style="margin-left: 30px;">
+
+        <span class="p_b_5  p_5 extend-add-class"> 
+            <button class="operation-list-class" (click)="changeSelectingLogicalOprtationChildren(Rulelist.id)">{{selectedLogicalOperationChildren}}</button>
+             
+             <i (click)="addItemsChildrens(Rulelist.id)" title="{{Ruletitle}}" class="bi bi-plus-circle-fill font-size-bot-icon"></i>
+            </span>
+
+
+        <div *ngIf="activateduuid===Rulelist.id" class="black_cover_tree" (click) ="removePopUpChildren()"></div>
+        <div *ngIf="activateduuid===Rulelist.id" class="black_cover_inner_tree">
+        <div  class="dropdown-content-option" *ngIf = "activateduuid===Rulelist.id">
+
+            <a (click) ="clickOnSelectOperationChildElement('And',k, Rulelist.id)">And</a>
+            <a (click) ="clickOnSelectOperationChildElement('Or',k, Rulelist.id)">Or</a>
+            <a (click) ="clickOnSelectOperationChildElement('Not And',k, Rulelist.id)">Not And</a>
+            <a (click) ="clickOnSelectOperationChildElement('Not Or',k, Rulelist.id)">Not Or</a>
+            <a (click) ="clickOnSelectOperationChildElement('Add Condition',k, Rulelist.id)">Add Condition</a>
+            <a (click) ="clickOnSelectOperationChildElement('Add Group',k, Rulelist.id)">Add Group</a>
+            <a (click) ="clickOnSelectOperationChildElement('Remove Group',k, Rulelist.id)">Remove Group</a>
+        </div>
+    </div>
+
+
+
+    <!-- <div *ngFor="let RulelistChild of childComponentsData,let i=index"> -->
+    
+        <!-- <select [(ngModel)]="OnselectRuleslist" (input)="changeOnselectRuleslistOptions()"> -->
+            <div *ngFor = "let RulelistChild of Rulelist.data; let i=index" style="margin-left: 10px;"  class="Condition-class">
+                <!-- <select  formControlName="OnselectRuleslist" (change)="changeOnselectRuleslistOptions(RulelistChild.id,$event)" class="onselect-ruleslist"> -->
+                <select [formControlName]="'OnselectRuleslist_'+RulelistChild.id" (change)="changeOnselectRuleslistOptions(RulelistChild.id,$event)" class="onselect-ruleslist">
+                    <option *ngFor="let ids of RulelistChild.dataList; let j=index" [ngValue]="ids.id"> {{ids.title}}</option>
+                </select>
+        
+                <select formControlName="operationsToSelected" (change)="changeOperationstoSelectedOption(RulelistChild.id,$event)" class="onselect-ruleslist">
+                    <!-- <ng-container *ngFor="let ids of Rulelist.data,let j=index"> -->
+                    <!-- <option *ngFor="let operationsIds of ids.operations,let k=index"> -->
+                    <option *ngFor="let operationsIds of OperationsList,let k=index"
+                    [ngValue] = "operationsIds.id"
+                    >
+                        {{operationsIds.title}}
+                    </option>
+                    <!-- </ng-container> -->
+                </select>
+        
+                <!-- <input type="text" value="{{Rulelist.value}}" placeholder="Enter a value" class="onselect-ruleslist"/>
+                <button class="deletebtn" (click)="deleteRow(Rulelist.id,i)"><i class="fa fa-trash"></i></button> -->
+
+                <div [ngSwitch] = "userSelectDropdownUuid[RulelistChild.id]?.['user']">
+                    <div *ngSwitchCase="'UserInfoCountry'" class="onselect-country-option">
+                        <select class="onselect-drop-down" formControlName = "userInputSelectOption"
+                         (change)="onChangeinputField(RulelistChild.id)">
+                            <option *ngFor ="let eachCountry of countrieslist" value="eachCountry.code"> {{eachCountry.title}}</option>
+                        </select>
+                        <button class="deletebtn" (click)="deleteRow(Rulelist.id,i)"><i class="fa fa-trash"></i></button>
+
+                    </div>
+                    <div *ngSwitchCase="'UserIpCountry'" class="onselect-country-option">
+                        <select class="onselect-drop-down" formControlName = "userInputSelectOption" 
+                        (change)="onChangeinputField(RulelistChild.id)">
+                            <option *ngFor ="let eachCountry of countrieslist" value="eachCountry.code"> {{eachCountry.title}}</option>
+                        </select>
+                        <button class="deletebtn" (click)="deleteRow(Rulelist.id,i)"><i class="fa fa-trash"></i></button>
+
+                    </div>
+
+
+                    <div *ngSwitchCase ="'UserPersonalInfo_matches_black_list'" class="onselect-country-option"> 
+                        <div class="checkbox-elemtnt">
+                            <input type="checkbox" formControlName = "userInputSelectOption"
+                             (change)="onChangeinputField(RulelistChild.id)"  class="onselect-drop-down"/>
+                        </div>
+                        <!-- <input type="checkbox"  id="myCheckbox"/> -->
+                        <button class="deletebtn" (click)="deleteRow(Rulelist.id,i)"><i class="fa fa-trash"></i></button>
+
+                    </div>
+
+                    <div *ngSwitchCase ="'User_is_Trusted'" class="onselect-country-option"> 
+                        <div class="checkbox-elemtnt">
+                            <input type="checkbox" formControlName = "userInputSelectOption"
+                            (change)="onChangeinputField(RulelistChild.id)"  class="onselect-drop-down"/>
+                        </div>
+                        <!-- <input type="checkbox"  id="myCheckbox"/> -->
+                        <button class="deletebtn" (click)="deleteRow(Rulelist.id,i)"><i class="fa fa-trash"></i></button>
+
+                    </div>
+
+
+                    <div *ngSwitchDefault class="onselect-country-option"> 
+                        <input type="text" formControlName = "userInputSelectOption"
+                        (change)="onChangeinputField(RulelistChild.id)" placeholder="Enter a value" class="onselect-drop-down"/>
+                        <button class="deletebtn" (click)="deleteRow(Rulelist.id,i)"><i class="fa fa-trash"></i></button>
+
+                    </div>
+
+                </div>
+
+            </div>
+        
+
+<!-- </div> -->
+<div *ngIf="Rulelist.children.length >= 1">
+    <app-create-access-rule-tree [childComponentsData] ="Rulelist.children"  [accessRuleConditionList]="accessRuleConditionList"></app-create-access-rule-tree>
+</div>
+
+    </div>
+
+<!-- </div> -->

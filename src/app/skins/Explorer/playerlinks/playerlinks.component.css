@@ -1,0 +1,18 @@
+
+
+  table tfoot {
+    inset-block-end: 0;
+    /* "bottom" */
+  
+  }
+  
+  tfoot {
+    position: sticky;
+    bottom: -1px;
+  }
+  
+  table tfoot tr td {
+    /* border-radius: 2em; */
+    background-color: #a6bfc5;
+    color: #000000;
+  }

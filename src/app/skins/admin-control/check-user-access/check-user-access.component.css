@@ -1,0 +1,17 @@
+.table_2 {
+    overflow-y: auto;
+    display: block;
+    height: 38vh !important;
+    /* background: #e8eeef; */
+    background-color: rgb(225 225 219);
+  }
+
+  .allow{
+    color: green;
+  }
+
+  .notAllow{
+    color: red;
+  }
+
+ 

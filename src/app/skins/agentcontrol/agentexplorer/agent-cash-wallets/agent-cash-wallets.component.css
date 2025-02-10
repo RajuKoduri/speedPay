@@ -1,0 +1,68 @@
+.menu_Icon:disabled {
+    background: #102012;
+    cursor: no-drop;
+}
+.menu_Icon {
+    float: right;
+    background: #04b121;
+    padding: 3px 6px;
+    color: #fff;
+    border-radius: 50px;
+    cursor: pointer;
+    border: none;
+}
+.menu_Icon:active {
+    box-shadow: 0 0 2px darkslategray;
+    transform: translateY(2px); 
+}
+.openP{
+    max-width:  350px;
+    position: absolute;
+    top: 25%;
+    right: 0;
+    left: 0;
+    margin: auto;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+.openP_cocer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: #0000000d;
+}
+button.Succ_G {
+    padding: 0px 7px;
+    border: none;
+    background: #00b8ff;
+    color: #000;
+    font-size: 15px;
+    border-radius: 2px;
+}
+button.Succ_S:active {
+    box-shadow: 0 0 2px darkslategray;
+    transform: translateY(2px); 
+}
+button.Succ_G:active {
+    box-shadow: 0 0 2px darkslategray;
+    transform: translateY(2px); 
+}
+button.Succ_C {
+    padding: 0px 12px;
+    background: #ff8100;
+    border: none;
+    border-radius: 2px;
+    font-size: 15px;
+}
+.BTN_grp {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.tablCode thead th {
+    z-index: 0;
+  }

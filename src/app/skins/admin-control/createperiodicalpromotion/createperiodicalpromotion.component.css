@@ -1,0 +1,97 @@
+/* .container {
+    width: 100%;
+    max-width: 900px;
+    min-width: 320px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  
+    .title {
+      width: 100%;
+    }
+  
+    .content {
+      width: 100%;
+  
+      .display {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1rem;
+  
+        .logo {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          margin-bottom: 0.5rem;
+        }
+  
+        .badges {
+          img {
+            &:not(:last-child) {
+              margin-right: 5px;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .editor {
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  
+    .NgxEditor__MenuBar {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    }
+  
+    .NgxEditor {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border: none;
+    }
+  
+    .CodeMirror {
+      border: 1px solid #eee;
+      height: auto;
+      margin-bottom: 0.7rem;
+  
+      pre {
+        white-space: pre !important;
+      }
+    }
+  }
+   */
+
+
+   .NgxEditor__Wrapper{
+    padding: 0px;
+    height: 210px;
+    overflow: scroll;
+}
+
+.activeEditor{
+  background: linear-gradient(135deg, #ff6c63, #ff826c);
+}
+
+.popup_1.pop_sm {
+  max-width: 700px !important;
+  overflow: auto;
+  max-height: 80vh;
+}
+
+.btn1 {
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  background: linear-gradient(135deg, #58baea, #9bd9e3, #58baea);
+  border-radius: 15px 15px 15px 15px;
+  cursor: pointer;
+  /* box-shadow: 5px 5px 5px rgb(183, 181, 181); */
+}
+

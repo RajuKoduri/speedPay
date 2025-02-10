@@ -1,0 +1,16 @@
+.timesettings{
+    border: 1px solid #000;
+}
+input{
+    /* text-align: center; */
+    outline: none;
+    border: 1px solid #ddd;
+}
+.spinnerTrue {
+    position: fixed;
+    z-index: 999;
+    left: 50%;
+    right: 0;
+    top: 50%;
+    margin: auto;
+  }

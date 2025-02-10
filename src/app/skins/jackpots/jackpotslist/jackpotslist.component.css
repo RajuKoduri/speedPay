@@ -1,0 +1,168 @@
+.ff {
+  background: #f6f6f6;
+  border: solid 1px #ddd;
+  border-radius: 8px;
+  padding: 15px 0px;
+  margin: 10px 0px;
+}
+
+.checkclick {
+  pointer-events: none;
+  width: 40px;
+}
+
+.text-center {
+  display: flex;
+  justify-content: space-around;
+}
+
+.paginationdiv {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.backbutton {
+  display: inline-block;
+  padding: 6px 18px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-decoration: none;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  border: solid #272833;
+  margin: 0px 5px 5px 0px;
+  background: #272833;
+}
+
+.table_2 thead tr th {
+  position: sticky;
+  top: 0;
+}
+
+table tfoot {
+  inset-block-end: 0;
+  /* "bottom" */
+
+}
+
+tfoot {
+  position: sticky;
+  bottom: -1px;
+}
+
+table tfoot tr td {
+  /* background-color:  #D3E2E5;  */
+  background-color: #a6bfc5;
+  color: #000000;
+}
+
+.page_count {
+  display: flex;
+  /* justify-content: space-around; */
+  margin: 20px;
+}
+button[disabled] {
+  border: none;
+  background: #cccccc;
+  color: #666666;
+  cursor:no-drop
+}
+
+.btn_row {
+  padding-top: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+/* drowList */
+.center {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.dropList {
+  position: absolute;
+  display: right;
+  background: lightgray;
+  text-align: left;
+  z-index: 1000;
+  border: 1px solid rgb(226, 217, 217);
+}
+
+.dropList ul {
+  padding: 0px;
+  margin: 0px;
+  min-width: 150px;
+  list-style: none;
+}
+
+.dropList ul li {
+  padding-bottom: 7px;
+  padding-top: 7px;
+  padding-left: 7px;
+  border: 1px solid rgb(187, 181, 181);
+}
+
+.dropList ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+.dropList ul li:hover {
+  background: darkgray;
+}
+
+
+.popup_1.pop_sm {
+  max-width: 800px;
+}
+
+.headTitle {
+  background: navajowhite;
+  padding: 4px;
+}
+
+.SettingsTab {
+  /* border: 1px solid #343330; */
+  border: 1px solid #ddd;
+  margin: 2px;
+}
+.negative-value{
+  color: red;
+}
+.spinnerTrue {
+  position: fixed;
+  z-index: 999;
+  left: 50%;
+  right: 0;
+  top: 50%;
+  margin: auto;
+}
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.df{
+  margin-bottom: 5px;
+}
